@@ -30,7 +30,7 @@ public class FunRun {
 			SVM objprog = compile(source);
 
 			// sb.append("Interpretation ...");
-			response = objprog.interpret(tracing, response);
+			objprog.interpret(tracing, response);
 		} catch (FunException x) {
 			// sb.append("Compilation failed");
 		} catch (Exception x) {

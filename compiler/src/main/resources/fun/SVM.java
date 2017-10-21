@@ -150,7 +150,7 @@ public class SVM {
 
 	private StringBuffer sb = new StringBuffer();
 
-	public FunResponse interpret (boolean tracing, FunResponse response) {
+	public void interpret (boolean tracing, FunResponse response) {
 	// Interpret the program starting at offset 0
 	// in the code store.
 	// If tracing is true, print each instruction
@@ -329,7 +329,6 @@ public class SVM {
 				}
 			}
 		} while (status == RUNNING);
-		return response;
 	}
 
 	private void callIO (int c, FunResponse response) {
