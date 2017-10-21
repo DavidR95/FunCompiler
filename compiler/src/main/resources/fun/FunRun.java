@@ -21,24 +21,18 @@ public class FunRun {
 	private static FunResponse response = new FunResponse();
 
 	public static FunResponse execute(InputStream program) {
-	// Compile a Fun source program to SVM code,
-	// then interpret it if it compiles successfully.
-	// The source file name must be given as the
-	// first program argument.
 		try {
 			SVM objprog = compile(program);
 			objprog.interpret(tracing, response);
-		} catch (FunException x) {
-			// sb.append("Compilation failed");
-		} catch (Exception x) {
-			// sb.append("Something went wrong");
+		} catch (Exception e) {
+			// Java-based errors
 		}
 		return response;
 	}
 
 	private static SVM compile (InputStream source)
 			throws Exception {
-	// Compile a Fun source program to SVM code.
+		// Compile a Fun source program to SVM code.
 		FunLexer lexer = new FunLexer(
 		   new ANTLRInputStream(source));
 		CommonTokenStream tokens =
@@ -57,10 +51,10 @@ public class FunRun {
 	// Print any error messages.
 	// Return an AST representation of the Fun program.
 		FunParser parser = new FunParser(tokens);
-	        ParseTree ast = parser.program();
+	    ParseTree ast = parser.program();
 		int errors = parser.getNumberOfSyntaxErrors();
+		response.setNumSyntaxErrors(errors);
 		if (errors > 0) {
-			// sb.append(errors + " syntactic errors");
 			throw new FunException();
 		}
 		return ast;
@@ -75,8 +69,8 @@ public class FunRun {
 		   new FunCheckerVisitor(tokens);
 		checker.visit(ast);
 		int errors = checker.getNumberOfContextualErrors();
+		response.setNumContextualErrors(errors);
 		if (errors > 0) {
-			// sb.append(errors + " scope/type errors");
 			throw new FunException();
 		}
 	}

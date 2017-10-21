@@ -13,7 +13,7 @@ public class Api {
         post("/", (req, res) -> {
             String program = "proc main (): write(7).";
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
-            return FunRun.execute(programInputStream).getObjectCode();
+            return FunRun.execute(programInputStream).getNumSyntaxErrors();
         });
     }
 }
