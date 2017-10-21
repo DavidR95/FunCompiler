@@ -30,26 +30,21 @@ public class FunRun {
 		return response;
 	}
 
-	private static SVM compile (InputStream source)
-			throws Exception {
+	private static SVM compile (InputStream source) throws Exception {
 		// Compile a Fun source program to SVM code.
-		FunLexer lexer = new FunLexer(
-		   new ANTLRInputStream(source));
-		CommonTokenStream tokens =
-		   new CommonTokenStream(lexer);
-		ParseTree ast =
-		    syntacticAnalyse(tokens);
+		FunLexer lexer = new FunLexer(new ANTLRInputStream(source));
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		ParseTree ast = syntacticAnalyse(tokens);
 		contextualAnalyse(ast,tokens);
 		SVM objprog = codeGenerate(ast);
 		return objprog;
 	}
 
-	private static ParseTree syntacticAnalyse
-			(CommonTokenStream tokens)
-			throws Exception {
-	// Perform syntactic analysis of a Fun source program.
-	// Print any error messages.
-	// Return an AST representation of the Fun program.
+	private static ParseTree syntacticAnalyse(CommonTokenStream tokens)
+		throws Exception {
+		// Perform syntactic analysis of a Fun source program.
+		// Print any error messages.
+		// Return an AST representation of the Fun program.
 		FunParser parser = new FunParser(tokens);
 	    ParseTree ast = parser.program();
 		int errors = parser.getNumberOfSyntaxErrors();
@@ -58,12 +53,11 @@ public class FunRun {
 	}
 
     private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens)
-			throws Exception {
-	// Perform contextual analysis of a Fun program,
-	// represented by an AST.
-	// Print any error messages.
-		FunCheckerVisitor checker =
-		   new FunCheckerVisitor(tokens);
+		throws Exception {
+		// Perform contextual analysis of a Fun program,
+		// represented by an AST.
+		// Print any error messages.
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
 		checker.visit(ast);
 		int numErrors = checker.getNumberOfContextualErrors();
 		ArrayList<String> errors = checker.getContextualErrors();
@@ -71,13 +65,11 @@ public class FunRun {
 		response.setContextualErrors(errors);
 	}
 
-	private static SVM codeGenerate (ParseTree ast)
-			throws Exception  {
-	// Perform code generation of a Fun program,
-	// represented by an AST, emitting SVM code.
-	// Also print the object code.
-		FunEncoderVisitor encoder =
-		   new FunEncoderVisitor();
+	private static SVM codeGenerate (ParseTree ast)	throws Exception  {
+		// Perform code generation of a Fun program,
+		// represented by an AST, emitting SVM code.
+		// Also print the object code.
+		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(ast);
 		SVM objectprog = encoder.getSVM();
 		objectprog.showCode(response);
