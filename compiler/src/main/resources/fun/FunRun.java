@@ -20,16 +20,13 @@ public class FunRun {
 
 	private static StringBuffer sb = new StringBuffer();
 
-	public static StringBuffer execute(String program) {
+	public static StringBuffer execute(InputStream program) {
 	// Compile a Fun source program to SVM code,
 	// then interpret it if it compiles successfully.
 	// The source file name must be given as the
 	// first program argument.
 		try {
-			if (program.length() == 0)
-				throw new FunException();
-			InputStream source =
-				new ByteArrayInputStream(program.getBytes("UTF-8"));
+			InputStream source = program;
 			SVM objprog = compile(source);
 
 			sb.append("Interpretation ...");

@@ -1,6 +1,7 @@
 package api;
 
 import static spark.Spark.*;
+import java.io.*;
 import fun.FunRun;
 
 public class Api {
@@ -10,7 +11,9 @@ public class Api {
             return "Hello world!";
         });
         post("/", (req, res) -> {
-            return FunRun.execute("proc main (): write(7).").toString();
+            String program = "proc main (): write(7).";
+            InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
+            return FunRun.execute(programInputStream).toString();
         });
     }
 }
