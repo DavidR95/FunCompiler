@@ -150,7 +150,7 @@ public class SVM {
 
 	private StringBuffer sb = new StringBuffer();
 
-	public StringBuffer interpret (boolean tracing) {
+	public FunResponse interpret (boolean tracing, FunResponse response) {
 	// Interpret the program starting at offset 0
 	// in the code store.
 	// If tracing is true, print each instruction
@@ -161,8 +161,8 @@ public class SVM {
 		fp = 0;
 		status = RUNNING;
 		do {
-			if (tracing)
-				sb.append(showInstruction(pc));
+			// if (tracing)
+				// sb.append(showInstruction(pc));
 			byte opcode = code[pc++];
 			switch (opcode) {
 				case LOADG: {
@@ -286,7 +286,7 @@ public class SVM {
 					   code[pc++]<<8 |
 					   (code[pc++]&0xFF);
 					if (c >= IOBASE) {
-						callIO(c);
+						callIO(c, response);
 						break;
 					}
 					data[sp++] = fp;  // dyn link
@@ -324,27 +324,26 @@ public class SVM {
 					break;
 				}
 				default: {
-					sb.append("Illegal instruction"
-					   + opcode);
+					// sb.append("Illegal instruction" + opcode);
 					status = FAILED;
 				}
 			}
 		} while (status == RUNNING);
-		return sb;
+		return response;
 	}
 
-	private void callIO (int c) {
+	private void callIO (int c, FunResponse response) {
 	// Execute a call to an IO routine.
 		switch (c) {
 			case READOFFSET: {
-				sb.append("? ");
+				// sb.append("? ");
 				int w = in.nextInt();
 				data[sp++] = w;
 				break;
 			}
 			case WRITEOFFSET: {
 				int w = data[--sp];
-				sb.append(w);
+				response.setOutput(Integer.toString(w));
 				break;
 			}
 		}

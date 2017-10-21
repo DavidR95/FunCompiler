@@ -18,9 +18,9 @@ public class FunRun {
 
 	private static boolean tracing = false;
 
-	private static StringBuffer sb = new StringBuffer();
+	private static FunResponse response = new FunResponse();
 
-	public static StringBuffer execute(InputStream program) {
+	public static FunResponse execute(InputStream program) {
 	// Compile a Fun source program to SVM code,
 	// then interpret it if it compiles successfully.
 	// The source file name must be given as the
@@ -29,14 +29,14 @@ public class FunRun {
 			InputStream source = program;
 			SVM objprog = compile(source);
 
-			sb.append("Interpretation ...");
-			sb.append(objprog.interpret(tracing));
+			// sb.append("Interpretation ...");
+			response = objprog.interpret(tracing, response);
 		} catch (FunException x) {
-			sb.append("Compilation failed");
+			// sb.append("Compilation failed");
 		} catch (Exception x) {
-			sb.append("Something went wrong");
+			// sb.append("Something went wrong");
 		}
-		return sb;
+		return response;
 	}
 
 	private static SVM compile (InputStream source)
@@ -63,7 +63,7 @@ public class FunRun {
 	        ParseTree ast = parser.program();
 		int errors = parser.getNumberOfSyntaxErrors();
 		if (errors > 0) {
-			sb.append(errors + " syntactic errors");
+			// sb.append(errors + " syntactic errors");
 			throw new FunException();
 		}
 		return ast;
@@ -79,7 +79,7 @@ public class FunRun {
 		checker.visit(ast);
 		int errors = checker.getNumberOfContextualErrors();
 		if (errors > 0) {
-			sb.append(errors + " scope/type errors");
+			// sb.append(errors + " scope/type errors");
 			throw new FunException();
 		}
 	}
@@ -93,7 +93,7 @@ public class FunRun {
 		   new FunEncoderVisitor();
 		encoder.visit(ast);
 		SVM objectprog = encoder.getSVM();
-		sb.append(objectprog.showCode());
+		// sb.append(objectprog.showCode());
 		return objectprog;
 	}
 
