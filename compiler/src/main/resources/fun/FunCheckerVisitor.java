@@ -1,3 +1,5 @@
+package fun;
+
 //////////////////////////////////////////////////////////////
 //
 // A visitor for contextual analysis of Fun.
@@ -30,7 +32,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private void reportError (String message,
 	                          ParserRuleContext ctx) {
-	// Print an error message relating to the given 
+	// Print an error message relating to the given
 	// part of the AST.
 	    Interval interval = ctx.getSourceInterval();
 	    Token start = tokens.get(interval.a);
@@ -66,7 +68,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private void define (String id, Type type,
 	                     ParserRuleContext decl) {
-	// Add id with its type to the type table, checking 
+	// Add id with its type to the type table, checking
 	// that id is not already declared in the same scope.
 		boolean ok = typeTable.put(id, type);
 		if (!ok)
@@ -96,7 +98,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private void checkType (Type typeExpected,
 	                        Type typeActual,
 	                        ParserRuleContext construct) {
-	// Check that a construct's actual type matches 
+	// Check that a construct's actual type matches
 	// the expected type.
 		if (! typeActual.equiv(typeExpected))
 			reportError("type is " + typeActual
@@ -106,8 +108,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private Type checkCall (String id, Type typeArg,
 	                        ParserRuleContext call) {
-	// Check that a procedure call identifies a procedure 
-	// and that its argument type matches the proecure's 
+	// Check that a procedure call identifies a procedure
+	// and that its argument type matches the proecure's
 	// type. Return the type of the procedure call.
 		Type typeProc = retrieve(id, call);
 		if (! (typeProc instanceof Type.Mapping)) {
@@ -123,8 +125,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private Type checkUnary (Type.Mapping typeOp,
 	                         Type typeArg,
 	                         ParserRuleContext op) {
-	// Check that a unary operator's operand type matches 
-	// the operator's type. Return the type of the operator 
+	// Check that a unary operator's operand type matches
+	// the operator's type. Return the type of the operator
 	// application.
 		if (! (typeOp.domain instanceof Type.Primitive))
 			reportError(
@@ -138,8 +140,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private Type checkBinary (Type.Mapping typeOp,
 	                          Type typeArg1, Type typeArg2,
 	                          ParserRuleContext op) {
-	// Check that a binary operator's operand types match 
-	// the operator's type. Return the type of the operator 
+	// Check that a binary operator's operand types match
+	// the operator's type. Return the type of the operator
 	// application.
 		if (! (typeOp.domain instanceof Type.Pair))
 			reportError(

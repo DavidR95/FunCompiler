@@ -1,3 +1,5 @@
+package fun;
+
 //////////////////////////////////////////////////////////////
 //
 // A visitor for code generation for Fun.
@@ -125,7 +127,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    if (tc != null) {
 		String id = ctx.ID().getText();
 		addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
-		obj.emit11(SVM.COPYARG, 1); 
+		obj.emit11(SVM.COPYARG, 1);
 	    }
 	    return null;
 	}
@@ -390,7 +392,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitNot(FunParser.NotContext ctx) {
 	    visit(ctx.prim_expr());
-	    obj.emit1(SVM.INV); 
+	    obj.emit1(SVM.INV);
 	    return null;
 	}
 

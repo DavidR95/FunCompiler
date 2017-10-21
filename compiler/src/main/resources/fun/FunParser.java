@@ -1,3 +1,5 @@
+package fun;
+
 // Generated from Fun.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -16,27 +18,27 @@ public class FunParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		BOOL=1, ELSE=2, FALSE=3, FUNC=4, IF=5, INT=6, PROC=7, RETURN=8, TRUE=9, 
-		WHILE=10, EQ=11, LT=12, GT=13, PLUS=14, MINUS=15, TIMES=16, DIV=17, NOT=18, 
-		ASSN=19, LPAR=20, RPAR=21, COLON=22, DOT=23, NUM=24, ID=25, SPACE=26, 
+		BOOL=1, ELSE=2, FALSE=3, FUNC=4, IF=5, INT=6, PROC=7, RETURN=8, TRUE=9,
+		WHILE=10, EQ=11, LT=12, GT=13, PLUS=14, MINUS=15, TIMES=16, DIV=17, NOT=18,
+		ASSN=19, LPAR=20, RPAR=21, COLON=22, DOT=23, NUM=24, ID=25, SPACE=26,
 		EOL=27, COMMENT=28;
 	public static final int
-		RULE_program = 0, RULE_proc_decl = 1, RULE_formal_decl = 2, RULE_var_decl = 3, 
-		RULE_type = 4, RULE_com = 5, RULE_seq_com = 6, RULE_expr = 7, RULE_sec_expr = 8, 
+		RULE_program = 0, RULE_proc_decl = 1, RULE_formal_decl = 2, RULE_var_decl = 3,
+		RULE_type = 4, RULE_com = 5, RULE_seq_com = 6, RULE_expr = 7, RULE_sec_expr = 8,
 		RULE_prim_expr = 9, RULE_actual = 10;
 	public static final String[] ruleNames = {
-		"program", "proc_decl", "formal_decl", "var_decl", "type", "com", "seq_com", 
+		"program", "proc_decl", "formal_decl", "var_decl", "type", "com", "seq_com",
 		"expr", "sec_expr", "prim_expr", "actual"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'bool'", "'else'", "'false'", "'func'", "'if'", "'int'", "'proc'", 
-		"'return'", "'true'", "'while'", "'=='", "'<'", "'>'", "'+'", "'-'", "'*'", 
+		null, "'bool'", "'else'", "'false'", "'func'", "'if'", "'int'", "'proc'",
+		"'return'", "'true'", "'while'", "'=='", "'<'", "'>'", "'+'", "'-'", "'*'",
 		"'/'", "'not'", "'='", "'('", "')'", "':'", "'.'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, "BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN", 
-		"TRUE", "WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT", 
+		null, "BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN",
+		"TRUE", "WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT",
 		"ASSN", "LPAR", "RPAR", "COLON", "DOT", "NUM", "ID", "SPACE", "EOL", "COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -93,7 +95,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
-	 
+
 		public ProgramContext() { }
 		public void copyFrom(ProgramContext ctx) {
 			super.copyFrom(ctx);
@@ -143,7 +145,7 @@ public class FunParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(29); 
+			setState(29);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
@@ -153,7 +155,7 @@ public class FunParser extends Parser {
 				proc_decl();
 				}
 				}
-				setState(31); 
+				setState(31);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==FUNC || _la==PROC );
@@ -177,7 +179,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_proc_decl; }
-	 
+
 		public Proc_declContext() { }
 		public void copyFrom(Proc_declContext ctx) {
 			super.copyFrom(ctx);
@@ -348,7 +350,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formal_decl; }
-	 
+
 		public Formal_declContext() { }
 		public void copyFrom(Formal_declContext ctx) {
 			super.copyFrom(ctx);
@@ -404,7 +406,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_var_decl; }
-	 
+
 		public Var_declContext() { }
 		public void copyFrom(Var_declContext ctx) {
 			super.copyFrom(ctx);
@@ -460,7 +462,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
-	 
+
 		public TypeContext() { }
 		public void copyFrom(TypeContext ctx) {
 			super.copyFrom(ctx);
@@ -527,7 +529,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_com; }
-	 
+
 		public ComContext() { }
 		public void copyFrom(ComContext ctx) {
 			super.copyFrom(ctx);
@@ -707,7 +709,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_seq_com; }
-	 
+
 		public Seq_comContext() { }
 		public void copyFrom(Seq_comContext ctx) {
 			super.copyFrom(ctx);
@@ -895,7 +897,7 @@ public class FunParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_prim_expr; }
-	 
+
 		public Prim_exprContext() { }
 		public void copyFrom(Prim_exprContext ctx) {
 			super.copyFrom(ctx);

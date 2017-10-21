@@ -1,3 +1,5 @@
+package fun;
+
 ////////////////////////////////////////////////////////////////
 //
 // Representation of generic symbol tables.
@@ -14,12 +16,12 @@ import java.io.*;
 
 public class SymbolTable<A> {
 
-	// An object of class SymbolTable<A> represents a symbol 
-	// table in which identifiers (strings) are associated 
-	// with attributes of type A. The symbol table comprises 
-	// a global part (which is always enabled) and a local 
-	// part (which may be enabled or disabled). Each part is 
-	// a set of (String,A) entries in which the strings are 
+	// An object of class SymbolTable<A> represents a symbol
+	// table in which identifiers (strings) are associated
+	// with attributes of type A. The symbol table comprises
+	// a global part (which is always enabled) and a local
+	// part (which may be enabled or disabled). Each part is
+	// a set of (String,A) entries in which the strings are
 	// unique.
 
 	private HashMap<String,A> globals, locals;
@@ -30,8 +32,8 @@ public class SymbolTable<A> {
 	}
 
 	public boolean put (String id, A attr) {
-	// Add (id,attr) to this symbol table, either to the 
-	// local part (if enabled) or to the global part 
+	// Add (id,attr) to this symbol table, either to the
+	// local part (if enabled) or to the global part
 	// (otherwise). Return true iff id is unique.
 		HashMap<String,A> scope =
 			(locals != null ? locals : globals);
@@ -43,9 +45,9 @@ public class SymbolTable<A> {
 	}
 
 	public A get (String id) {
-	// Retrieve the attribute corresponding to id in this 
-	// symbol table. If id occurs in both local and global 
-	// parts, prefer the local one. Return the attribute, 
+	// Retrieve the attribute corresponding to id in this
+	// symbol table. If id occurs in both local and global
+	// parts, prefer the local one. Return the attribute,
 	// or null if id is not found.
 		if (locals != null && locals.get(id) != null)
 			return locals.get(id);
@@ -54,8 +56,8 @@ public class SymbolTable<A> {
 	}
 
 	public A getLocal (String id) {
-	// Retrieve the attribute corresponding to id in the 
-	// local part of this symbol table. Return the attribute, 
+	// Retrieve the attribute corresponding to id in the
+	// local part of this symbol table. Return the attribute,
 	// or null if id is not found.
 		if (locals != null)
 			return locals.get(id);
@@ -70,7 +72,7 @@ public class SymbolTable<A> {
 	}
 
 	public void exitLocalScope () {
-	// Discard all entries in the local part of this 
+	// Discard all entries in the local part of this
 	// symbol table, and disable the local part.
 		locals = null;
 	}

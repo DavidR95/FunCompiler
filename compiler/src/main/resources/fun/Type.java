@@ -1,3 +1,5 @@
+package fun;
+
 ////////////////////////////////////////////////////////////////
 //
 // Representation of types.
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 
 public abstract class Type {
 
-	// An object of class Type represents a type, which may 
+	// An object of class Type represents a type, which may
 	// be a primitive type, a pair type, or a mapping type,
 
 	public static final Primitive
@@ -25,9 +27,9 @@ public abstract class Type {
 
         public static final Sequence
 	    EMPTY = new Sequence(new ArrayList<Type>());
-    
+
 	public abstract boolean equiv (Type that);
-	// Return true if and only if this type is equivalent 
+	// Return true if and only if this type is equivalent
 	// to that.
 
 	public abstract String toString ();

@@ -1,3 +1,5 @@
+package fun;
+
 // Generated from Fun.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 

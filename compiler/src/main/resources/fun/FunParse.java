@@ -1,3 +1,5 @@
+package fun;
+
 //////////////////////////////////////////////////////////////
 //
 // Driver for the Fun syntactic analyser.
@@ -19,9 +21,9 @@ public class FunParse {
 	private static PrintStream out = System.out;
 
 	public static void main(String[] args) {
-	// Compile a Fun source program to SVM code, 
+	// Compile a Fun source program to SVM code,
 	// then interpret it if it compiles successfully.
-	// The source file name must be given as the 
+	// The source file name must be given as the
 	// first program argument.
 		try {
 			if (args.length == 0)
@@ -47,7 +49,7 @@ public class FunParse {
 		out.println("Syntactic analysis ...");
 		FunLexer lexer = new FunLexer(
 		   new ANTLRInputStream(source));
-		CommonTokenStream tokens = 
+		CommonTokenStream tokens =
 		   new CommonTokenStream(lexer);
 		FunParser parser = new FunParser(tokens);
 		ParseTree ast = parser.program();

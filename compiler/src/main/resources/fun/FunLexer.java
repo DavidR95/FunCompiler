@@ -1,3 +1,5 @@
+package fun;
+
 // Generated from Fun.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -16,29 +18,29 @@ public class FunLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		BOOL=1, ELSE=2, FALSE=3, FUNC=4, IF=5, INT=6, PROC=7, RETURN=8, TRUE=9, 
-		WHILE=10, EQ=11, LT=12, GT=13, PLUS=14, MINUS=15, TIMES=16, DIV=17, NOT=18, 
-		ASSN=19, LPAR=20, RPAR=21, COLON=22, DOT=23, NUM=24, ID=25, SPACE=26, 
+		BOOL=1, ELSE=2, FALSE=3, FUNC=4, IF=5, INT=6, PROC=7, RETURN=8, TRUE=9,
+		WHILE=10, EQ=11, LT=12, GT=13, PLUS=14, MINUS=15, TIMES=16, DIV=17, NOT=18,
+		ASSN=19, LPAR=20, RPAR=21, COLON=22, DOT=23, NUM=24, ID=25, SPACE=26,
 		EOL=27, COMMENT=28;
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
 
 	public static final String[] ruleNames = {
-		"BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN", "TRUE", 
-		"WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT", "ASSN", 
-		"LPAR", "RPAR", "COLON", "DOT", "NUM", "ID", "SPACE", "EOL", "COMMENT", 
+		"BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN", "TRUE",
+		"WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT", "ASSN",
+		"LPAR", "RPAR", "COLON", "DOT", "NUM", "ID", "SPACE", "EOL", "COMMENT",
 		"LETTER", "DIGIT"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'bool'", "'else'", "'false'", "'func'", "'if'", "'int'", "'proc'", 
-		"'return'", "'true'", "'while'", "'=='", "'<'", "'>'", "'+'", "'-'", "'*'", 
+		null, "'bool'", "'else'", "'false'", "'func'", "'if'", "'int'", "'proc'",
+		"'return'", "'true'", "'while'", "'=='", "'<'", "'>'", "'+'", "'-'", "'*'",
 		"'/'", "'not'", "'='", "'('", "')'", "':'", "'.'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, "BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN", 
-		"TRUE", "WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT", 
+		null, "BOOL", "ELSE", "FALSE", "FUNC", "IF", "INT", "PROC", "RETURN",
+		"TRUE", "WHILE", "EQ", "LT", "GT", "PLUS", "MINUS", "TIMES", "DIV", "NOT",
 		"ASSN", "LPAR", "RPAR", "COLON", "DOT", "NUM", "ID", "SPACE", "EOL", "COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);

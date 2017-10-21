@@ -1,3 +1,5 @@
+package fun;
+
 //////////////////////////////////////////////////////////////
 //
 // Driver for the Fun compiler and SVM interpreter.
@@ -19,9 +21,9 @@ public class FunRun {
 	private static PrintStream out = System.out;
 
 	public static void main(String[] args) {
-	// Compile a Fun source program to SVM code, 
+	// Compile a Fun source program to SVM code,
 	// then interpret it if it compiles successfully.
-	// The source file name must be given as the 
+	// The source file name must be given as the
 	// first program argument.
 		try {
 			if (args.length == 0)
@@ -44,7 +46,7 @@ public class FunRun {
 	// Compile a Fun source program to SVM code.
 		FunLexer lexer = new FunLexer(
 		   new ANTLRInputStream(source));
-		CommonTokenStream tokens = 
+		CommonTokenStream tokens =
 		   new CommonTokenStream(lexer);
 		ParseTree ast =
 		    syntacticAnalyse(tokens);
@@ -72,7 +74,7 @@ public class FunRun {
 
     private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens)
 			throws Exception {
-	// Perform contextual analysis of a Fun program, 
+	// Perform contextual analysis of a Fun program,
 	// represented by an AST.
 	// Print any error messages.
 		out.println("Contextual analysis ...");
@@ -88,7 +90,7 @@ public class FunRun {
 
 	private static SVM codeGenerate (ParseTree ast)
 			throws Exception  {
-	// Perform code generation of a Fun program, 
+	// Perform code generation of a Fun program,
 	// represented by an AST, emitting SVM code.
 	// Also print the object code.
 		out.println("Code generation ...");

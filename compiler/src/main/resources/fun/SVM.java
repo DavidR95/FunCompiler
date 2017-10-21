@@ -1,3 +1,5 @@
+package fun;
+
 //////////////////////////////////////////////////////////////
 //
 // Representation and interpretation of FunVM code.
@@ -11,19 +13,19 @@ import java.util.*;
 
 public class SVM {
 
-	// Each SVM object is a simple virtual machine. 
-	// This comprises a code store, a data store, and 
-	// registers pc (program counter), sp (stack pointer), 
+	// Each SVM object is a simple virtual machine.
+	// This comprises a code store, a data store, and
+	// registers pc (program counter), sp (stack pointer),
 	// fp (frame pointer), and status (initially RUNNING).
 
-	// The data store contains a stack of words. Register sp 
+	// The data store contains a stack of words. Register sp
 	// points to the first free word above the stack top.
 
 	// The code store contains byte-codes.
-	// Each instruction occupies 1-3 bytes, in which the 
+	// Each instruction occupies 1-3 bytes, in which the
 	// first byte contains the opcode.
-	// Register pc points to the first byte of the next 
-	// instruction to be executed. 
+	// Register pc points to the first byte of the next
+	// instruction to be executed.
 	// The instruction set is as follows:
 	//
 	// Opcode Bytes Mnemonic	Behaviour
@@ -53,19 +55,19 @@ public class SVM {
 	//   17    1+2  JUMP c     pc <- c.
 	//   18    1+2  JUMPF c    pop w; if w=0 then pc <- c.
 	//   19    1+2  JUMPT c    pop w; if w!=0 then pc <- c.
-	//   20    1+2  CALL c     push a new frame initially 
+	//   20    1+2  CALL c     push a new frame initially
 	//                         containing only
 	//                         dynamic link <- fp and
 	//                         return address <- pc;
 	//                         fp <- base address of frame;
 	//                         pc <- c.
-	//   21    1+1  RETURN r   pop the result (r words); 
+	//   21    1+1  RETURN r   pop the result (r words);
 	//                         pop topmost frame;
 	//                         push the result (r words);
 	//                         fp <- dynamic link;
 	//                         pc <- return address.
 	//   22    1+1  COPYARG s  swap arguments (s words) into
-	//                         the topmost frame, just above 
+	//                         the topmost frame, just above
 	//                         the return address.
 
 	public static final byte        // opcodes
@@ -148,9 +150,9 @@ public class SVM {
 	private static PrintStream out = System.out;
 
 	public void interpret (boolean tracing) {
-	// Interpret the program starting at offset 0 
+	// Interpret the program starting at offset 0
 	// in the code store.
-	// If tracing is true, print each instruction 
+	// If tracing is true, print each instruction
 	// as it is executed.
 		data = new int[32768];
 		pc = 0;
@@ -297,7 +299,7 @@ public class SVM {
 					int r = code[pc++];  // result size
 					int dl = data[fp];   // dyn link
 					int ra = data[fp+1]; // return addr
-					// Shift result down to top of 
+					// Shift result down to top of
 					// caller's frame:
 					for (int i = 0; i < r; i++)
 						data[fp+i] = data[sp-r+i];
@@ -310,12 +312,12 @@ public class SVM {
 					int s = code[pc++];  // args size
 					int dl = data[fp];   // dyn link
 					int ra = data[fp+1]; // return addr
-					// Shift arguments up by 2 words, 
+					// Shift arguments up by 2 words,
 					// to make room for link data:
 					for (int i = 0; i < s; i++)
 						data[fp-i+1] = data[fp-i-1];
 					// Move link data under arguments:
-					fp -= s; 
+					fp -= s;
 					data[fp] = dl;
 					data[fp+1] = ra;
 					break;
@@ -360,7 +362,7 @@ public class SVM {
 	}
 
 	private String showInstruction (int c) {
-	// Return a textual representation of the instruction 
+	// Return a textual representation of the instruction
 	// at offset c in the code store.
 		byte opcode = code[c++];
 		String line =
