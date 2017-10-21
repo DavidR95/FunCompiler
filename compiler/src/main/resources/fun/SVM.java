@@ -147,9 +147,10 @@ public class SVM {
 	// CODE INTERPRETATION
 
 	private static Scanner in = new Scanner(System.in);
-	private static PrintStream out = System.out;
 
-	public void interpret (boolean tracing) {
+	private StringBuffer sb = new StringBuffer();
+
+	public StringBuffer interpret (boolean tracing) {
 	// Interpret the program starting at offset 0
 	// in the code store.
 	// If tracing is true, print each instruction
@@ -161,7 +162,7 @@ public class SVM {
 		status = RUNNING;
 		do {
 			if (tracing)
-				out.println(showInstruction(pc));
+				sb.append(showInstruction(pc));
 			byte opcode = code[pc++];
 			switch (opcode) {
 				case LOADG: {
@@ -323,26 +324,27 @@ public class SVM {
 					break;
 				}
 				default: {
-					out.println("Illegal instruction"
+					sb.append("Illegal instruction"
 					   + opcode);
 					status = FAILED;
 				}
 			}
 		} while (status == RUNNING);
+		return sb;
 	}
 
 	private void callIO (int c) {
 	// Execute a call to an IO routine.
 		switch (c) {
 			case READOFFSET: {
-				out.print("? ");
+				sb.append("? ");
 				int w = in.nextInt();
 				data[sp++] = w;
 				break;
 			}
 			case WRITEOFFSET: {
 				int w = data[--sp];
-				out.println(w);
+				sb.append(w);
 				break;
 			}
 		}

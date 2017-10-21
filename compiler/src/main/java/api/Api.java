@@ -1,6 +1,7 @@
 package api;
 
 import static spark.Spark.*;
+import fun.FunRun;
 
 public class Api {
 
