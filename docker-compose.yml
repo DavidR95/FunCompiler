@@ -1,0 +1,27 @@
+# Version of the docker-compose file format
+version: '3'
+
+# Individual components of the overall product (the web app and the compiler api)
+services:
+    compiler:
+        # Configuration options applied at build time (i.e., location of Dockerfile)
+        build: ./compiler
+        # Mount 'compiler' directory to the container
+        volumes:
+            - ./compiler/src:/compiler/src/
+        # Expose port 8001 on the host and 4567 on the container
+        ports:
+            - 8001:4567
+
+    app:
+        # Configuration options applied at build time (i.e., location of Dockerfile)
+        build: ./app
+        # Mount 'app' directory to the container
+        volumes:
+            - ./app:/app/
+        # Expose port 8000 on the host and port 8000 on the container
+        ports:
+            - 8000:8000
+        # Starts services in dependency order, i.e., compiler before app
+        depends_on:
+            - compiler

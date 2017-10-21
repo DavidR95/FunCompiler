@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $client = new \GuzzleHttp\Client();
+    $res = $client->request('POST', 'http://compiler:4567');
+    $body = $res->getBody();
+    return view('welcome', ['body' => $body]);
 });
