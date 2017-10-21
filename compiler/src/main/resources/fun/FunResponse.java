@@ -1,8 +1,11 @@
 package fun;
 
+import java.util.*;
+
 public class FunResponse {
     private int numSyntaxErrors;
     private int numContextualErrors;
+    private ArrayList<String> contextualErrors;
     private String objectCode;
     private String output;
 
@@ -22,6 +25,14 @@ public class FunResponse {
 
     public void setNumContextualErrors(int numContextualErrors) {
         this.numContextualErrors = numContextualErrors;
+    }
+
+    public ArrayList<String> getContextualErrors() {
+        return contextualErrors;
+    }
+
+    public void setContextualErrors(ArrayList<String> contextualErrors) {
+        this.contextualErrors = contextualErrors;
     }
 
     public String getObjectCode() {

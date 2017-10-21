@@ -65,8 +65,10 @@ public class FunRun {
 		FunCheckerVisitor checker =
 		   new FunCheckerVisitor(tokens);
 		checker.visit(ast);
-		int errors = checker.getNumberOfContextualErrors();
-		response.setNumContextualErrors(errors);
+		int numErrors = checker.getNumberOfContextualErrors();
+		ArrayList<String> errors = checker.getContextualErrors();
+		response.setNumContextualErrors(numErrors);
+		response.setContextualErrors(errors);
 	}
 
 	private static SVM codeGenerate (ParseTree ast)

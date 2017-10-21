@@ -15,10 +15,13 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
 	// Contextual errors
+
+	private ArrayList<String> contextualErrors = new ArrayList<String>();
 
 	private int errorCount = 0;
 
@@ -41,7 +44,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    int startCol = start.getCharPositionInLine();
 	    int finishLine = finish.getLine();
 	    int finishCol = finish.getCharPositionInLine();
-	    System.err.println(startLine + ":" + startCol + "-" +
+	    contextualErrors.add(startLine + ":" + startCol + "-" +
                                finishLine + ":" + finishCol
 		   + " " + message);
 		errorCount++;
@@ -50,6 +53,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	public int getNumberOfContextualErrors () {
 	// Return the total number of errors so far detected.
 		return errorCount;
+	}
+
+	public ArrayList<String> getContextualErrors() {
+		return contextualErrors;
 	}
 
 
