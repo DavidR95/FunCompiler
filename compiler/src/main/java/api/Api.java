@@ -8,5 +8,8 @@ public class Api {
         get("/", (req, res) -> {
             return "Hello world!";
         });
+        post("/", (req, res) -> {
+            return "Hello world! (post)";
+        });
     }
 }
