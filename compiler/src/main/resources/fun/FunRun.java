@@ -54,9 +54,6 @@ public class FunRun {
 	    ParseTree ast = parser.program();
 		int errors = parser.getNumberOfSyntaxErrors();
 		response.setNumSyntaxErrors(errors);
-		if (errors > 0) {
-			throw new FunException();
-		}
 		return ast;
 	}
 
@@ -70,9 +67,6 @@ public class FunRun {
 		checker.visit(ast);
 		int errors = checker.getNumberOfContextualErrors();
 		response.setNumContextualErrors(errors);
-		if (errors > 0) {
-			throw new FunException();
-		}
 	}
 
 	private static SVM codeGenerate (ParseTree ast)

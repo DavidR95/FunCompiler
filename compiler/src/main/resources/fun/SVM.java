@@ -324,7 +324,6 @@ public class SVM {
 					break;
 				}
 				default: {
-					// sb.append("Illegal instruction" + opcode);
 					status = FAILED;
 				}
 			}
@@ -335,7 +334,6 @@ public class SVM {
 	// Execute a call to an IO routine.
 		switch (c) {
 			case READOFFSET: {
-				// sb.append("? ");
 				int w = in.nextInt();
 				data[sp++] = w;
 				break;

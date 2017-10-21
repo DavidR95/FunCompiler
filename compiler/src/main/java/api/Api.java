@@ -11,7 +11,7 @@ public class Api {
             return "Hello world!";
         });
         post("/", (req, res) -> {
-            String program = "proc main (): write(7).";
+            String program = "proc main (): wrizste(7).";
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
             return FunRun.execute(programInputStream).getNumSyntaxErrors();
         });
