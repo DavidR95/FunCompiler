@@ -26,10 +26,7 @@ public class FunRun {
 	// The source file name must be given as the
 	// first program argument.
 		try {
-			InputStream source = program;
-			SVM objprog = compile(source);
-
-			// sb.append("Interpretation ...");
+			SVM objprog = compile(program);
 			objprog.interpret(tracing, response);
 		} catch (FunException x) {
 			// sb.append("Compilation failed");
@@ -93,7 +90,7 @@ public class FunRun {
 		   new FunEncoderVisitor();
 		encoder.visit(ast);
 		SVM objectprog = encoder.getSVM();
-		// sb.append(objectprog.showCode());
+		objectprog.showCode(response);
 		return objectprog;
 	}
 

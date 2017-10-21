@@ -351,14 +351,14 @@ public class SVM {
 
 	// CODE DISPLAY
 
-	public String showCode () {
+	public void showCode (FunResponse response) {
 	// Return a textual representation of all the code.
 		String assembly = "";
 		for (int c = 0; c < cl;) {
 			assembly += showInstruction(c) + "\n";
 			c += bytes[code[c]];
 		}
-		return assembly;
+		response.setObjectCode(assembly);
 	}
 
 	private String showInstruction (int c) {
