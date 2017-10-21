@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+    compiler:
+        build: ./compiler
+        # Volume does work, static files not refreshing is a Spark issue.
+        volumes:
+            - ./compiler/src:/compiler/src/
+        ports:
+            - 8001:4567
+
+    app:
+        build: ./app
+        volumes:
+            - ./app:/app/
+        ports:
+            - 8000:8000
+        depends_on:
+            - compiler
