@@ -10,7 +10,7 @@ public class Api {
             return "Hello world!";
         });
         post("/", (req, res) -> {
-            return "Hello world! (post)";
+            return FunRun.execute("proc main (): write(7).").toString();
         });
     }
 }
