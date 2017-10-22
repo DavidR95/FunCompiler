@@ -15,7 +15,7 @@ public class Api {
         post("/", (req, res) -> {
             String program = "proc main (): write7).";
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
-            return FunRun.execute(programInputStream).getSyntaxErrors().get(0);
-        });
+            return FunRun.execute(programInputStream);
+        }, gson::toJson);
     }
 }
