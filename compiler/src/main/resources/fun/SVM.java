@@ -148,21 +148,15 @@ public class SVM {
 
 	private static Scanner in = new Scanner(System.in);
 
-	private StringBuffer sb = new StringBuffer();
-
-	public void interpret (boolean tracing, FunResponse response) {
-	// Interpret the program starting at offset 0
-	// in the code store.
-	// If tracing is true, print each instruction
-	// as it is executed.
+	public void interpret (FunResponse response) {
+		// Interpret the program starting at offset 0
+		// in the code store.
 		data = new int[32768];
 		pc = 0;
 		sp = 0;
 		fp = 0;
 		status = RUNNING;
 		do {
-			// if (tracing)
-				// sb.append(showInstruction(pc));
 			byte opcode = code[pc++];
 			switch (opcode) {
 				case LOADG: {

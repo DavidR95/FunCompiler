@@ -16,14 +16,12 @@ import java.io.*;
 
 public class FunRun {
 
-	private static boolean tracing = false;
-
 	private static FunResponse response = new FunResponse();
 
 	public static FunResponse execute(InputStream program) {
 		try {
 			SVM objprog = compile(program);
-			objprog.interpret(tracing, response);
+			objprog.interpret(response);
 		} catch (Exception e) {
 			// Java-based errors
 		}
