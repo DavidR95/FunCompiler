@@ -13,7 +13,7 @@ public class Api {
             return "Hello world!";
         });
         post("/", (req, res) -> {
-            String program = "proc main (): write7).";
+            String program = "proc main (: write7).";
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
             return FunRun.execute(programInputStream);
         }, gson::toJson);

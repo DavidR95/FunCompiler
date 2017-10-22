@@ -7,7 +7,7 @@ public class FunResponse {
     private int numContextualErrors = 0;
     private ArrayList<String> syntaxErrors = new ArrayList<String>();
     private ArrayList<String> contextualErrors = new ArrayList<String>();
-    private String objectCode = "";
+    private ArrayList<String> objectCode = new ArrayList<String>();
     private String output = "";
 
     public int getNumSyntaxErrors() {
@@ -42,11 +42,11 @@ public class FunResponse {
         this.contextualErrors = contextualErrors;
     }
 
-    public String getObjectCode() {
+    public ArrayList<String> getObjectCode() {
         return objectCode;
     }
 
-    public void setObjectCode(String objectCode) {
+    public void setObjectCode(ArrayList<String> objectCode) {
         this.objectCode = objectCode;
     }
 
