@@ -1,8 +1,6 @@
 package fun;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
-import org.antlr.v4.runtime.misc.*;
 import java.util.ArrayList;
 
 public class SyntaxErrorListener extends BaseErrorListener {
