@@ -59,6 +59,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		return contextualErrors;
 	}
 
+	public void reset() {
+		contextualErrors.clear();
+	}
+
 
 	// Scope checking
 

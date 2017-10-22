@@ -14,9 +14,8 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #636b6f;
+                color: black;
                 font-family: 'Raleway', sans-serif;
-                font-weight: 100;
                 height: 100vh;
                 margin: 0;
             }
@@ -46,7 +45,7 @@
             }
 
             .title {
-                font-size: 40px;
+                font-size: 30px;
             }
 
             .links > a {

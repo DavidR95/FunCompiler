@@ -18,4 +18,8 @@ public class SyntaxErrorListener extends BaseErrorListener {
     public static ArrayList<String> getSyntaxErrors() {
         return syntaxErrors;
     }
+
+    public static void reset() {
+        syntaxErrors.clear();
+    }
 }

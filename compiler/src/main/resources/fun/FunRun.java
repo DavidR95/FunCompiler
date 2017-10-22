@@ -32,6 +32,7 @@ public class FunRun {
 
 	private static SVM compile (InputStream source) throws Exception {
 		// Compile a Fun source program to SVM code.
+		SyntaxErrorListener.reset();
 		FunLexer lexer = new FunLexer(new ANTLRInputStream(source));
 		lexer.removeErrorListeners();
 		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
@@ -64,6 +65,7 @@ public class FunRun {
 		// represented by an AST.
 		// Print any error messages.
 		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
+		checker.reset();
 		checker.visit(ast);
 		int numErrors = checker.getNumberOfContextualErrors();
 		ArrayList<String> errors = checker.getContextualErrors();
