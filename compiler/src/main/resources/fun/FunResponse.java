@@ -1,5 +1,13 @@
 package fun;
 
+//////////////////////////////////////////////////////////////
+//
+// An object to collect all relevant information relating to a program execution.
+//
+// This object will later be converted to JSON before being sent to the web app.
+//
+//////////////////////////////////////////////////////////////
+
 import java.util.ArrayList;
 
 public class FunResponse {
