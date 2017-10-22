@@ -85,18 +85,18 @@ public class SVM {
 	   COPYARG = 22;
 
 	private static final String[] mnemonic = {
-	   "LOADG   ",    "STOREG  ",
-	   "LOADL   ",    "STOREL  ",
-	   "LOADC   ",    "???     ",
-	   "ADD     ",    "SUB     ",
-	   "MUL     ",    "DIV     ",
-	   "CMPEQ   ",    "???     ",
-	   "CMPLT   ",    "CMPGT   ",
-	   "INV     ",    "INC     ",
-	   "HALT    ",    "JUMP    ",
-	   "JUMPF   ",    "JUMPT   ",
-	   "CALL    ",    "RETURN  ",
-	   "COPYARG "                };
+	   "LOADG",    "STOREG",
+	   "LOADL",    "STOREL",
+	   "LOADC",    "???",
+	   "ADD",    "SUB",
+	   "MUL",    "DIV",
+	   "CMPEQ",    "???",
+	   "CMPLT",    "CMPGT",
+	   "INV",    "INC",
+	   "HALT",    "JUMP",
+	   "JUMPF",    "JUMPT",
+	   "CALL",    "RETURN",
+	   "COPYARG"                };
 
 	private static final int[] bytes = {
 	   3,             3,
@@ -351,9 +351,9 @@ public class SVM {
 
 	public void showCode (FunResponse response) {
 	// Return a textual representation of all the code.
-		String assembly = "";
+	ArrayList<String> assembly = new ArrayList<String>();
 		for (int c = 0; c < cl;) {
-			assembly += showInstruction(c) + "\n";
+			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
 		response.setObjectCode(assembly);
@@ -364,7 +364,7 @@ public class SVM {
 	// at offset c in the code store.
 		byte opcode = code[c++];
 		String line =
-		   String.format("%6d: %s", c-1, mnemonic[opcode]);
+		   String.format("%d: %s ", c-1, mnemonic[opcode]);
 		switch (bytes[opcode]) {
 			case 1:
 				break;

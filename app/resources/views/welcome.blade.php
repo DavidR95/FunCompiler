@@ -14,9 +14,8 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #636b6f;
+                color: black;
                 font-family: 'Raleway', sans-serif;
-                font-weight: 100;
                 height: 100vh;
                 margin: 0;
             }
@@ -46,7 +45,7 @@
             }
 
             .title {
-                font-size: 84px;
+                font-size: 30px;
             }
 
             .links > a {
@@ -79,15 +78,23 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{ $body }}
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
+                    Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
+                    Syntax Errors:
+                    @foreach ($body['syntaxErrors'] as $error)
+                        {{ $error }},
+                    @endforeach
+                    <br>
+                    Contextual Errors:
+                    @foreach ($body['contextualErrors'] as $error)
+                        {{ $error }},
+                    @endforeach
+                    <br>
+                    Object Code:<br>
+                    @foreach ($body['objectCode'] as $code)
+                        {{ $code }}<br>
+                    @endforeach
+                    Output: {{ $body['output'] }}
                 </div>
             </div>
         </div>

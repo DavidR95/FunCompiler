@@ -14,6 +14,6 @@
 Route::get('/', function () {
     $client = new \GuzzleHttp\Client();
     $res = $client->request('POST', 'http://compiler:4567');
-    $body = $res->getBody();
+    $body = json_decode($res->getBody(), true);
     return view('welcome', ['body' => $body]);
 });
