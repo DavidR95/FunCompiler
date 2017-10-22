@@ -334,6 +334,7 @@ public class SVM {
 			}
 			case WRITEOFFSET: {
 				int w = data[--sp];
+				// Set the output of the response object
 				response.setOutput(Integer.toString(w));
 				break;
 			}
@@ -343,13 +344,16 @@ public class SVM {
 
 	// CODE DISPLAY
 
-	public void showCode (FunResponse response) {
 	// Return a textual representation of all the code.
-	ArrayList<String> assembly = new ArrayList<String>();
+	public void showCode (FunResponse response) {
+		// An ArrayList of Strings, each entry holding an instruction
+		ArrayList<String> assembly = new ArrayList<String>();
 		for (int c = 0; c < cl;) {
+			// Add the new instruction to the ArrayList
 			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
+		// Set the object code of the response object
 		response.setObjectCode(assembly);
 	}
 
