@@ -34,7 +34,7 @@ public class FunRun {
 		// Compile a Fun source program to SVM code.
 		FunLexer lexer = new FunLexer(new ANTLRInputStream(source));
 		lexer.removeErrorListeners();
-		lexer.addErrorListener(DescriptiveErrorListener.LISTENER);
+		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		ParseTree ast = syntacticAnalyse(tokens);
 		contextualAnalyse(ast,tokens);
@@ -49,10 +49,10 @@ public class FunRun {
 		// Return an AST representation of the Fun program.
 		FunParser parser = new FunParser(tokens);
 		parser.removeErrorListeners();
-		parser.addErrorListener(DescriptiveErrorListener.LISTENER);
+		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
 		int numErrors = parser.getNumberOfSyntaxErrors();
-		ArrayList<String> errors = DescriptiveErrorListener.getSyntaxErrors();
+		ArrayList<String> errors = SyntaxErrorListener.getSyntaxErrors();
 		response.setNumSyntaxErrors(numErrors);
 		response.setSyntaxErrors(errors);
 		return ast;

@@ -5,9 +5,9 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 import java.util.ArrayList;
 
-public class DescriptiveErrorListener extends BaseErrorListener {
+public class SyntaxErrorListener extends BaseErrorListener {
 
-    public static final DescriptiveErrorListener LISTENER = new DescriptiveErrorListener();
+    public static final SyntaxErrorListener LISTENER = new SyntaxErrorListener();
 
     private static ArrayList<String> syntaxErrors = new ArrayList<String>();
 
