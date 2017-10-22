@@ -1,16 +1,14 @@
 package fun;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class FunResponse {
-    private int numSyntaxErrors;
-    private int numContextualErrors;
-    private ArrayList<String> syntaxErrors;
-    private ArrayList<String> contextualErrors;
-    private String objectCode;
-    private String output;
-
-    public FunResponse() {};
+    private int numSyntaxErrors = 0;
+    private int numContextualErrors = 0;
+    private ArrayList<String> syntaxErrors = new ArrayList<String>();
+    private ArrayList<String> contextualErrors = new ArrayList<String>();
+    private String objectCode = "";
+    private String output = "";
 
     public int getNumSyntaxErrors() {
         return numSyntaxErrors;
