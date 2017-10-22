@@ -19,24 +19,20 @@ import java.util.ArrayList;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
-	// Contextual errors
-
+	// An ArrayList of Strings, each entry holding an error
 	private ArrayList<String> contextualErrors = new ArrayList<String>();
 
 	private int errorCount = 0;
 
 	private CommonTokenStream tokens;
 
-	// Constructor
-
 	public FunCheckerVisitor(CommonTokenStream toks) {
 	    tokens = toks;
 	}
 
-	private void reportError (String message,
-	                          ParserRuleContext ctx) {
-	// Print an error message relating to the given
-	// part of the AST.
+	private void reportError (String message, ParserRuleContext ctx) {
+		// Print an error message relating to the given
+		// part of the AST.
 	    Interval interval = ctx.getSourceInterval();
 	    Token start = tokens.get(interval.a);
 	    Token finish = tokens.get(interval.b);
@@ -44,21 +40,24 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    int startCol = start.getCharPositionInLine();
 	    int finishLine = finish.getLine();
 	    int finishCol = finish.getCharPositionInLine();
+		// Add the error to the contextual errors ArrayList
 	    contextualErrors.add(startLine + ":" + startCol + "-" +
-                               finishLine + ":" + finishCol
-		   + " " + message);
+                             finishLine + ":" + finishCol
+		   		   		     + " " + message);
 		errorCount++;
 	}
 
-	public int getNumberOfContextualErrors () {
 	// Return the total number of errors so far detected.
+	public int getNumberOfContextualErrors () {
 		return errorCount;
 	}
 
+	// Return the actual contextual errors
 	public ArrayList<String> getContextualErrors() {
 		return contextualErrors;
 	}
 
+	// Clear the contextual errors ArrayList
 	public void reset() {
 		contextualErrors.clear();
 	}
