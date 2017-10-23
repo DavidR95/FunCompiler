@@ -8,7 +8,7 @@
                     <textarea name="program" form="program-form"></textarea>
                     <form id="program-form" action="{{ route('execute') }}" method="post">
                         {{ csrf_field() }}
-                        <input type="submit" value="Submit">
+                        <input class="btn btn-success" type="submit" value="Execute">
                     </form>
                 </div>
                 @if (!empty($body))
