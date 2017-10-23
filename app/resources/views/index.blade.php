@@ -65,18 +65,12 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
             <div class="content">
+                <textarea rows="10" cols="90" name="program" form="form"></textarea>
+                <form id="form" action="{{ route('index') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="submit" value="Submit">
+                </form>
                 <div class="title m-b-md">
                     Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
                     Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
