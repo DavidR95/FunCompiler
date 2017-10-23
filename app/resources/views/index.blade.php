@@ -48,25 +48,6 @@
                                     <br>
                                 @endif
                             @endif
-                            {{-- @if (!empty($body))
-                                Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
-                                Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
-                                Syntax Errors:
-                                @foreach ($body['syntaxErrors'] as $error)
-                                    {{ $error }},
-                                @endforeach
-                                <br>
-                                Contextual Errors:
-                                @foreach ($body['contextualErrors'] as $error)
-                                    {{ $error }},
-                                @endforeach
-                                <br>
-                                Object Code:<br>
-                                @foreach ($body['objectCode'] as $code)
-                                    {{ $code }}<br>
-                                @endforeach
-                                Output: {{ $body['output'] }}
-                            @endif --}}
                         </div>
                     </div>
                 </div>

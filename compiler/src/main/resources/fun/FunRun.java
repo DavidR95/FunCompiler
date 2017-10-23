@@ -17,11 +17,12 @@ import java.io.*;
 public class FunRun {
 
 	// Response object to hold all information related to the program execution
-	private static FunResponse response = new FunResponse();
+	private static FunResponse response;
 
 	// Executes the code specified in the program InputStream
 	public static FunResponse execute(InputStream program) {
 		try {
+			response = new FunResponse();
 			SVM objprog = compile(program);
 			objprog.interpret(response);
 		} catch (Exception e) {
