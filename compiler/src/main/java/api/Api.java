@@ -18,7 +18,8 @@ public class Api {
 
         // Post request at route '/', convert output to JSON
         post("/", (req, res) -> {
-            String program = "proc main (: write7).";
+            // Get the input program sent from the web app
+            String program = req.queryParams("program");
             // Convert the input String to an InputStream
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
             // Pass the InputStream to the Fun compiler
