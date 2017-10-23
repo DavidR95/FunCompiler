@@ -8350,21 +8350,56 @@ button.close {
   }
 }
 
+body,
+html,
+.container-fluid,
+.row,
+.col-sm-3 {
+  height: 100%;
+}
+
+.left-container {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.title-container {
+  display: table-row;
+}
+
 h1 {
   color: black;
 }
 
 .program-input-container {
-  height: 83vh;
+  display: table-cell;
+  height: 100%;
 }
 
-.program-input-container textarea {
+.program-input-container form {
+  height: 100%;
+}
+
+.program-input-container form .form-group {
+  height: 90%;
+  margin: 0;
+}
+
+.program-input-container form .form-group textarea {
+  resize: none;
   width: 100%;
   height: 100%;
 }
 
-.program-input-container input {
+.program-input-container form .form-submit {
+  height: 10%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.program-input-container form .form-submit button {
+  height: 100%;
   width: 100%;
-  height: 60px;
 }
 

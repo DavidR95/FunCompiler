@@ -3,15 +3,23 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3">
-                <h1>Fun<b>Compiler</b></h1>
-                <div class="program-input-container">
-                    <textarea name="program" form="program-form"></textarea>
-                    <form id="program-form" action="{{ route('execute') }}" method="post">
-                        {{ csrf_field() }}
-                        <input class="btn btn-success" type="submit" value="Execute">
-                    </form>
+                <div class="left-container">
+                    <div class="title-container">
+                        <h1>Fun<b>Compiler</b></h1>
+                    </div>
+                    <div class="program-input-container">
+                        <form action="{{ route('execute') }}" method="post">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <textarea class="form-control" name="program" autofocus></textarea>
+                            </div>
+                            <div class="form-submit">
+                                <button class="btn btn-success" type="submit"><b>Execute</b></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                @if (!empty($body))
+                {{-- @if (!empty($body))
                     Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
                     Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
                     Syntax Errors:
@@ -29,7 +37,7 @@
                         {{ $code }}<br>
                     @endforeach
                     Output: {{ $body['output'] }}
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
