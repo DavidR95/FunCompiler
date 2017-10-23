@@ -79,7 +79,11 @@
                     <div class="object-code-output-container">
                         <div class="object-code-container">
                             <div class="object-code">
-
+                                @if (!empty($response))
+                                    @foreach ($response['objectCode'] as $instruction)
+                                        {{ $instruction }}<br>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <div class="output-container">
@@ -87,7 +91,9 @@
                                 <p>Output</p>
                             </div>
                             <div class="output">
-
+                                @if (!empty($response))
+                                    {{ $response['output'] }}
+                                @endif
                             </div>
                         </div>
                     </div>
