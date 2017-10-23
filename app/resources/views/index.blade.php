@@ -34,6 +34,28 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-3 table-container">
+                <div class="right-container">
+                    <div class="right-heading-container">
+                        <p>Object Code</p>
+                    </div>
+                    <div class="object-code-output-container">
+                        <div class="object-code-container">
+                            <div class="object-code">
+
+                            </div>
+                        </div>
+                        <div class="output-container">
+                            <div class="output-heading">
+                                <p>Output</p>
+                            </div>
+                            <div class="output">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{-- @if (!empty($body))
                 Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
                 Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
