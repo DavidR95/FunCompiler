@@ -2,8 +2,8 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-4 outer-left-container">
-                <div class="inner-left-container">
+            <div class="col-sm-4 table-container">
+                <div class="left-container">
                     <div class="title-container">
                         <h1>Fun<b>Compiler</b></h1>
                         <p>
@@ -23,7 +23,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 table-container">
+                <div class="center-container">
+                    <div class="controls-container">
+                        <p>Scope-checking | Type-checking | Code-generation</p>
+                    </div>
+                    <div class="program-tree-container">
+                        <div class="program-tree">
+                        </div>
+                    </div>
+                </div>
             </div>
             {{-- @if (!empty($body))
                 Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>

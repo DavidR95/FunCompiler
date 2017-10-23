@@ -8350,6 +8350,10 @@ button.close {
   }
 }
 
+h1 {
+  color: black;
+}
+
 body,
 html,
 .container-fluid,
@@ -8357,25 +8361,30 @@ html,
   height: 100%;
 }
 
-.outer-left-container {
+.table-container {
   height: 100%;
 }
 
-.outer-left-container .inner-left-container {
+.left-container,
+.center-container {
   display: table;
   width: 100%;
   height: 100%;
 }
 
-.title-container {
+.title-container,
+.controls-container {
   display: table-row;
 }
 
-h1 {
-  color: black;
+.controls-container p {
+  float: right;
+  margin-top: 45px;
+  margin-bottom: 0;
 }
 
-.program-input-container {
+.program-input-container,
+.program-tree-container {
   display: table-cell;
   height: 100%;
 }
@@ -8404,5 +8413,18 @@ h1 {
 .program-input-container form .form-submit button {
   height: 100%;
   width: 100%;
+}
+
+.program-tree-container {
+  height: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.program-tree-container .program-tree {
+  background-color: white;
+  height: 100%;
+  border: 1px solid #ccd0d2;
+  border-radius: 4px;
 }
 
