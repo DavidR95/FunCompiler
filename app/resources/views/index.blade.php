@@ -66,7 +66,7 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-                <textarea rows="10" cols="90" name="program" form="form"></textarea>
+                <textarea rows="10" cols="90" name="code" form="form"></textarea>
                 <form id="form" action="{{ route('index') }}" method="post">
                     {{ csrf_field() }}
                     <input type="submit" value="Submit">
