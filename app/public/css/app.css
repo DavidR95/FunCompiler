@@ -8354,3 +8354,12 @@ h1 {
   color: black;
 }
 
+.program-input-container {
+  height: 70vh;
+}
+
+.program-input-container textarea {
+  width: 100%;
+  height: 100%;
+}
+
