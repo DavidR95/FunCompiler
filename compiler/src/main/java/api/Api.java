@@ -18,6 +18,7 @@ public class Api {
 
         // Post request at route '/', convert output to JSON
         post("/", (req, res) -> {
+            // Get the input program sent from the web app
             String program = req.queryParams("program");
             // Convert the input String to an InputStream
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
