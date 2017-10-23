@@ -1,4 +1,3 @@
-
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
@@ -7,3 +6,108 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+h1 {
+    color: black;
+}
+
+body, html, .container-fluid, .row {
+    height: 100%;
+}
+
+.table-container {
+    height: 100%;
+}
+
+.left-container, .center-container, .right-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.title-container, .controls-container, .object-code-heading-container {
+    display: table-row;
+}
+
+.controls-container {
+    p {
+        float: right;
+        margin-top: 45px;
+        margin-bottom: 0;
+    }
+}
+
+.object-code-heading-container {
+    p {
+        margin-top: 45px;
+        margin-bottom: 0;
+    }
+}
+
+.program-input-container, .program-tree-container, .object-code-output-container {
+    display: table-cell;
+    height: 100%;
+}
+
+.program-input-container {
+    form {
+        height: 100%;
+        .form-group {
+            height:90%;
+            margin: 0;
+            textarea {
+                resize: none;
+                width:100%;
+                height:100%;
+            }
+        }
+        .form-submit {
+            height: 10%;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            button {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.program-tree-container {
+    height: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    .program-tree {
+        background-color: white;
+        height: 100%;
+        border: 1px solid #ccd0d2;
+        border-radius: 4px;
+    }
+}
+
+.object-code-container {
+    height: 75%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    .object-code {
+        background-color: white;
+        height: 100%;
+        border: 1px solid #ccd0d2;
+        border-radius: 4px;
+    }
+}
+
+.output-container {
+    height: 25%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    .output-heading-container {
+        height: 15%;
+    }
+    .output {
+        background-color: white;
+        height: 85%;
+        border: 1px solid #ccd0d2;
+        border-radius: 4px;
+    }
+}
