@@ -8375,7 +8375,7 @@ html,
 
 .title-container,
 .controls-container,
-.right-heading-container {
+.object-code-heading-container {
   display: table-row;
 }
 
@@ -8385,7 +8385,7 @@ html,
   margin-bottom: 0;
 }
 
-.right-heading-container p {
+.object-code-heading-container p {
   margin-top: 45px;
   margin-bottom: 0;
 }
@@ -8455,7 +8455,7 @@ html,
   padding-bottom: 5px;
 }
 
-.output-container .output-heading {
+.output-container .output-heading-container {
   height: 15%;
 }
 

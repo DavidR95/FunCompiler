@@ -25,7 +25,7 @@ body, html, .container-fluid, .row {
     height: 100%;
 }
 
-.title-container, .controls-container, .right-heading-container {
+.title-container, .controls-container, .object-code-heading-container {
     display: table-row;
 }
 
@@ -37,7 +37,7 @@ body, html, .container-fluid, .row {
     }
 }
 
-.right-heading-container {
+.object-code-heading-container {
     p {
         margin-top: 45px;
         margin-bottom: 0;
@@ -101,7 +101,7 @@ body, html, .container-fluid, .row {
     height: 25%;
     padding-top: 5px;
     padding-bottom: 5px;
-    .output-heading {
+    .output-heading-container {
         height: 15%;
     }
     .output {
