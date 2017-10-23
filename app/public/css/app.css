@@ -8353,12 +8353,15 @@ button.close {
 body,
 html,
 .container-fluid,
-.row,
-.col-sm-3 {
+.row {
   height: 100%;
 }
 
-.left-container {
+.outer-left-container {
+  height: 100%;
+}
+
+.outer-left-container .inner-left-container {
   display: table;
   width: 100%;
   height: 100%;

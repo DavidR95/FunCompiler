@@ -2,10 +2,13 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3">
-                <div class="left-container">
+            <div class="col-sm-4 outer-left-container">
+                <div class="inner-left-container">
                     <div class="title-container">
                         <h1>Fun<b>Compiler</b></h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis egestas lacus eget semper. Aliquam erat volutpat. In aliquet sodales tortor eu ornare. Curabitur dignissim eget dolor a malesuada.
+                        </p>
                     </div>
                     <div class="program-input-container">
                         <form action="{{ route('execute') }}" method="post">
@@ -19,26 +22,28 @@
                         </form>
                     </div>
                 </div>
-                {{-- @if (!empty($body))
-                    Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
-                    Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
-                    Syntax Errors:
-                    @foreach ($body['syntaxErrors'] as $error)
-                        {{ $error }},
-                    @endforeach
-                    <br>
-                    Contextual Errors:
-                    @foreach ($body['contextualErrors'] as $error)
-                        {{ $error }},
-                    @endforeach
-                    <br>
-                    Object Code:<br>
-                    @foreach ($body['objectCode'] as $code)
-                        {{ $code }}<br>
-                    @endforeach
-                    Output: {{ $body['output'] }}
-                @endif --}}
             </div>
+            <div class="col-sm-5">
+            </div>
+            {{-- @if (!empty($body))
+                Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
+                Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
+                Syntax Errors:
+                @foreach ($body['syntaxErrors'] as $error)
+                    {{ $error }},
+                @endforeach
+                <br>
+                Contextual Errors:
+                @foreach ($body['contextualErrors'] as $error)
+                    {{ $error }},
+                @endforeach
+                <br>
+                Object Code:<br>
+                @foreach ($body['objectCode'] as $code)
+                    {{ $code }}<br>
+                @endforeach
+                Output: {{ $body['output'] }}
+            @endif --}}
         </div>
     </div>
 @endsection
