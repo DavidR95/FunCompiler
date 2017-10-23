@@ -30,6 +30,43 @@
                     </div>
                     <div class="program-tree-container">
                         <div class="program-tree">
+                            @if (!empty($response))
+                                @if ($response['numSyntaxErrors'] > 0)
+                                    Number of Syntax Errors: {{ $response['numSyntaxErrors'] }}<br>
+                                    Syntax Errors:<br>
+                                    @foreach ($response['syntaxErrors'] as $syntaxError)
+                                        {{ $syntaxError }}<br>
+                                    @endforeach
+                                    <br>
+                                @endif
+                                @if ($response['numContextualErrors'] > 0)
+                                    Number of Contextual Errors: {{ $response['numContextualErrors'] }}<br>
+                                    Contextual Errors:<br>
+                                    @foreach ($response['contextualErrors'] as $contextualError)
+                                        {{ $contextualError }}<br>
+                                    @endforeach
+                                    <br>
+                                @endif
+                            @endif
+                            {{-- @if (!empty($body))
+                                Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
+                                Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
+                                Syntax Errors:
+                                @foreach ($body['syntaxErrors'] as $error)
+                                    {{ $error }},
+                                @endforeach
+                                <br>
+                                Contextual Errors:
+                                @foreach ($body['contextualErrors'] as $error)
+                                    {{ $error }},
+                                @endforeach
+                                <br>
+                                Object Code:<br>
+                                @foreach ($body['objectCode'] as $code)
+                                    {{ $code }}<br>
+                                @endforeach
+                                Output: {{ $body['output'] }}
+                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -56,25 +93,6 @@
                     </div>
                 </div>
             </div>
-            {{-- @if (!empty($body))
-                Number of Syntax Errors: {{ $body['numSyntaxErrors'] }}<br>
-                Number of Contextual Errors: {{ $body['numContextualErrors'] }}<br>
-                Syntax Errors:
-                @foreach ($body['syntaxErrors'] as $error)
-                    {{ $error }},
-                @endforeach
-                <br>
-                Contextual Errors:
-                @foreach ($body['contextualErrors'] as $error)
-                    {{ $error }},
-                @endforeach
-                <br>
-                Object Code:<br>
-                @foreach ($body['objectCode'] as $code)
-                    {{ $code }}<br>
-                @endforeach
-                Output: {{ $body['output'] }}
-            @endif --}}
         </div>
     </div>
 @endsection
