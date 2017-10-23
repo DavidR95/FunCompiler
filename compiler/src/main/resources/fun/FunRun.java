@@ -22,6 +22,7 @@ public class FunRun {
 	// Executes the code specified in the program InputStream
 	public static FunResponse execute(InputStream program) {
 		try {
+			// Create a blank Response object for each execution
 			response = new FunResponse();
 			SVM objprog = compile(program);
 			objprog.interpret(response);
