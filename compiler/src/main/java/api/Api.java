@@ -3,7 +3,6 @@ package api;
 import static spark.Spark.*;
 import java.io.*;
 import com.google.gson.Gson;
-import fun.FunRun;
 
 public class Api {
 
