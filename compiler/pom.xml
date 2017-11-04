@@ -87,10 +87,12 @@
         <version>4.3</version>
         <executions>
           <execution>
-            <id>antlr</id>
             <goals>
               <goal>antlr4</goal>
             </goals>
+            <configuration>
+              <sourceDirectory>${basedir}/src/main/antlr4/api</sourceDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>

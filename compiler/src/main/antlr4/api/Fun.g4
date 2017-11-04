@@ -8,12 +8,13 @@
 //
 //////////////////////////////////////////////////////////////
 
-
 grammar Fun;
 
 // This specifies the Fun grammar, defining the syntax of Fun.
 
-
+@header {
+	package api;
+}
 
 //////// Programs
 
@@ -54,13 +55,13 @@ type
 com
 	:	ID ASSN expr              # assn
 	|	ID LPAR actual RPAR       # proccall
-							 
+
 	|	IF expr COLON c1=seq_com
-		  ( DOT              
-		  | ELSE COLON c2=seq_com DOT   
+		  ( DOT
+		  | ELSE COLON c2=seq_com DOT
 		  )                       # if
 
-	|	WHILE expr COLON          
+	|	WHILE expr COLON
 		  seq_com DOT             # while
 	;
 
@@ -82,7 +83,7 @@ sec_expr
 	;
 
 prim_expr
-	:	FALSE                  # false        
+	:	FALSE                  # false
 	|	TRUE                   # true
 	|	NUM                    # num
 	|	ID                     # id
