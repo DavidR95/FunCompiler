@@ -8,14 +8,15 @@ package api;
 //
 //////////////////////////////////////////////////////////////
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class FunResponse {
     private int numSyntaxErrors = 0;
     private int numContextualErrors = 0;
-    private ArrayList<String> syntaxErrors = new ArrayList<String>();
-    private ArrayList<String> contextualErrors = new ArrayList<String>();
-    private ArrayList<String> objectCode = new ArrayList<String>();
+    private List<String> syntaxErrors = new LinkedList<String>();
+    private List<String> contextualErrors = new LinkedList<String>();
+    private List<String> objectCode = new LinkedList<String>();
+    private List<String> astData = new LinkedList<String>();
     private String output = "";
 
     public int getNumSyntaxErrors() {
@@ -34,28 +35,36 @@ public class FunResponse {
         this.numContextualErrors = numContextualErrors;
     }
 
-    public ArrayList<String> getSyntaxErrors() {
+    public List<String> getSyntaxErrors() {
         return syntaxErrors;
     }
 
-    public void setSyntaxErrors(ArrayList<String> syntaxErrors) {
+    public void setSyntaxErrors(List<String> syntaxErrors) {
         this.syntaxErrors = syntaxErrors;
     }
 
-    public ArrayList<String> getContextualErrors() {
+    public List<String> getContextualErrors() {
         return contextualErrors;
     }
 
-    public void setContextualErrors(ArrayList<String> contextualErrors) {
+    public void setContextualErrors(List<String> contextualErrors) {
         this.contextualErrors = contextualErrors;
     }
 
-    public ArrayList<String> getObjectCode() {
+    public List<String> getObjectCode() {
         return objectCode;
     }
 
-    public void setObjectCode(ArrayList<String> objectCode) {
+    public void setObjectCode(List<String> objectCode) {
         this.objectCode = objectCode;
+    }
+
+    public List<String> getAstData() {
+        return astData;
+    }
+
+    public void setAstData(List<String> astData) {
+        this.astData = astData;
     }
 
     public String getOutput() {

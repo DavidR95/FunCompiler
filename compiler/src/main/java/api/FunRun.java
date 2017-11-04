@@ -59,8 +59,8 @@ public class FunRun {
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
-		StringBuilder json = treeToFlatData(ast, parser);
-		System.err.println(json);
+		List<String> data = treeToFlatData(ast, parser);
+		response.setAstData(data);
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
 		ArrayList<String> errors = SyntaxErrorListener.getSyntaxErrors();
@@ -104,18 +104,17 @@ public class FunRun {
 	private static class FunException extends Exception {
 	}
 
-	private static StringBuilder treeToFlatData(ParseTree ast, Parser parser) {
-		StringBuilder b = new StringBuilder();
+	private static List<String> treeToFlatData(ParseTree ast, Parser parser) {
+		List<String> data = new LinkedList<String>();
 		List<ParseTree> nodes = Trees.getDescendants(ast);
 		for (ParseTree node : nodes) {
 			int id = node.hashCode();
 			String name = Trees.getNodeText(node, parser);
 			ParseTree parent_node = node.getParent();
 			int parent_id = (parent_node != null ? parent_node.hashCode() : -1);
-			b.append("id: " + id + ", name: " + name + ", parent_id: " + parent_id);
-			b.append("\n");
+			data.add("id: " + id + ", name: " + name + ", parent_id: " + parent_id);
 		}
-		return b;
+		return data;
 	}
 
 }
