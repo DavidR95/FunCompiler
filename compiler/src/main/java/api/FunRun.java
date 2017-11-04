@@ -109,6 +109,7 @@ public class FunRun {
 	private static class FunException extends Exception {
 	}
 
+	// This method should probably be moved elsewhere
 	private static JsonArray treeToJson(ParseTree ast, Parser parser) {
 		JsonArray data_array = new JsonArray();
 		List<ParseTree> nodes = Trees.getDescendants(ast);
