@@ -92,10 +92,13 @@
             </goals>
             <configuration>
               <sourceDirectory>${basedir}/src/main/antlr4/api</sourceDirectory>
+              <listener>false</listener>
+              <visitor>true</visitor>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+  
 </project>
