@@ -15,12 +15,12 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
 	// An ArrayList of Strings, each entry holding an error
-	private ArrayList<String> contextualErrors = new ArrayList<String>();
+	private List<String> contextualErrors = new LinkedList<String>();
 
 	private int errorCount = 0;
 
@@ -53,7 +53,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	// Return the actual contextual errors
-	public ArrayList<String> getContextualErrors() {
+	public List<String> getContextualErrors() {
 		return contextualErrors;
 	}
 

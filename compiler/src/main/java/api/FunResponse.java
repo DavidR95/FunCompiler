@@ -8,58 +8,41 @@ package api;
 //
 //////////////////////////////////////////////////////////////
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedList;
+import com.google.gson.JsonArray;
 
 public class FunResponse {
     private int numSyntaxErrors = 0;
     private int numContextualErrors = 0;
-    private ArrayList<String> syntaxErrors = new ArrayList<String>();
-    private ArrayList<String> contextualErrors = new ArrayList<String>();
-    private ArrayList<String> objectCode = new ArrayList<String>();
+    private List<String> syntaxErrors = new LinkedList<String>();
+    private List<String> contextualErrors = new LinkedList<String>();
+    private List<String> objectCode = new LinkedList<String>();
+    private JsonArray astData = new JsonArray();
     private String output = "";
-
-    public int getNumSyntaxErrors() {
-        return numSyntaxErrors;
-    }
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
         this.numSyntaxErrors = numSyntaxErrors;
-    }
-
-    public int getNumContextualErrors() {
-        return numContextualErrors;
     }
 
     public void setNumContextualErrors(int numContextualErrors) {
         this.numContextualErrors = numContextualErrors;
     }
 
-    public ArrayList<String> getSyntaxErrors() {
-        return syntaxErrors;
-    }
-
-    public void setSyntaxErrors(ArrayList<String> syntaxErrors) {
+    public void setSyntaxErrors(List<String> syntaxErrors) {
         this.syntaxErrors = syntaxErrors;
     }
 
-    public ArrayList<String> getContextualErrors() {
-        return contextualErrors;
-    }
-
-    public void setContextualErrors(ArrayList<String> contextualErrors) {
+    public void setContextualErrors(List<String> contextualErrors) {
         this.contextualErrors = contextualErrors;
     }
 
-    public ArrayList<String> getObjectCode() {
-        return objectCode;
-    }
-
-    public void setObjectCode(ArrayList<String> objectCode) {
+    public void setObjectCode(List<String> objectCode) {
         this.objectCode = objectCode;
     }
 
-    public String getOutput() {
-        return output;
+    public void setAstData(JsonArray astData) {
+        this.astData = astData;
     }
 
     public void setOutput(String output) {

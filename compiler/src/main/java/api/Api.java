@@ -17,6 +17,8 @@ public class Api {
 
         // Post request at route '/', convert output to JSON
         post("/", (req, res) -> {
+            // Set the content-type of the response to JSON
+            res.type("application/json");
             // Get the input program sent from the web app
             String program = req.queryParams("program");
             // Convert the input String to an InputStream
