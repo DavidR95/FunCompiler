@@ -11,8 +11,11 @@ package api;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import java.util.*;
-import java.io.*;
+
+import java.util.List;
+import java.io.InputStream;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class FunRun {
 
@@ -59,11 +62,13 @@ public class FunRun {
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
-		List<String> data = treeToFlatData(ast, parser);
+		// Retrieve the flat data structure representing the ast
+		JsonArray data = treeToJson(ast, parser);
+		// Set the ast data in the response object
 		response.setAstData(data);
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
-		ArrayList<String> errors = SyntaxErrorListener.getSyntaxErrors();
+		List<String> errors = SyntaxErrorListener.getSyntaxErrors();
 		// Set the number of syntax errors in the response object
 		response.setNumSyntaxErrors(numErrors);
 		// Set the actual syntax errors in the response object
@@ -82,7 +87,7 @@ public class FunRun {
 		checker.visit(ast);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
-		ArrayList<String> errors = checker.getContextualErrors();
+		List<String> errors = checker.getContextualErrors();
 		// Set the number of contextual errors in the response object
 		response.setNumContextualErrors(numErrors);
 		// Set the actual contextual errors in the response object
@@ -104,17 +109,21 @@ public class FunRun {
 	private static class FunException extends Exception {
 	}
 
-	private static List<String> treeToFlatData(ParseTree ast, Parser parser) {
-		List<String> data = new LinkedList<String>();
+	private static JsonArray treeToJson(ParseTree ast, Parser parser) {
+		JsonArray data_array = new JsonArray();
 		List<ParseTree> nodes = Trees.getDescendants(ast);
 		for (ParseTree node : nodes) {
+			JsonObject data_object = new JsonObject();
 			int id = node.hashCode();
 			String name = Trees.getNodeText(node, parser);
 			ParseTree parent_node = node.getParent();
 			int parent_id = (parent_node != null ? parent_node.hashCode() : -1);
-			data.add("id: " + id + ", name: " + name + ", parent_id: " + parent_id);
+			data_object.addProperty("id", id);
+			data_object.addProperty("name", name);
+			data_object.addProperty("parent_id", parent_id);
+			data_array.add(data_object);
 		}
-		return data;
+		return data_array;
 	}
 
 }

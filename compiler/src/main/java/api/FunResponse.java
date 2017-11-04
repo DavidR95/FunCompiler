@@ -8,7 +8,9 @@ package api;
 //
 //////////////////////////////////////////////////////////////
 
-import java.util.*;
+import java.util.List;
+import java.util.LinkedList;
+import com.google.gson.JsonArray;
 
 public class FunResponse {
     private int numSyntaxErrors = 0;
@@ -16,59 +18,31 @@ public class FunResponse {
     private List<String> syntaxErrors = new LinkedList<String>();
     private List<String> contextualErrors = new LinkedList<String>();
     private List<String> objectCode = new LinkedList<String>();
-    private List<String> astData = new LinkedList<String>();
+    private JsonArray astData = new JsonArray();
     private String output = "";
-
-    public int getNumSyntaxErrors() {
-        return numSyntaxErrors;
-    }
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
         this.numSyntaxErrors = numSyntaxErrors;
-    }
-
-    public int getNumContextualErrors() {
-        return numContextualErrors;
     }
 
     public void setNumContextualErrors(int numContextualErrors) {
         this.numContextualErrors = numContextualErrors;
     }
 
-    public List<String> getSyntaxErrors() {
-        return syntaxErrors;
-    }
-
     public void setSyntaxErrors(List<String> syntaxErrors) {
         this.syntaxErrors = syntaxErrors;
-    }
-
-    public List<String> getContextualErrors() {
-        return contextualErrors;
     }
 
     public void setContextualErrors(List<String> contextualErrors) {
         this.contextualErrors = contextualErrors;
     }
 
-    public List<String> getObjectCode() {
-        return objectCode;
-    }
-
     public void setObjectCode(List<String> objectCode) {
         this.objectCode = objectCode;
     }
 
-    public List<String> getAstData() {
-        return astData;
-    }
-
-    public void setAstData(List<String> astData) {
+    public void setAstData(JsonArray astData) {
         this.astData = astData;
-    }
-
-    public String getOutput() {
-        return output;
     }
 
     public void setOutput(String output) {
