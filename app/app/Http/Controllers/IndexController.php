@@ -35,6 +35,6 @@ class IndexController extends Controller
         // Convert the body of the response to an associative array
         $response = json_decode($res->getBody(), true);
         // Render the index view, passing along the array
-        return view('index', ['response' => $response]);
+        return response()->json(['redirect_url' => '/', 'response' => $response]);
     }
 }
