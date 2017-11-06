@@ -35,9 +35,7 @@ $('#execute-form').submit(function(e) {
             });
             $('.program-tree').append("<br>");
         } else {
-            $.each(astData, function(index, node) {
-                $('.program-tree').append(node['name'] + " ");
-            });
+            drawTree(astData);
         }
         $('.object-code').text("");
         $.each(objectCode, function(index, instruction) {
@@ -46,3 +44,19 @@ $('#execute-form').submit(function(e) {
         $('.output').text(output);
     });
 });
+
+function drawTree(data) {
+    var dataMap = data.reduce(function(map, node) {
+        map[node.id] = node;
+        return map;
+    }, {});
+    var treeData = [];
+    data.forEach(function(node) {
+        var parent = dataMap[node.parent_id];
+        if (parent) {
+            (parent.children || (parent.children = [])).push(node);
+        } else {
+            treeData.push(node);
+        }
+    });
+}
