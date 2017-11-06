@@ -16,24 +16,28 @@ $('#execute-form').submit(function(e) {
         var syntaxErrors = response['syntaxErrors'];
         var numContextualErrors = response['numContextualErrors'];
         var contextualErrors = response['contextualErrors'];
+        var astData = response['astData'];
         var objectCode = response['objectCode'];
         var output = response['output']
+        $('.program-tree').text("");
         if (numSyntaxErrors > 0) {
-            $('.program-tree').text("");
             $('.program-tree').append("Number of syntax errors: " + numSyntaxErrors + "<br>");
             $('.program-tree').append("Syntax errors: <br>");
             $.each(syntaxErrors, function(index, syntaxError) {
                 $('.program-tree').append((index+1) + ": " + syntaxError);
             });
             $('.program-tree').append("<br>");
-        }
-        if (numContextualErrors > 0) {
+        } else if (numContextualErrors > 0) {
             $('.program-tree').append("Number of contextual errors: " + numContextualErrors + "<br>");
             $('.program-tree').append("Contextual errors: <br>");
             $.each(contextualErrors, function(index, contextualError) {
                 $('.program-tree').append((index+1) + ": " + contextualError);
             });
             $('.program-tree').append("<br>");
+        } else {
+            $.each(astData, function(index, node) {
+                $('.program-tree').append(node['name'] + " ");
+            });
         }
         $('.object-code').text("");
         $.each(objectCode, function(index, instruction) {
