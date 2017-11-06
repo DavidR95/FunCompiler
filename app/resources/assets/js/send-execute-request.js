@@ -89,20 +89,20 @@ function drawTree(data) {
         var treeData = treemap(root);
         var nodes = treeData.descendants(),
         links = treeData.descendants().slice(1);
-        nodes.forEach(function(d){ d.y = d.depth * 180});
+        nodes.forEach(function(d){ d.y = d.depth * 100});
         var node = svg.selectAll('g.node')
             .data(nodes, function(d) {return d.id || (d.id = ++i); });
         var nodeEnter = node.enter().append('g')
             .attr('class', 'node')
             .attr("transform", function(d) {
-                return "translate(" + source.y0 + "," + source.x0 + ")";
+                return "translate(" + source.x0 + "," + source.y0 + ")";
         }).on('click', click);
         nodeEnter.append('circle').attr('class', 'node').attr('r', 1e-6)
             .style("fill", function(d) {
                 return d._children ? "lightsteelblue" : "#fff";
             });
-        nodeEnter.append('text').attr("dy", ".35em").attr("x", function(d) {
-            return d.children || d._children ? -13 : 13;
+        nodeEnter.append('text').attr("dx", ".35em").attr("y", function(d) {
+            return d.children || d._children ? -18 : 18;
         }).attr("text-anchor", function(d) {
             return d.children || d._children ? "end" : "start";
         }).text(function(d) { return d.data.name; });
@@ -110,14 +110,14 @@ function drawTree(data) {
         nodeUpdate.transition()
             .duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + d.y + "," + d.x + ")";
+                return "translate(" + d.x + "," + d.y + ")";
             });
         nodeUpdate.select('circle.node').attr('r', 10).style("fill", function(d) {
             return d._children ? "lightsteelblue" : "#fff";
         }).attr('cursor', 'pointer');
         var nodeExit = node.exit().transition().duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + source.y + "," + source.x + ")";
+                return "translate(" + source.x + "," + source.y + ")";
             }).remove();
         nodeExit.select('circle').attr('r', 1e-6);
         nodeExit.select('text').style('fill-opacity', 1e-6);
@@ -143,10 +143,10 @@ function drawTree(data) {
             d.y0 = d.y;
         });
         function diagonal(s, d) {
-            path = `M ${s.y} ${s.x}
-            C ${(s.y + d.y) / 2} ${s.x},
-            ${(s.y + d.y) / 2} ${d.x},
-            ${d.y} ${d.x}`
+            path = `M ${s.x} ${s.y}
+            C ${(s.x + d.x) / 2} ${s.y},
+            ${(s.x + d.x) / 2} ${d.y},
+            ${d.x} ${d.y}`
             return path
         }
         function click(d) {
