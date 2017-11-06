@@ -11,8 +11,7 @@
                         </p>
                     </div>
                     <div class="program-input-container">
-                        <form action="{{ route('execute') }}" method="post">
-                            {{ csrf_field() }}
+                        <form id="execute-form" action="{{ route('execute') }}" method="post">
                             <div class="form-group">
                                 <textarea class="form-control" name="program" autofocus></textarea>
                             </div>
@@ -29,26 +28,7 @@
                         <p>Scope-checking | Type-checking | Code-generation</p>
                     </div>
                     <div class="program-tree-container">
-                        <div class="program-tree">
-                            @if (!empty($response))
-                                @if ($response['numSyntaxErrors'] > 0)
-                                    Number of Syntax Errors: {{ $response['numSyntaxErrors'] }}<br>
-                                    Syntax Errors:<br>
-                                    @foreach ($response['syntaxErrors'] as $syntaxError)
-                                        {{ $syntaxError }}<br>
-                                    @endforeach
-                                    <br>
-                                @endif
-                                @if ($response['numContextualErrors'] > 0)
-                                    Number of Contextual Errors: {{ $response['numContextualErrors'] }}<br>
-                                    Contextual Errors:<br>
-                                    @foreach ($response['contextualErrors'] as $contextualError)
-                                        {{ $contextualError }}<br>
-                                    @endforeach
-                                    <br>
-                                @endif
-                            @endif
-                        </div>
+                        <div class="program-tree"></div>
                     </div>
                 </div>
             </div>
@@ -59,27 +39,20 @@
                     </div>
                     <div class="object-code-output-container">
                         <div class="object-code-container">
-                            <div class="object-code">
-                                @if (!empty($response))
-                                    @foreach ($response['objectCode'] as $instruction)
-                                        {{ $instruction }}<br>
-                                    @endforeach
-                                @endif
-                            </div>
+                            <div class="object-code"></div>
                         </div>
                         <div class="output-container">
                             <div class="output-heading-container">
                                 <p>Output</p>
                             </div>
-                            <div class="output">
-                                @if (!empty($response))
-                                    {{ $response['output'] }}
-                                @endif
-                            </div>
+                            <div class="output"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/send-execute-request.js') }}"></script>
 @endsection
