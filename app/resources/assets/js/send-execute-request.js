@@ -59,105 +59,57 @@ function drawTree(data) {
             treeData.push(node);
         }
     });
-    var margin = {top: 20, right: 90, bottom: 30, left: 90};
-    var width = 960 - margin.left - margin.right;
+
+    // set the dimensions and margins of the diagram
+    var margin = {top: 40, right: 90, bottom: 50, left: 90};
+    var width = 660 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
+
+    // declares a tree layout and assigns the size
+    var treemap = d3.tree().size([width, height]);
+
+    // assigns the data to a hierarchy using parent-child relationships
+    var nodes = d3.hierarchy(treeData[0]);
+
+    // maps the node data to the tree layout
+    nodes = treemap(nodes);
+
+    // append the svg obgect to the body of the page
+    // appends a 'group' element to 'svg'
+    // moves the 'group' element to the top left margin
     var svg = d3.select(".program-tree").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    var i = 0;
-    var duration = 750;
-    var root;
-    var treemap = d3.tree().size([height, width]);
-    root = d3.hierarchy(treeData[0], function(d) { return d.children; });
-    root.x0 = height / 2;
-    root.y0 = 0;
-    root.children.forEach(collapse);
-    update(root);
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom);
+    var g = svg.append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    function collapse(d) {
-        if(d.children) {
-            d._children = d.children
-            d._children.forEach(collapse)
-            d.children = null
-        }
-    }
+    // adds the links between the nodes
+    var link = g.selectAll(".link")
+        .data( nodes.descendants().slice(1)).enter().append("path")
+        .attr("class", "link").attr("d", function(d) {
+            return "M" + d.x + "," + d.y
+                + "C" + d.x + "," + (d.y + d.parent.y) / 2
+                + " " + d.parent.x + "," +  (d.y + d.parent.y) / 2
+                + " " + d.parent.x + "," + d.parent.y;
+            });
 
-    function update(source) {
-        var treeData = treemap(root);
-        var nodes = treeData.descendants(),
-        links = treeData.descendants().slice(1);
-        nodes.forEach(function(d){ d.y = d.depth * 100});
-        var node = svg.selectAll('g.node')
-            .data(nodes, function(d) {return d.id || (d.id = ++i); });
-        var nodeEnter = node.enter().append('g')
-            .attr('class', 'node')
-            .attr("transform", function(d) {
-                return "translate(" + source.x0 + "," + source.y0 + ")";
-        }).on('click', click);
-        nodeEnter.append('circle').attr('class', 'node').attr('r', 1e-6)
-            .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
-            });
-        nodeEnter.append('text').attr("dx", ".35em").attr("y", function(d) {
-            return d.children || d._children ? -18 : 18;
-        }).attr("text-anchor", function(d) {
-            return d.children || d._children ? "end" : "start";
-        }).text(function(d) { return d.data.name; });
-        var nodeUpdate = nodeEnter.merge(node);
-        nodeUpdate.transition()
-            .duration(duration)
-            .attr("transform", function(d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
-        nodeUpdate.select('circle.node').attr('r', 10).style("fill", function(d) {
-            return d._children ? "lightsteelblue" : "#fff";
-        }).attr('cursor', 'pointer');
-        var nodeExit = node.exit().transition().duration(duration)
-            .attr("transform", function(d) {
-                return "translate(" + source.x + "," + source.y + ")";
-            }).remove();
-        nodeExit.select('circle').attr('r', 1e-6);
-        nodeExit.select('text').style('fill-opacity', 1e-6);
-        var link = svg.selectAll('path.link').data(links, function(d) {
-            return d.id;
-         });
-        var linkEnter = link.enter().insert('path', "g").attr("class", "link")
-            .attr('d', function(d) {
-                var o = {x: source.x0, y: source.y0
-            }
-            return diagonal(o, o)
+    // adds each node as a group
+    var node = g.selectAll(".node")
+        .data(nodes.descendants())
+        .enter().append("g")
+        .attr("class", function(d) {
+            return "node" + (d.children ? " node--internal" : " node--leaf");
+        }).attr("transform", function(d) {
+          return "translate(" + d.x + "," + d.y + ")";
         });
-        var linkUpdate = linkEnter.merge(link);
-        linkUpdate.transition().duration(duration)
-            .attr('d', function(d){ return diagonal(d, d.parent) });
-        var linkExit = link.exit().transition().duration(duration)
-            .attr('d', function(d) {
-                var o = {x: source.x, y: source.y}
-                return diagonal(o, o)
-            }).remove();
-        nodes.forEach(function(d) {
-            d.x0 = d.x;
-            d.y0 = d.y;
-        });
-        function diagonal(s, d) {
-            path = `M ${s.x} ${s.y}
-            C ${(s.x + d.x) / 2} ${s.y},
-            ${(s.x + d.x) / 2} ${d.y},
-            ${d.x} ${d.y}`
-            return path
-        }
-        function click(d) {
-            if (d.children) {
-                d._children = d.children;
-                d.children = null;
-            } else {
-                d.children = d._children;
-                d._children = null;
-            }
-            update(d);
-        }
-    }
+
+    // adds the circle to the node
+    node.append("circle").attr("r", 10);
+
+    // adds the text to the node
+    node.append("text")
+      .attr("dy", ".35em")
+      .attr("y", function(d) { return d.children ? -20 : 20; })
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.data.name; });
 }
