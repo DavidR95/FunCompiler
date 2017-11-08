@@ -61,9 +61,9 @@ function drawTree(data) {
     });
 
     // set the dimensions and margins of the diagram
-    var margin = {top: 40, right: 90, bottom: 50, left: 90};
-    var width = 660 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var margin = {top: 35, right: 10, bottom: 35, left: 10};
+    var width = 770 - margin.left - margin.right;
+    var height = 800 - margin.top - margin.bottom;
 
     // declares a tree layout and assigns the size
     var treemap = d3.tree().size([width, height]);
@@ -104,7 +104,7 @@ function drawTree(data) {
         });
 
     // adds the circle to the node
-    node.append("circle").attr("r", 10);
+    node.append("circle").attr("r", 5);
 
     // adds the text to the node
     node.append("text")
