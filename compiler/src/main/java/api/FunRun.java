@@ -63,7 +63,7 @@ public class FunRun {
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
 		// Create a visitor to walk to parse tree and construct an AST
-		FunASTVisitor astVisitor = new FunASTVisitor(parser);
+		FunASTVisitor astVisitor = new FunASTVisitor();
 		// Walk the parse tree
 		astVisitor.visit(ast);
 		// Retrieve the flat data structure representing the ast

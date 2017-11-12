@@ -1,37 +1,53 @@
 package api;
 
+//////////////////////////////////////////////////////////////
+//
+// A visitor to build an AST over the parse tree.
+//
+// Build a JSON array to be stored in a FunResponse object
+//
+//////////////////////////////////////////////////////////////
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
-import java.util.*;
+import java.util.Stack;
+import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
-    private Parser parser;
+    // Stores the AST as flat JSON data
     private JsonArray data_array = new JsonArray();
-    private Stack<Integer> parentNodes = new Stack<Integer>();
 
-    public FunASTVisitor(Parser parser) {
-        this.parser = parser;
-    }
+    // Stores a stack of parent node ids
+    private Stack<Integer> parentNodes = new Stack<Integer>();
 
     public JsonArray getAST() {
         return data_array;
     }
 
-    private int createJsonObject(Object ctx, String name) {
+    /**
+     * Creates a new JSON object. Uses the node on top of the parentNodes stack
+     * to determine who the parent is. Adds the newly created JSON object to an
+     * ordered JSON array.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    private void createJsonObject(Object ctx, String name) {
         JsonObject data_object = new JsonObject();
+        // use the object's hash as an id
         int id = ctx.hashCode();
+        // parent is -1 if at the root, top of the stack otherwise
         int parent_id = (parentNodes.empty() ? -1 : parentNodes.peek());
         data_object.addProperty("id", id);
         data_object.addProperty("name", name);
         data_object.addProperty("parent_id", parent_id);
+        // add the newly created JSON object to JSON array
         data_array.add(data_object);
-        return id;
     }
 
     /**
