@@ -20,11 +20,17 @@ import com.google.gson.JsonObject;
 
 public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
+    private Parser parser;
+
     // Stores the AST as flat JSON data
     private JsonArray data_array = new JsonArray();
 
     // Stores a stack of parent node ids
     private Stack<Integer> parentNodes = new Stack<Integer>();
+
+    public FunASTVisitor(Parser parser) {
+        this.parser = parser;
+    }
 
     public JsonArray getAST() {
         return data_array;
@@ -250,7 +256,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      */
     public Void visitExpr(FunParser.ExprContext ctx) {
         if (ctx.e2 != null) {
-            createJsonObject(ctx.op, ctx.op.getText());
+            createJsonObject(ctx.op, parser.getVocabulary().getSymbolicName(ctx.op.getType()));
             parentNodes.push(ctx.op.hashCode());
             visit(ctx.e1);
             visit(ctx.e2);
@@ -268,7 +274,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      */
     public Void visitSec_expr(FunParser.Sec_exprContext ctx) {
         if (ctx.e2 != null) {
-            createJsonObject(ctx.op, ctx.op.getText());
+            createJsonObject(ctx.op, parser.getVocabulary().getSymbolicName(ctx.op.getType()));
             parentNodes.push(ctx.op.hashCode());
             visit(ctx.e1);
             visit(ctx.e2);
