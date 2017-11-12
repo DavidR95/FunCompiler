@@ -270,6 +270,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitFalse(FunParser.FalseContext ctx) {
+        createJsonObject(ctx, "FALSE");
         return null;
     }
 
@@ -280,6 +281,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitTrue(FunParser.TrueContext ctx) {
+        createJsonObject(ctx, "TRUE");
         return null;
     }
 
@@ -312,6 +314,11 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitFunccall(FunParser.FunccallContext ctx) {
+        createJsonObject(ctx, "FUNCCALL");
+        parentNodes.push(ctx.hashCode());
+        createJsonObject(ctx.ID(), ctx.ID().getText());
+        visit(ctx.actual());
+        parentNodes.pop();
         return null;
     }
 
