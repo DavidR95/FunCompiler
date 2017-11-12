@@ -10,6 +10,7 @@ package api;
 
 import java.util.List;
 import java.util.LinkedList;
+
 import com.google.gson.JsonArray;
 
 public class FunResponse {
