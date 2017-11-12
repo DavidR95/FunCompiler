@@ -185,6 +185,19 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitIf(FunParser.IfContext ctx) {
+        if (ctx.c2 != null) {
+            createJsonObject(ctx, "IFELSE");
+            parentNodes.push(ctx.hashCode());
+            visit(ctx.expr());
+            visit(ctx.c1);
+            visit(ctx.c2);
+        } else {
+            createJsonObject(ctx, "IF");
+            parentNodes.push(ctx.hashCode());
+            visit(ctx.expr());
+            visit(ctx.c1);
+        }
+        parentNodes.pop();
         return null;
     }
 
