@@ -329,6 +329,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitNot(FunParser.NotContext ctx) {
+        createJsonObject(ctx, "NOT");
+        parentNodes.push(ctx.hashCode());
+        visitChildren(ctx.prim_expr());
+        parentNodes.pop();
         return null;
     }
 
