@@ -19,6 +19,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
         this.parser = parser;
     }
 
+    public JsonArray getAST() {
+        return data_array;
+    }
+
     private int createJsonObject(Object ctx, String name) {
         JsonObject data_object = new JsonObject();
         int id = ctx.hashCode();
