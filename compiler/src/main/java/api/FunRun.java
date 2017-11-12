@@ -62,6 +62,8 @@ public class FunRun {
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
+		FunASTVisitor astVisitor = new FunASTVisitor(parser);
+		astVisitor.visit(ast);
 		// Retrieve the flat data structure representing the ast
 		JsonArray data = treeToJson(ast, parser);
 		// Set the ast data in the response object
