@@ -4,9 +4,12 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
+import java.util.*;
+
 public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
     private Parser parser;
+    private Stack<String> parentNodes = new Stack<String>();
 
     public FunASTVisitor(Parser parser) {
         this.parser = parser;
@@ -19,8 +22,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
+        parentNodes.push("PROG");
         System.err.println("PROG");
 	    visitChildren(ctx);
+        parentNodes.pop();
 	    return null;
 	}
 
@@ -61,6 +66,12 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @return the visitor result
      */
     public Type visitVar(FunParser.VarContext ctx) {
+        System.err.println("VAR, parent: " + parentNodes.peek());
+        parentNodes.push("VAR");
+        visit(ctx.type());
+        System.err.println(ctx.ID() + ", parent: " + parentNodes.peek());
+        visit(ctx.expr());
+        parentNodes.pop();
         return null;
     }
 
@@ -81,6 +92,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @return the visitor result
      */
     public Type visitInt(FunParser.IntContext ctx) {
+        System.err.println("INT, parent: " + parentNodes.peek());
         return null;
     }
 
@@ -140,6 +152,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @return the visitor result
      */
     public Type visitExpr(FunParser.ExprContext ctx) {
+        visit(ctx.e1);
+        if (ctx.e2 != null) {
+        visit(ctx.e2);
+        }
         return null;
     }
 
@@ -149,6 +165,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @return the visitor result
      */
     public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
+        visit(ctx.e1);
+        if (ctx.e2 != null) {
+        visit(ctx.e2);
+        }
         return null;
     }
 
@@ -179,6 +199,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @return the visitor result
      */
     public Type visitNum(FunParser.NumContext ctx) {
+        System.err.println(ctx.getText() + ", parent: " + parentNodes.peek());
         return null;
     }
 
