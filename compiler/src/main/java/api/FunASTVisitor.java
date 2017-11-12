@@ -75,6 +75,18 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
      * @return the visitor result
      */
     public Void visitFunc(FunParser.FuncContext ctx) {
+        createJsonObject(ctx, "FUNC");
+        parentNodes.push(ctx.hashCode());
+        visit(ctx.type());
+        createJsonObject(ctx.ID(), ctx.ID().getText());
+        FunParser.Formal_declContext fd = ctx.formal_decl();
+        visit(ctx.formal_decl());
+        List<FunParser.Var_declContext> var_decl = ctx.var_decl();
+        for (FunParser.Var_declContext vd : var_decl)
+            visit(vd);
+        visit(ctx.seq_com());
+        visit(ctx.expr());
+        parentNodes.pop();
         return null;
     }
 
