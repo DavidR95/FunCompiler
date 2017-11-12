@@ -8466,3 +8466,32 @@ html,
   border-radius: 4px;
 }
 
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+}
+
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+}
+
