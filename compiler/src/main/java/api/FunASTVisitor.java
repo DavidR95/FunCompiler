@@ -9,7 +9,7 @@ import java.util.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
+public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
     private Parser parser;
     private JsonArray data_array = new JsonArray();
@@ -40,13 +40,12 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	public Type visitProg(FunParser.ProgContext ctx) {
+	public Void visitProg(FunParser.ProgContext ctx) {
         createJsonObject(ctx, "PROG");
         parentNodes.push(ctx.hashCode());
 	    visitChildren(ctx);
         parentNodes.pop();
-        System.err.println(data_array);
-	    return null;
+        return null;
 	}
 
     /**
@@ -55,7 +54,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitProc(FunParser.ProcContext ctx) {
+    public Void visitProc(FunParser.ProcContext ctx) {
         createJsonObject(ctx, "PROC");
         parentNodes.push(ctx.hashCode());
         createJsonObject(ctx.ID(), ctx.ID().getText());
@@ -75,7 +74,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitFunc(FunParser.FuncContext ctx) {
+    public Void visitFunc(FunParser.FuncContext ctx) {
         return null;
     }
 
@@ -85,7 +84,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitFormal(FunParser.FormalContext ctx) {
+    public Void visitFormal(FunParser.FormalContext ctx) {
         FunParser.TypeContext tc = ctx.type();
 	    if (tc != null) {
             createJsonObject(ctx, "FORMAL");
@@ -105,7 +104,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitVar(FunParser.VarContext ctx) {
+    public Void visitVar(FunParser.VarContext ctx) {
         createJsonObject(ctx, "VAR");
         parentNodes.push(ctx.hashCode());
         visit(ctx.type());
@@ -121,7 +120,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitBool(FunParser.BoolContext ctx) {
+    public Void visitBool(FunParser.BoolContext ctx) {
         return null;
     }
 
@@ -131,7 +130,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitInt(FunParser.IntContext ctx) {
+    public Void visitInt(FunParser.IntContext ctx) {
         createJsonObject(ctx, "INT");
         return null;
     }
@@ -142,7 +141,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitAssn(FunParser.AssnContext ctx) {
+    public Void visitAssn(FunParser.AssnContext ctx) {
         createJsonObject(ctx, "ASSN");
         parentNodes.push(ctx.hashCode());
         createJsonObject(ctx.ID(), ctx.ID().getText());
@@ -157,7 +156,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitProccall(FunParser.ProccallContext ctx) {
+    public Void visitProccall(FunParser.ProccallContext ctx) {
         return null;
     }
 
@@ -167,7 +166,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitIf(FunParser.IfContext ctx) {
+    public Void visitIf(FunParser.IfContext ctx) {
         return null;
     }
 
@@ -177,7 +176,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitWhile(FunParser.WhileContext ctx) {
+    public Void visitWhile(FunParser.WhileContext ctx) {
         createJsonObject(ctx, "WHILE");
         parentNodes.push(ctx.hashCode());
         visit(ctx.expr());
@@ -192,7 +191,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitSeq(FunParser.SeqContext ctx) {
+    public Void visitSeq(FunParser.SeqContext ctx) {
         visitChildren(ctx);
         return null;
     }
@@ -202,7 +201,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitExpr(FunParser.ExprContext ctx) {
+    public Void visitExpr(FunParser.ExprContext ctx) {
         if (ctx.e2 != null) {
             createJsonObject(ctx.op, ctx.op.getText());
             parentNodes.push(ctx.op.hashCode());
@@ -220,7 +219,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
+    public Void visitSec_expr(FunParser.Sec_exprContext ctx) {
         if (ctx.e2 != null) {
             createJsonObject(ctx.op, ctx.op.getText());
             parentNodes.push(ctx.op.hashCode());
@@ -239,7 +238,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitFalse(FunParser.FalseContext ctx) {
+    public Void visitFalse(FunParser.FalseContext ctx) {
         return null;
     }
 
@@ -249,7 +248,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitTrue(FunParser.TrueContext ctx) {
+    public Void visitTrue(FunParser.TrueContext ctx) {
         return null;
     }
 
@@ -259,7 +258,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitNum(FunParser.NumContext ctx) {
+    public Void visitNum(FunParser.NumContext ctx) {
         createJsonObject(ctx, ctx.getText());
         return null;
     }
@@ -270,7 +269,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitId(FunParser.IdContext ctx) {
+    public Void visitId(FunParser.IdContext ctx) {
         createJsonObject(ctx, ctx.getText());
         return null;
     }
@@ -281,7 +280,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitFunccall(FunParser.FunccallContext ctx) {
+    public Void visitFunccall(FunParser.FunccallContext ctx) {
         return null;
     }
 
@@ -291,7 +290,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitNot(FunParser.NotContext ctx) {
+    public Void visitNot(FunParser.NotContext ctx) {
         return null;
     }
 
@@ -301,7 +300,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitParens(FunParser.ParensContext ctx) {
+    public Void visitParens(FunParser.ParensContext ctx) {
         return null;
     }
 
@@ -310,7 +309,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Type> implements Fun
      * @param ctx the parse tree
      * @return the visitor result
      */
-    public Type visitActual(FunParser.ActualContext ctx) {
+    public Void visitActual(FunParser.ActualContext ctx) {
         return null;
     }
 }
