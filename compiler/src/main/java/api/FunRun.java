@@ -14,8 +14,8 @@ import org.antlr.v4.runtime.tree.*;
 
 import java.util.List;
 import java.io.InputStream;
+
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class FunRun {
 
@@ -62,8 +62,12 @@ public class FunRun {
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
 	    ParseTree ast = parser.program();
+		// Create a visitor to walk to parse tree and construct an AST
+		FunASTVisitor astVisitor = new FunASTVisitor(parser);
+		// Walk the parse tree
+		astVisitor.visit(ast);
 		// Retrieve the flat data structure representing the ast
-		JsonArray data = treeToJson(ast, parser);
+		JsonArray data = astVisitor.getAST();
 		// Set the ast data in the response object
 		response.setAstData(data);
 		int numErrors = parser.getNumberOfSyntaxErrors();
@@ -108,23 +112,4 @@ public class FunRun {
 
 	private static class FunException extends Exception {
 	}
-
-	// This method should probably be moved elsewhere
-	private static JsonArray treeToJson(ParseTree ast, Parser parser) {
-		JsonArray data_array = new JsonArray();
-		List<ParseTree> nodes = Trees.getDescendants(ast);
-		for (ParseTree node : nodes) {
-			JsonObject data_object = new JsonObject();
-			int id = node.hashCode();
-			String name = Trees.getNodeText(node, parser);
-			ParseTree parent_node = node.getParent();
-			int parent_id = (parent_node != null ? parent_node.hashCode() : -1);
-			data_object.addProperty("id", id);
-			data_object.addProperty("name", name);
-			data_object.addProperty("parent_id", parent_id);
-			data_array.add(data_object);
-		}
-		return data_array;
-	}
-
 }
