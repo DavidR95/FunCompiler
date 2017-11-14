@@ -25,7 +25,8 @@
             <div class="col-sm-5 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <p class="pull-left">< | Play | ></p>
+                        <!-- change how styling works here -->
+                        <p class="pull-left">< | <span id="play-button">Play<span> | ></p>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
                     <div class="program-tree-container">

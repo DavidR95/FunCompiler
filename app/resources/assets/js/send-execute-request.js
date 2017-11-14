@@ -111,7 +111,9 @@ function drawTree(data) {
             return d.data.name;
         });
 
-    animateTree(data);
+    $("#play-button").on("click", function() {
+        animateTree(data);
+    });
 }
 
 function animateTree(data) {
