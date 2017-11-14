@@ -99,4 +99,15 @@ function drawTree(data) {
     .attr("y", function(d) { return d.children ? -20 : 20; })
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.name; });
+
+    animateTree(data);
+}
+
+function animateTree(data) {
+    var counter = 0;
+    $.each(data, function () {
+        d3.select("#node-"+this.id).select("circle").transition()
+        .duration(500).delay(500*counter).style("fill", "red");
+        counter++;
+    });
 }
