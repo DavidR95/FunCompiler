@@ -26,7 +26,7 @@
                 <div class="center-container">
                     <div class="controls-container">
                         <!-- change how styling works here -->
-                        <p class="pull-left">< | <span id="play-button">Play<span> | ></p>
+                        <p class="pull-left" id="play-button">Play</p>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
                     <div class="program-tree-container">
