@@ -25,7 +25,9 @@
             <div class="col-sm-5 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <p>Scope-checking | Type-checking | Code-generation</p>
+                        <!-- change how styling works here -->
+                        <p class="pull-left" id="play-button">Play</p>
+                        <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
                     <div class="program-tree-container">
                         <div class="program-tree"></div>
