@@ -153,6 +153,8 @@ function drawTree(data) {
         return "node" + (d.children ? " node--internal" : " node--leaf");
     }).attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
+    }).attr("id", function (d) {
+        return "node-" + d.data.id;
     });
     node.append("circle").attr("r", 5);
     node.append("text").attr("dy", ".35em").attr("y", function (d) {
