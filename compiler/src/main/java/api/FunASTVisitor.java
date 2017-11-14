@@ -245,7 +245,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * @return the visitor result
     */
     public Void visitSeq(FunParser.SeqContext ctx) {
+        createJsonObject(ctx, "SEQ");
+        parentNodes.push(ctx.hashCode());
         visitChildren(ctx);
+        parentNodes.pop();
         return null;
     }
 
