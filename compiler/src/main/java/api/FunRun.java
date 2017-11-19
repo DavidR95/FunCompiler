@@ -48,8 +48,9 @@ public class FunRun {
 		FunParser parser = createParser(tokens);
 		ParseTree ast = syntacticAnalyse(parser);
 		JsonArray treeNodes = buildAST(ast, parser);
-		contextualAnalyse(ast,tokens);
+		contextualAnalyse(ast,tokens,treeNodes);
 		SVM objprog = codeGenerate(ast);
+		response.setTreeNodes(treeNodes);
 		return objprog;
 	}
 
@@ -92,9 +93,9 @@ public class FunRun {
 	// Perform contextual analysis of a Fun program,
 	// represented by an AST.
 	// Print any error messages.
-    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens)
+    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens, JsonArray treeNodes)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, response.getTreeNodes());
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes);
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(ast);
