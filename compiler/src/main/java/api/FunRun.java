@@ -67,9 +67,9 @@ public class FunRun {
 		// Walk the parse tree
 		astVisitor.visit(ast);
 		// Retrieve the flat data structure representing the ast
-		JsonArray data = astVisitor.getAST();
+		JsonArray treeNodes = astVisitor.getTreeNodes();
 		// Set the ast data in the response object
-		response.setAstData(data);
+		response.setTreeNodes(treeNodes);
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
 		List<String> errors = SyntaxErrorListener.getSyntaxErrors();

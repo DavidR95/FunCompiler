@@ -97,7 +97,7 @@ $("#execute-form").submit(function (e) {
         var syntaxErrors = response.syntaxErrors;
         var numContextualErrors = response.numContextualErrors;
         var contextualErrors = response.contextualErrors;
-        var astData = response.astData;
+        var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
         $(".program-tree").text("");
@@ -116,7 +116,7 @@ $("#execute-form").submit(function (e) {
             });
             $(".program-tree").append("<br>");
         } else {
-            drawTree(astData);
+            drawTree(treeNodes);
         }
         $(".object-code").text("");
         $.each(objectCode, function (index, instruction) {
