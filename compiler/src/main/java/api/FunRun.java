@@ -85,7 +85,7 @@ public class FunRun {
 	// Print any error messages.
     private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, response.getTreeNodes());
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(ast);

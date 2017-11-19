@@ -42,6 +42,10 @@ public class FunResponse {
         this.objectCode = objectCode;
     }
 
+    public JsonArray getTreeNodes() {
+        return treeNodes;
+    }
+
     public void setTreeNodes(JsonArray treeNodes) {
         this.treeNodes = treeNodes;
     }
