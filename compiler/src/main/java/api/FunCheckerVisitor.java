@@ -76,7 +76,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		new SymbolTable<Type>();
 
 	private void predefine (JsonArray explanations) {
-	// Add predefined procedures to the type table.
+		// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   	new Type.Mapping(Type.VOID, Type.INT));
 		typeTable.put("write",
@@ -93,9 +93,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			reportError(id + " is redeclared", decl);
 	}
 
-	private Type retrieve (String id, ParserRuleContext occ) {
-	// Retrieve id's type from the type table.
+	private Type retrieve (String id, ParserRuleContext occ, JsonArray explanations) {
+		// Retrieve id's type from the type table.
 		Type type = typeTable.get(id);
+		explanations.add(new JsonPrimitive("Checking " + id + " is in the type table."));
 		if (type == null) {
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
@@ -125,11 +126,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	private Type checkCall (String id, Type typeArg,
-	                        ParserRuleContext call) {
+	                        ParserRuleContext call,
+							JsonArray explanations) {
 	// Check that a procedure call identifies a procedure
 	// and that its argument type matches the proecure's
 	// type. Return the type of the procedure call.
-		Type typeProc = retrieve(id, call);
+		Type typeProc = retrieve(id, call, explanations);
 		if (! (typeProc instanceof Type.Mapping)) {
 			reportError(id + " is not a procedure", call);
 			return Type.ERROR;
@@ -184,7 +186,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		JsonArray explanations = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
 	    predefine(explanations);
 	    visitChildren(ctx);
-	    Type tmain = retrieve("main", ctx);
+	    Type tmain = retrieve("main", ctx, explanations);
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
 	}
@@ -301,7 +303,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitAssn(FunParser.AssnContext ctx) {
-	    Type tvar = retrieve(ctx.ID().getText(), ctx);
+		JsonArray explanations = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
+	    Type tvar = retrieve(ctx.ID().getText(), ctx, explanations);
 	    Type t = visit(ctx.expr());
 	    checkType(tvar, t, ctx);
 	    return null;
@@ -314,8 +317,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProccall(FunParser.ProccallContext ctx) {
+		JsonArray explanations = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
 	    Type t = visit(ctx.actual());
-	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
+	    Type tres = checkCall(ctx.ID().getText(), t, ctx, explanations);
 	    if (! tres.equiv(Type.VOID))
 		reportError("procedure should be void", ctx);
 	    return null;
@@ -429,7 +433,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitId(FunParser.IdContext ctx) {
-	    return retrieve(ctx.ID().getText(), ctx);
+		JsonArray explanations = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
+	    return retrieve(ctx.ID().getText(), ctx, explanations);
 	}
 
 	/**
@@ -439,8 +444,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFunccall(FunParser.FunccallContext ctx) {
+		JsonArray explanations = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
 	    Type t = visit(ctx.actual());
-	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
+	    Type tres = checkCall(ctx.ID().getText(), t, ctx, explanations);
 	    if (tres.equiv(Type.VOID))
 		reportError("procedure should be non-void", ctx);
 	    return tres;
