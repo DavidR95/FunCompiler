@@ -11,8 +11,6 @@ package api;
 import java.util.List;
 import java.util.LinkedList;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
 public class FunResponse {

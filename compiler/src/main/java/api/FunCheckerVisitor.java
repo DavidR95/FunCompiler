@@ -17,7 +17,6 @@ import org.antlr.v4.runtime.misc.*;
 import java.util.List;
 import java.util.LinkedList;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
