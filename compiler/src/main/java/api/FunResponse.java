@@ -51,14 +51,4 @@ public class FunResponse {
     public void setOutput(String output) {
         this.output = output;
     }
-
-    public static JsonObject searchTreeNodes(JsonArray treeNodes, int nodeId) {
-        for (JsonElement treeNode : treeNodes) {
-            JsonObject treeNodeObject = treeNode.getAsJsonObject();
-            int id = treeNodeObject.get("id").getAsInt();
-            if (id == nodeId)
-                return treeNodeObject;
-        }
-        return null;
-    }
 }

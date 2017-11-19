@@ -180,7 +180,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		JsonObject treeNode = FunResponse.searchTreeNodes(treeNodes, ctx.hashCode());
+		JsonObject treeNode = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
 	    predefine(treeNode);
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);
