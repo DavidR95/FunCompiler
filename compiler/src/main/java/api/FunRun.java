@@ -45,31 +45,30 @@ public class FunRun {
 		// Add a new customer listener
 		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		ParseTree ast = syntacticAnalyse(tokens);
+		FunParser parser = createParser(tokens);
+		ParseTree ast = syntacticAnalyse(parser);
+		JsonArray treeNodes = buildAST(ast, parser);
 		contextualAnalyse(ast,tokens);
 		SVM objprog = codeGenerate(ast);
 		return objprog;
 	}
 
-	// Perform syntactic analysis of a Fun source program.
-	// Print any error messages.
-	// Return an AST representation of the Fun program.
-	private static ParseTree syntacticAnalyse(CommonTokenStream tokens)
+	private static FunParser createParser(CommonTokenStream tokens)
 		throws Exception {
 		FunParser parser = new FunParser(tokens);
 		// Remove the default error listeners
 		parser.removeErrorListeners();
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
+		return parser;
+	}
+
+	// Perform syntactic analysis of a Fun source program.
+	// Print any error messages.
+	// Return an AST representation of the Fun program.
+	private static ParseTree syntacticAnalyse(FunParser parser)
+		throws Exception {
 	    ParseTree ast = parser.program();
-		// Create a visitor to walk to parse tree and construct an AST
-		FunASTVisitor astVisitor = new FunASTVisitor(parser);
-		// Walk the parse tree
-		astVisitor.visit(ast);
-		// Retrieve the flat data structure representing the ast
-		JsonArray treeNodes = astVisitor.getTreeNodes();
-		// Set the ast data in the response object
-		response.setTreeNodes(treeNodes);
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
 		List<String> errors = SyntaxErrorListener.getSyntaxErrors();
@@ -78,6 +77,16 @@ public class FunRun {
 		// Set the actual syntax errors in the response object
 		response.setSyntaxErrors(errors);
 		return ast;
+	}
+
+	private static JsonArray buildAST(ParseTree ast, FunParser parser) {
+		// Create a visitor to walk to parse tree and construct an AST
+		FunASTVisitor astVisitor = new FunASTVisitor(parser);
+		// Walk the parse tree
+		astVisitor.visit(ast);
+		// Retrieve the flat data structure representing the ast
+		JsonArray treeNodes = astVisitor.getTreeNodes();
+		return treeNodes;
 	}
 
 	// Perform contextual analysis of a Fun program,
