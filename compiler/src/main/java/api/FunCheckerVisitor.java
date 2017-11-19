@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.misc.*;
 import java.util.List;
 import java.util.LinkedList;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
@@ -73,12 +74,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
-	private void predefine () {
+	private void predefine (JsonObject treeNode) {
 	// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   new Type.Mapping(Type.VOID, Type.INT));
 		typeTable.put("write",
 		   new Type.Mapping(Type.INT, Type.VOID));
+		treeNode.addProperty("Explanations", "Predefining read and write functions.");
 	}
 
 	private void define (String id, Type type,
@@ -178,8 +180,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		System.err.println(FunResponse.searchTreeNodes(treeNodes, ctx.hashCode()));
-	    predefine();
+		JsonObject treeNode = FunResponse.searchTreeNodes(treeNodes, ctx.hashCode());
+	    predefine(treeNode);
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
