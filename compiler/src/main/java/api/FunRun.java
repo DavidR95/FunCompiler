@@ -45,31 +45,35 @@ public class FunRun {
 		// Add a new customer listener
 		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		ParseTree ast = syntacticAnalyse(tokens);
-		contextualAnalyse(ast,tokens);
+		// Creates the parser object
+		FunParser parser = createParser(tokens);
+		// Carries out syntactic analysis and creates the parse tree
+		ParseTree ast = syntacticAnalyse(parser);
+		// Visits the parse tree to build a repesentation of the AST
+		JsonArray treeNodes = buildAST(ast, parser);
+		contextualAnalyse(ast,tokens,treeNodes);
 		SVM objprog = codeGenerate(ast);
+		response.setTreeNodes(treeNodes);
 		return objprog;
 	}
 
-	// Perform syntactic analysis of a Fun source program.
-	// Print any error messages.
-	// Return an AST representation of the Fun program.
-	private static ParseTree syntacticAnalyse(CommonTokenStream tokens)
+	// Create the parser object
+	private static FunParser createParser(CommonTokenStream tokens)
 		throws Exception {
 		FunParser parser = new FunParser(tokens);
 		// Remove the default error listeners
 		parser.removeErrorListeners();
 		// Add a new custom listener
 		parser.addErrorListener(SyntaxErrorListener.LISTENER);
+		return parser;
+	}
+
+	// Perform syntactic analysis of a Fun source program.
+	// Print any error messages.
+	// Return an AST representation of the Fun program.
+	private static ParseTree syntacticAnalyse(FunParser parser)
+		throws Exception {
 	    ParseTree ast = parser.program();
-		// Create a visitor to walk to parse tree and construct an AST
-		FunASTVisitor astVisitor = new FunASTVisitor(parser);
-		// Walk the parse tree
-		astVisitor.visit(ast);
-		// Retrieve the flat data structure representing the ast
-		JsonArray data = astVisitor.getAST();
-		// Set the ast data in the response object
-		response.setAstData(data);
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
 		List<String> errors = SyntaxErrorListener.getSyntaxErrors();
@@ -80,12 +84,23 @@ public class FunRun {
 		return ast;
 	}
 
+	// Visit the parse tree and build an AST
+	private static JsonArray buildAST(ParseTree ast, FunParser parser) {
+		// Create a visitor to walk to parse tree and construct an AST
+		FunASTVisitor astVisitor = new FunASTVisitor(parser);
+		// Walk the parse tree
+		astVisitor.visit(ast);
+		// Retrieve the flat data structure representing the ast
+		JsonArray treeNodes = astVisitor.getTreeNodes();
+		return treeNodes;
+	}
+
 	// Perform contextual analysis of a Fun program,
 	// represented by an AST.
 	// Print any error messages.
-    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens)
+    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens, JsonArray treeNodes)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes);
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(ast);

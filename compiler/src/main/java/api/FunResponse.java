@@ -19,7 +19,7 @@ public class FunResponse {
     private List<String> syntaxErrors = new LinkedList<String>();
     private List<String> contextualErrors = new LinkedList<String>();
     private List<String> objectCode = new LinkedList<String>();
-    private JsonArray astData = new JsonArray();
+    private JsonArray treeNodes = new JsonArray();
     private String output = "";
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
@@ -42,8 +42,8 @@ public class FunResponse {
         this.objectCode = objectCode;
     }
 
-    public void setAstData(JsonArray astData) {
-        this.astData = astData;
+    public void setTreeNodes(JsonArray treeNodes) {
+        this.treeNodes = treeNodes;
     }
 
     public void setOutput(String output) {

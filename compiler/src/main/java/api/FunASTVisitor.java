@@ -4,7 +4,7 @@ package api;
 //
 // A visitor to build an AST over the parse tree.
 //
-// Build a JSON array to be stored in a FunResponse object
+// Builds a JSON array to be eventually stored in the FunResponse
 //
 //////////////////////////////////////////////////////////////
 
@@ -23,7 +23,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     private Parser parser;
 
     // Stores the AST as flat JSON data
-    private JsonArray data_array = new JsonArray();
+    private JsonArray treeNodes = new JsonArray();
 
     // Stores a stack of parent node ids
     private Stack<Integer> parentNodes = new Stack<Integer>();
@@ -32,8 +32,8 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         this.parser = parser;
     }
 
-    public JsonArray getAST() {
-        return data_array;
+    public JsonArray getTreeNodes() {
+        return treeNodes;
     }
 
     /**
@@ -52,8 +52,10 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         data_object.addProperty("id", id);
         data_object.addProperty("name", name);
         data_object.addProperty("parent_id", parent_id);
+        // insert an empty JSON array to store explanations held at each node
+        data_object.add("explanations", new JsonArray());
         // add the newly created JSON object to JSON array
-        data_array.add(data_object);
+        treeNodes.add(data_object);
     }
 
     /**

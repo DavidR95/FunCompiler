@@ -17,6 +17,8 @@ import org.antlr.v4.runtime.misc.*;
 import java.util.List;
 import java.util.LinkedList;
 
+import com.google.gson.JsonArray;
+
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
 	// An ArrayList of Strings, each entry holding an error
@@ -24,10 +26,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private int errorCount = 0;
 
+	// Representation of the AST
+	private JsonArray treeNodes;
+
 	private CommonTokenStream tokens;
 
-	public FunCheckerVisitor(CommonTokenStream toks) {
+	public FunCheckerVisitor(CommonTokenStream toks, JsonArray treeNodes) {
 	    tokens = toks;
+		this.treeNodes = treeNodes;
 	}
 
 	private void reportError (String message, ParserRuleContext ctx) {
