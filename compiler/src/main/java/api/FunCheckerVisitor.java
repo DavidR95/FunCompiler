@@ -26,6 +26,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private int errorCount = 0;
 
+	// Representation of the AST
 	private JsonArray treeNodes;
 
 	private CommonTokenStream tokens;

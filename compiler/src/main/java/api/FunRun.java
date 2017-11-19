@@ -45,8 +45,11 @@ public class FunRun {
 		// Add a new customer listener
 		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		// Creates the parser object
 		FunParser parser = createParser(tokens);
+		// Carries out syntactic analysis and creates the parse tree
 		ParseTree ast = syntacticAnalyse(parser);
+		// Visits the parse tree to build a repesentation of the AST
 		JsonArray treeNodes = buildAST(ast, parser);
 		contextualAnalyse(ast,tokens,treeNodes);
 		SVM objprog = codeGenerate(ast);
@@ -54,6 +57,7 @@ public class FunRun {
 		return objprog;
 	}
 
+	// Create the parser object
 	private static FunParser createParser(CommonTokenStream tokens)
 		throws Exception {
 		FunParser parser = new FunParser(tokens);
@@ -80,6 +84,7 @@ public class FunRun {
 		return ast;
 	}
 
+	// Visit the parse tree and build an AST
 	private static JsonArray buildAST(ParseTree ast, FunParser parser) {
 		// Create a visitor to walk to parse tree and construct an AST
 		FunASTVisitor astVisitor = new FunASTVisitor(parser);
