@@ -6,12 +6,12 @@ import com.google.gson.JsonArray;
 
 public class FunHelper {
 
-    public static JsonObject searchTreeNodes(JsonArray treeNodes, int nodeId) {
+    public static JsonArray searchTreeNodes(JsonArray treeNodes, int nodeId) {
         for (JsonElement treeNode : treeNodes) {
             JsonObject treeNodeObject = treeNode.getAsJsonObject();
             int id = treeNodeObject.get("id").getAsInt();
             if (id == nodeId)
-                return treeNodeObject;
+                return treeNodeObject.getAsJsonArray("explanations");
         }
         return null;
     }
