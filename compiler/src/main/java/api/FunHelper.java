@@ -9,8 +9,7 @@ public class FunHelper {
     public static JsonArray searchTreeNodes(JsonArray treeNodes, int nodeId) {
         for (JsonElement treeNode : treeNodes) {
             JsonObject treeNodeObject = treeNode.getAsJsonObject();
-            int id = treeNodeObject.get("id").getAsInt();
-            if (id == nodeId)
+            if (nodeId == treeNodeObject.get("id").getAsInt())
                 return treeNodeObject.getAsJsonArray("explanations");
         }
         return null;

@@ -74,7 +74,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
-	private void predefine (JsonObject treeNode) {
+	private void predefine () {
 	// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   new Type.Mapping(Type.VOID, Type.INT));
@@ -179,8 +179,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		JsonObject treeNode = FunHelper.searchTreeNodes(treeNodes, ctx.hashCode());
-	    predefine(treeNode);
+	    predefine();
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
