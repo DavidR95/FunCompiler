@@ -52,6 +52,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         data_object.addProperty("id", id);
         data_object.addProperty("name", name);
         data_object.addProperty("parent_id", parent_id);
+        data_object.add("explanations", new JsonArray());
         // add the newly created JSON object to JSON array
         treeNodes.add(data_object);
     }

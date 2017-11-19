@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.misc.*;
 import java.util.List;
 import java.util.LinkedList;
 
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
@@ -72,15 +73,16 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	// Scope checking
 
 	private SymbolTable<Type> typeTable =
-	   new SymbolTable<Type>();
+		new SymbolTable<Type>();
 
 	private void predefine (JsonObject treeNode) {
 	// Add predefined procedures to the type table.
 		typeTable.put("read",
-		   new Type.Mapping(Type.VOID, Type.INT));
+		   	new Type.Mapping(Type.VOID, Type.INT));
 		typeTable.put("write",
-		   new Type.Mapping(Type.INT, Type.VOID));
-		treeNode.addProperty("Explanations", "Predefining read and write functions.");
+		   	new Type.Mapping(Type.INT, Type.VOID));
+		treeNode.get("explanations").getAsJsonArray()
+			.add(new JsonPrimitive("Predefining read and write procedures."));
 	}
 
 	private void define (String id, Type type,
