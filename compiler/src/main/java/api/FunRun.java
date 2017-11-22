@@ -13,9 +13,11 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.util.List;
+import java.util.Map;
 import java.io.InputStream;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class FunRun {
 
@@ -50,8 +52,12 @@ public class FunRun {
 		// Carries out syntactic analysis and creates the parse tree
 		ParseTree ast = syntacticAnalyse(parser);
 		// Visits the parse tree to build a repesentation of the AST
-		JsonArray treeNodes = buildAST(ast, parser);
-		contextualAnalyse(ast,tokens,treeNodes);
+		FunASTVisitor astVisitor = buildAST(ast, parser);
+		// Retrieve the flat data structure representing the ast
+		JsonArray treeNodes = astVisitor.getTreeNodes();
+		// Retrieve the mapping from parse tree object to JSON objects
+		Map<Object, JsonObject> parseTreeProperties = astVisitor.getParseTreeProperties();
+		contextualAnalyse(ast,tokens,treeNodes,parseTreeProperties);
 		SVM objprog = codeGenerate(ast);
 		response.setTreeNodes(treeNodes);
 		return objprog;
@@ -85,22 +91,20 @@ public class FunRun {
 	}
 
 	// Visit the parse tree and build an AST
-	private static JsonArray buildAST(ParseTree ast, FunParser parser) {
+	private static FunASTVisitor buildAST(ParseTree ast, FunParser parser) {
 		// Create a visitor to walk to parse tree and construct an AST
 		FunASTVisitor astVisitor = new FunASTVisitor(parser);
 		// Walk the parse tree
 		astVisitor.visit(ast);
-		// Retrieve the flat data structure representing the ast
-		JsonArray treeNodes = astVisitor.getTreeNodes();
-		return treeNodes;
+		return astVisitor;
 	}
 
 	// Perform contextual analysis of a Fun program,
 	// represented by an AST.
 	// Print any error messages.
-    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens, JsonArray treeNodes)
+    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens, JsonArray treeNodes, Map<Object, JsonObject> parseTreeProperties)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes, parseTreeProperties);
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(ast);

@@ -16,8 +16,11 @@ import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
@@ -29,11 +32,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	// Representation of the AST
 	private JsonArray treeNodes;
 
+	private Map<Object, JsonObject> parseTreeProperties;
+
 	private CommonTokenStream tokens;
 
-	public FunCheckerVisitor(CommonTokenStream toks, JsonArray treeNodes) {
+	public FunCheckerVisitor(CommonTokenStream toks, JsonArray treeNodes, Map<Object, JsonObject> parseTreeProperties) {
 	    tokens = toks;
 		this.treeNodes = treeNodes;
+		this.parseTreeProperties = parseTreeProperties;
 	}
 
 	private void reportError (String message, ParserRuleContext ctx) {
@@ -74,8 +80,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
-	private void predefine () {
-	// Add predefined procedures to the type table.
+	private void predefine (ParserRuleContext ctx) {
+		parseTreeProperties.get(ctx).getAsJsonArray("explanations").add(new JsonPrimitive("placeholder"));
+		// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   new Type.Mapping(Type.VOID, Type.INT));
 		typeTable.put("write",
@@ -179,7 +186,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-	    predefine();
+	    predefine(ctx);
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
