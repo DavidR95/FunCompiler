@@ -41,17 +41,17 @@ public class FunRun {
 	private static SVM compile (InputStream source) throws Exception {
 		// Remove any old error messages
 		SyntaxErrorListener.reset();
-		FunLexer lexer = new FunLexer(new ANTLRInputStream(source));
-		// Remove the default error listeners
-		lexer.removeErrorListeners();
-		// Add a new customer listener
-		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
+		// Convert the source code into an ANTLR input stream
+		ANTLRInputStream inputStream = new ANTLRInputStream(source);
+		// Create the lexer object
+		FunLexer lexer = createLexer(inputStream);
+		// Create a token stream using the lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		// Creates the parser object
+		// Create the parser object
 		FunParser parser = createParser(tokens);
-		// Carries out syntactic analysis and creates the parse tree
+		// Carry out syntactic analysis and create the parse tree
 		ParseTree ast = syntacticAnalyse(parser);
-		// Visits the parse tree to build a repesentation of the AST
+		// Visit the parse tree to build a repesentation of the AST
 		FunASTVisitor astVisitor = buildAST(ast, parser);
 		// Retrieve the flat data structure representing the ast
 		JsonArray treeNodes = astVisitor.getTreeNodes();
@@ -61,6 +61,15 @@ public class FunRun {
 		SVM objprog = codeGenerate(ast);
 		response.setTreeNodes(treeNodes);
 		return objprog;
+	}
+
+	private static FunLexer createLexer(ANTLRInputStream inputStream) {
+		FunLexer lexer = new FunLexer(inputStream);
+		// Remove the default error listeners
+		lexer.removeErrorListeners();
+		// Add a new customer listener
+		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
+		return lexer;
 	}
 
 	// Create the parser object
