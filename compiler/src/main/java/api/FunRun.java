@@ -13,9 +13,11 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.util.List;
+import java.util.Map;
 import java.io.InputStream;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class FunRun {
 
@@ -39,22 +41,35 @@ public class FunRun {
 	private static SVM compile (InputStream source) throws Exception {
 		// Remove any old error messages
 		SyntaxErrorListener.reset();
-		FunLexer lexer = new FunLexer(new ANTLRInputStream(source));
+		// Convert the source code into an ANTLR input stream
+		ANTLRInputStream inputStream = new ANTLRInputStream(source);
+		// Create the lexer object
+		FunLexer lexer = createLexer(inputStream);
+		// Create a token stream using the lexer
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		// Create the parser object
+		FunParser parser = createParser(tokens);
+		// Carry out syntactic analysis and create the parse tree
+		ParseTree parseTree = syntacticAnalyse(parser);
+		// Visit the parse tree to build a repesentation of the AST
+		FunASTVisitor astVisitor = buildAST(parseTree, parser);
+		// Retrieve the flat data structure representing the AST
+		JsonArray treeNodes = astVisitor.getTreeNodes();
+		// Retrieve the mapping from parse tree objects to JSON objects
+		Map<Object, JsonObject> parseTreeProperties = astVisitor.getParseTreeProperties();
+		contextualAnalyse(parseTree,tokens,treeNodes,parseTreeProperties);
+		SVM objprog = codeGenerate(parseTree);
+		response.setTreeNodes(treeNodes);
+		return objprog;
+	}
+
+	private static FunLexer createLexer(ANTLRInputStream inputStream) {
+		FunLexer lexer = new FunLexer(inputStream);
 		// Remove the default error listeners
 		lexer.removeErrorListeners();
 		// Add a new customer listener
 		lexer.addErrorListener(SyntaxErrorListener.LISTENER);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		// Creates the parser object
-		FunParser parser = createParser(tokens);
-		// Carries out syntactic analysis and creates the parse tree
-		ParseTree ast = syntacticAnalyse(parser);
-		// Visits the parse tree to build a repesentation of the AST
-		JsonArray treeNodes = buildAST(ast, parser);
-		contextualAnalyse(ast,tokens,treeNodes);
-		SVM objprog = codeGenerate(ast);
-		response.setTreeNodes(treeNodes);
-		return objprog;
+		return lexer;
 	}
 
 	// Create the parser object
@@ -69,11 +84,10 @@ public class FunRun {
 	}
 
 	// Perform syntactic analysis of a Fun source program.
-	// Print any error messages.
-	// Return an AST representation of the Fun program.
+	// Return the parse tree (concrete syntax tree) representation of the Fun program.
 	private static ParseTree syntacticAnalyse(FunParser parser)
 		throws Exception {
-	    ParseTree ast = parser.program();
+	    ParseTree parseTree = parser.program();
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		// Retrieve all syntax errors reported
 		List<String> errors = SyntaxErrorListener.getSyntaxErrors();
@@ -81,29 +95,25 @@ public class FunRun {
 		response.setNumSyntaxErrors(numErrors);
 		// Set the actual syntax errors in the response object
 		response.setSyntaxErrors(errors);
-		return ast;
+		return parseTree;
 	}
 
 	// Visit the parse tree and build an AST
-	private static JsonArray buildAST(ParseTree ast, FunParser parser) {
+	private static FunASTVisitor buildAST(ParseTree parseTree, FunParser parser) {
 		// Create a visitor to walk to parse tree and construct an AST
 		FunASTVisitor astVisitor = new FunASTVisitor(parser);
 		// Walk the parse tree
-		astVisitor.visit(ast);
-		// Retrieve the flat data structure representing the ast
-		JsonArray treeNodes = astVisitor.getTreeNodes();
-		return treeNodes;
+		astVisitor.visit(parseTree);
+		return astVisitor;
 	}
 
-	// Perform contextual analysis of a Fun program,
-	// represented by an AST.
-	// Print any error messages.
-    private static void contextualAnalyse (ParseTree ast, CommonTokenStream tokens, JsonArray treeNodes)
+	// Perform contextual analysis of a Fun program.
+    private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens, JsonArray treeNodes, Map<Object, JsonObject> parseTreeProperties)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes, parseTreeProperties);
 		// Remove any old error messages
 		checker.reset();
-		checker.visit(ast);
+		checker.visit(parseTree);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
 		List<String> errors = checker.getContextualErrors();
@@ -114,11 +124,11 @@ public class FunRun {
 	}
 
 	// Perform code generation of a Fun program,
-	// represented by an AST, emitting SVM code.
+	// represented by a parse tree, emitting SVM code.
 	// Also print the object code.
-	private static SVM codeGenerate (ParseTree ast)	throws Exception  {
+	private static SVM codeGenerate (ParseTree parseTree) throws Exception  {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
-		encoder.visit(ast);
+		encoder.visit(parseTree);
 		SVM objectprog = encoder.getSVM();
 		// Pass the response object
 		objectprog.showCode(response);
