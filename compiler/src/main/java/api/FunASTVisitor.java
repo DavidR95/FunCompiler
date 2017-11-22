@@ -27,10 +27,11 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     // Stores the AST as flat JSON data
     private JsonArray treeNodes = new JsonArray();
 
+    // Stores a mapping from parse tree objects to their corresponding JSON objects
+    private Map<Object, JsonObject> parseTreeProperties = new HashMap<Object, JsonObject>();
+
     // Stores a stack of parent node ids
     private Stack<Integer> parentNodes = new Stack<Integer>();
-
-    private Map<Object, JsonObject> parseTreeProperties = new HashMap<Object, JsonObject>();
 
     public FunASTVisitor(Parser parser) {
         this.parser = parser;
@@ -61,7 +62,8 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         data_object.addProperty("name", name);
         data_object.addProperty("parent_id", parent_id);
         // insert an empty JSON array to store explanations held at each node
-        data_object.add("explanations", new JsonArray());
+        data_object.add("contextual_explanations", new JsonArray());
+        // insert a mapping from this ctx to the created JSON object
         parseTreeProperties.put(ctx, data_object);
         // add the newly created JSON object to JSON array
         treeNodes.add(data_object);

@@ -74,6 +74,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		contextualErrors.clear();
 	}
 
+	// Convert rule context to the contextual explanations JSON array
+	private JsonArray convertContextToJson(Object ctx) {
+		JsonObject parseTreeJson = parseTreeProperties.get(ctx);
+		return parseTreeJson.getAsJsonArray("contextual_explanations");
+	}
+
 
 	// Scope checking
 
@@ -81,7 +87,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	   new SymbolTable<Type>();
 
 	private void predefine (ParserRuleContext ctx) {
-		parseTreeProperties.get(ctx).getAsJsonArray("explanations").add(new JsonPrimitive("placeholder"));
+		convertContextToJson(ctx).add(new JsonPrimitive("placeholder"));
 		// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   new Type.Mapping(Type.VOID, Type.INT));
