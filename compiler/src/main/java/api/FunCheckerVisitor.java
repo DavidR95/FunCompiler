@@ -201,7 +201,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		animationOrder.add(ctx.hashCode());
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
-		System.err.println(animationOrder);
 	    return null;
 	}
 
@@ -212,6 +211,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProc(FunParser.ProcContext ctx) {
+		animationOrder.add(ctx.hashCode());
+		animationOrder.add(ctx.ID().hashCode());
 		animationOrder.add(ctx.hashCode());
 	    typeTable.enterLocalScope();
 	    Type t;
@@ -226,8 +227,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl) {
 			visit(vd);
-			animationOrder.add(ctx.hashCode());
 		}
+		animationOrder.add(ctx.hashCode());
 	    visit(ctx.seq_com());
 		animationOrder.add(ctx.hashCode());
 	    typeTable.exitLocalScope();
@@ -242,15 +243,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFunc(FunParser.FuncContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    typeTable.enterLocalScope();
 	    Type t1 = visit(ctx.type());
-		animationOrder.add(ctx.hashCode());
 	    Type t2;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 	    if (fd != null) {
 			t2 = visit(fd);
-			animationOrder.add(ctx.hashCode());
 	    } else
 			t2 = Type.VOID;
 	    Type functype = new Type.Mapping(t2, t1);
@@ -258,12 +256,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl) {
 			visit(vd);
-			animationOrder.add(ctx.hashCode());
 		}
 	    visit(ctx.seq_com());
-		animationOrder.add(ctx.hashCode());
 	    Type returntype = visit(ctx.expr());
-		animationOrder.add(ctx.hashCode());
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
 	    define(ctx.ID().getText(), functype, ctx);
@@ -299,6 +294,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	public Type visitVar(FunParser.VarContext ctx) {
 		animationOrder.add(ctx.hashCode());
 	    Type t1 = visit(ctx.type());
+		animationOrder.add(ctx.hashCode());
+		animationOrder.add(ctx.ID().hashCode());
 		animationOrder.add(ctx.hashCode());
 	    Type t2 = visit(ctx.expr());
 		animationOrder.add(ctx.hashCode());
@@ -337,6 +334,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitAssn(FunParser.AssnContext ctx) {
 		animationOrder.add(ctx.hashCode());
+		animationOrder.add(ctx.ID().hashCode());
+		animationOrder.add(ctx.hashCode());
 	    Type tvar = retrieve(ctx.ID().getText(), ctx);
 	    Type t = visit(ctx.expr());
 		animationOrder.add(ctx.hashCode());
@@ -351,9 +350,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProccall(FunParser.ProccallContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    Type t = visit(ctx.actual());
-		animationOrder.add(ctx.hashCode());
 	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
 	    if (! tres.equiv(Type.VOID))
 		reportError("procedure should be void", ctx);
@@ -367,14 +364,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitIf(FunParser.IfContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    Type t = visit(ctx.expr());
-		animationOrder.add(ctx.hashCode());
 	    visit(ctx.c1);
-		animationOrder.add(ctx.hashCode());
 	    if (ctx.c2 != null) {
 			visit(ctx.c2);
-			animationOrder.add(ctx.hashCode());
 		}
 	    checkType(Type.BOOL, t, ctx);
 	    return null;
@@ -390,9 +383,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		animationOrder.add(ctx.hashCode());
 	    Type t = visit(ctx.expr());
 		animationOrder.add(ctx.hashCode());
+		checkType(Type.BOOL, t, ctx);
 	    visit(ctx.seq_com());
-		animationOrder.add(ctx.hashCode());
-	    checkType(Type.BOOL, t, ctx);
 	    return null;
 	}
 
@@ -405,7 +397,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	public Type visitSeq(FunParser.SeqContext ctx) {
 		animationOrder.add(ctx.hashCode());
 	    visitChildren(ctx);
-		animationOrder.add(ctx.hashCode());
 	    return null;
 	}
 
@@ -415,15 +406,15 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitExpr(FunParser.ExprContext ctx) {
-		animationOrder.add(ctx.hashCode());
-	    Type t1 = visit(ctx.e1);
-		animationOrder.add(ctx.hashCode());
 	    if (ctx.e2 != null) {
+			animationOrder.add(ctx.op.hashCode());
+			Type t1 = visit(ctx.e1);
+			animationOrder.add(ctx.op.hashCode());
 			Type t2 = visit(ctx.e2);
-			animationOrder.add(ctx.hashCode());
+			animationOrder.add(ctx.op.hashCode());
 			return checkBinary(COMPTYPE, t1, t2, ctx);
 	    } else {
-			return t1;
+			return visit(ctx.e1);
 	    }
 	}
 
@@ -433,15 +424,15 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
-		animationOrder.add(ctx.hashCode());
-	    Type t1 = visit(ctx.e1);
-		animationOrder.add(ctx.hashCode());
 	    if (ctx.e2 != null) {
+			animationOrder.add(ctx.op.hashCode());
+			Type t1 = visit(ctx.e1);
+			animationOrder.add(ctx.op.hashCode());
 			Type t2 = visit(ctx.e2);
-			animationOrder.add(ctx.hashCode());
+			animationOrder.add(ctx.op.hashCode());
 			return checkBinary(ARITHTYPE, t1, t2, ctx);
 	    } else {
-			return t1;
+			return visit(ctx.e1);
 	    }
 	}
 
@@ -496,9 +487,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFunccall(FunParser.FunccallContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    Type t = visit(ctx.actual());
-		animationOrder.add(ctx.hashCode());
 	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
 	    if (tres.equiv(Type.VOID))
 		reportError("procedure should be non-void", ctx);
@@ -512,9 +501,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNot(FunParser.NotContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    Type t = visit(ctx.prim_expr());
-		animationOrder.add(ctx.hashCode());
 	    return checkUnary(NOTTYPE, t, ctx);
 	}
 
@@ -534,12 +521,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitActual(FunParser.ActualContext ctx) {
-		animationOrder.add(ctx.hashCode());
 	    FunParser.ExprContext ec = ctx.expr();
 	    Type t;
 	    if (ec != null) {
 			t = visit(ec);
-			animationOrder.add(ctx.hashCode());
 	    } else
 			t = Type.VOID;
 	    return t;
