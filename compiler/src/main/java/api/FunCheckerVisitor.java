@@ -82,7 +82,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		return parseTreeJson.getAsJsonArray("contextual_explanations");
 	}
 
-	private List<Integer> getAnimationOrder() {
+	private void addContextualExplanation(Object ctx, String visit, String explanation) {
+		JsonArray contextualExplanations = convertContextToJson(ctx);
+		JsonObject explanationObject = new JsonObject();
+		explanationObject.addProperty(visit, explanation);
+		contextualExplanations.add(explanationObject);
+	}
+
+	public List<Integer> getAnimationOrder() {
 		return animationOrder.stream().map(context -> context.hashCode()).collect(Collectors.toList());
 	}
 
@@ -108,11 +115,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			reportError(id + " is redeclared", decl);
 	}
 
-	private Type retrieve (String id, ParserRuleContext occ) {
+	private Type retrieve (String id, ParserRuleContext occ, String visit) {
 		// Retrieve id's type from the type table.
+		addContextualExplanation(occ, visit, "Getting " + id + " from the type table");
 		Type type = typeTable.get(id);
 		if (type == null) {
 			reportError(id + " is undeclared", occ);
+			addContextualExplanation(occ, visit, id + " is undeclared, error");
 			return Type.ERROR;
 		} else
 			return type;
@@ -144,7 +153,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	// Check that a procedure call identifies a procedure
 	// and that its argument type matches the proecure's
 	// type. Return the type of the procedure call.
-		Type typeProc = retrieve(id, call);
+		Type typeProc = retrieve(id, call, "-1");
 		if (! (typeProc instanceof Type.Mapping)) {
 			reportError(id + " is not a procedure", call);
 			return Type.ERROR;
@@ -197,12 +206,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
 		animationOrder.add(ctx);
+		addContextualExplanation(ctx, "0", "Predefine read and write procedures");
 		predefine();
+		addContextualExplanation(ctx, "0", "Visit children");
 	    visitChildren(ctx);
 		animationOrder.add(ctx);
-	    Type tmain = retrieve("main", ctx);
+	    Type tmain = retrieve("main", ctx, "1");
 	    checkType(MAINTYPE, tmain, ctx);
-		System.err.println(animationOrder);
 	    return null;
 	}
 
@@ -339,7 +349,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		animationOrder.add(ctx);
 		animationOrder.add(ctx.ID());
 		animationOrder.add(ctx);
-	    Type tvar = retrieve(ctx.ID().getText(), ctx);
+	    Type tvar = retrieve(ctx.ID().getText(), ctx, "-1");
 	    Type t = visit(ctx.expr());
 		animationOrder.add(ctx);
 	    checkType(tvar, t, ctx);
@@ -480,7 +490,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitId(FunParser.IdContext ctx) {
 		animationOrder.add(ctx);
-	    return retrieve(ctx.ID().getText(), ctx);
+	    return retrieve(ctx.ID().getText(), ctx, "-1");
 	}
 
 	/**
