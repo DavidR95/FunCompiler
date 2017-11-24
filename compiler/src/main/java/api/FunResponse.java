@@ -19,6 +19,7 @@ public class FunResponse {
     private List<String> syntaxErrors = new LinkedList<String>();
     private List<String> contextualErrors = new LinkedList<String>();
     private List<String> objectCode = new LinkedList<String>();
+    private List<Integer> contextualAnimationOrder = new LinkedList<Integer>();
     private JsonArray treeNodes = new JsonArray();
     private String output = "";
 
@@ -40,6 +41,10 @@ public class FunResponse {
 
     public void setObjectCode(List<String> objectCode) {
         this.objectCode = objectCode;
+    }
+
+    public void setContextualAnimationOrder(List<Integer> contextualAnimationOrder) {
+        this.contextualAnimationOrder = contextualAnimationOrder;
     }
 
     public void setTreeNodes(JsonArray treeNodes) {
