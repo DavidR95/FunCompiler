@@ -86,8 +86,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
-	private void predefine (ParserRuleContext ctx) {
-		convertContextToJson(ctx).add(new JsonPrimitive("placeholder"));
+	private void predefine () {
 		// Add predefined procedures to the type table.
 		typeTable.put("read",
 		   new Type.Mapping(Type.VOID, Type.INT));
@@ -99,6 +98,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	                     ParserRuleContext decl) {
 	// Add id with its type to the type table, checking
 	// that id is not already declared in the same scope.
+		convertContextToJson(decl).add(new JsonPrimitive("Put " + id + " in the type table along with its type: " + type));
 		boolean ok = typeTable.put(id, type);
 		if (!ok)
 			reportError(id + " is redeclared", decl);
@@ -192,7 +192,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-	    predefine(ctx);
+	    predefine();
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
@@ -278,7 +278,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitVar(FunParser.VarContext ctx) {
 	    Type t1 = visit(ctx.type());
+		convertContextToJson(ctx).add(new JsonPrimitive("Retrieve declared type: " + t1));
 	    Type t2 = visit(ctx.expr());
+		convertContextToJson(ctx).add(new JsonPrimitive("Retrieve type of expression: " + t2));
 	    define(ctx.ID().getText(), t1, ctx);
 	    checkType(t1, t2, ctx);
 	    return null;
