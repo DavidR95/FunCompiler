@@ -93,17 +93,15 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		return animationOrder.stream().map(context -> context.hashCode()).collect(Collectors.toList());
 	}
 
-	// Scope checking
+	//-- Scope checking --//
 
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
 	private void predefine () {
 		// Add predefined procedures to the type table.
-		typeTable.put("read",
-		   new Type.Mapping(Type.VOID, Type.INT));
-		typeTable.put("write",
-		   new Type.Mapping(Type.INT, Type.VOID));
+		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
+		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
 	}
 
 	private void define (String id, Type type,
@@ -127,7 +125,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			return type;
 	}
 
-	// Type checking
+	//-- Type checking --//
 
 	private static final Type.Mapping
 	   NOTTYPE = new Type.Mapping(Type.BOOL, Type.BOOL),
@@ -137,22 +135,32 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	      new Type.Pair(Type.INT, Type.INT), Type.INT),
 	   MAINTYPE = new Type.Mapping(Type.VOID, Type.VOID);
 
-	private void checkType (Type typeExpected,
-	                        Type typeActual,
+	/**
+   	 * Checks that a constuct's actual type matches the
+	 * expected type.
+   	 * @param typeExpected the expected type of the contruct
+   	 * @param typeActual the actual type of the construct
+   	 * @param construct the parse tree
+   	 */
+	private void checkType (Type typeExpected, Type typeActual,
 	                        ParserRuleContext construct) {
-	// Check that a construct's actual type matches
-	// the expected type.
-		if (! typeActual.equiv(typeExpected))
+		if (!typeActual.equiv(typeExpected))
 			reportError("type is " + typeActual
 			   + ", should be " + typeExpected,
 			   construct);
 	}
 
+	/**
+	 * Check that a procedure call identifies a procedure
+	 * and that its argument type matches the procedure's
+	 * type. Return the type of the procedure call.
+	 * @param id the name of the procedure
+	 * @param typeArg the type of the argument
+	 * @param call the parse tree
+	 * @return the range of the mapping
+	 */
 	private Type checkCall (String id, Type typeArg,
 	                        ParserRuleContext call) {
-	// Check that a procedure call identifies a procedure
-	// and that its argument type matches the proecure's
-	// type. Return the type of the procedure call.
 		Type typeProc = retrieve(id, call, "-1");
 		if (! (typeProc instanceof Type.Mapping)) {
 			reportError(id + " is not a procedure", call);
@@ -164,34 +172,38 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		}
 	}
 
-	private Type checkUnary (Type.Mapping typeOp,
-	                         Type typeArg,
+	/**
+	 * Check that a unary operator operand's type matches
+	 * the operator's type. Return the type of the operator
+	 * @param typeOp the type of the operator
+	 * @param typeArg the type of the argument
+	 * @param op the parse tree
+	 * @return the range of the mapping
+	 */
+	private Type checkUnary (Type.Mapping typeOp, Type typeArg,
 	                         ParserRuleContext op) {
-	// Check that a unary operator's operand type matches
-	// the operator's type. Return the type of the operator
-	// application.
-		if (! (typeOp.domain instanceof Type.Primitive))
-			reportError(
-			   "unary operator should have 1 operand",
-			   op);
+		if (!(typeOp.domain instanceof Type.Primitive))
+			reportError("unary operator should have 1 operand", op);
 		else
 			checkType(typeOp.domain, typeArg, op);
 		return typeOp.range;
 	}
 
-	private Type checkBinary (Type.Mapping typeOp,
-	                          Type typeArg1, Type typeArg2,
-	                          ParserRuleContext op) {
-	// Check that a binary operator's operand types match
-	// the operator's type. Return the type of the operator
-	// application.
-		if (! (typeOp.domain instanceof Type.Pair))
-			reportError(
-			   "binary operator should have 2 operands",
-			   op);
+	/**
+	 * Check that a binary operator's operand types match the
+	 * operator's type. Return the type of the operator application.
+	 * @param typeOp the type of the operator
+	 * @param typeArg1 the type of the first argument
+	 * @param typeArg2 the type of the second argument
+	 * @param op the parse tree
+	 * @return the range of the mapping
+	 */
+	private Type checkBinary (Type.Mapping typeOp, Type typeArg1,
+							  Type typeArg2, ParserRuleContext op) {
+		if (!(typeOp.domain instanceof Type.Pair))
+			reportError("binary operator should have 2 operands", op);
 		else {
-			Type.Pair pair =
-			   (Type.Pair)typeOp.domain;
+			Type.Pair pair = (Type.Pair)typeOp.domain;
 			checkType(pair.first, typeArg1, op);
 			checkType(pair.second, typeArg2, op);
 		}
