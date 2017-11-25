@@ -98,23 +98,35 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private SymbolTable<Type> typeTable =
 	   new SymbolTable<Type>();
 
+	/**
+	 * Add predefined procedures to the type table.
+	 */
 	private void predefine () {
-		// Add predefined procedures to the type table.
 		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
 		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
 	}
 
-	private void define (String id, Type type,
-	                     ParserRuleContext decl) {
-		// Add id with its type to the type table, checking
-		// that id is not already declared in the same scope.
+	/**
+   	 * Add an id with its type to the type table, checking
+	 * that id is not already declared in the same scope.
+   	 * @param id the id of the variable
+	 * @param type the type of the variable
+   	 * @param decl the parse tree
+   	 */
+	private void define (String id, Type type, ParserRuleContext decl) {
 		boolean ok = typeTable.put(id, type);
 		if (!ok)
 			reportError(id + " is redeclared", decl);
 	}
 
+	/**
+   	 * Retrieve the id's type from the type table.
+   	 * @param id the id of the variable
+   	 * @param occ the parse tree
+   	 * @param visit the occurence of a visit a message should be associated
+	 * @return the type
+   	 */
 	private Type retrieve (String id, ParserRuleContext occ, String visit) {
-		// Retrieve id's type from the type table.
 		addContextualExplanation(occ, visit, "Getting " + id + " from the type table");
 		Type type = typeTable.get(id);
 		if (type == null) {
@@ -209,6 +221,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		}
 		return typeOp.range;
 	}
+
+	//-- Visitors --//
 
 	/**
 	 * Visit a parse tree produced by the {@code prog}
