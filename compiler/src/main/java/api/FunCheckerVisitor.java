@@ -224,7 +224,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		});
 		predefine();
 	    visitChildren(ctx);
-		addExplanation(ctx, new String[]{});
+		addExplanation(ctx, new String[]{
+			"Test"
+		});
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
