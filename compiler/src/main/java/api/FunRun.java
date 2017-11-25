@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.util.List;
-import java.util.Map;
 import java.io.InputStream;
 
 import com.google.gson.JsonArray;
@@ -107,7 +106,7 @@ public class FunRun {
 	// Perform contextual analysis of a Fun program.
     private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens, JsonArray treeNodes)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(parseTree);

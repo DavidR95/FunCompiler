@@ -43,6 +43,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * to determine who the parent is. Adds the newly created JSON object to an
     * ordered JSON array.
     * @param ctx the parse tree
+    * @param name the name of the node
     * @return the visitor result
     */
     private void createJsonObject(Object ctx, String name) {
