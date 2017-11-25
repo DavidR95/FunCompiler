@@ -122,7 +122,7 @@ function animateTree(animationOrder) {
     $.each(animationOrder, function(index, value) {
         if (previousNode != null)
             previousNode.transition().duration(500).delay(500 * index).style("fill", "white");
-        currentNode = d3.select("#node-" + value).select("circle");
+        currentNode = d3.select("#node-" + value.id).select("circle");
         currentNode.transition().duration(500).delay(500 * index).style("fill", "red");
         previousNode = currentNode;
     });

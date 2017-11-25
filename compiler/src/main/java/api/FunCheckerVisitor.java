@@ -74,7 +74,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		for (String explanation : explanations) {
 			explanationArray.add(new JsonPrimitive(explanation));
 		}
-		animationObject.add(Integer.toString(ctx.hashCode()), explanationArray);
+		animationObject.addProperty("id", ctx.hashCode());
+		animationObject.add("explanations", explanationArray);
 		animationOrder.add(animationObject);
 	}
 
