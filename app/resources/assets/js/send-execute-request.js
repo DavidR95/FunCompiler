@@ -121,10 +121,10 @@ function animateTree(animationOrder) {
     $.each(animationOrder, function(index, value) {
         d3.select("#node-" + value.id).select("circle").transition()
             .duration(500).delay(500 * index).style("fill", "red")
-            .transition().style("fill", "white").on("end", function() {
+            .on("start", function() {
                 $.each(value.explanations, function(index, value) {
                     console.log(value);
-                });
-            });
+                })
+            }).transition().style("fill", "white");
     });
 }
