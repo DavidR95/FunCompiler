@@ -53,7 +53,7 @@ public class FunRun {
 		FunASTVisitor astVisitor = buildAST(parseTree, parser);
 		// Retrieve the flat data structure representing the AST
 		JsonArray treeNodes = astVisitor.getTreeNodes();
-		contextualAnalyse(parseTree,tokens,treeNodes);
+		contextualAnalyse(parseTree,tokens);
 		SVM objprog = codeGenerate(parseTree);
 		response.setTreeNodes(treeNodes);
 		return objprog;
@@ -104,7 +104,7 @@ public class FunRun {
 	}
 
 	// Perform contextual analysis of a Fun program.
-    private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens, JsonArray treeNodes)
+    private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens)
 		throws Exception {
 		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
 		// Remove any old error messages
