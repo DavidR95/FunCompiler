@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
@@ -32,16 +33,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	// Representation of the AST
 	private JsonArray treeNodes;
 
-	private Map<Object, JsonObject> parseTreeProperties;
-
-	private List<Object> animationOrder = new LinkedList<Object>();
+	private JsonArray animationOrder = new JsonArray();
 
 	private CommonTokenStream tokens;
 
-	public FunCheckerVisitor(CommonTokenStream toks, JsonArray treeNodes, Map<Object, JsonObject> parseTreeProperties) {
+	public FunCheckerVisitor(CommonTokenStream toks, JsonArray treeNodes) {
 	    tokens = toks;
 		this.treeNodes = treeNodes;
-		this.parseTreeProperties = parseTreeProperties;
 	}
 
 	private void reportError (String message, ParserRuleContext ctx) {
@@ -76,27 +74,23 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		contextualErrors.clear();
 	}
 
-	// Convert rule context to the contextual explanations JSON array
-	private JsonArray convertContextToJson(Object ctx) {
-		JsonObject parseTreeJson = parseTreeProperties.get(ctx);
-		return parseTreeJson.getAsJsonArray("contextual_explanations");
+	private void addExplanation(Object ctx, String[] explanations) {
+		JsonObject animationObject = new JsonObject();
+		JsonArray explanationArray = new JsonArray();
+		for (String explanation : explanations) {
+			explanationArray.add(new JsonPrimitive(explanation));
+		}
+		animationObject.add(Integer.toString(ctx.hashCode()), explanationArray);
+		animationOrder.add(animationObject);
 	}
 
-	private void addContextualExplanation(Object ctx, String visit, String explanation) {
-		JsonArray contextualExplanations = convertContextToJson(ctx);
-		JsonObject explanationObject = new JsonObject();
-		explanationObject.addProperty(visit, explanation);
-		contextualExplanations.add(explanationObject);
-	}
-
-	public List<Integer> getAnimationOrder() {
-		return animationOrder.stream().map(context -> context.hashCode()).collect(Collectors.toList());
+	public JsonArray getAnimationOrder() {
+		return animationOrder;
 	}
 
 	//-- Scope checking --//
 
-	private SymbolTable<Type> typeTable =
-	   new SymbolTable<Type>();
+	private SymbolTable<Type> typeTable = new SymbolTable<Type>();
 
 	/**
 	 * Add predefined procedures to the type table.
@@ -126,12 +120,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 * @param visit the occurence of a visit a message should be associated
 	 * @return the type
    	 */
-	private Type retrieve (String id, ParserRuleContext occ, String visit) {
-		addContextualExplanation(occ, visit, "Getting " + id + " from the type table");
+	private Type retrieve (String id, ParserRuleContext occ) {
 		Type type = typeTable.get(id);
 		if (type == null) {
 			reportError(id + " is undeclared", occ);
-			addContextualExplanation(occ, visit, id + " is undeclared, error");
 			return Type.ERROR;
 		} else
 			return type;
@@ -173,8 +165,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	private Type checkCall (String id, Type typeArg,
 	                        ParserRuleContext call) {
-		Type typeProc = retrieve(id, call, "-1");
-		if (! (typeProc instanceof Type.Mapping)) {
+		Type typeProc = retrieve(id, call);
+		if (!(typeProc instanceof Type.Mapping)) {
 			reportError(id + " is not a procedure", call);
 			return Type.ERROR;
 		} else {
@@ -231,13 +223,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		animationOrder.add(ctx);
-		addContextualExplanation(ctx, "0", "Predefine read and write procedures");
+		addExplanation(ctx, new String[]{
+			"Predefine read and write procedures",
+			"Visit children"
+		});
 		predefine();
-		addContextualExplanation(ctx, "0", "Visit children");
 	    visitChildren(ctx);
-		animationOrder.add(ctx);
-	    Type tmain = retrieve("main", ctx, "1");
+		addExplanation(ctx, new String[]{});
+	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
 	}
@@ -249,15 +242,15 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProc(FunParser.ProcContext ctx) {
-		animationOrder.add(ctx);
-		animationOrder.add(ctx.ID());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
+		addExplanation(ctx.ID(), new String[]{});
+		addExplanation(ctx, new String[]{});
 	    typeTable.enterLocalScope();
 	    Type t;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 	    if (fd != null) {
 			t = visit(fd);
-			animationOrder.add(ctx);
+			addExplanation(ctx, new String[]{});
 	    } else
 			t = Type.VOID;
 	    Type proctype = new Type.Mapping(t, Type.VOID);
@@ -266,10 +259,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		if (!var_decl.isEmpty()) {
 		    for (FunParser.Var_declContext vd : var_decl)
 				visit(vd);
-			animationOrder.add(ctx);
+			addExplanation(ctx, new String[]{});
 		}
 	    visit(ctx.seq_com());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    typeTable.exitLocalScope();
 	    define(ctx.ID().getText(), proctype, ctx);
 	    return null;
@@ -311,12 +304,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFormal(FunParser.FormalContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    FunParser.TypeContext tc = ctx.type();
 	    Type t;
 	    if (tc != null) {
 			t = visit(tc);
-			animationOrder.add(ctx);
+			addExplanation(ctx, new String[]{});
 			define(ctx.ID().getText(), t, ctx);
 	    }
 	    else
@@ -331,13 +324,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitVar(FunParser.VarContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    Type t1 = visit(ctx.type());
-		animationOrder.add(ctx);
-		animationOrder.add(ctx.ID());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
+		addExplanation(ctx.ID(), new String[]{});
+		addExplanation(ctx, new String[]{});
 	    Type t2 = visit(ctx.expr());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    define(ctx.ID().getText(), t1, ctx);
 	    checkType(t1, t2, ctx);
 	    return null;
@@ -350,7 +343,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitBool(FunParser.BoolContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    return Type.BOOL;
 	}
 
@@ -361,7 +354,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitInt(FunParser.IntContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    return Type.INT;
 	}
 
@@ -372,12 +365,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitAssn(FunParser.AssnContext ctx) {
-		animationOrder.add(ctx);
-		animationOrder.add(ctx.ID());
-		animationOrder.add(ctx);
-	    Type tvar = retrieve(ctx.ID().getText(), ctx, "-1");
+		addExplanation(ctx, new String[]{});
+		addExplanation(ctx.ID(), new String[]{});
+		addExplanation(ctx, new String[]{});
+	    Type tvar = retrieve(ctx.ID().getText(), ctx);
 	    Type t = visit(ctx.expr());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    checkType(tvar, t, ctx);
 	    return null;
 	}
@@ -419,9 +412,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitWhile(FunParser.WhileContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    Type t = visit(ctx.expr());
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 		checkType(Type.BOOL, t, ctx);
 	    visit(ctx.seq_com());
 	    return null;
@@ -434,7 +427,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitSeq(FunParser.SeqContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    visitChildren(ctx);
 	    return null;
 	}
@@ -446,11 +439,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitExpr(FunParser.ExprContext ctx) {
 	    if (ctx.e2 != null) {
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			Type t1 = visit(ctx.e1);
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			Type t2 = visit(ctx.e2);
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			return checkBinary(COMPTYPE, t1, t2, ctx);
 	    } else {
 			return visit(ctx.e1);
@@ -464,11 +457,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
 	    if (ctx.e2 != null) {
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			Type t1 = visit(ctx.e1);
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			Type t2 = visit(ctx.e2);
-			animationOrder.add(ctx.op);
+			addExplanation(ctx.op, new String[]{});
 			return checkBinary(ARITHTYPE, t1, t2, ctx);
 	    } else {
 			return visit(ctx.e1);
@@ -482,7 +475,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFalse(FunParser.FalseContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    return Type.BOOL;
 	}
 
@@ -493,7 +486,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitTrue(FunParser.TrueContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    return Type.BOOL;
 	}
 
@@ -504,7 +497,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNum(FunParser.NumContext ctx) {
-		animationOrder.add(ctx);
+		addExplanation(ctx, new String[]{});
 	    return Type.INT;
 	}
 
@@ -515,8 +508,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitId(FunParser.IdContext ctx) {
-		animationOrder.add(ctx);
-	    return retrieve(ctx.ID().getText(), ctx, "-1");
+		addExplanation(ctx, new String[]{});
+	    return retrieve(ctx.ID().getText(), ctx);
 	}
 
 	/**
