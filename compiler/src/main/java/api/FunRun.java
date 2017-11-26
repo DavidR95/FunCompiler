@@ -55,9 +55,9 @@ public class FunRun {
 		FunASTVisitor astVisitor = buildAST(parseTree, parser);
 		// Retrieve the flat data structure representing the AST
 		JsonArray treeNodes = astVisitor.getTreeNodes();
+		response.setTreeNodes(treeNodes);
 		contextualAnalyse(parseTree,tokens);
 		SVM objprog = codeGenerate(parseTree);
-		response.setTreeNodes(treeNodes);
 		return objprog;
 	}
 
