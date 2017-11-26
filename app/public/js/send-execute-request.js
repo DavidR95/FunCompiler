@@ -180,9 +180,7 @@ function drawTree(data, contextualAnimationOrder) {
 function animateTree(animationOrder) {
     $.each(animationOrder, function (index, value) {
         d3.select("#node-" + value.id).select("circle").transition().duration(500).delay(500 * index).style("fill", "red").on("start", function () {
-            $.each(value.explanations, function (index, value) {
-                console.log(value);
-            });
+            console.log(value.explanation);
         }).transition().style("fill", "white");
     });
 }
