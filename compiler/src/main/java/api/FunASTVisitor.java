@@ -14,8 +14,6 @@ import org.antlr.v4.runtime.misc.*;
 
 import java.util.Stack;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -26,9 +24,6 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
 
     // Stores the AST as flat JSON data
     private JsonArray treeNodes = new JsonArray();
-
-    // Stores a mapping from parse tree objects to their corresponding JSON objects
-    private Map<Object, JsonObject> parseTreeProperties = new HashMap<Object, JsonObject>();
 
     // Stores a stack of parent node ids
     private Stack<Integer> parentNodes = new Stack<Integer>();
@@ -41,15 +36,12 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         return treeNodes;
     }
 
-    public Map<Object, JsonObject> getParseTreeProperties() {
-        return parseTreeProperties;
-    }
-
     /**
     * Creates a new JSON object. Uses the node on top of the parentNodes stack
     * to determine who the parent is. Adds the newly created JSON object to an
     * ordered JSON array.
     * @param ctx the parse tree
+    * @param name the name of the node
     * @return the visitor result
     */
     private void createJsonObject(Object ctx, String name) {
@@ -61,10 +53,6 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         data_object.addProperty("id", id);
         data_object.addProperty("name", name);
         data_object.addProperty("parent_id", parent_id);
-        // insert an empty JSON array to store explanations held at each node
-        data_object.add("contextual_explanations", new JsonArray());
-        // insert a mapping from this ctx to the created JSON object
-        parseTreeProperties.put(ctx, data_object);
         // add the newly created JSON object to JSON array
         treeNodes.add(data_object);
     }

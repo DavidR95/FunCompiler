@@ -13,11 +13,9 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.util.List;
-import java.util.Map;
 import java.io.InputStream;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class FunRun {
 
@@ -55,9 +53,7 @@ public class FunRun {
 		FunASTVisitor astVisitor = buildAST(parseTree, parser);
 		// Retrieve the flat data structure representing the AST
 		JsonArray treeNodes = astVisitor.getTreeNodes();
-		// Retrieve the mapping from parse tree objects to JSON objects
-		Map<Object, JsonObject> parseTreeProperties = astVisitor.getParseTreeProperties();
-		contextualAnalyse(parseTree,tokens,treeNodes,parseTreeProperties);
+		contextualAnalyse(parseTree,tokens);
 		SVM objprog = codeGenerate(parseTree);
 		response.setTreeNodes(treeNodes);
 		return objprog;
@@ -108,12 +104,14 @@ public class FunRun {
 	}
 
 	// Perform contextual analysis of a Fun program.
-    private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens, JsonArray treeNodes, Map<Object, JsonObject> parseTreeProperties)
+    private static void contextualAnalyse (ParseTree parseTree, CommonTokenStream tokens)
 		throws Exception {
-		FunCheckerVisitor checker = new FunCheckerVisitor(tokens, treeNodes, parseTreeProperties);
+		FunCheckerVisitor checker = new FunCheckerVisitor(tokens);
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(parseTree);
+		JsonArray animationOrder = checker.getAnimationOrder();
+		response.setContextualAnimationOrder(animationOrder);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
 		List<String> errors = checker.getContextualErrors();

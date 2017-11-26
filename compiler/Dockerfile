@@ -14,6 +14,3 @@ RUN ["mvn", "verify"]
 ADD src /compiler/src
 # Compile and package into a fat jar
 RUN ["mvn", "package"]
-
-# When the container is running, start the Spark web server
-CMD ["java", "-jar", "target/api-jar-with-dependencies.jar"]

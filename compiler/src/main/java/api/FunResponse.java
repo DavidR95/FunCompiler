@@ -9,18 +9,18 @@ package api;
 //////////////////////////////////////////////////////////////
 
 import java.util.List;
-import java.util.LinkedList;
 
 import com.google.gson.JsonArray;
 
 public class FunResponse {
-    private int numSyntaxErrors = 0;
-    private int numContextualErrors = 0;
-    private List<String> syntaxErrors = new LinkedList<String>();
-    private List<String> contextualErrors = new LinkedList<String>();
-    private List<String> objectCode = new LinkedList<String>();
-    private JsonArray treeNodes = new JsonArray();
-    private String output = "";
+    private int numSyntaxErrors;
+    private int numContextualErrors;
+    private List<String> syntaxErrors;
+    private List<String> contextualErrors;
+    private List<String> objectCode;
+    private JsonArray contextualAnimationOrder;
+    private JsonArray treeNodes;
+    private String output;
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
         this.numSyntaxErrors = numSyntaxErrors;
@@ -40,6 +40,10 @@ public class FunResponse {
 
     public void setObjectCode(List<String> objectCode) {
         this.objectCode = objectCode;
+    }
+
+    public void setContextualAnimationOrder(JsonArray contextualAnimationOrder) {
+        this.contextualAnimationOrder = contextualAnimationOrder;
     }
 
     public void setTreeNodes(JsonArray treeNodes) {

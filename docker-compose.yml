@@ -6,6 +6,8 @@ services:
     compiler:
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./compiler
+        # Launch the Spark web server (the compiler API)
+        command: java -jar target/api-jar-with-dependencies.jar
         # Mount 'compiler' directory to the container
         volumes:
             - ./compiler/src:/compiler/src/
@@ -16,6 +18,8 @@ services:
     app:
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./app
+        # Launch the Laravel server (the web app)
+        command: php artisan serve --host=0.0.0.0 --port=8000
         # Mount 'app' directory to the container
         volumes:
             - ./app:/app/

@@ -21,6 +21,7 @@ $("#execute-form").submit(function(e) {
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
+        var contextualAnimationOrder = response.contextualAnimationOrder;
         $(".program-tree").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
@@ -37,7 +38,7 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree").append("<br>");
         } else {
-            drawTree(treeNodes);
+            drawTree(treeNodes, contextualAnimationOrder);
         }
         $(".object-code").text("");
         $.each(objectCode, function(index, instruction) {
@@ -47,7 +48,7 @@ $("#execute-form").submit(function(e) {
     });
 });
 
-function drawTree(data) {
+function drawTree(data, contextualAnimationOrder) {
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -112,13 +113,18 @@ function drawTree(data) {
         });
 
     $("#play-button").on("click", function() {
-        animateTree(data);
+        animateTree(contextualAnimationOrder);
     });
 }
 
-function animateTree(data) {
-    $.each(data, function(index) {
-        d3.select("#node-" + this.id).select("circle").transition()
-            .duration(500).delay(500 * index).style("fill", "red");
+function animateTree(animationOrder) {
+    $.each(animationOrder, function(index, value) {
+        d3.select("#node-" + value.id).select("circle").transition()
+            .duration(500).delay(500 * index).style("fill", "red")
+            .on("start", function() {
+                $.each(value.explanations, function(index, value) {
+                    console.log(value);
+                });
+            }).transition().style("fill", "white");
     });
 }

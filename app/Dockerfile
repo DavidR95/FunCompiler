@@ -8,6 +8,3 @@ WORKDIR /app
 COPY . /app
 # Use the 'composer.json' file to download any PHP dependencies (including Laravel)
 RUN composer install
-
-# When the container is running, start the Laravel web server
-CMD php artisan serve --host=0.0.0.0 --port=8000
