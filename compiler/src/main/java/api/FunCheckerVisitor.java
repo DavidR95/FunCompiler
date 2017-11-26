@@ -116,11 +116,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the type
    	 */
 	private Type retrieve (String id, ParserRuleContext occ) {
+		addExplanation(occ, "Attempting to retrieve " + id + " from the type table");
 		Type type = typeTable.get(id);
 		if (type == null) {
+			addExplanation(occ, "Type error, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
+			addExplanation(occ, id + " successfully retrieved from the type table");
 			return type;
 	}
 
@@ -227,7 +230,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    visitChildren(ctx);
 		addExplanation(ctx, "Check a main procedure has been declared");
 	    Type tmain = retrieve("main", ctx);
-		addExplanation(ctx, "Check the main procedure is a void -> void procedure");
+		addExplanation(ctx, "Check main procedure is a void -> void procedure");
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
 	}
@@ -238,28 +241,29 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
+	 // NOT SURE THIS IS WORKING PROPERLY IN REGARDS TO IT VISITING FORMAL DECLARATION WHEN IT SHOULDN'T
 	public Type visitProc(FunParser.ProcContext ctx) {
-		addExplanation(ctx, "");
-		addExplanation(ctx.ID(), "");
-		addExplanation(ctx, "");
+		addExplanation(ctx, "Enter the local scope of the procedure");
 	    typeTable.enterLocalScope();
 	    Type t;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 	    if (fd != null) {
+			addExplanation(ctx, "Visit the formal declaration");
 			t = visit(fd);
-			addExplanation(ctx, "");
 	    } else
 			t = Type.VOID;
 	    Type proctype = new Type.Mapping(t, Type.VOID);
+		addExplanation(ctx, "Retrieve the ID of the procedure");
+		addExplanation(ctx.ID(), ctx.ID().getText());
 	    define(ctx.ID().getText(), proctype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 		if (!var_decl.isEmpty()) {
+			addExplanation(ctx, "Visit all variable declarations");
 		    for (FunParser.Var_declContext vd : var_decl)
 				visit(vd);
-			addExplanation(ctx, "");
 		}
 	    visit(ctx.seq_com());
-		addExplanation(ctx, "");
+		addExplanation(ctx, "Exit the local scope of the procedure");
 	    typeTable.exitLocalScope();
 	    define(ctx.ID().getText(), proctype, ctx);
 	    return null;
