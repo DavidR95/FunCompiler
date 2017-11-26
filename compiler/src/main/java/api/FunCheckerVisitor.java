@@ -98,9 +98,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 * @param decl the parse tree
    	 */
 	private void define (String id, Type type, ParserRuleContext decl) {
+		addExplanation(decl, "Attempting to add " + id + " to the type table along with its type, " + type);
 		boolean ok = typeTable.put(id, type);
-		if (!ok)
+		if (ok) {
+			addExplanation(decl, type + " " + id + " successfully added to the type table");
+		} else {
+			addExplanation(decl, "Type error, " + id + " is already declared");
 			reportError(id + " is redeclared", decl);
+		}
 	}
 
 	/**
@@ -138,10 +143,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 */
 	private void checkType (Type typeExpected, Type typeActual,
 	                        ParserRuleContext construct) {
-		if (!typeActual.equiv(typeExpected))
-			reportError("type is " + typeActual
-			   + ", should be " + typeExpected,
-			   construct);
+		if (typeActual.equiv(typeExpected)) {
+			addExplanation(construct, "Success, " + typeActual + " and " + typeExpected + " are of the same type");
+		} else {
+			addExplanation(construct, "Type error, type is " + typeActual + ", should be " + typeExpected);
+			reportError("type is " + typeActual+ ", should be " + typeExpected,
+				construct);
+		}
 	}
 
 	/**
@@ -322,7 +330,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		addExplanation(ctx, "Retrieve the type of the expression");
 	    Type t2 = visit(ctx.expr());
 		addExplanation(ctx, "Type received was: " + t2);
-		addExplanation(ctx, "Attempt to add " + ctx.ID().getText() + " to the type table along with its type " + t1);
 		define(ctx.ID().getText(), t1, ctx);
 		addExplanation(ctx, "Check declared type (" + t1 + ") is the same as the type of the expression (" + t2 + ")");
 	    checkType(t1, t2, ctx);
