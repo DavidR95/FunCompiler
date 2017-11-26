@@ -225,7 +225,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		predefine();
 	    visitChildren(ctx);
 		addExplanation(ctx, new String[]{
-			"Test"
+			"Check a main procedure has been declared",
+			"Check the main procedure is a void -> void procedure"
 		});
 	    Type tmain = retrieve("main", ctx);
 	    checkType(MAINTYPE, tmain, ctx);

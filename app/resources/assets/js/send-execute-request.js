@@ -124,7 +124,7 @@ function animateTree(animationOrder) {
             .on("start", function() {
                 $.each(value.explanations, function(index, value) {
                     console.log(value);
-                })
+                });
             }).transition().style("fill", "white");
     });
 }
