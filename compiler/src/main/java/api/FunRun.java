@@ -29,6 +29,8 @@ public class FunRun {
 			response = new FunResponse();
 			SVM objprog = compile(program);
 			objprog.interpret(response);
+		} catch (FunException e) {
+			response.setOutput("Compilation failed");
 		} catch (Exception e) {
 			// Java-based errors, not sure what to do with these right now
 		}
@@ -91,6 +93,8 @@ public class FunRun {
 		response.setNumSyntaxErrors(numErrors);
 		// Set the actual syntax errors in the response object
 		response.setSyntaxErrors(errors);
+		if (numErrors > 0)
+			throw new FunException();
 		return parseTree;
 	}
 
@@ -119,6 +123,8 @@ public class FunRun {
 		response.setNumContextualErrors(numErrors);
 		// Set the actual contextual errors in the response object
 		response.setContextualErrors(errors);
+		if (numErrors > 0)
+			throw new FunException();
 	}
 
 	// Perform code generation of a Fun program,
