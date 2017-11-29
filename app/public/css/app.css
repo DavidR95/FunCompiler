@@ -8350,14 +8350,11 @@ button.close {
   }
 }
 
-h1 {
-  color: black;
-}
-
 body,
 html,
 .container-fluid,
 .row {
+  background-color: black;
   height: 100%;
 }
 
