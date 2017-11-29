@@ -109,13 +109,6 @@ $("#execute-form").submit(function (e) {
                 $(".program-tree").append(index + 1 + ": " + syntaxError);
             });
             $(".program-tree").append("<br>");
-        } else if (numContextualErrors > 0) {
-            $(".program-tree").append("Number of contextual errors: " + numContextualErrors + "<br>");
-            $(".program-tree").append("Contextual errors: <br>");
-            $.each(contextualErrors, function (index, contextualError) {
-                $(".program-tree").append(index + 1 + ": " + contextualError);
-            });
-            $(".program-tree").append("<br>");
         } else {
             drawTree(treeNodes, contextualAnimationOrder);
         }
@@ -180,9 +173,7 @@ function drawTree(data, contextualAnimationOrder) {
 function animateTree(animationOrder) {
     $.each(animationOrder, function (index, value) {
         d3.select("#node-" + value.id).select("circle").transition().duration(500).delay(500 * index).style("fill", "red").on("start", function () {
-            $.each(value.explanations, function (index, value) {
-                console.log(value);
-            });
+            console.log(value.explanation);
         }).transition().style("fill", "white");
     });
 }
