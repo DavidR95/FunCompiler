@@ -108,7 +108,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		addExplanation(decl, "Attempting to add " + id + " to the type table along with its type, " + type);
 		boolean ok = typeTable.put(id, type);
 		if (ok) {
-			addExplanation(decl, type + " " + id + " successfully added to the type table");
+			addExplanation(decl, type + " " + id + " successfully added to the type table", String.valueOf(typeTable.checkScope()));
 		} else {
 			addExplanation(decl, "Type error, " + id + " is already declared");
 			reportError(id + " is redeclared", decl);

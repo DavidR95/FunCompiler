@@ -77,6 +77,14 @@ public class SymbolTable<A> {
 		locals = null;
 	}
 
+	/**
+   	 * Check whether we are currently in local or global scope.
+	 * @return true if global, false if local
+   	 */
+	public boolean checkScope() {
+		return locals == null;
+	}
+
 	public String toString () {
 	// Return a textual representation of this symbol table.
 		String s = "Globals: " + globals + "\n";
