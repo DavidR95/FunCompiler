@@ -36,19 +36,11 @@
             </div>
             <div class="col-sm-3 table-container">
                 <div class="right-container">
-                    <div class="object-code-heading-container">
-                        <p>Object Code</p>
+                    <div class="data-heading-container">
+                        <p>Data</p>
                     </div>
-                    <div class="object-code-output-container">
-                        <div class="object-code-container">
-                            <div class="object-code"></div>
-                        </div>
-                        <div class="output-container">
-                            <div class="output-heading-container">
-                                <p>Output</p>
-                            </div>
-                            <div class="output"></div>
-                        </div>
+                    <div class="data-container">
+                        <div class="data"></div>
                     </div>
                 </div>
             </div>

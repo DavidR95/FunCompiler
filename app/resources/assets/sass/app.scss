@@ -7,11 +7,8 @@
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
-h1 {
-    color: black;
-}
-
 body, html, .container-fluid, .row {
+    background-color: black;
     height: 100%;
 }
 
@@ -25,7 +22,7 @@ body, html, .container-fluid, .row {
     height: 100%;
 }
 
-.title-container, .controls-container, .object-code-heading-container {
+.title-container, .controls-container, .data-heading-container {
     display: table-row;
 }
 
@@ -36,14 +33,14 @@ body, html, .container-fluid, .row {
     }
 }
 
-.object-code-heading-container {
+.data-heading-container {
     p {
         margin-top: 45px;
         margin-bottom: 0;
     }
 }
 
-.program-input-container, .program-tree-container, .object-code-output-container {
+.program-input-container, .program-tree-container, .data-container {
     display: table-cell;
     height: 100%;
 }
@@ -72,45 +69,18 @@ body, html, .container-fluid, .row {
     }
 }
 
-.program-tree-container {
+.program-tree-container, .data-container {
     height: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
-    .program-tree {
+    .program-tree, .data {
         background-color: white;
         height: 100%;
         border: 1px solid #ccd0d2;
         border-radius: 4px;
+        overflow: auto;
     }
 }
-
-.object-code-container {
-    height: 75%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    .object-code {
-        background-color: white;
-        height: 100%;
-        border: 1px solid #ccd0d2;
-        border-radius: 4px;
-    }
-}
-
-.output-container {
-    height: 25%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    .output-heading-container {
-        height: 15%;
-    }
-    .output {
-        background-color: white;
-        height: 85%;
-        border: 1px solid #ccd0d2;
-        border-radius: 4px;
-    }
-}
-
 
 .node circle {
     fill: #fff;

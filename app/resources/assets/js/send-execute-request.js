@@ -33,11 +33,6 @@ $("#execute-form").submit(function(e) {
         } else {
             drawTree(treeNodes, contextualAnimationOrder);
         }
-        $(".object-code").text("");
-        $.each(objectCode, function(index, instruction) {
-            $(".object-code").append(instruction + "<br>");
-        });
-        $(".output").text(output);
     });
 });
 
@@ -111,11 +106,12 @@ function drawTree(data, contextualAnimationOrder) {
 }
 
 function animateTree(animationOrder) {
+    $(".data").text("");
     $.each(animationOrder, function(index, value) {
         d3.select("#node-" + value.id).select("circle").transition()
             .duration(500).delay(500 * index).style("fill", "red")
             .on("start", function() {
-                console.log(value.explanation);
+                $(".data").append(value.explanation + "<br>");
             }).transition().style("fill", "white");
     });
 }
