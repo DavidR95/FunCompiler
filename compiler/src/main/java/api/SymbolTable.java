@@ -78,11 +78,13 @@ public class SymbolTable<A> {
 	}
 
 	/**
-   	 * Check whether we are currently in local or global scope.
-	 * @return true if global, false if local
+   	 * Determines whether we are currently in local or global scope.
+	 * @return the scope
    	 */
-	public boolean checkScope() {
-		return locals == null;
+	public String getScope() {
+		if (locals == null)
+			return "global";
+		return "local";
 	}
 
 	public String toString () {
