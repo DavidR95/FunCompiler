@@ -68,9 +68,16 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	private void addExplanation(Object ctx, String explanation) {
+		addExplanation(ctx, explanation, null);
+	}
+
+	private void addExplanation(Object ctx, String explanation,
+								String typeTableCommand) {
 		JsonObject animationObject = new JsonObject();
 		animationObject.addProperty("id", ctx.hashCode());
 		animationObject.addProperty("explanation", explanation);
+		if (typeTableCommand != null)
+			animationObject.addProperty("typeTableCommand", typeTableCommand);
 		animationOrder.add(animationObject);
 	}
 
