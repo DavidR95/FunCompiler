@@ -19,6 +19,7 @@ import java.util.LinkedList;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
@@ -68,16 +69,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	private void addExplanation(Object ctx, String explanation) {
-		addExplanation(ctx, explanation, null);
-	}
-
-	private void addExplanation(Object ctx, String explanation,
-								String typeTableCommand) {
 		JsonObject animationObject = new JsonObject();
+		JsonArray typeTableArray = new JsonArray();
+		typeTable.getGlobals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("global - " + id + " - " + type)));
+		typeTable.getLocals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("local - " + id + " - " + type)));
 		animationObject.addProperty("id", ctx.hashCode());
 		animationObject.addProperty("explanation", explanation);
-		if (typeTableCommand != null)
-			animationObject.addProperty("typeTableCommand", typeTableCommand);
+		animationObject.add("typeTable", typeTableArray);
 		animationOrder.add(animationObject);
 	}
 
@@ -108,7 +106,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		addExplanation(decl, "Attempting to add " + id + " to the type table along with its type, " + type);
 		boolean ok = typeTable.put(id, type);
 		if (ok) {
-			addExplanation(decl, type + " " + id + " successfully added to the type table", typeTable.getScope() + " " + id + " " + type);
+			addExplanation(decl, type + " " + id + " successfully added to the type table");
 		} else {
 			addExplanation(decl, "Type error, " + id + " is already declared");
 			reportError(id + " is redeclared", decl);
