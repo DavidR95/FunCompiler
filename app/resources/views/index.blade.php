@@ -13,7 +13,7 @@
                     <div class="program-input-container">
                         <form id="execute-form" action="{{ route('execute') }}" method="post">
                             <div class="form-group">
-                                <textarea class="form-control" name="program" autofocus></textarea>
+                                <textarea id="code-editor" class="form-control" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
                                 <button class="btn btn-success" type="submit"><b>Execute</b></button>
@@ -53,4 +53,5 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/send-execute-request.js') }}"></script>
+    <script src="{{ asset('js/codemirror.js') }}"></script>
 @endsection

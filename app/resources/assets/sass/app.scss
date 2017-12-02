@@ -7,6 +7,10 @@
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+// CodeMirror
+@import "~codemirror/lib/codemirror.css";
+@import "~codemirror/theme/ambiance.css";
+
 body, html, .container-fluid, .row {
     background-color: black;
     height: 100%;
@@ -51,10 +55,8 @@ body, html, .container-fluid, .row {
         .form-group {
             height:90%;
             margin: 0;
-            textarea {
-                resize: none;
-                width:100%;
-                height:100%;
+            .CodeMirror {
+                height:95%;
             }
         }
         .form-submit {
