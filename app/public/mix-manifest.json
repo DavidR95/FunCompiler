@@ -1,6 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/send-execute-request.js": "/js/send-execute-request.js",
-    "/js/codemirror.js": "/js/codemirror.js"
+    "/js/codemirror.js": "/js/codemirror.js",
+    "/js/send-execute-request.js": "/js/send-execute-request.js"
 }
