@@ -40,7 +40,11 @@
                         <p>Data</p>
                     </div>
                     <div class="data-container">
-                        <div class="data"></div>
+                        <div class="data">
+                            <div class="typeTable"></div>
+                            <br>
+                            <div class="explanations"></div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,9 +10,6 @@ package api;
 ////////////////////////////////////////////////////////////////
 
 import java.util.HashMap;
-/*
-import java.io.*;
-*/
 
 public class SymbolTable<A> {
 
@@ -75,6 +72,25 @@ public class SymbolTable<A> {
 	// Discard all entries in the local part of this
 	// symbol table, and disable the local part.
 		locals = null;
+	}
+
+	/**
+   	 * Return all global variables.
+	 * @return globals
+   	 */
+	public HashMap<String, A> getGlobals() {
+		return globals;
+	}
+
+	/**
+   	 * Return all local variables if they exists, empty map otherwise.
+	 * @return locals
+   	 */
+	public HashMap<String, A> getLocals() {
+		if (locals != null) {
+			return locals;
+		}
+		return new HashMap<String, A>();
 	}
 
 	public String toString () {

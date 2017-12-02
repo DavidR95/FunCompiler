@@ -166,10 +166,14 @@ function drawTree(data, contextualAnimationOrder) {
 }
 
 function animateTree(animationOrder) {
-    $(".data").text("");
+    $(".explanations").text("");
     $.each(animationOrder, function (index, value) {
         d3.select("#node-" + value.id).select("circle").transition().duration(500).delay(500 * index).style("fill", "red").on("start", function () {
-            $(".data").append(value.explanation + "<br>");
+            $(".typeTable").text("");
+            $.each(value.typeTable, function (index, value) {
+                $(".typeTable").append(index + " - " + value + "<br>");
+            });
+            $(".explanations").append(value.explanation + "<br>");
         }).transition().style("fill", "white");
     });
 }

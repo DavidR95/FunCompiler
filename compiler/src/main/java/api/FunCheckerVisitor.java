@@ -19,6 +19,7 @@ import java.util.LinkedList;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
@@ -69,8 +70,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private void addExplanation(Object ctx, String explanation) {
 		JsonObject animationObject = new JsonObject();
+		JsonArray typeTableArray = new JsonArray();
+		typeTable.getGlobals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("global - " + id + " - " + type)));
+		typeTable.getLocals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("local - " + id + " - " + type)));
 		animationObject.addProperty("id", ctx.hashCode());
 		animationObject.addProperty("explanation", explanation);
+		animationObject.add("typeTable", typeTableArray);
 		animationOrder.add(animationObject);
 	}
 
