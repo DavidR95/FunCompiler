@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-4 table-container">
+            <div class="col-sm-3 table-container">
                 <div class="left-container">
                     <div class="title-container">
                         <h1>Fun<b>Compiler</b></h1>
@@ -13,7 +13,7 @@
                     <div class="program-input-container">
                         <form id="execute-form" action="{{ route('execute') }}" method="post">
                             <div class="form-group">
-                                <textarea id="code-editor" class="form-control" name="program" autofocus></textarea>
+                                <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
                                 <button class="btn btn-success" type="submit"><b>Execute</b></button>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5 table-container">
+            <div class="col-sm-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
                         <!-- change how styling works here -->
@@ -52,6 +52,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/send-execute-request.js') }}"></script>
     <script src="{{ asset('js/codemirror.js') }}"></script>
+    <script src="{{ asset('js/send-execute-request.js') }}"></script>
 @endsection
