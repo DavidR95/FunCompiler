@@ -57,8 +57,8 @@ function drawTree(data, contextualAnimationOrder) {
         bottom: 35,
         left: 10
     };
-    var width = 770 - margin.left - margin.right;
-    var height = 800 - margin.top - margin.bottom;
+    var width = 800 - margin.left - margin.right;
+    var height = 650 - margin.top - margin.bottom;
     var treemap = d3.tree().size([width, height]);
     var nodes = d3.hierarchy(treeData[0]);
     nodes = treemap(nodes);
@@ -67,7 +67,7 @@ function drawTree(data, contextualAnimationOrder) {
         .classed("svg-container", true)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 770 800")
+        .attr("viewBox", "0 0 800 650")
         .classed("svg-content-responsive", true);
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
