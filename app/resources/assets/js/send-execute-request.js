@@ -102,9 +102,13 @@ function drawTree(data, contextualNodeOrder) {
 
     $("#play-button").on("click", function() {
         animateTree(contextualNodeOrder);
+        $("#play-button").hide();
+        $("#pause-button").show();
     });
     $("#pause-button").on("click", function() {
         pause();
+        $("#play-button").show();
+        $("#pause-button").hide();
     });
 }
 
