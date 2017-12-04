@@ -1,5 +1,7 @@
 "use strict";
 
+var currentNodeIndex = 0;
+
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
     var $form = $(this);
@@ -37,6 +39,7 @@ $("#execute-form").submit(function(e) {
 });
 
 function drawTree(data, contextualNodeOrder) {
+    currentNodeIndex = 0;
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -114,7 +117,6 @@ function drawTree(data, contextualNodeOrder) {
     });
 }
 
-var currentNodeIndex = 0;
 function animateNode(node, currentNode, delayOffset) {
     d3.select("#node-" + node.id).select("circle").transition()
         .duration(500).delay(delayOffset * 1000).style("fill", "red")
