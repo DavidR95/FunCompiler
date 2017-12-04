@@ -74,15 +74,16 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	private void addExplanation(Object ctx, String explanation) {
-		List<String> explanations = nodeExplanations.get(ctx.hashCode());
+		int contextHash = ctx.hashCode();
+		List<String> explanations = nodeExplanations.get(contextHash);
 		if (explanations != null) {
 			explanations.add(explanation);
 		} else {
-			nodeExplanations.put(ctx.hashCode(), new LinkedList<String>(Arrays.asList(explanation)));
+			nodeExplanations.put(contextHash, new LinkedList<String>(Arrays.asList(explanation)));
 		}
 		JsonObject animationObject = new JsonObject();
 		JsonArray explanationsArray = new JsonArray();
-		for (String nodeExplanation : nodeExplanations.get(ctx.hashCode())) {
+		for (String nodeExplanation : nodeExplanations.get(contextHash)) {
 			explanationsArray.add(new JsonPrimitive(nodeExplanation));
 		}
 		JsonArray typeTableArray = new JsonArray();
@@ -100,7 +101,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			typeTableObject.addProperty("type", type.toString());
 			typeTableArray.add(typeTableObject);
 		});
-		animationObject.addProperty("id", ctx.hashCode());
+		animationObject.addProperty("id", contextHash);
 		animationObject.add("explanations", explanationsArray);
 		animationObject.add("typeTable", typeTableArray);
 		animationOrder.add(animationObject);

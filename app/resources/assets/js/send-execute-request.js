@@ -106,19 +106,21 @@ function drawTree(data, contextualAnimationOrder) {
 }
 
 function animateTree(animationOrder) {
-    $(".explanations").text("");
     $.each(animationOrder, function(index, node) {
         d3.select("#node-" + node.id).select("circle").transition()
             .duration(500).delay(500 * index).style("fill", "red")
             .on("start", function() {
                 $(".typeTable tbody").text("");
+                $(".explanations").text("");
                 $.each(node.typeTable, function(index, tableEntry) {
                     $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
                                                  "</td><td>" + tableEntry.id +
                                                  "</td><td>" + tableEntry.type +
                                                  "</td></tr>");
                 });
-                $(".explanations").append(node.explanation + "<br>");
+                $.each(node.explanations, function(index, explanation) {
+                    $(".explanations").append(explanation + "<br>");
+                });
             }).transition().style("fill", "white");
     });
 }
