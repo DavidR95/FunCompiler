@@ -114,7 +114,7 @@ public class FunRun {
 		// Remove any old error messages
 		checker.reset();
 		checker.visit(parseTree);
-		JsonArray animationOrder = checker.getAnimationOrder();
+		JsonArray animationOrder = checker.getNodeOrder();
 		response.setContextualAnimationOrder(animationOrder);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
