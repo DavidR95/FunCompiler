@@ -8758,9 +8758,10 @@ html,
   display: table-row;
 }
 
+.controls-container .glyphicon,
 .controls-container p {
   margin-top: 45px;
-  margin-bottom: 0;
+  margin-right: 5px;
 }
 
 .data-heading-container p {
@@ -8906,5 +8907,9 @@ fieldset[disabled] .btn-execute.focus {
 .btn-execute .badge {
   color: #282a36;
   background-color: white;
+}
+
+#pause-button {
+  display: none;
 }
 

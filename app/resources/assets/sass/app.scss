@@ -32,9 +32,9 @@ body, html, .container-fluid, .row {
 }
 
 .controls-container {
-    p {
+    .glyphicon, p {
         margin-top: 45px;
-        margin-bottom: 0;
+        margin-right: 5px;
     }
 }
 
@@ -113,4 +113,8 @@ body, html, .container-fluid, .row {
 .btn-execute {
     @include button-variant(white, $dracula, darken($dracula, 10%));
     border-width: 2px;
+}
+
+#pause-button {
+    display: none;
 }
