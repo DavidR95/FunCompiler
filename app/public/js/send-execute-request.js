@@ -195,7 +195,7 @@ function animateTree(nodeOrder) {
 }
 
 function pause() {
-    d3.selectAll("circle").transition().duration(0);
+    d3.selectAll("circle").interrupt();
 }
 
 /***/ })
