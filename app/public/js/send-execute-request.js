@@ -171,7 +171,7 @@ function animateTree(animationOrder) {
         d3.select("#node-" + node.id).select("circle").transition().duration(500).delay(500 * index).style("fill", "red").on("start", function () {
             $(".typeTable tbody").text("");
             $.each(node.typeTable, function (index, tableEntry) {
-                $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td>");
+                $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
             });
             $(".explanations").append(node.explanation + "<br>");
         }).transition().style("fill", "white");

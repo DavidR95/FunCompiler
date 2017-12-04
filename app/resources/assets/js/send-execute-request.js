@@ -116,7 +116,7 @@ function animateTree(animationOrder) {
                     $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
                                                  "</td><td>" + tableEntry.id +
                                                  "</td><td>" + tableEntry.type +
-                                                 "</td>");
+                                                 "</td></tr>");
                 });
                 $(".explanations").append(node.explanation + "<br>");
             }).transition().style("fill", "white");

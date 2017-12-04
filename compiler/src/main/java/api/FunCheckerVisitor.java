@@ -16,6 +16,9 @@ import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -29,6 +32,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private int errorCount = 0;
 
 	private JsonArray animationOrder = new JsonArray();
+
+	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
 
 	private CommonTokenStream tokens;
 
@@ -69,7 +74,17 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	}
 
 	private void addExplanation(Object ctx, String explanation) {
+		List<String> explanations = nodeExplanations.get(ctx.hashCode());
+		if (explanations != null) {
+			explanations.add(explanation);
+		} else {
+			nodeExplanations.put(ctx.hashCode(), new LinkedList<String>(Arrays.asList(explanation)));
+		}
 		JsonObject animationObject = new JsonObject();
+		JsonArray explanationsArray = new JsonArray();
+		for (String nodeExplanation : nodeExplanations.get(ctx.hashCode())) {
+			explanationsArray.add(new JsonPrimitive(nodeExplanation));
+		}
 		JsonArray typeTableArray = new JsonArray();
 		typeTable.getGlobals().forEach((id,type) -> {
 			JsonObject typeTableObject = new JsonObject();
@@ -86,7 +101,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			typeTableArray.add(typeTableObject);
 		});
 		animationObject.addProperty("id", ctx.hashCode());
-		animationObject.addProperty("explanation", explanation);
+		animationObject.add("explanations", explanationsArray);
 		animationObject.add("typeTable", typeTableArray);
 		animationOrder.add(animationObject);
 	}
