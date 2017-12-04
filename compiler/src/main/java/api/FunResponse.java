@@ -18,7 +18,7 @@ public class FunResponse {
     private List<String> syntaxErrors;
     private List<String> contextualErrors;
     private List<String> objectCode;
-    private JsonArray contextualAnimationOrder;
+    private JsonArray contextualNodeOrder;
     private JsonArray treeNodes;
     private String output;
 
@@ -42,8 +42,8 @@ public class FunResponse {
         this.objectCode = objectCode;
     }
 
-    public void setContextualAnimationOrder(JsonArray contextualAnimationOrder) {
-        this.contextualAnimationOrder = contextualAnimationOrder;
+    public void setContextualNodeOrder(JsonArray contextualNodeOrder) {
+        this.contextualNodeOrder = contextualNodeOrder;
     }
 
     public void setTreeNodes(JsonArray treeNodes) {

@@ -21,7 +21,7 @@ $("#execute-form").submit(function(e) {
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
-        var contextualAnimationOrder = response.contextualAnimationOrder;
+        var contextualNodeOrder = response.contextualNodeOrder;
         $(".program-tree").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
@@ -31,12 +31,12 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree").append("<br>");
         } else {
-            drawTree(treeNodes, contextualAnimationOrder);
+            drawTree(treeNodes, contextualNodeOrder);
         }
     });
 });
 
-function drawTree(data, contextualAnimationOrder) {
+function drawTree(data, contextualNodeOrder) {
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -101,7 +101,7 @@ function drawTree(data, contextualAnimationOrder) {
         });
 
     $("#play-button").on("click", function() {
-        animateTree(contextualAnimationOrder);
+        animateTree(contextualNodeOrder);
     });
 }
 

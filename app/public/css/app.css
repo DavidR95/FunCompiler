@@ -8812,7 +8812,6 @@ html,
 .data-container .program-tree,
 .data-container .data {
   height: 100%;
-  border: 1px solid black;
   overflow: auto;
 }
 
