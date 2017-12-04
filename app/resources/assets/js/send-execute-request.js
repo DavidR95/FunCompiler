@@ -106,6 +106,9 @@ function drawTree(data, contextualNodeOrder) {
     $("#pause-button").on("click", function() {
         pause();
     });
+    $("#forward-button").on("click", function() {
+        forward(contextualNodeOrder);
+    });
 }
 
 var currentNodeIndex = 0;
@@ -145,4 +148,9 @@ function pause() {
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("circle").interrupt();
+}
+
+function forward(nodeOrder) {
+    var node = nodeOrder[currentNodeIndex+1];
+    animateNode(node, currentNodeIndex+1, 0);
 }
