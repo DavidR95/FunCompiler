@@ -101,14 +101,10 @@ function drawTree(data, contextualNodeOrder) {
         });
 
     $("#play-button").on("click", function() {
-        animateTree(contextualNodeOrder);
-        $("#play-button").hide();
-        $("#pause-button").show();
+        play(contextualNodeOrder);
     });
     $("#pause-button").on("click", function() {
         pause();
-        $("#play-button").show();
-        $("#pause-button").hide();
     });
 }
 
@@ -139,6 +135,14 @@ function animateTree(nodeOrder) {
     }
 }
 
+function play(contextualNodeOrder) {
+    $("#play-button").hide();
+    $("#pause-button").show();
+    animateTree(contextualNodeOrder);
+}
+
 function pause() {
+    $("#play-button").show();
+    $("#pause-button").hide();
     d3.selectAll("circle").interrupt();
 }
