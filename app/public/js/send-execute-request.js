@@ -169,6 +169,9 @@ function drawTree(data, contextualNodeOrder) {
     $("#forward-button").on("click", function () {
         forward(contextualNodeOrder);
     });
+    $("#reverse-button").on("click", function () {
+        reverse(contextualNodeOrder);
+    });
 }
 
 var currentNodeIndex = 0;
@@ -208,6 +211,11 @@ function pause() {
 function forward(nodeOrder) {
     var node = nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0);
+}
+
+function reverse(nodeOrder) {
+    var node = nodeOrder[currentNodeIndex - 1];
+    animateNode(node, currentNodeIndex - 1, 0);
 }
 
 /***/ })
