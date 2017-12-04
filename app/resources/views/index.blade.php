@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 table-container">
+            <div class="col-md-3 table-container">
                 <div class="left-container">
                     <div class="title-container">
                         <h1>Fun<b>Compiler</b></h1>
@@ -16,13 +16,13 @@
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button class="btn btn-success" type="submit"><b>Execute</b></button>
+                                <button class="btn" type="submit"><b>Execute</b></button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 table-container">
+            <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
                         <!-- change how styling works here -->
@@ -34,14 +34,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 table-container">
+            <div class="col-md-3 table-container">
                 <div class="right-container">
                     <div class="data-heading-container">
                         <p>Data</p>
                     </div>
                     <div class="data-container">
                         <div class="data">
-                            <div class="typeTable"></div>
+                            <table class="typeTable" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                             <br>
                             <div class="explanations"></div>
                         </div>
