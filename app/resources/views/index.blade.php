@@ -16,7 +16,7 @@
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button class="btn" type="submit"><b>Execute</b></button>
+                                <button class="btn btn-execute" type="submit"><b>Execute</b></button>
                             </div>
                         </form>
                     </div>

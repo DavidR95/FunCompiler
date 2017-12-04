@@ -65,7 +65,6 @@ body, html, .container-fluid, .row {
             height: 10%;
             padding-bottom: 25px;
             button {
-                background-color: darken($dracula, 10%);
                 height: 100%;
                 width: 100%;
             }
@@ -109,4 +108,9 @@ body, html, .container-fluid, .row {
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
+}
+
+.btn-execute {
+    @include button-variant(white, $dracula, darken($dracula, 10%));
+    border-width: 2px;
 }
