@@ -8761,7 +8761,20 @@ html,
 .controls-container .glyphicon,
 .controls-container p {
   margin-top: 45px;
+}
+
+.controls-container .glyphicon {
   margin-right: 5px;
+  font-size: 1.75em;
+  cursor: pointer;
+}
+
+.controls-container .glyphicon:hover {
+  color: #282a36;
+}
+
+.controls-container .glyphicon:active {
+  color: #121319;
 }
 
 .data-heading-container p {

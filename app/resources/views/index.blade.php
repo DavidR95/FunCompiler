@@ -25,11 +25,10 @@
             <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <!-- change how styling works here -->
-                        <i id="reverse-button" class="pull-left glyphicon glyphicon-step-backward"></i>
-                        <i id="play-button" class="pull-left glyphicon glyphicon-play"></i>
-                        <i id="pause-button" class="pull-left glyphicon glyphicon-pause"></i>
-                        <i id="forward-button" class="pull-left glyphicon glyphicon-step-forward"></i>
+                        <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
+                        <i id="play-button" class="glyphicon glyphicon-play"></i>
+                        <i id="pause-button" class="glyphicon glyphicon-pause"></i>
+                        <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
                     <div class="program-tree-container">

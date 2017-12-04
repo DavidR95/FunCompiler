@@ -34,7 +34,17 @@ body, html, .container-fluid, .row {
 .controls-container {
     .glyphicon, p {
         margin-top: 45px;
+    }
+    .glyphicon {
         margin-right: 5px;
+        font-size: 1.75em;
+        cursor: pointer;
+        &:hover {
+            color: $dracula;
+        }
+        &:active {
+            color: darken($dracula, 10%);
+        }
     }
 }
 
