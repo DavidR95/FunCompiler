@@ -16,7 +16,7 @@
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button class="btn" type="submit"><b>Execute</b></button>
+                                <button class="btn btn-execute" type="submit"><b>Execute</b></button>
                             </div>
                         </form>
                     </div>
@@ -25,11 +25,10 @@
             <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <!-- change how styling works here -->
-                        <p class="pull-left" id="reverse-button" ><< |</p>
-                        <p class="pull-left" id="play-button">| Play |</p>
-                        <p class="pull-left" id="pause-button" hidden>| Pause |</p>
-                        <p class="pull-left" id="forward-button" >| >></p>
+                        <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
+                        <i id="play-button" class="glyphicon glyphicon-play"></i>
+                        <i id="pause-button" class="glyphicon glyphicon-pause"></i>
+                        <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
                     <div class="program-tree-container">

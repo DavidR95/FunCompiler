@@ -79,6 +79,8 @@ module.exports = __webpack_require__(501);
 "use strict";
 
 
+var currentNodeIndex = 0;
+
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
     var $form = $(this);
@@ -112,10 +114,13 @@ $("#execute-form").submit(function (e) {
         } else {
             drawTree(treeNodes, contextualNodeOrder);
         }
+    }).fail(function (responseData) {
+        alert(responseData.responseJSON.errors.program);
     });
 });
 
 function drawTree(data, contextualNodeOrder) {
+    currentNodeIndex = 0;
     var dataMap = data.reduce(function (map, node) {
         map[node.id] = node;
         return map;
@@ -174,7 +179,6 @@ function drawTree(data, contextualNodeOrder) {
     });
 }
 
-var currentNodeIndex = 0;
 function animateNode(node, currentNode, delayOffset) {
     d3.select("#node-" + node.id).select("circle").transition().duration(500).delay(delayOffset * 1000).style("fill", "red").on("start", function () {
         currentNodeIndex = currentNode;
@@ -209,11 +213,13 @@ function pause() {
 }
 
 function forward(nodeOrder) {
+    pause();
     var node = nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0);
 }
 
 function reverse(nodeOrder) {
+    pause();
     var node = nodeOrder[currentNodeIndex - 1];
     animateNode(node, currentNodeIndex - 1, 0);
 }

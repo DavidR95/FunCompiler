@@ -32,9 +32,19 @@ body, html, .container-fluid, .row {
 }
 
 .controls-container {
-    p {
+    .glyphicon, p {
         margin-top: 45px;
-        margin-bottom: 0;
+    }
+    .glyphicon {
+        margin-right: 5px;
+        font-size: 1.75em;
+        cursor: pointer;
+        &:hover {
+            color: $dracula;
+        }
+        &:active {
+            color: darken($dracula, 10%);
+        }
     }
 }
 
@@ -65,7 +75,6 @@ body, html, .container-fluid, .row {
             height: 10%;
             padding-bottom: 25px;
             button {
-                background-color: darken($dracula, 10%);
                 height: 100%;
                 width: 100%;
             }
@@ -109,4 +118,13 @@ body, html, .container-fluid, .row {
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
+}
+
+.btn-execute {
+    @include button-variant(white, $dracula, darken($dracula, 10%));
+    border-width: 2px;
+}
+
+#pause-button {
+    display: none;
 }
