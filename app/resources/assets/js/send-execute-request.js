@@ -103,24 +103,38 @@ function drawTree(data, contextualNodeOrder) {
     $("#play-button").on("click", function() {
         animateTree(contextualNodeOrder);
     });
+    $("#pause-button").on("click", function() {
+        pause();
+    });
 }
 
-function animateTree(animationOrder) {
-    $.each(animationOrder, function(index, node) {
-        d3.select("#node-" + node.id).select("circle").transition()
-            .duration(500).delay(500 * index).style("fill", "red")
-            .on("start", function() {
-                $(".typeTable tbody").text("");
-                $(".explanations").text("");
-                $.each(node.typeTable, function(index, tableEntry) {
-                    $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
-                                                 "</td><td>" + tableEntry.id +
-                                                 "</td><td>" + tableEntry.type +
-                                                 "</td></tr>");
-                });
-                $.each(node.explanations, function(index, explanation) {
-                    $(".explanations").append(explanation + "<br>");
-                });
-            }).transition().style("fill", "white");
-    });
+var currentNodeIndex = 0;
+
+function animateNode(node, i) {
+    d3.select("#node-" + node.id).select("circle").transition()
+        .duration(500).delay(i * 1000).style("fill", "red")
+        .on("start", function() {
+            $(".typeTable tbody").text("");
+            $(".explanations").text("");
+            $.each(node.typeTable, function(index, tableEntry) {
+                $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
+                                             "</td><td>" + tableEntry.id +
+                                             "</td><td>" + tableEntry.type +
+                                             "</td></tr>");
+            });
+            $.each(node.explanations, function(index, explanation) {
+                $(".explanations").append(explanation + "<br>");
+            });
+        }).transition().style("fill", "white");
+}
+
+function animateTree(nodeOrder) {
+    for (var i = currentNodeIndex; i < nodeOrder.length; i++) {
+        var node = nodeOrder[i];
+        animateNode(node, i);
+    }
+}
+
+function pause() {
+    d3.selectAll("[id^='node-']").select("circle").transition().duration(0);
 }
