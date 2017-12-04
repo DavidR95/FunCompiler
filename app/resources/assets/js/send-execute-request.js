@@ -109,11 +109,11 @@ function drawTree(data, contextualNodeOrder) {
 }
 
 var currentNodeIndex = 0;
-
-function animateNode(node, i) {
+function animateNode(node, currentNode, delayOffset) {
     d3.select("#node-" + node.id).select("circle").transition()
-        .duration(500).delay(i * 1000).style("fill", "red")
+        .duration(500).delay(delayOffset * 1000).style("fill", "red")
         .on("start", function() {
+            currentNodeIndex = currentNode;
             $(".typeTable tbody").text("");
             $(".explanations").text("");
             $.each(node.typeTable, function(index, tableEntry) {
@@ -129,12 +129,12 @@ function animateNode(node, i) {
 }
 
 function animateTree(nodeOrder) {
-    for (var i = currentNodeIndex; i < nodeOrder.length; i++) {
+    for (var i = currentNodeIndex, j = 0; i < nodeOrder.length; i++, j++) {
         var node = nodeOrder[i];
-        animateNode(node, i);
+        animateNode(node, i, j);
     }
 }
 
 function pause() {
-    d3.selectAll("[id^='node-']").select("circle").transition().duration(0);
+    d3.selectAll("circle").transition().duration(0);
 }
