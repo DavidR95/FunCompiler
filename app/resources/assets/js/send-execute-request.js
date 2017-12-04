@@ -101,26 +101,64 @@ function drawTree(data, contextualNodeOrder) {
         });
 
     $("#play-button").on("click", function() {
-        animateTree(contextualNodeOrder);
+        play(contextualNodeOrder);
+    });
+    $("#pause-button").on("click", function() {
+        pause();
+    });
+    $("#forward-button").on("click", function() {
+        forward(contextualNodeOrder);
+    });
+    $("#reverse-button").on("click", function() {
+        reverse(contextualNodeOrder);
     });
 }
 
-function animateTree(animationOrder) {
-    $.each(animationOrder, function(index, node) {
-        d3.select("#node-" + node.id).select("circle").transition()
-            .duration(500).delay(500 * index).style("fill", "red")
-            .on("start", function() {
-                $(".typeTable tbody").text("");
-                $(".explanations").text("");
-                $.each(node.typeTable, function(index, tableEntry) {
-                    $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
-                                                 "</td><td>" + tableEntry.id +
-                                                 "</td><td>" + tableEntry.type +
-                                                 "</td></tr>");
-                });
-                $.each(node.explanations, function(index, explanation) {
-                    $(".explanations").append(explanation + "<br>");
-                });
-            }).transition().style("fill", "white");
-    });
+var currentNodeIndex = 0;
+function animateNode(node, currentNode, delayOffset) {
+    d3.select("#node-" + node.id).select("circle").transition()
+        .duration(500).delay(delayOffset * 1000).style("fill", "red")
+        .on("start", function() {
+            currentNodeIndex = currentNode;
+            $(".typeTable tbody").text("");
+            $(".explanations").text("");
+            $.each(node.typeTable, function(index, tableEntry) {
+                $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
+                                             "</td><td>" + tableEntry.id +
+                                             "</td><td>" + tableEntry.type +
+                                             "</td></tr>");
+            });
+            $.each(node.explanations, function(index, explanation) {
+                $(".explanations").append(explanation + "<br>");
+            });
+        }).transition().style("fill", "white");
+}
+
+function animateTree(nodeOrder) {
+    for (var i = currentNodeIndex, j = 0; i < nodeOrder.length; i++, j++) {
+        var node = nodeOrder[i];
+        animateNode(node, i, j);
+    }
+}
+
+function play(contextualNodeOrder) {
+    $("#play-button").hide();
+    $("#pause-button").show();
+    animateTree(contextualNodeOrder);
+}
+
+function pause() {
+    $("#play-button").show();
+    $("#pause-button").hide();
+    d3.selectAll("circle").interrupt();
+}
+
+function forward(nodeOrder) {
+    var node = nodeOrder[currentNodeIndex+1];
+    animateNode(node, currentNodeIndex+1, 0);
+}
+
+function reverse(nodeOrder) {
+    var node = nodeOrder[currentNodeIndex-1];
+    animateNode(node, currentNodeIndex-1, 0);
 }
