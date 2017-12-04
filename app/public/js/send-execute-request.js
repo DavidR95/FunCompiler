@@ -169,9 +169,10 @@ function animateTree(animationOrder) {
     $(".explanations").text("");
     $.each(animationOrder, function (index, value) {
         d3.select("#node-" + value.id).select("circle").transition().duration(500).delay(500 * index).style("fill", "red").on("start", function () {
-            $(".typeTable").text("");
+            $(".typeTable tbody").text("");
             $.each(value.typeTable, function (index, value) {
-                $(".typeTable").append(index + " - " + value + "<br>");
+                var tableEntry = value.split(',');
+                $(".typeTable tbody").append("<tr><td>" + tableEntry[0] + "</td><td>" + tableEntry[1] + "</td><td>" + tableEntry[2] + "</td>");
             });
             $(".explanations").append(value.explanation + "<br>");
         }).transition().style("fill", "white");

@@ -41,7 +41,16 @@
                     </div>
                     <div class="data-container">
                         <div class="data">
-                            <div class="typeTable"></div>
+                            <table class="typeTable" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                             <br>
                             <div class="explanations"></div>
                         </div>
