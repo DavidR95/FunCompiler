@@ -71,8 +71,20 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private void addExplanation(Object ctx, String explanation) {
 		JsonObject animationObject = new JsonObject();
 		JsonArray typeTableArray = new JsonArray();
-		typeTable.getGlobals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("global, " + id + ", " + type)));
-		typeTable.getLocals().forEach((id,type) -> typeTableArray.add(new JsonPrimitive("local, " + id + ", " + type)));
+		typeTable.getGlobals().forEach((id,type) -> {
+			JsonObject typeTableObject = new JsonObject();
+			typeTableObject.addProperty("scope", "global");
+			typeTableObject.addProperty("id", id);
+			typeTableObject.addProperty("type", type.toString());
+			typeTableArray.add(typeTableObject);
+		});
+		typeTable.getLocals().forEach((id,type) -> {
+			JsonObject typeTableObject = new JsonObject();
+			typeTableObject.addProperty("scope", "local");
+			typeTableObject.addProperty("id", id);
+			typeTableObject.addProperty("type", type.toString());
+			typeTableArray.add(typeTableObject);
+		});
 		animationObject.addProperty("id", ctx.hashCode());
 		animationObject.addProperty("explanation", explanation);
 		animationObject.add("typeTable", typeTableArray);
