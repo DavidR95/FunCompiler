@@ -21,7 +21,7 @@ $("#execute-form").submit(function(e) {
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
-        var contextualAnimationOrder = response.contextualAnimationOrder;
+        var contextualNodeOrder = response.contextualNodeOrder;
         $(".program-tree").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
@@ -31,12 +31,12 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree").append("<br>");
         } else {
-            drawTree(treeNodes, contextualAnimationOrder);
+            drawTree(treeNodes, contextualNodeOrder);
         }
     });
 });
 
-function drawTree(data, contextualAnimationOrder) {
+function drawTree(data, contextualNodeOrder) {
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -101,25 +101,26 @@ function drawTree(data, contextualAnimationOrder) {
         });
 
     $("#play-button").on("click", function() {
-        animateTree(contextualAnimationOrder);
+        animateTree(contextualNodeOrder);
     });
 }
 
 function animateTree(animationOrder) {
-    $(".explanations").text("");
-    $.each(animationOrder, function(index, value) {
-        d3.select("#node-" + value.id).select("circle").transition()
+    $.each(animationOrder, function(index, node) {
+        d3.select("#node-" + node.id).select("circle").transition()
             .duration(500).delay(500 * index).style("fill", "red")
             .on("start", function() {
                 $(".typeTable tbody").text("");
-                $.each(value.typeTable, function(index, value) {
-                    var tableEntry = value.split(',');
-                    $(".typeTable tbody").append("<tr><td>" + tableEntry[0] +
-                                           "</td><td>" + tableEntry[1] +
-                                           "</td><td>" + tableEntry[2] +
-                                           "</td>");
+                $(".explanations").text("");
+                $.each(node.typeTable, function(index, tableEntry) {
+                    $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
+                                                 "</td><td>" + tableEntry.id +
+                                                 "</td><td>" + tableEntry.type +
+                                                 "</td></tr>");
                 });
-                $(".explanations").append(value.explanation + "<br>");
+                $.each(node.explanations, function(index, explanation) {
+                    $(".explanations").append(explanation + "<br>");
+                });
             }).transition().style("fill", "white");
     });
 }
