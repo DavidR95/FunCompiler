@@ -209,11 +209,13 @@ function pause() {
 }
 
 function forward(nodeOrder) {
+    pause();
     var node = nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0);
 }
 
 function reverse(nodeOrder) {
+    pause();
     var node = nodeOrder[currentNodeIndex - 1];
     animateNode(node, currentNodeIndex - 1, 0);
 }
