@@ -23,6 +23,10 @@ class IndexController extends Controller
      */
     public function execute()
     {
+        // An empty program cannot be submitted
+        request()->validate([
+            'program' => 'required'
+        ]);
         // Create a new Guzzle client
         $client = new \GuzzleHttp\Client();
         // Send a post request to the compiler container

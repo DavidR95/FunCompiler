@@ -35,6 +35,8 @@ $("#execute-form").submit(function(e) {
         } else {
             drawTree(treeNodes, contextualNodeOrder);
         }
+    }).fail(function(responseData) {
+        alert(responseData.responseJSON.errors.program);
     });
 });
 
