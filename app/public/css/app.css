@@ -8830,12 +8830,13 @@ html,
 
 .node rect {
   fill: #fff;
-  stroke: steelblue;
+  stroke: #282a36;
   stroke-width: 3px;
 }
 
 .node text {
-  font: 12px sans-serif;
+  font: 11px "Raleway";
+  fill: #282a36;
 }
 
 .link {

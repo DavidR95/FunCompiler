@@ -95,12 +95,13 @@ body, html, .container-fluid, .row {
 
 .node rect {
     fill: #fff;
-    stroke: steelblue;
+    stroke: $dracula;
     stroke-width: 3px;
 }
 
 .node text {
-    font: 12px sans-serif;
+    font: 11px "Raleway";
+    fill: $dracula;
 }
 
 .link {
