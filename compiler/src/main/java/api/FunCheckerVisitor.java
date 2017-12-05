@@ -338,15 +338,19 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFormal(FunParser.FormalContext ctx) {
-		addNode(ctx, "Not yet implemented");
 	    FunParser.TypeContext tc = ctx.type();
 	    Type t;
 	    if (tc != null) {
+			addNode(ctx, "Retrieve the declared type");
 			t = visit(tc);
-			addNode(ctx, "Not yet implemented");
+			addNode(ctx, "Type retrieved was: " + t);
+			addNode(ctx, "Retrieve the ID of the declaration");
+			addNode(ctx.ID(), "ID: " + ctx.ID().getText());
+			addNode(ctx, "ID retrieved was " + ctx.ID().getText());
 			define(ctx.ID().getText(), t, ctx);
 	    }
 	    else
+			addNode(ctx, "No formal paramters defined");
 			t = Type.VOID;
 	    return t;
 	}
@@ -534,7 +538,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNum(FunParser.NumContext ctx) {
-		addNode(ctx, "Not yet implemented");
+		addNode(ctx, ctx.getText());
 	    return Type.INT;
 	}
 
