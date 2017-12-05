@@ -516,11 +516,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
 	    if (ctx.e2 != null) {
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Retrieve the type of the first expression");
 			Type t1 = visit(ctx.e1);
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Type received was: " + t1);
+			addNode(ctx.op, "Retrieve the type of the second expression");
 			Type t2 = visit(ctx.e2);
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Type received was: " + t2);
+			addNode(ctx.op, "Check both expressions are arithmetic types");
 			return checkBinary(ARITHTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
