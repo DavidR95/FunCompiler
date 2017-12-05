@@ -96,6 +96,8 @@ function drawTree(data, contextualNodeOrder) {
             return "translate(" + d.x + "," + d.y + ")";
         }).attr("id", function(d) {
             return "node-" + d.data.id;
+        }).attr("data-name", function(d) {
+            return d.data.name;
         });
     node.append("rect")
         .attr("x", -25)
@@ -140,6 +142,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
                                              "</td><td>" + tableEntry.type +
                                              "</td></tr>");
             });
+            $(".explanations").append("Node: " + $("#node-"+node.id).attr("data-name") + "<br>");
             $.each(node.explanations, function(index, explanation) {
                 $(".explanations").append(explanation + "<br>");
             });

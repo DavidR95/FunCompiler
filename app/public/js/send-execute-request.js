@@ -160,6 +160,8 @@ function drawTree(data, contextualNodeOrder) {
         return "translate(" + d.x + "," + d.y + ")";
     }).attr("id", function (d) {
         return "node-" + d.data.id;
+    }).attr("data-name", function (d) {
+        return d.data.name;
     });
     node.append("rect").attr("x", -25).attr("y", -12.5).attr("width", 50).attr("height", 25);
     node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
@@ -189,6 +191,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         $.each(node.typeTable, function (index, tableEntry) {
             $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
         });
+        $(".explanations").append("Node: " + $("#node-" + node.id).attr("data-name") + "<br>");
         $.each(node.explanations, function (index, explanation) {
             $(".explanations").append(explanation + "<br>");
         });
