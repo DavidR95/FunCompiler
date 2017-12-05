@@ -80,6 +80,7 @@ module.exports = __webpack_require__(501);
 
 
 var currentNodeIndex = 0;
+var is_playing = false;
 
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
@@ -201,25 +202,27 @@ function animateTree(nodeOrder) {
 }
 
 function play(contextualNodeOrder) {
+    is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
     animateTree(contextualNodeOrder);
 }
 
 function pause() {
+    is_playing = false;
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("circle").interrupt();
 }
 
 function forward(nodeOrder) {
-    pause();
+    if (is_playing) pause();
     var node = nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0);
 }
 
 function reverse(nodeOrder) {
-    pause();
+    if (is_playing) pause();
     var node = nodeOrder[currentNodeIndex - 1];
     animateNode(node, currentNodeIndex - 1, 0);
 }
