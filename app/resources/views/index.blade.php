@@ -31,9 +31,7 @@
                         <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
-                    <div class="program-tree-container">
-                        <div class="program-tree"></div>
-                    </div>
+                    <div class="program-tree-container"></div>
                 </div>
             </div>
             <div class="col-md-3 table-container">
@@ -42,24 +40,22 @@
                         <p>Type Table</p>
                     </div>
                     <div class="data-container">
-                        <div class="data">
-                            <table class="table table-striped
-                                                table-hover
-                                                table-responsive
-                                                table-bordered
-                                                typeTable">
-                                <thead>
-                                    <tr>
-                                        <th>Scope</th>
-                                        <th>ID</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <br>
-                            <div class="explanations"></div>
-                        </div>
+                        <table class="table table-striped
+                                            table-hover
+                                            table-responsive
+                                            table-bordered
+                                            typeTable">
+                            <thead>
+                                <tr>
+                                    <th>Scope</th>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <br>
+                        <div class="explanations"></div>
                     </div>
                 </div>
             </div>

@@ -104,14 +104,14 @@ $("#execute-form").submit(function (e) {
         var objectCode = response.objectCode;
         var output = response.output;
         var contextualNodeOrder = response.contextualNodeOrder;
-        $(".program-tree").text("");
+        $(".program-tree-container").text("");
         if (numSyntaxErrors > 0) {
-            $(".program-tree").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
-            $(".program-tree").append("Syntax errors: <br>");
+            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
+            $(".program-tree-container").append("Syntax errors: <br>");
             $.each(syntaxErrors, function (index, syntaxError) {
-                $(".program-tree").append(index + 1 + ": " + syntaxError);
+                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
             });
-            $(".program-tree").append("<br>");
+            $(".program-tree-container").append("<br>");
         } else {
             drawTree(treeNodes, contextualNodeOrder);
         }
@@ -149,7 +149,7 @@ function drawTree(data, contextualNodeOrder) {
     var treemap = d3.tree().size([width, height]);
     var nodes = d3.hierarchy(treeData[0]);
     nodes = treemap(nodes);
-    var svg = d3.select(".program-tree").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 800 650").classed("svg-content-responsive", true);
+    var svg = d3.select(".program-tree-container").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 800 650").classed("svg-content-responsive", true);
     var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     g.selectAll(".link").data(nodes.descendants().slice(1)).enter().append("path").attr("class", "link").attr("d", function (d) {
         return "M" + d.x + "," + d.y + "C" + d.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + d.parent.y;
