@@ -39,11 +39,15 @@
             <div class="col-md-3 table-container">
                 <div class="right-container">
                     <div class="data-heading-container">
-                        <p>Data</p>
+                        <p>Type Table</p>
                     </div>
                     <div class="data-container">
                         <div class="data">
-                            <table class="typeTable" width="100%">
+                            <table class="table table-striped
+                                                table-hover
+                                                table-responsive
+                                                table-bordered
+                                                typeTable">
                                 <thead>
                                     <tr>
                                         <th>Scope</th>

@@ -79,8 +79,8 @@ module.exports = __webpack_require__(501);
 "use strict";
 
 
-var currentNodeIndex = 0;
-var is_playing = false;
+var currentNodeIndex;
+var is_playing;
 
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
@@ -121,7 +121,9 @@ $("#execute-form").submit(function (e) {
 });
 
 function drawTree(data, contextualNodeOrder) {
-    currentNodeIndex = 0;
+    currentNodeIndex = -1;
+    is_playing = false;
+
     var dataMap = data.reduce(function (map, node) {
         map[node.id] = node;
         return map;
@@ -179,7 +181,7 @@ function drawTree(data, contextualNodeOrder) {
     });
 }
 
-function animateNode(node, currentNode, delayOffset) {
+function animateNode(node, currentNode, delayOffset, numNodes) {
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
         $(".typeTable tbody").text("");
@@ -190,13 +192,16 @@ function animateNode(node, currentNode, delayOffset) {
         $.each(node.explanations, function (index, explanation) {
             $(".explanations").append(explanation + "<br>");
         });
+    }).on("end", function () {
+        if (currentNode === numNodes - 1) is_playing = false;
     }).transition().style("fill", "white");
 }
 
 function animateTree(nodeOrder) {
+    currentNodeIndex = currentNodeIndex == -1 ? 0 : currentNodeIndex;
     for (var i = currentNodeIndex, j = 0; i < nodeOrder.length; i++, j++) {
         var node = nodeOrder[i];
-        animateNode(node, i, j);
+        animateNode(node, i, j, nodeOrder.length);
     }
 }
 
@@ -217,15 +222,15 @@ function pause(nodeOrder) {
 }
 
 function forward(nodeOrder) {
-    if (is_playing) pause();
+    if (is_playing) pause(nodeOrder);
     var node = nodeOrder[currentNodeIndex + 1];
-    animateNode(node, currentNodeIndex + 1, 0);
+    animateNode(node, currentNodeIndex + 1, 0, nodeOrder.length);
 }
 
 function reverse(nodeOrder) {
-    if (is_playing) pause();
+    if (is_playing) pause(nodeOrder);
     var node = nodeOrder[currentNodeIndex - 1];
-    animateNode(node, currentNodeIndex - 1, 0);
+    animateNode(node, currentNodeIndex - 1, 0, nodeOrder.length);
 }
 
 /***/ })

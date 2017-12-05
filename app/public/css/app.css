@@ -8928,3 +8928,16 @@ fieldset[disabled] .btn-execute.focus {
   display: none;
 }
 
+.table-striped tbody tr:nth-child(odd) {
+  background-color: #282a36;
+}
+
+.table-striped tbody tr:nth-child(even) {
+  background-color: #121319;
+}
+
+.table-striped tbody tr:hover {
+  cursor: pointer;
+  background-color: #3e4153;
+}
+
