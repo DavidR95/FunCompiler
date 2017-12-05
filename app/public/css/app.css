@@ -8828,7 +8828,7 @@ html,
   overflow: auto;
 }
 
-.node circle {
+.node rect {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 3px;

@@ -95,12 +95,12 @@ function drawTree(data, contextualNodeOrder) {
         }).attr("id", function(d) {
             return "node-" + d.data.id;
         });
-    node.append("circle").attr("r", 5);
+    node.append("rect").attr("x", -25).attr("y", -12).attr("width", 50).attr("height", 25);
     node.append("text")
         .attr("dy", ".35em")
-        .attr("y", function(d) {
-            return d.children ? -20 : 20;
-        })
+        // .attr("y", function(d) {
+        //     return d.children ? -20 : 20;
+        // })
         .style("text-anchor", "middle")
         .text(function(d) {
             return d.data.name;
