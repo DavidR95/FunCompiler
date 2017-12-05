@@ -8742,6 +8742,7 @@ html,
 
 .table-container {
   height: 100%;
+  border-left: 2px solid #121319;
 }
 
 .left-container,
@@ -8764,7 +8765,7 @@ html,
 }
 
 .controls-container .glyphicon {
-  margin-right: 5px;
+  margin-left: 5px;
   font-size: 1.75em;
   cursor: pointer;
 }
@@ -8828,14 +8829,15 @@ html,
   overflow: auto;
 }
 
-.node circle {
+.node rect {
   fill: #fff;
-  stroke: steelblue;
+  stroke: #282a36;
   stroke-width: 3px;
 }
 
 .node text {
-  font: 12px sans-serif;
+  font: 11px "Raleway";
+  fill: #282a36;
 }
 
 .link {

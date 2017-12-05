@@ -19,6 +19,7 @@ body, html, .container-fluid, .row {
 
 .table-container {
     height: 100%;
+    border-left: 2px solid darken($dracula, 10%);
 }
 
 .left-container, .center-container, .right-container {
@@ -36,7 +37,7 @@ body, html, .container-fluid, .row {
         margin-top: 45px;
     }
     .glyphicon {
-        margin-right: 5px;
+        margin-left: 5px;
         font-size: 1.75em;
         cursor: pointer;
         &:hover {
@@ -88,19 +89,19 @@ body, html, .container-fluid, .row {
     padding-bottom: 25px;
     .program-tree, .data {
         height: 100%;
-        // border: 1px solid black;
         overflow: auto;
     }
 }
 
-.node circle {
+.node rect {
     fill: #fff;
-    stroke: steelblue;
+    stroke: $dracula;
     stroke-width: 3px;
 }
 
 .node text {
-    font: 12px sans-serif;
+    font: 11px "Raleway";
+    fill: $dracula;
 }
 
 .link {

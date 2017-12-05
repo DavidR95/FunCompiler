@@ -95,22 +95,27 @@ function drawTree(data, contextualNodeOrder) {
         }).attr("id", function(d) {
             return "node-" + d.data.id;
         });
-    node.append("circle").attr("r", 5);
+    node.append("rect")
+        .attr("x", -25)
+        .attr("y", -12.5)
+        .attr("width", 50)
+        .attr("height", 25);
     node.append("text")
         .attr("dy", ".35em")
-        .attr("y", function(d) {
-            return d.children ? -20 : 20;
-        })
         .style("text-anchor", "middle")
         .text(function(d) {
-            return d.data.name;
+            var name = d.data.name;
+            if (name.length <= 5)
+                return name;
+            else
+                return name.substring(0, 5) + "...";
         });
 
     $("#play-button").on("click", function() {
         play(contextualNodeOrder);
     });
     $("#pause-button").on("click", function() {
-        pause();
+        pause(contextualNodeOrder);
     });
     $("#forward-button").on("click", function() {
         forward(contextualNodeOrder);
@@ -121,8 +126,8 @@ function drawTree(data, contextualNodeOrder) {
 }
 
 function animateNode(node, currentNode, delayOffset) {
-    d3.select("#node-" + node.id).select("circle").transition()
-        .duration(500).delay(delayOffset * 1000).style("fill", "red")
+    d3.select("#node-" + node.id).select("rect").transition()
+        .duration(500).delay(delayOffset * 1000).style("fill", "yellow")
         .on("start", function() {
             currentNodeIndex = currentNode;
             $(".typeTable tbody").text("");
@@ -146,18 +151,21 @@ function animateTree(nodeOrder) {
     }
 }
 
-function play(contextualNodeOrder) {
+function play(nodeOrder) {
     is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
-    animateTree(contextualNodeOrder);
+    animateTree(nodeOrder);
 }
 
-function pause() {
+function pause(nodeOrder) {
+    var node = nodeOrder[currentNodeIndex];
     is_playing = false;
     $("#play-button").show();
     $("#pause-button").hide();
-    d3.selectAll("circle").interrupt();
+    d3.selectAll("rect").interrupt();
+    d3.select("#node-" + node.id).select("rect")
+        .transition().style("fill", "yellow");
 }
 
 function forward(nodeOrder) {
