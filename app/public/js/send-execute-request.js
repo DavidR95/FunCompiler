@@ -161,7 +161,8 @@ function drawTree(data, contextualNodeOrder) {
     });
     node.append("rect").attr("x", -25).attr("y", -12.5).attr("width", 50).attr("height", 25);
     node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
-        return d.data.name;
+        var name = d.data.name;
+        if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
     });
 
     $("#play-button").on("click", function () {
