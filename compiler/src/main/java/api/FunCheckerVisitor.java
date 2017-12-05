@@ -170,6 +170,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	      new Type.Pair(Type.INT, Type.INT), Type.INT),
 	   MAINTYPE = new Type.Mapping(Type.VOID, Type.VOID);
 
+   	private void checkType (Type typeExpected, Type typeActual,
+   	                        ParserRuleContext construct) {
+   		checkType(typeExpected, typeActual, construct, null);
+   	}
+
 	/**
    	 * Checks that a constuct's actual type matches the
 	 * expected type.
@@ -178,11 +183,17 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 * @param construct the parse tree
    	 */
 	private void checkType (Type typeExpected, Type typeActual,
-	                        ParserRuleContext construct) {
+	                        ParserRuleContext construct,
+							Object operatorCtx) {
+		Object ctx;
+		if (operatorCtx != null)
+			ctx = operatorCtx;
+		else
+			ctx = construct;
 		if (typeActual.equiv(typeExpected)) {
-			addNode(construct, "Success, " + typeActual + " and " + typeExpected + " are of the same type");
+			addNode(ctx, "Success, " + typeActual + " and " + typeExpected + " are of the same type");
 		} else {
-			addNode(construct, "Type error, type is " + typeActual + ", should be " + typeExpected);
+			addNode(ctx, "Type error, type is " + typeActual + ", should be " + typeExpected);
 			reportError("type is " + typeActual+ ", should be " + typeExpected,
 				construct);
 		}
@@ -237,13 +248,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the range of the mapping
 	 */
 	private Type checkBinary (Type.Mapping typeOp, Type typeArg1,
-							  Type typeArg2, ParserRuleContext op) {
+							  Type typeArg2, ParserRuleContext op,
+							  Object operatorContext) {
 		if (!(typeOp.domain instanceof Type.Pair))
 			reportError("binary operator should have 2 operands", op);
 		else {
 			Type.Pair pair = (Type.Pair)typeOp.domain;
-			checkType(pair.first, typeArg1, op);
-			checkType(pair.second, typeArg2, op);
+			checkType(pair.first, typeArg1, op, operatorContext);
+			checkType(pair.second, typeArg2, op, operatorContext);
 		}
 		return typeOp.range;
 	}
@@ -486,7 +498,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			addNode(ctx.op, "Not yet implemented");
 			Type t2 = visit(ctx.e2);
 			addNode(ctx.op, "Not yet implemented");
-			return checkBinary(COMPTYPE, t1, t2, ctx);
+			return checkBinary(COMPTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
 	    }
@@ -504,7 +516,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			addNode(ctx.op, "Not yet implemented");
 			Type t2 = visit(ctx.e2);
 			addNode(ctx.op, "Not yet implemented");
-			return checkBinary(ARITHTYPE, t1, t2, ctx);
+			return checkBinary(ARITHTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
 	    }
