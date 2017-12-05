@@ -1,7 +1,7 @@
 "use strict";
 
-var currentNodeIndex = -1;
-var is_playing = false;
+var currentNodeIndex;
+var is_playing;
 
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
@@ -43,6 +43,8 @@ $("#execute-form").submit(function(e) {
 
 function drawTree(data, contextualNodeOrder) {
     currentNodeIndex = -1;
+    is_playing = false;
+
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -174,14 +176,14 @@ function pause(nodeOrder) {
 
 function forward(nodeOrder) {
     if (is_playing)
-        pause();
+        pause(nodeOrder);
     var node = nodeOrder[currentNodeIndex+1];
     animateNode(node, currentNodeIndex+1, 0, nodeOrder.length);
 }
 
 function reverse(nodeOrder) {
     if (is_playing)
-        pause();
+        pause(nodeOrder);
     var node = nodeOrder[currentNodeIndex-1];
     animateNode(node, currentNodeIndex-1, 0, nodeOrder.length);
 }
