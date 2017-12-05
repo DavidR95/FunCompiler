@@ -135,7 +135,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         .on("start", function() {
             currentNodeIndex = currentNode;
             $(".typeTable tbody").text("");
-            $(".explanations").text("");
+            $(".explanations").html("<p>Explanations</p>");
             $.each(node.typeTable, function(index, tableEntry) {
                 $(".typeTable tbody").append("<tr><td>" + tableEntry.scope +
                                              "</td><td>" + tableEntry.id +

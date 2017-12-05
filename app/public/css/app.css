@@ -8828,6 +8828,7 @@ html,
 }
 
 .explanations {
+  margin-top: 10px;
   height: 50%;
   overflow: auto;
 }

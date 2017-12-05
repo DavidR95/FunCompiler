@@ -187,7 +187,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
         $(".typeTable tbody").text("");
-        $(".explanations").text("");
+        $(".explanations").html("<p>Explanations</p>");
         $.each(node.typeTable, function (index, tableEntry) {
             $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
         });

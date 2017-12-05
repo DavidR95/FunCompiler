@@ -56,7 +56,9 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="explanations"></div>
+                        <div class="explanations">
+                            <p>Explanations</p>
+                        </div>
                     </div>
                 </div>
             </div>
