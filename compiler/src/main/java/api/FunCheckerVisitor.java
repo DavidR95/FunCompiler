@@ -249,13 +249,16 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	private Type checkBinary (Type.Mapping typeOp, Type typeArg1,
 							  Type typeArg2, ParserRuleContext op,
-							  Object operatorContext) {
-		if (!(typeOp.domain instanceof Type.Pair))
+							  Object operatorCtx) {
+		if (!(typeOp.domain instanceof Type.Pair)) {
+			addNode(operatorCtx, "Type error, binary operator should have 2 operands");
 			reportError("binary operator should have 2 operands", op);
-		else {
+		} else {
 			Type.Pair pair = (Type.Pair)typeOp.domain;
-			checkType(pair.first, typeArg1, op, operatorContext);
-			checkType(pair.second, typeArg2, op, operatorContext);
+			addNode(operatorCtx, "Check the first expression is of type " + pair.first);
+			checkType(pair.first, typeArg1, op, operatorCtx);
+			addNode(operatorCtx, "Check the second expression is of type " + pair.second);
+			checkType(pair.second, typeArg2, op, operatorCtx);
 		}
 		return typeOp.range;
 	}
@@ -493,11 +496,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitExpr(FunParser.ExprContext ctx) {
 	    if (ctx.e2 != null) {
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Retrieve the type of the first expression");
 			Type t1 = visit(ctx.e1);
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Type received was: " + t1);
+			addNode(ctx.op, "Retrieve the type of the second expression");
 			Type t2 = visit(ctx.e2);
-			addNode(ctx.op, "Not yet implemented");
+			addNode(ctx.op, "Type received was: " + t2);
+			addNode(ctx.op, "Check both expressions are comparable types");
 			return checkBinary(COMPTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
