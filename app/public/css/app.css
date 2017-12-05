@@ -8742,6 +8742,7 @@ html,
 
 .table-container {
   height: 100%;
+  border-left: 2px solid #121319;
 }
 
 .left-container,
@@ -8764,7 +8765,7 @@ html,
 }
 
 .controls-container .glyphicon {
-  margin-right: 5px;
+  margin-left: 5px;
   font-size: 1.75em;
   cursor: pointer;
 }

@@ -164,7 +164,8 @@ function pause(nodeOrder) {
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("rect").interrupt();
-    d3.select("#node-" + node.id).select("rect").transition().style("fill", "yellow");
+    d3.select("#node-" + node.id).select("rect")
+        .transition().style("fill", "yellow");
 }
 
 function forward(nodeOrder) {
