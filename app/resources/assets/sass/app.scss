@@ -87,10 +87,18 @@ body, html, .container-fluid, .row {
     height: 100%;
     padding-top: 5px;
     padding-bottom: 25px;
-    .program-tree, .data {
-        height: 100%;
-        overflow: auto;
-    }
+    overflow: auto;
+}
+
+.typeTable-container {
+    height: 50%;
+    overflow: auto;
+}
+
+.explanations {
+    margin-top: 10px;
+    height: 50%;
+    overflow: auto;
 }
 
 .node rect {

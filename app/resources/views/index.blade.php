@@ -31,9 +31,7 @@
                         <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
                         <p class="pull-right">Contextual-analysis | Code-generation</p>
                     </div>
-                    <div class="program-tree-container">
-                        <div class="program-tree"></div>
-                    </div>
+                    <div class="program-tree-container"></div>
                 </div>
             </div>
             <div class="col-md-3 table-container">
@@ -42,7 +40,7 @@
                         <p>Type Table</p>
                     </div>
                     <div class="data-container">
-                        <div class="data">
+                        <div class="typeTable-container">
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
@@ -57,8 +55,9 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <br>
-                            <div class="explanations"></div>
+                        </div>
+                        <div class="explanations">
+                            <p>Explanations</p>
                         </div>
                     </div>
                 </div>
