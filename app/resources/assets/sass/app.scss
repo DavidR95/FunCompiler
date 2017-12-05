@@ -90,6 +90,16 @@ body, html, .container-fluid, .row {
     overflow: auto;
 }
 
+.typeTable-container {
+    height: 50%;
+    overflow: auto;
+}
+
+.explanations {
+    height: 50%;
+    overflow: auto;
+}
+
 .node rect {
     fill: #fff;
     stroke: $dracula;

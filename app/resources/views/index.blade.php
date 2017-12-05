@@ -40,21 +40,22 @@
                         <p>Type Table</p>
                     </div>
                     <div class="data-container">
-                        <table class="table table-striped
-                                            table-hover
-                                            table-responsive
-                                            table-bordered
-                                            typeTable">
-                            <thead>
-                                <tr>
-                                    <th>Scope</th>
-                                    <th>ID</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <br>
+                        <div class="typeTable-container">
+                            <table class="table table-striped
+                                                table-hover
+                                                table-responsive
+                                                table-bordered
+                                                typeTable">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <div class="explanations"></div>
                     </div>
                 </div>
