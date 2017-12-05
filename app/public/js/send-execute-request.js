@@ -191,7 +191,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         $.each(node.typeTable, function (index, tableEntry) {
             $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
         });
-        $(".explanations").append("Node: " + $("#node-" + node.id).attr("data-name") + "<br>");
+        $(".explanations").append("<b>Node: " + $("#node-" + node.id).data("name") + "</b><br>");
         $.each(node.explanations, function (index, explanation) {
             $(".explanations").append(explanation + "<br>");
         });
