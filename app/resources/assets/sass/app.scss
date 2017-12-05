@@ -129,3 +129,16 @@ body, html, .container-fluid, .row {
 #pause-button {
     display: none;
 }
+
+.table-striped tbody {
+    tr:nth-child(odd) {
+	    background-color: $dracula;
+    }
+    tr:nth-child(even) {
+        background-color: darken($dracula, 10%);
+    }
+    tr:hover {
+        cursor: pointer;
+        background-color: lighten($dracula, 10%);
+    }
+}
