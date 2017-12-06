@@ -3,18 +3,7 @@
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;
-
-$("#generation-button").on("click", function() {
-    $(".right-contextual-container").hide();
-    $(".right-generation-container").css("display", "table");
-    showGenerationAnimation = true;
-});
-
-$("#contextual-button").on("click", function() {
-    $(".right-contextual-container").css("display", "table");
-    $(".right-generation-container").hide();
-    showGenerationAnimation = false;
-});
+var nodeOrder;
 
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
@@ -49,7 +38,9 @@ $("#execute-form").submit(function(e) {
             $(".program-tree-container").append("<br>");
         } else {
             drawTree(treeNodes);
-            setUpListeners(contextualNodeOrder);
+            nodeOrder = contextualNodeOrder;
+            setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
+            setUpListeners();
         }
     }).fail(function(responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -131,18 +122,37 @@ function drawTree(data, contextualNodeOrder) {
         });
 }
 
-function setUpListeners(nodeOrder) {
+function setUpSwitchListeners(contextualNodeOrder, generationNodeOrder) {
+    $("#generation-button").on("click", function() {
+        $(".right-contextual-container").hide();
+        $(".right-generation-container").css("display", "table");
+        showGenerationAnimation = true;
+        nodeOrder = generationNodeOrder
+        currentNodeIndex = 0;
+    });
+
+    $("#contextual-button").on("click", function() {
+        $(".right-contextual-container").css("display", "table");
+        $(".right-generation-container").hide();
+        showGenerationAnimation = false;
+        nodeOrder = contextualNodeOrder
+        currentNodeIndex = 0;
+    });
+
+}
+
+function setUpListeners() {
     $("#play-button").on("click", function() {
-        play(nodeOrder);
+        play();
     });
     $("#pause-button").on("click", function() {
-        pause(nodeOrder);
+        pause();
     });
     $("#forward-button").on("click", function() {
-        forward(nodeOrder);
+        forward();
     });
     $("#reverse-button").on("click", function() {
-        reverse(nodeOrder);
+        reverse();
     });
 }
 
@@ -176,7 +186,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         }).transition().style("fill", "white");
 }
 
-function animateTree(nodeOrder) {
+function animateTree() {
     currentNodeIndex = (currentNodeIndex == -1 ? 0 : currentNodeIndex);
     for (var i = currentNodeIndex, j = 0; i < nodeOrder.length; i++, j++) {
         var node = nodeOrder[i];
@@ -184,14 +194,14 @@ function animateTree(nodeOrder) {
     }
 }
 
-function play(nodeOrder) {
+function play() {
     is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
-    animateTree(nodeOrder);
+    animateTree();
 }
 
-function pause(nodeOrder) {
+function pause() {
     var node = nodeOrder[currentNodeIndex];
     is_playing = false;
     $("#play-button").show();
@@ -201,16 +211,16 @@ function pause(nodeOrder) {
         .transition().style("fill", "yellow");
 }
 
-function forward(nodeOrder) {
+function forward() {
     if (is_playing)
-        pause(nodeOrder);
+        pause();
     var node = nodeOrder[currentNodeIndex+1];
     animateNode(node, currentNodeIndex+1, 0, nodeOrder.length);
 }
 
-function reverse(nodeOrder) {
+function reverse() {
     if (is_playing)
-        pause(nodeOrder);
+        pause();
     var node = nodeOrder[currentNodeIndex-1];
     animateNode(node, currentNodeIndex-1, 0, nodeOrder.length);
 }
