@@ -15,6 +15,14 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
@@ -24,19 +32,74 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	private int localvaraddr = 0;
 	private int currentLocale = Address.GLOBAL;
 
-	private SymbolTable<Address> addrTable =
-	   new SymbolTable<Address>();
+	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
 
 	private void predefine () {
 	// Add predefined procedures to the address table.
-		addrTable.put("read",
-		   new Address(SVM.READOFFSET, Address.CODE));
-		addrTable.put("write",
-		   new Address(SVM.WRITEOFFSET, Address.CODE));
+		addrTable.put("read", new Address(SVM.READOFFSET, Address.CODE));
+		addrTable.put("write", new Address(SVM.WRITEOFFSET, Address.CODE));
 	}
 
 	public SVM getSVM() {
 	    return obj;
+	}
+
+	private JsonArray nodeOrder = new JsonArray();
+
+	private static final Map<Integer, String> convertLocale = createConverter();
+    private static Map<Integer, String> createConverter() {
+        Map<Integer,String> convertLocale = new HashMap<Integer,String>();
+        convertLocale.put(0, "code");
+        convertLocale.put(1, "global");
+		convertLocale.put(2, "local");
+        return convertLocale;
+    }
+
+	private Map<Integer,LinkedList<String>> codeTemplates = new HashMap<Integer,LinkedList<String>>();
+
+	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
+
+	private void addNode(Object ctx, String explanation) {
+		int contextHash = ctx.hashCode();
+		List<String> explanationList = nodeExplanations.get(contextHash);
+		if (explanationList != null) {
+			explanationList.add(explanation);
+		} else {
+			nodeExplanations.put(contextHash, new LinkedList<String>(Arrays.asList(explanation)));
+		}
+		JsonObject nodeObject = new JsonObject();
+		JsonArray explanationArray = new JsonArray();
+		for (String nodeExplanation : nodeExplanations.get(contextHash)) {
+			explanationArray.add(new JsonPrimitive(nodeExplanation));
+		}
+		JsonArray codeTemplateArray = new JsonArray();
+		for (String codeTemplateString : codeTemplates.get(contextHash)) {
+			codeTemplateArray.add(new JsonPrimitive(codeTemplateString));
+		}
+		JsonArray addrTableArray = new JsonArray();
+		addrTable.getGlobals().forEach((id,addr) -> {
+			JsonObject addrTableObject = new JsonObject();
+			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
+			addrTableObject.addProperty("id", id);
+			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableArray.add(addrTableObject);
+		});
+		addrTable.getLocals().forEach((id,addr) -> {
+			JsonObject addrTableObject = new JsonObject();
+			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
+			addrTableObject.addProperty("id", id);
+			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableArray.add(addrTableObject);
+		});
+		nodeObject.addProperty("id", contextHash);
+		nodeObject.add("explanations", explanationArray);
+		nodeObject.add("codeTemplate", codeTemplateArray);
+		nodeObject.add("addrTable", addrTableArray);
+		nodeOrder.add(nodeObject);
+	}
+
+	public JsonArray getNodeOrder() {
+		return nodeOrder;
 	}
 
 	/**
@@ -46,6 +109,13 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitProg(FunParser.ProgContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate variable declarations",
+				"Code to evaulate procedure declations"
+			)
+		));
+		addNode(ctx, "blah");
 	    predefine();
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl)
@@ -58,6 +128,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		visit(pd);
 	    int mainaddr = addrTable.get("main").offset;
 	    obj.patch12(calladdr, mainaddr);
+		addNode(ctx, "blah2");
 	    return null;
 	}
 

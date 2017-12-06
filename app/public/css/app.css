@@ -8747,7 +8747,8 @@ html,
 
 .left-container,
 .center-container,
-.right-container {
+.right-contextual-container,
+.right-generation-container {
   display: table;
   width: 100%;
   height: 100%;
@@ -8759,12 +8760,13 @@ html,
   display: table-row;
 }
 
-.controls-container .glyphicon,
-.controls-container p {
+.controls-container button {
   margin-top: 45px;
+  margin-right: 5px;
 }
 
 .controls-container .glyphicon {
+  margin-top: 45px;
   margin-left: 5px;
   font-size: 1.75em;
   cursor: pointer;
@@ -8822,8 +8824,13 @@ html,
   overflow: auto;
 }
 
-.typeTable-container {
+.type-table-container {
   height: 50%;
+  overflow: auto;
+}
+
+.address-table-container {
+  height: 40%;
   overflow: auto;
 }
 
@@ -8928,7 +8935,8 @@ fieldset[disabled] .btn-execute.focus {
   background-color: white;
 }
 
-#pause-button {
+#pause-button,
+.right-generation-container {
   display: none;
 }
 

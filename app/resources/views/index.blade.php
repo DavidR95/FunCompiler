@@ -29,23 +29,24 @@
                         <i id="play-button" class="glyphicon glyphicon-play"></i>
                         <i id="pause-button" class="glyphicon glyphicon-pause"></i>
                         <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
-                        <p class="pull-right">Contextual-analysis | Code-generation</p>
+                        <button id="generation-button" href="#" class="btn btn-execute btn-small pull-right">Code-generation</button>
+                        <button id="contextual-button" href="#" class="btn btn-execute btn-small pull-right">Contextual-analysis</button>
                     </div>
                     <div class="program-tree-container"></div>
                 </div>
             </div>
             <div class="col-md-3 table-container">
-                <div class="right-container">
+                <div class="right-contextual-container">
                     <div class="data-heading-container">
                         <p>Type Table</p>
                     </div>
                     <div class="data-container">
-                        <div class="typeTable-container">
+                        <div class="type-table-container">
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
                                                 table-bordered
-                                                typeTable">
+                                                type-table">
                                 <thead>
                                     <tr>
                                         <th>Scope</th>
@@ -61,6 +62,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="right-generation-container">
+                    <div class="data-heading-container">
+                        <p>Address Table</p>
+                    </div>
+                    <div class="data-container">
+                        <div class="address-table-container">
+                            <table class="table table-striped
+                                                table-hover
+                                                table-responsive
+                                                table-bordered
+                                                address-table">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -68,4 +92,5 @@
 @section('scripts')
     <script src="{{ asset('js/codemirror.js') }}"></script>
     <script src="{{ asset('js/send-execute-request.js') }}"></script>
+    <script src="{{ asset('js/contextual-generation-switch.js') }}"></script>
 @endsection
