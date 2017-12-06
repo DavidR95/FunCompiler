@@ -114,8 +114,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				"Code to evaluate variable declarations",
 				"CALL",
 				"HALT",
-				"Code to evaulate procedure declarations",
-				"Patch CALL"
+				"Code to evaulate procedure declarations"
 			)
 		));
 		addNode(ctx, "Add read and write procedures to the address table");
@@ -243,16 +242,24 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitVar(FunParser.VarContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate expr",
+				"STOREG d or STOREL d"
+			)
+		));
+		addNode(ctx, "Visit the expression");
 	    visit(ctx.expr());
 	    String id = ctx.ID().getText();
 	    switch (currentLocale) {
-	    case Address.LOCAL:
-		addrTable.put(id, new Address(
-					      localvaraddr++, Address.LOCAL));
-		break;
-	    case Address.GLOBAL:
-		addrTable.put(id, new Address(
-					      globalvaraddr++, Address.GLOBAL));
+		    case Address.LOCAL:
+				addNode(ctx, "Insert " + id + " into the address table at " + localvaraddr + " with a scope of local");
+				addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
+				break;
+		    case Address.GLOBAL:
+				addNode(ctx, "Insert " + id + " into the address table at " + globalvaraddr + " with a scope of global");
+				addrTable.put(id, new Address(globalvaraddr++, Address.GLOBAL));
+				break;
 	    }
 	    return null;
 	}
@@ -264,6 +271,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitBool(FunParser.BoolContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"No code template"
+			)
+		));
+		addNode(ctx, "BOOL");
 	    return null;
 	}
 
@@ -274,6 +287,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitInt(FunParser.IntContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"No code template"
+			)
+		));
+		addNode(ctx, "INT");
 	    return null;
 	}
 
@@ -284,15 +303,25 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitAssn(FunParser.AssnContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate expr",
+				"STOREG d or STOREL d"
+			)
+		));
+		addNode(ctx, "Visit the expression");
 	    visit(ctx.expr());
 	    String id = ctx.ID().getText();
 	    Address varaddr = addrTable.get(id);
 	    switch (varaddr.locale) {
-	    case Address.GLOBAL:
-		obj.emit12(SVM.STOREG,varaddr.offset);
-		break;
-	    case Address.LOCAL:
-		obj.emit12(SVM.STOREL,varaddr.offset);
+		    case Address.GLOBAL:
+				addNode(ctx, "Emit STOREG " + varaddr.offset);
+				obj.emit12(SVM.STOREG,varaddr.offset);
+				break;
+		    case Address.LOCAL:
+				addNode(ctx, "Emit STOREL " + varaddr.offset);
+				obj.emit12(SVM.STOREL,varaddr.offset);
+				break;
 	    }
 	    return null;
 	}
@@ -347,13 +376,26 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitWhile(FunParser.WhileContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate expr",
+				"JUMPF",
+				"Code to evaluate com",
+				"JUMP"
+			)
+		));
 	    int startaddr = obj.currentOffset();
+		addNode(ctx, "Visit the expression");
 	    visit(ctx.expr());
 	    int condaddr = obj.currentOffset();
+		addNode(ctx, "Emit 'JUMPF 0'");
 	    obj.emit12(SVM.JUMPF, 0);
+		addNode(ctx, "Visit the sequential command");
 	    visit(ctx.seq_com());
+		addNode(ctx, "Emit 'JUMP " + startaddr + "'");
 	    obj.emit12(SVM.JUMP, startaddr);
 	    int exitaddr = obj.currentOffset();
+		addNode(ctx, "Patch the exit address, " + exitaddr + ", into the jumpf command");
 	    obj.patch12(condaddr, exitaddr);
 	    return null;
 	}
