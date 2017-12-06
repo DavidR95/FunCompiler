@@ -25,6 +25,7 @@ $("#execute-form").submit(function(e) {
         var objectCode = response.objectCode;
         var output = response.output;
         var contextualNodeOrder = response.contextualNodeOrder;
+        var generationNodeOrder = response.generationNodeOrder;
         $(".program-tree-container").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
@@ -34,7 +35,8 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            drawTree(treeNodes, contextualNodeOrder);
+            var nodeOrder = (showGenerationAnimation ? generationNodeOrder : contextualNodeOrder);
+            drawTree(treeNodes, nodeOrder);
         }
     }).fail(function(responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -44,6 +46,7 @@ $("#execute-form").submit(function(e) {
 function drawTree(data, contextualNodeOrder) {
     currentNodeIndex = -1;
     is_playing = false;
+    showGenerationAnimation = false;
 
     var dataMap = data.reduce(function(map, node) {
         map[node.id] = node;
@@ -130,21 +133,28 @@ function drawTree(data, contextualNodeOrder) {
 }
 
 function animateNode(node, currentNode, delayOffset, numNodes) {
+    if (showGenerationAnimation) {
+        var explanations = $(".generation-explanations");
+        var table = $(".address-table tbody");
+    } else {
+        var explanations = $(".contextual-explanations");
+        var table = $(".type-table tbody");
+    }
     d3.select("#node-" + node.id).select("rect").transition()
         .duration(500).delay(delayOffset * 1000).style("fill", "yellow")
         .on("start", function() {
             currentNodeIndex = currentNode;
-            $(".type-table tbody").text("");
-            $(".explanations").html("<p>Explanations</p>");
-            $.each(node.typeTable, function(index, tableEntry) {
-                $(".type-table tbody").append("<tr><td>" + tableEntry.scope +
+            table.text("");
+            explanations.html("<p>Explanations</p>");
+            $.each(node.table, function(index, tableEntry) {
+                table.append("<tr><td>" + tableEntry.scope +
                                              "</td><td>" + tableEntry.id +
                                              "</td><td>" + tableEntry.type +
                                              "</td></tr>");
             });
-            $(".explanations").append("<b>Node: " + $("#node-"+node.id).data("name") + "</b><br>");
+        explanations.append("<b>Node: " + $("#node-"+node.id).data("name") + "</b><br>");
             $.each(node.explanations, function(index, explanation) {
-                $(".explanations").append(explanation + "<br>");
+                explanations.append(explanation + "<br>");
             });
         }).on("end", function() {
             if (currentNode === numNodes-1)

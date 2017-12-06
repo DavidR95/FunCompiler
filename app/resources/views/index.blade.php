@@ -57,7 +57,7 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="explanations">
+                        <div class="contextual-explanations">
                             <p>Explanations</p>
                         </div>
                     </div>
@@ -82,6 +82,9 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
+                        </div>
+                        <div class="generation-explanations">
+                            <p>Explanations</p>
                         </div>
                     </div>
                 </div>

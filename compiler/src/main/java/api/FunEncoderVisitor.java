@@ -94,7 +94,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		nodeObject.addProperty("id", contextHash);
 		nodeObject.add("explanations", explanationArray);
 		nodeObject.add("codeTemplate", codeTemplateArray);
-		nodeObject.add("addrTable", addrTableArray);
+		nodeObject.add("table", addrTableArray);
 		nodeOrder.add(nodeObject);
 	}
 
@@ -452,6 +452,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				    break;
 			}
 	    } else {
+			codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+				Arrays.asList(
+					"Code to evaluate expr"
+				)
+			));
 			addNode(ctx, "Visit the first expression");
 			visit(ctx.e1);
 		}

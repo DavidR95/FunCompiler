@@ -103,7 +103,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		});
 		nodeObject.addProperty("id", contextHash);
 		nodeObject.add("explanations", explanationArray);
-		nodeObject.add("typeTable", typeTableArray);
+		nodeObject.add("table", typeTableArray);
 		nodeOrder.add(nodeObject);
 	}
 
