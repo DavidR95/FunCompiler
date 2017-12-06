@@ -407,6 +407,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitSeq(FunParser.SeqContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"No code template"
+			)
+		));
+		addNode(ctx, "Visit the sequential command");
 	    visitChildren(ctx);
 	    return null;
 	}
@@ -417,21 +423,36 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitExpr(FunParser.ExprContext ctx) {
-	    visit(ctx.e1);
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate the first expression",
+				"If binary operator, code to evaluate the second expression",
+				"If binary operator, CMPEQ or LT or GT"
+			)
+		));
 	    if (ctx.e2 != null) {
-		visit(ctx.e2);
-		switch (ctx.op.getType()) {
-		case FunParser.EQ:
-		    obj.emit1(SVM.CMPEQ);
-		    break;
-		case FunParser.LT:
-		    obj.emit1(SVM.CMPLT);
-		    break;
-		case FunParser.GT:
-		    obj.emit1(SVM.CMPGT);
-		    break;
+			addNode(ctx, "Visit the first expression");
+			visit(ctx.e1);
+			addNode(ctx, "Visit the second expression");
+			visit(ctx.e2);
+			switch (ctx.op.getType()) {
+				case FunParser.EQ:
+					addNode(ctx, "Emit 'CMPEQ'");
+				    obj.emit1(SVM.CMPEQ);
+				    break;
+				case FunParser.LT:
+					addNode(ctx, "Emit 'LT'");
+				    obj.emit1(SVM.CMPLT);
+				    break;
+				case FunParser.GT:
+					addNode(ctx, "Emit 'GT'");
+				    obj.emit1(SVM.CMPGT);
+				    break;
+			}
+	    } else {
+			addNode(ctx, "Visit the first expression");
+			visit(ctx.e1);
 		}
-	    }
 	    return null;
 	}
 
