@@ -86,6 +86,9 @@
                         <div class="generation-explanations">
                             <p>Explanations</p>
                         </div>
+                        <div class="code-template">
+                            <p>Code Template</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -213,6 +213,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
         var explanations = $(".generation-explanations");
         var table = $(".address-table tbody");
+        var codeTemplate = $(".code-template");
     } else {
         var explanations = $(".contextual-explanations");
         var table = $(".type-table tbody");
@@ -221,6 +222,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         currentNodeIndex = currentNode;
         table.text("");
         explanations.html("<p>Explanations</p>");
+        if (showGenerationAnimation) codeTemplate.html("<p>Code Template</p>");
         $.each(node.table, function (index, tableEntry) {
             table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
         });
@@ -228,6 +230,11 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         $.each(node.explanations, function (index, explanation) {
             explanations.append(explanation + "<br>");
         });
+        if (showGenerationAnimation) {
+            $.each(node.codeTemplate, function (index, codeTemplateString) {
+                codeTemplate.append(codeTemplateString + "<br>");
+            });
+        }
     }).on("end", function () {
         if (currentNode === numNodes - 1) is_playing = false;
     }).transition().style("fill", "white");

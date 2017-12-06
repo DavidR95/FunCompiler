@@ -110,7 +110,13 @@ body, html, .container-fluid, .row {
 
 .generation-explanations {
     margin-top: 10px;
-    height: 50%;
+    height: 30%;
+    overflow: auto;
+}
+
+.code-template {
+    margin-top: 10px;
+    height: 30%;
     overflow: auto;
 }
 
