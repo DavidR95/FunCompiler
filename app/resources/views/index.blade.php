@@ -95,7 +95,3 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('js/codemirror.js') }}"></script>
-    <script src="{{ asset('js/send-execute-request.js') }}"></script>
-@endsection
