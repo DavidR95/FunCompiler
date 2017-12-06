@@ -162,12 +162,14 @@ function animateTree() {
         animateNode(node, i, j, Tree.nodeOrder.length);
     }
 }
+
 function play() {
     is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
     animateTree();
 }
+
 function pause() {
     var node = Tree.nodeOrder[currentNodeIndex];
     is_playing = false;
@@ -177,12 +179,14 @@ function pause() {
     d3.select("#node-" + node.id).select("rect")
         .transition().style("fill", "yellow");
 }
+
 function forward() {
     if (is_playing)
         pause();
     var node = Tree.nodeOrder[currentNodeIndex+1];
     animateNode(node, currentNodeIndex+1, 0, Tree.nodeOrder.length);
 }
+
 function reverse() {
     if (is_playing)
         pause();

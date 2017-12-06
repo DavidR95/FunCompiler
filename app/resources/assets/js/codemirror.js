@@ -1,6 +1,7 @@
 "use strict";
 
 var CodeMirror = require('codemirror');
+
 require('codemirror/mode/javascript/javascript');
 
 // Note that you cannot use the JQuery DOM selector when using CodeMirror

@@ -31651,6 +31651,7 @@ if (typeof jQuery === 'undefined') {
 
 
 var CodeMirror = __webpack_require__(90);
+
 __webpack_require__(179);
 
 // Note that you cannot use the JQuery DOM selector when using CodeMirror
@@ -32676,12 +32677,14 @@ function animateTree() {
         animateNode(node, i, j, Tree.nodeOrder.length);
     }
 }
+
 function play() {
     is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
     animateTree();
 }
+
 function pause() {
     var node = Tree.nodeOrder[currentNodeIndex];
     is_playing = false;
@@ -32690,11 +32693,13 @@ function pause() {
     d3.selectAll("rect").interrupt();
     d3.select("#node-" + node.id).select("rect").transition().style("fill", "yellow");
 }
+
 function forward() {
     if (is_playing) pause();
     var node = Tree.nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0, Tree.nodeOrder.length);
 }
+
 function reverse() {
     if (is_playing) pause();
     var node = Tree.nodeOrder[currentNodeIndex - 1];
@@ -46254,6 +46259,7 @@ function nopropagation() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(178);
+
 var Tree = __webpack_require__(180);
 
 $("#execute-form").submit(function (e) {
