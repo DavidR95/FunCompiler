@@ -77,7 +77,7 @@
                                     <tr>
                                         <th>Scope</th>
                                         <th>ID</th>
-                                        <th>Type</th>
+                                        <th>Address</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -85,6 +85,9 @@
                         </div>
                         <div class="generation-explanations">
                             <p>Explanations</p>
+                        </div>
+                        <div class="code-template">
+                            <p>Code Template</p>
                         </div>
                     </div>
                 </div>
@@ -95,5 +98,4 @@
 @section('scripts')
     <script src="{{ asset('js/codemirror.js') }}"></script>
     <script src="{{ asset('js/send-execute-request.js') }}"></script>
-    <script src="{{ asset('js/contextual-generation-switch.js') }}"></script>
 @endsection

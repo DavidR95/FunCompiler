@@ -81,6 +81,8 @@ module.exports = __webpack_require__(501);
 
 var currentNodeIndex;
 var is_playing;
+var showGenerationAnimation;
+var nodeOrder;
 
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
@@ -114,8 +116,10 @@ $("#execute-form").submit(function (e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            var nodeOrder = showGenerationAnimation ? generationNodeOrder : contextualNodeOrder;
-            drawTree(treeNodes, nodeOrder);
+            drawTree(treeNodes);
+            nodeOrder = contextualNodeOrder;
+            setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
+            setUpListeners();
         }
     }).fail(function (responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -125,7 +129,6 @@ $("#execute-form").submit(function (e) {
 function drawTree(data, contextualNodeOrder) {
     currentNodeIndex = -1;
     is_playing = false;
-    showGenerationAnimation = false;
 
     var dataMap = data.reduce(function (map, node) {
         map[node.id] = node;
@@ -171,18 +174,38 @@ function drawTree(data, contextualNodeOrder) {
         var name = d.data.name;
         if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
     });
+}
 
+function setUpSwitchListeners(contextualNodeOrder, generationNodeOrder) {
+    $("#generation-button").on("click", function () {
+        $(".right-contextual-container").hide();
+        $(".right-generation-container").css("display", "table");
+        showGenerationAnimation = true;
+        nodeOrder = generationNodeOrder;
+        currentNodeIndex = 0;
+    });
+
+    $("#contextual-button").on("click", function () {
+        $(".right-contextual-container").css("display", "table");
+        $(".right-generation-container").hide();
+        showGenerationAnimation = false;
+        nodeOrder = contextualNodeOrder;
+        currentNodeIndex = 0;
+    });
+}
+
+function setUpListeners() {
     $("#play-button").on("click", function () {
-        play(contextualNodeOrder);
+        play();
     });
     $("#pause-button").on("click", function () {
-        pause(contextualNodeOrder);
+        pause();
     });
     $("#forward-button").on("click", function () {
-        forward(contextualNodeOrder);
+        forward();
     });
     $("#reverse-button").on("click", function () {
-        reverse(contextualNodeOrder);
+        reverse();
     });
 }
 
@@ -190,6 +213,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
         var explanations = $(".generation-explanations");
         var table = $(".address-table tbody");
+        var codeTemplate = $(".code-template");
     } else {
         var explanations = $(".contextual-explanations");
         var table = $(".type-table tbody");
@@ -198,19 +222,25 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         currentNodeIndex = currentNode;
         table.text("");
         explanations.html("<p>Explanations</p>");
+        if (showGenerationAnimation) codeTemplate.html("<p>Code Template</p>");
         $.each(node.table, function (index, tableEntry) {
-            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
+            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
         });
         explanations.append("<b>Node: " + $("#node-" + node.id).data("name") + "</b><br>");
         $.each(node.explanations, function (index, explanation) {
             explanations.append(explanation + "<br>");
         });
+        if (showGenerationAnimation) {
+            $.each(node.codeTemplate, function (index, codeTemplateString) {
+                codeTemplate.append(codeTemplateString + "<br>");
+            });
+        }
     }).on("end", function () {
         if (currentNode === numNodes - 1) is_playing = false;
     }).transition().style("fill", "white");
 }
 
-function animateTree(nodeOrder) {
+function animateTree() {
     currentNodeIndex = currentNodeIndex == -1 ? 0 : currentNodeIndex;
     for (var i = currentNodeIndex, j = 0; i < nodeOrder.length; i++, j++) {
         var node = nodeOrder[i];
@@ -218,14 +248,14 @@ function animateTree(nodeOrder) {
     }
 }
 
-function play(nodeOrder) {
+function play() {
     is_playing = true;
     $("#play-button").hide();
     $("#pause-button").show();
-    animateTree(nodeOrder);
+    animateTree();
 }
 
-function pause(nodeOrder) {
+function pause() {
     var node = nodeOrder[currentNodeIndex];
     is_playing = false;
     $("#play-button").show();
@@ -234,14 +264,14 @@ function pause(nodeOrder) {
     d3.select("#node-" + node.id).select("rect").transition().style("fill", "yellow");
 }
 
-function forward(nodeOrder) {
-    if (is_playing) pause(nodeOrder);
+function forward() {
+    if (is_playing) pause();
     var node = nodeOrder[currentNodeIndex + 1];
     animateNode(node, currentNodeIndex + 1, 0, nodeOrder.length);
 }
 
-function reverse(nodeOrder) {
-    if (is_playing) pause(nodeOrder);
+function reverse() {
+    if (is_playing) pause();
     var node = nodeOrder[currentNodeIndex - 1];
     animateNode(node, currentNodeIndex - 1, 0, nodeOrder.length);
 }

@@ -81,14 +81,14 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			JsonObject addrTableObject = new JsonObject();
 			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
 			addrTableObject.addProperty("id", id);
-			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableObject.addProperty("type_address", Integer.toString(addr.offset));
 			addrTableArray.add(addrTableObject);
 		});
 		addrTable.getLocals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
 			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
 			addrTableObject.addProperty("id", id);
-			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableObject.addProperty("type_address", Integer.toString(addr.offset));
 			addrTableArray.add(addrTableObject);
 		});
 		nodeObject.addProperty("id", contextHash);

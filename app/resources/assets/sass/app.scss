@@ -102,9 +102,21 @@ body, html, .container-fluid, .row {
     overflow: auto;
 }
 
-.explanations {
+.contextual-explanations {
     margin-top: 10px;
     height: 50%;
+    overflow: auto;
+}
+
+.generation-explanations {
+    margin-top: 10px;
+    height: 30%;
+    overflow: auto;
+}
+
+.code-template {
+    margin-top: 10px;
+    height: 30%;
     overflow: auto;
 }
 
