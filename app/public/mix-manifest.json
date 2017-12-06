@@ -1,7 +1,5 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/main.js": "/js/main.js",
-    "/js/send-execute-request.js": "/js/send-execute-request.js",
-    "/js/codemirror.js": "/js/codemirror.js"
+    "/js/main.js": "/js/main.js"
 }

@@ -1,10 +1,5 @@
-var currentNodeIndex;
-var is_playing;
-var showGenerationAnimation;
-var nodeOrder;
-
 require("./codemirror.js");
-var Tree = require("./send-execute-request.js");
+var Tree = require("./tree.js");
 
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
@@ -39,7 +34,7 @@ $("#execute-form").submit(function(e) {
             $(".program-tree-container").append("<br>");
         } else {
             Tree.drawTree(treeNodes);
-            nodeOrder = contextualNodeOrder;
+            Tree.setNodeOrder(contextualNodeOrder);
             Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
             Tree.setUpListeners();
         }
