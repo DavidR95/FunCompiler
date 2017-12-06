@@ -462,24 +462,40 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitSec_expr(FunParser.Sec_exprContext ctx) {
-	    visit(ctx.e1);
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate the first expression",
+				"If binary operator, code to evaluate the second expression",
+				"If binary operator, PLUS or MINUS or TIMES or DIV"
+			)
+		));
 	    if (ctx.e2 != null) {
-		visit(ctx.e2);
-		switch (ctx.op.getType()) {
-		case FunParser.PLUS:
-		    obj.emit1(SVM.ADD);
-		    break;
-		case FunParser.MINUS:
-		    obj.emit1(SVM.SUB);
-		    break;
-		case FunParser.TIMES:
-		    obj.emit1(SVM.MUL);
-		    break;
-		case FunParser.DIV:
-		    obj.emit1(SVM.DIV);
-		    break;
+			addNode(ctx, "Visit the first expression");
+			visit(ctx.e1);
+			addNode(ctx, "Visit the second expression");
+			visit(ctx.e2);
+			switch (ctx.op.getType()) {
+				case FunParser.PLUS:
+					addNode(ctx, "Emit 'PLUS'");
+				    obj.emit1(SVM.ADD);
+				    break;
+				case FunParser.MINUS:
+					addNode(ctx, "Emit 'MINUS'");
+				    obj.emit1(SVM.SUB);
+				    break;
+				case FunParser.TIMES:
+					addNode(ctx, "Emit 'TIMES'");
+				    obj.emit1(SVM.MUL);
+				    break;
+				case FunParser.DIV:
+					addNode(ctx, "Emit 'DIV'");
+				    obj.emit1(SVM.DIV);
+				    break;
+			}
+	    } else {
+			addNode(ctx, "Visit the first expression");
+			visit(ctx.e1);
 		}
-	    }
 	    return null;
 	}
 
