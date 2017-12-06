@@ -33465,7 +33465,7 @@ $("#execute-form").submit(function (e) {
             Tree.drawTree(treeNodes);
             Tree.setNodeOrder(contextualNodeOrder);
             Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
-            Tree.setUpListeners();
+            Tree.setUpPlaybackListeners();
         }
     }).fail(function (responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -33480,7 +33480,6 @@ $("#execute-form").submit(function (e) {
 
 
 var CodeMirror = __webpack_require__(178);
-
 __webpack_require__(498);
 
 // Note that you cannot use the JQuery DOM selector when using CodeMirror
@@ -33567,7 +33566,7 @@ var Tree = module.exports = {
             currentNodeIndex = 0;
         });
     },
-    setUpListeners: function setUpListeners() {
+    setUpPlaybackListeners: function setUpPlaybackListeners() {
         $("#play-button").on("click", function () {
             play();
         });

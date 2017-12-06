@@ -36,7 +36,7 @@ $("#execute-form").submit(function(e) {
             Tree.drawTree(treeNodes);
             Tree.setNodeOrder(contextualNodeOrder);
             Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
-            Tree.setUpListeners();
+            Tree.setUpPlaybackListeners();
         }
     }).fail(function(responseData) {
         alert(responseData.responseJSON.errors.program);

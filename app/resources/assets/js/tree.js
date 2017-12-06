@@ -97,7 +97,7 @@ var Tree = module.exports = {
         });
 
     },
-    setUpListeners: function() {
+    setUpPlaybackListeners: function() {
         $("#play-button").on("click", function() {
             play();
         });
