@@ -96,6 +96,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/codemirror.js') }}"></script>
-    <script src="{{ asset('js/execute-form.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 @endsection

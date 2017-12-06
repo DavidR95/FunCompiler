@@ -65,6 +65,22 @@
 /************************************************************************/
 /******/ ({
 
+/***/ 503:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// Note that you cannot use the JQuery DOM selector when using CodeMirror
+
+CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+    lineNumbers: true,
+    mode: "javascript",
+    theme: "dracula"
+}).setValue("int n = 15\nproc main():\nwhile n > 1:\nn = n/2 .\n.");
+
+/***/ }),
+
 /***/ 504:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -81,6 +97,7 @@ var is_playing;
 var showGenerationAnimation;
 var nodeOrder;
 
+__webpack_require__(503);
 var Tree = __webpack_require__(92);
 
 $("#execute-form").submit(function (e) {

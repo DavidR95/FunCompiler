@@ -3,6 +3,7 @@ var is_playing;
 var showGenerationAnimation;
 var nodeOrder;
 
+require("./codemirror.js");
 var Tree = require("./send-execute-request.js");
 
 $("#execute-form").submit(function(e) {
