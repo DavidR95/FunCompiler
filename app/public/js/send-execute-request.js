@@ -81,6 +81,19 @@ module.exports = __webpack_require__(501);
 
 var currentNodeIndex;
 var is_playing;
+var showGenerationAnimation;
+
+$("#generation-button").on("click", function () {
+    $(".right-contextual-container").hide();
+    $(".right-generation-container").css("display", "table");
+    showGenerationAnimation = true;
+});
+
+$("#contextual-button").on("click", function () {
+    $(".right-contextual-container").css("display", "table");
+    $(".right-generation-container").hide();
+    showGenerationAnimation = false;
+});
 
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
@@ -114,8 +127,8 @@ $("#execute-form").submit(function (e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            var nodeOrder = showGenerationAnimation ? generationNodeOrder : contextualNodeOrder;
-            drawTree(treeNodes, nodeOrder);
+            drawTree(treeNodes);
+            setUpListeners(contextualNodeOrder);
         }
     }).fail(function (responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -125,7 +138,6 @@ $("#execute-form").submit(function (e) {
 function drawTree(data, contextualNodeOrder) {
     currentNodeIndex = -1;
     is_playing = false;
-    showGenerationAnimation = false;
 
     var dataMap = data.reduce(function (map, node) {
         map[node.id] = node;
@@ -171,18 +183,20 @@ function drawTree(data, contextualNodeOrder) {
         var name = d.data.name;
         if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
     });
+}
 
+function setUpListeners(nodeOrder) {
     $("#play-button").on("click", function () {
-        play(contextualNodeOrder);
+        play(nodeOrder);
     });
     $("#pause-button").on("click", function () {
-        pause(contextualNodeOrder);
+        pause(nodeOrder);
     });
     $("#forward-button").on("click", function () {
-        forward(contextualNodeOrder);
+        forward(nodeOrder);
     });
     $("#reverse-button").on("click", function () {
-        reverse(contextualNodeOrder);
+        reverse(nodeOrder);
     });
 }
 
