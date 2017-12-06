@@ -46,7 +46,28 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 
 	private JsonArray nodeOrder = new JsonArray();
 
-	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
+	private void addNode(Object ctx) {
+		int contextHash = ctx.hashCode();
+		JsonObject nodeObject = new JsonObject();
+		JsonArray addrTableArray = new JsonArray();
+		addrTable.getGlobals().forEach((id,addr) -> {
+			JsonObject addrTableObject = new JsonObject();
+			addrTableObject.addProperty("scope", Integer.toString(addr.locale));
+			addrTableObject.addProperty("id", id);
+			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableArray.add(addrTableObject);
+		});
+		addrTable.getLocals().forEach((id,addr) -> {
+			JsonObject addrTableObject = new JsonObject();
+			addrTableObject.addProperty("scope", Integer.toString(addr.locale));
+			addrTableObject.addProperty("id", id);
+			addrTableObject.addProperty("address", Integer.toString(addr.offset));
+			addrTableArray.add(addrTableObject);
+		});
+		nodeObject.addProperty("id", contextHash);
+		nodeObject.add("addrTable", addrTableArray);
+		nodeOrder.add(nodeObject);
+	}
 
 	public JsonArray getNodeOrder() {
 		return nodeOrder;

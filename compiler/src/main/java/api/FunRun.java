@@ -133,6 +133,8 @@ public class FunRun {
 	private static SVM codeGenerate (ParseTree parseTree) throws Exception  {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(parseTree);
+		JsonArray nodeOrder = encoder.getNodeOrder();
+		response.setGenerationNodeOrder(nodeOrder);
 		SVM objectprog = encoder.getSVM();
 		// Pass the response object
 		objectprog.showCode(response);
