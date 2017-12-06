@@ -8759,7 +8759,7 @@ html,
   display: table-row;
 }
 
-.controls-container a {
+.controls-container button {
   margin-top: 45px;
   margin-right: 5px;
 }

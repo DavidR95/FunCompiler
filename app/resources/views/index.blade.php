@@ -29,8 +29,8 @@
                         <i id="play-button" class="glyphicon glyphicon-play"></i>
                         <i id="pause-button" class="glyphicon glyphicon-pause"></i>
                         <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
-                        <a href="#" class="pull-right">Code-generation</a>
-                        <a href="#" class="pull-right">Contextual-analysis</a>
+                        <button id="generation-button" href="#" class="btn btn-execute btn-small pull-right">Code-generation</button>
+                        <button id="contextual-button" href="#" class="btn btn-execute btn-small pull-right">Contextual-analysis</button>
                     </div>
                     <div class="program-tree-container"></div>
                 </div>
@@ -92,4 +92,5 @@
 @section('scripts')
     <script src="{{ asset('js/codemirror.js') }}"></script>
     <script src="{{ asset('js/send-execute-request.js') }}"></script>
+    <script src="{{ asset('js/contextual-generation-switch.js') }}"></script>
 @endsection
