@@ -478,17 +478,17 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			switch (ctx.op.getType()) {
 				case FunParser.PLUS:
 					codeTemplates.get(ctx.hashCode()).add("ADD");
-					addNode(ctx, "Emit 'PLUS'");
+					addNode(ctx, "Emit 'ADD'");
 				    obj.emit1(SVM.ADD);
 				    break;
 				case FunParser.MINUS:
 					codeTemplates.get(ctx.hashCode()).add("SUB");
-					addNode(ctx, "Emit 'MINUS'");
+					addNode(ctx, "Emit 'SUB'");
 				    obj.emit1(SVM.SUB);
 				    break;
 				case FunParser.TIMES:
 					codeTemplates.get(ctx.hashCode()).add("MUL");
-					addNode(ctx, "Emit 'TIMES'");
+					addNode(ctx, "Emit 'MUL'");
 				    obj.emit1(SVM.MUL);
 				    break;
 				case FunParser.DIV:
@@ -516,6 +516,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitFalse(FunParser.FalseContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"LOADC"
+			)
+		));
+		addNode(ctx, "Emit 'LOADC 0'");
 	    obj.emit12(SVM.LOADC, 0);
 	    return null;
 	}
@@ -527,6 +533,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitTrue(FunParser.TrueContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"LOADC"
+			)
+		));
+		addNode(ctx, "Emit 'LOADC 1'");
 	    obj.emit12(SVM.LOADC, 1);
 	    return null;
 	}
@@ -538,7 +550,13 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitNum(FunParser.NumContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"LOADC"
+			)
+		));
 	    int value = Integer.parseInt(ctx.NUM().getText());
+		addNode(ctx, "Emit 'LOADC " + value + "'");
 	    obj.emit12(SVM.LOADC, value);
 	    return null;
 	}
@@ -550,14 +568,23 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitId(FunParser.IdContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"LOADG d or LOADC d"
+			)
+		));
 	    String id = ctx.ID().getText();
 	    Address varaddr = addrTable.get(id);
+		addNode(ctx, "Retrieve " + id + " fron the address table and get address: " + varaddr.offset);
 	    switch (varaddr.locale) {
-	    case Address.GLOBAL:
-		obj.emit12(SVM.LOADG,varaddr.offset);
-		break;
-	    case Address.LOCAL:
-		obj.emit12(SVM.LOADL,varaddr.offset);
+		    case Address.GLOBAL:
+				addNode(ctx, "Emit 'LOADG " + varaddr.offset + "'");
+				obj.emit12(SVM.LOADG,varaddr.offset);
+				break;
+		    case Address.LOCAL:
+				addNode(ctx, "Emit 'LOADC " + varaddr.offset + "'");
+				obj.emit12(SVM.LOADL,varaddr.offset);
+				break;
 	    }
 	    return null;
 	}
