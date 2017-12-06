@@ -424,40 +424,34 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitExpr(FunParser.ExprContext ctx) {
 	    if (ctx.e2 != null) {
-			codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			codeTemplates.put(ctx.op.hashCode(), new LinkedList<String>(
 				Arrays.asList(
 					"Code to evaluate expr1",
 					"Code to evaluate expr2"
 				)
 			));
-			addNode(ctx, "Visit the first expression");
+			addNode(ctx.op, "Visit the first expression");
 			visit(ctx.e1);
-			addNode(ctx, "Visit the second expression");
+			addNode(ctx.op, "Visit the second expression");
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.EQ:
-					codeTemplates.get(ctx.hashCode()).add("CMPEQ");
-					addNode(ctx, "Emit 'CMPEQ'");
+					codeTemplates.get(ctx.op.hashCode()).add("CMPEQ");
+					addNode(ctx.op, "Emit 'CMPEQ'");
 				    obj.emit1(SVM.CMPEQ);
 				    break;
 				case FunParser.LT:
-					codeTemplates.get(ctx.hashCode()).add("LT");
-					addNode(ctx, "Emit 'LT'");
+					codeTemplates.get(ctx.op.hashCode()).add("LT");
+					addNode(ctx.op, "Emit 'LT'");
 				    obj.emit1(SVM.CMPLT);
 				    break;
 				case FunParser.GT:
-					codeTemplates.get(ctx.hashCode()).add("GT");
-					addNode(ctx, "Emit 'GT'");
+					codeTemplates.get(ctx.op.hashCode()).add("GT");
+					addNode(ctx.op, "Emit 'GT'");
 				    obj.emit1(SVM.CMPGT);
 				    break;
 			}
 	    } else {
-			codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
-				Arrays.asList(
-					"Code to evaluate expr"
-				)
-			));
-			addNode(ctx, "Visit the first expression");
 			visit(ctx.e1);
 		}
 	    return null;
@@ -470,45 +464,39 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitSec_expr(FunParser.Sec_exprContext ctx) {
 	    if (ctx.e2 != null) {
-			codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			codeTemplates.put(ctx.op.hashCode(), new LinkedList<String>(
 				Arrays.asList(
 					"Code to evaluate expr1",
 					"Code to evaluate expr2"
 				)
 			));
-			addNode(ctx, "Visit the first expression");
+			addNode(ctx.op, "Visit the first expression");
 			visit(ctx.e1);
-			addNode(ctx, "Visit the second expression");
+			addNode(ctx.op, "Visit the second expression");
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.PLUS:
-					codeTemplates.get(ctx.hashCode()).add("ADD");
-					addNode(ctx, "Emit 'ADD'");
+					codeTemplates.get(ctx.op.hashCode()).add("ADD");
+					addNode(ctx.op, "Emit 'ADD'");
 				    obj.emit1(SVM.ADD);
 				    break;
 				case FunParser.MINUS:
-					codeTemplates.get(ctx.hashCode()).add("SUB");
-					addNode(ctx, "Emit 'SUB'");
+					codeTemplates.get(ctx.op.hashCode()).add("SUB");
+					addNode(ctx.op, "Emit 'SUB'");
 				    obj.emit1(SVM.SUB);
 				    break;
 				case FunParser.TIMES:
-					codeTemplates.get(ctx.hashCode()).add("MUL");
-					addNode(ctx, "Emit 'MUL'");
+					codeTemplates.get(ctx.op.hashCode()).add("MUL");
+					addNode(ctx.op, "Emit 'MUL'");
 				    obj.emit1(SVM.MUL);
 				    break;
 				case FunParser.DIV:
-					codeTemplates.get(ctx.hashCode()).add("DIV");
-					addNode(ctx, "Emit 'DIV'");
+					codeTemplates.get(ctx.op.hashCode()).add("DIV");
+					addNode(ctx.op, "Emit 'DIV'");
 				    obj.emit1(SVM.DIV);
 				    break;
 			}
 	    } else {
-			codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
-				Arrays.asList(
-					"Code to evaluate expr"
-				)
-			));
-			addNode(ctx, "Visit the first expression");
 			visit(ctx.e1);
 		}
 	    return null;
