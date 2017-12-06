@@ -186,10 +186,10 @@ function drawTree(data, contextualNodeOrder) {
 function animateNode(node, currentNode, delayOffset, numNodes) {
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
-        $(".typeTable tbody").text("");
+        $(".type-table tbody").text("");
         $(".explanations").html("<p>Explanations</p>");
         $.each(node.typeTable, function (index, tableEntry) {
-            $(".typeTable tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
+            $(".type-table tbody").append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
         });
         $(".explanations").append("<b>Node: " + $("#node-" + node.id).data("name") + "</b><br>");
         $.each(node.explanations, function (index, explanation) {
