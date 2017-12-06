@@ -78,11 +78,11 @@ module.exports = __webpack_require__(505);
 
 $("#generation-button").on("click", function () {
     $(".right-contextual-container").hide();
-    $(".right-generation-container").show();
+    $(".right-generation-container").css("display", "table");
 });
 
 $("#contextual-button").on("click", function () {
-    $(".right-contextual-container").show();
+    $(".right-contextual-container").css("display", "table");
     $(".right-generation-container").hide();
 });
 

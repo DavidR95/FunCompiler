@@ -62,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="right-generation-container" hidden>
+                <div class="right-generation-container">
                     <div class="data-heading-container">
                         <p>Address Table</p>
                     </div>

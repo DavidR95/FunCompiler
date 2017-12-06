@@ -8747,7 +8747,8 @@ html,
 
 .left-container,
 .center-container,
-.right-contextual-container {
+.right-contextual-container,
+.right-generation-container {
   display: table;
   width: 100%;
   height: 100%;
@@ -8934,7 +8935,8 @@ fieldset[disabled] .btn-execute.focus {
   background-color: white;
 }
 
-#pause-button {
+#pause-button,
+.right-generation-container {
   display: none;
 }
 
