@@ -55,9 +55,15 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
         return convertLocale;
     }
 
+	private Map<Integer,LinkedList<String>> codeTemplates = new HashMap<Integer,LinkedList<String>>();
+
 	private void addNode(Object ctx) {
 		int contextHash = ctx.hashCode();
 		JsonObject nodeObject = new JsonObject();
+		JsonArray codeTemplateArray = new JsonArray();
+		for (String codeTemplateString : codeTemplates.get(contextHash)) {
+			codeTemplateArray.add(new JsonPrimitive(codeTemplateString));
+		}
 		JsonArray addrTableArray = new JsonArray();
 		addrTable.getGlobals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
@@ -74,6 +80,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			addrTableArray.add(addrTableObject);
 		});
 		nodeObject.addProperty("id", contextHash);
+		nodeObject.add("codeTemplate", codeTemplateArray);
 		nodeObject.add("addrTable", addrTableArray);
 		nodeOrder.add(nodeObject);
 	}
@@ -89,6 +96,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitProg(FunParser.ProgContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(Arrays.asList("Not yet implemented")));
 		addNode(ctx);
 	    predefine();
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
