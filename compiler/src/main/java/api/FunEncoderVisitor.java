@@ -112,23 +112,31 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
 			Arrays.asList(
 				"Code to evaluate variable declarations",
-				"Code to evaulate procedure declations"
+				"CALL",
+				"HALT",
+				"Code to evaulate procedure declarations",
+				"Patch CALL"
 			)
 		));
-		addNode(ctx, "blah");
+		addNode(ctx, "Add read and write procedures to the address table");
 	    predefine();
+		addNode(ctx, "Visit variable declarations");
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl)
 		visit(vd);
 	    int calladdr = obj.currentOffset();
+		addNode(ctx, "Emit instruction 'CALL 0'");
 	    obj.emit12(SVM.CALL, 0);
+		addNode(ctx, "Emit instruction 'HALT'");
 	    obj.emit1(SVM.HALT);
+		addNode(ctx, "Visit procedure declarations");
 	    List<FunParser.Proc_declContext> proc_decl = ctx.proc_decl();
 	    for (FunParser.Proc_declContext pd : proc_decl)
 		visit(pd);
 	    int mainaddr = addrTable.get("main").offset;
+		addNode(ctx, "Get the address of 'main' from the address table: " + Integer.toString(mainaddr));
+		addNode(ctx, "Patch the address of 'main' into the previous 'CALL': " + Integer.toString(mainaddr));
 	    obj.patch12(calladdr, mainaddr);
-		addNode(ctx, "blah2");
 	    return null;
 	}
 
