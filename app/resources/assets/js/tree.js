@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 var Tree = module.exports = {
     nodeOrder: null,
     drawTree: function(data) {
