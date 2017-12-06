@@ -31,10 +31,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 
 	private int errorCount = 0;
 
-	private JsonArray nodeOrder = new JsonArray();
-
-	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
-
 	private CommonTokenStream tokens;
 
 	public FunCheckerVisitor(CommonTokenStream toks) {
@@ -72,6 +68,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	public void reset() {
 		contextualErrors.clear();
 	}
+
+	private JsonArray nodeOrder = new JsonArray();
+
+	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
 
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
