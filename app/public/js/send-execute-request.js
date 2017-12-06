@@ -222,7 +222,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         table.text("");
         explanations.html("<p>Explanations</p>");
         $.each(node.table, function (index, tableEntry) {
-            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type + "</td></tr>");
+            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
         });
         explanations.append("<b>Node: " + $("#node-" + node.id).data("name") + "</b><br>");
         $.each(node.explanations, function (index, explanation) {

@@ -91,14 +91,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			JsonObject typeTableObject = new JsonObject();
 			typeTableObject.addProperty("scope", "global");
 			typeTableObject.addProperty("id", id);
-			typeTableObject.addProperty("type", type.toString());
+			typeTableObject.addProperty("type_address", type.toString());
 			typeTableArray.add(typeTableObject);
 		});
 		typeTable.getLocals().forEach((id,type) -> {
 			JsonObject typeTableObject = new JsonObject();
 			typeTableObject.addProperty("scope", "local");
 			typeTableObject.addProperty("id", id);
-			typeTableObject.addProperty("type", type.toString());
+			typeTableObject.addProperty("type_address", type.toString());
 			typeTableArray.add(typeTableObject);
 		});
 		nodeObject.addProperty("id", contextHash);
