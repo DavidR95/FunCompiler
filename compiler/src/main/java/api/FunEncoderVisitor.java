@@ -15,6 +15,14 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
@@ -24,19 +32,24 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	private int localvaraddr = 0;
 	private int currentLocale = Address.GLOBAL;
 
-	private SymbolTable<Address> addrTable =
-	   new SymbolTable<Address>();
+	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
 
 	private void predefine () {
 	// Add predefined procedures to the address table.
-		addrTable.put("read",
-		   new Address(SVM.READOFFSET, Address.CODE));
-		addrTable.put("write",
-		   new Address(SVM.WRITEOFFSET, Address.CODE));
+		addrTable.put("read", new Address(SVM.READOFFSET, Address.CODE));
+		addrTable.put("write", new Address(SVM.WRITEOFFSET, Address.CODE));
 	}
 
 	public SVM getSVM() {
 	    return obj;
+	}
+
+	private JsonArray nodeOrder = new JsonArray();
+
+	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
+
+	public JsonArray getNodeOrder() {
+		return nodeOrder;
 	}
 
 	/**
