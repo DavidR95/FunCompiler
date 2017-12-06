@@ -57,9 +57,21 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 
 	private Map<Integer,LinkedList<String>> codeTemplates = new HashMap<Integer,LinkedList<String>>();
 
-	private void addNode(Object ctx) {
+	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
+
+	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
+		List<String> explanationList = nodeExplanations.get(contextHash);
+		if (explanationList != null) {
+			explanationList.add(explanation);
+		} else {
+			nodeExplanations.put(contextHash, new LinkedList<String>(Arrays.asList(explanation)));
+		}
 		JsonObject nodeObject = new JsonObject();
+		JsonArray explanationArray = new JsonArray();
+		for (String nodeExplanation : nodeExplanations.get(contextHash)) {
+			explanationArray.add(new JsonPrimitive(nodeExplanation));
+		}
 		JsonArray codeTemplateArray = new JsonArray();
 		for (String codeTemplateString : codeTemplates.get(contextHash)) {
 			codeTemplateArray.add(new JsonPrimitive(codeTemplateString));
@@ -80,6 +92,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			addrTableArray.add(addrTableObject);
 		});
 		nodeObject.addProperty("id", contextHash);
+		nodeObject.add("explanations", explanationArray);
 		nodeObject.add("codeTemplate", codeTemplateArray);
 		nodeObject.add("addrTable", addrTableArray);
 		nodeOrder.add(nodeObject);
@@ -96,8 +109,13 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitProg(FunParser.ProgContext ctx) {
-		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(Arrays.asList("Not yet implemented")));
-		addNode(ctx);
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate variable declarations",
+				"Code to evaulate procedure declations"
+			)
+		));
+		addNode(ctx, "blah");
 	    predefine();
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl)
@@ -110,7 +128,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		visit(pd);
 	    int mainaddr = addrTable.get("main").offset;
 	    obj.patch12(calladdr, mainaddr);
-		addNode(ctx);
+		addNode(ctx, "blah2");
 	    return null;
 	}
 
