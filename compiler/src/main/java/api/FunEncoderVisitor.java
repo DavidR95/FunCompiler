@@ -147,21 +147,37 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitProc(FunParser.ProcContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate formal declarations",
+				"Code to evaluate variable declarations",
+				"RETURN"
+			)
+		));
 	    String id = ctx.ID().getText();
 	    Address procaddr = new Address(obj.currentOffset(), Address.CODE);
+		addNode(ctx, "Insert " + id + " into the address table at " + obj.currentOffset());
 	    addrTable.put(id, procaddr);
+		addNode(ctx, "Enter the local scope of the procedure");
 	    addrTable.enterLocalScope();
 	    currentLocale = Address.LOCAL;
 	    localvaraddr = 2;
 	    // ... allows 2 words for link data
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null)
-		visit(fd);
+	    if (fd != null) {
+			addNode(ctx, "Visit the formal declaration");
+			visit(fd);
+		}
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
-	    for (FunParser.Var_declContext vd : var_decl)
-		visit(vd);
+		if(!var_decl.isEmpty()) {
+			addNode(ctx, "Visit all variable declarations");
+		    for (FunParser.Var_declContext vd : var_decl)
+				visit(vd);
+		}
 	    visit(ctx.seq_com());
+		addNode(ctx, "Emit instruction 'RETURN 0'");
 	    obj.emit11(SVM.RETURN, 0);
+		addNode(ctx, "Exit the local scope of the procedure");
 	    addrTable.exitLocalScope();
 	    currentLocale = Address.GLOBAL;
 	    return null;
