@@ -32690,25 +32690,26 @@ var showGenerationAnimation;
 
 function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
-        var explanations = $(".generation-explanations");
+        var explanations_container = $(".generation-explanations p");
         var table = $(".address-table tbody");
         var codeTemplate = $(".code-template");
     } else {
-        var explanations = $(".contextual-explanations");
+        var explanations_container = $(".contextual-explanations p");
         var table = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
         $(".data-heading-container span").html($("#node-" + node.id).data("name"));
         table.text("");
-        explanations.html("<p>Explanations</p>");
         if (showGenerationAnimation) codeTemplate.html("<p>Code Template</p>");
         $.each(node.table, function (index, tableEntry) {
             table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
         });
+        var explanations = "";
         $.each(node.explanations, function (index, explanation) {
-            explanations.append(explanation + "<br>");
+            explanations += explanation + "<br>";
         });
+        explanations_container.html(explanations);
         if (showGenerationAnimation) {
             $.each(node.codeTemplate, function (index, codeTemplateString) {
                 codeTemplate.append(codeTemplateString + "<br>");

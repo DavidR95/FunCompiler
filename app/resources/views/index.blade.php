@@ -59,6 +59,7 @@
                         </div>
                         <div class="contextual-explanations">
                             <h4>Explanations</h4>
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -85,9 +86,11 @@
                         </div>
                         <div class="generation-explanations">
                             <h4>Explanations</h4>
+                            <p></p>
                         </div>
                         <div class="code-template">
                             <h4>Code Template</h4>
+                            <p></p>
                         </div>
                     </div>
                 </div>
