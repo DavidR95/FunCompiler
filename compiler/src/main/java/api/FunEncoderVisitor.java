@@ -274,12 +274,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitBool(FunParser.BoolContext ctx) {
-		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
-			Arrays.asList(
-				"No code template"
-			)
-		));
-		addNode(ctx, "BOOL");
 	    return null;
 	}
 
@@ -290,12 +284,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitInt(FunParser.IntContext ctx) {
-		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
-			Arrays.asList(
-				"No code template"
-			)
-		));
-		addNode(ctx, "INT");
 	    return null;
 	}
 
@@ -384,7 +372,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			Arrays.asList(
 				"Code to evaluate expr",
 				"JUMPF",
-				"Code to evaluate com",
+				"Code to execute com",
 				"JUMP"
 			)
 		));
@@ -416,10 +404,10 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitSeq(FunParser.SeqContext ctx) {
 		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
 			Arrays.asList(
-				"No code template"
+				"Code to execute com"
 			)
 		));
-		addNode(ctx, "Visit the sequential command");
+		addNode(ctx, "Walk com, generating code");
 	    visitChildren(ctx);
 	    return null;
 	}
@@ -437,9 +425,9 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 					"Code to evaluate expr2"
 				)
 			));
-			addNode(ctx.op, "Visit the first expression");
+			addNode(ctx.op, "Walk expr1, generating code");
 			visit(ctx.e1);
-			addNode(ctx.op, "Visit the second expression");
+			addNode(ctx.op, "Walk expr2, generating code");
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.EQ:
@@ -477,9 +465,9 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 					"Code to evaluate expr2"
 				)
 			));
-			addNode(ctx.op, "Visit the first expression");
+			addNode(ctx.op, "Walk expr1, generating code");
 			visit(ctx.e1);
-			addNode(ctx.op, "Visit the second expression");
+			addNode(ctx.op, "Walk expr2, generating code");
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.PLUS:
