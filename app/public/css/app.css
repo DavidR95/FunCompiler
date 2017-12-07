@@ -8780,9 +8780,9 @@ html,
   color: #121319;
 }
 
-.data-heading-container p {
+.data-heading-container h4 {
   margin-top: 45px;
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 .program-input-container,

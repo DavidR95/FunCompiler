@@ -38,7 +38,7 @@
             <div class="col-md-3 table-container">
                 <div class="right-contextual-container">
                     <div class="data-heading-container">
-                        <p>Type Table</p>
+                        <h4><b>Node: </b><span></span></h4>
                     </div>
                     <div class="data-container">
                         <div class="type-table-container">
@@ -58,13 +58,13 @@
                             </table>
                         </div>
                         <div class="contextual-explanations">
-                            <p>Explanations</p>
+                            <h4>Explanations</h4>
                         </div>
                     </div>
                 </div>
                 <div class="right-generation-container">
                     <div class="data-heading-container">
-                        <p><b>Node: </b><span></span></p>
+                        <h4><b>Node: </b><span></span></h4>
                     </div>
                     <div class="data-container">
                         <div class="address-table-container">
@@ -84,10 +84,10 @@
                             </table>
                         </div>
                         <div class="generation-explanations">
-                            <p>Explanations</p>
+                            <h4>Explanations</h4>
                         </div>
                         <div class="code-template">
-                            <p>Code Template</p>
+                            <h4>Code Template</h4>
                         </div>
                     </div>
                 </div>

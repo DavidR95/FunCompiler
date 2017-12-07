@@ -32699,13 +32699,13 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
     }
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
+        $(".data-heading-container span").html($("#node-" + node.id).data("name"));
         table.text("");
         explanations.html("<p>Explanations</p>");
         if (showGenerationAnimation) codeTemplate.html("<p>Code Template</p>");
         $.each(node.table, function (index, tableEntry) {
             table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
         });
-        $(".data-heading-container span").html($("#node-" + node.id).data("name"));
         $.each(node.explanations, function (index, explanation) {
             explanations.append(explanation + "<br>");
         });

@@ -130,6 +130,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         .duration(500).delay(delayOffset * 1000).style("fill", "yellow")
         .on("start", function() {
             currentNodeIndex = currentNode;
+            $(".data-heading-container span").html($("#node-"+node.id).data("name"));
             table.text("");
             explanations.html("<p>Explanations</p>");
             if (showGenerationAnimation)
@@ -140,7 +141,6 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
                                              "</td><td>" + tableEntry.type_address +
                                              "</td></tr>");
             });
-            $(".data-heading-container span").html($("#node-"+node.id).data("name"));
             $.each(node.explanations, function(index, explanation) {
                 explanations.append(explanation + "<br>");
             });
