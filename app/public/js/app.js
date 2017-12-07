@@ -32698,11 +32698,10 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
     }
-    d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
+    d3.select("#node-" + node.id).select("rect").transition().delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         if (previousNode != null && previousNode !== this) {
-            d3.select(previousNode).transition().style("fill", "white");
+            $(previousNode).css("fill", "white");
         }
-        previousNode = this;
         currentNodeIndex = currentNode;
         $(".data-heading-container span").html($("#node-" + node.id).data("name"));
 
@@ -32726,6 +32725,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
             codeTemplateText.html(codeTemplate);
         }
     }).on("end", function () {
+        previousNode = this;
         if (currentNode === numNodes - 1) is_playing = false;
     });
 }
@@ -32751,7 +32751,6 @@ function pause() {
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("rect").interrupt();
-    d3.select("#node-" + node.id).select("rect").transition().style("fill", "yellow");
 }
 
 function forward() {
