@@ -117,24 +117,25 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				"Code to evaulate procedure declarations"
 			)
 		));
-		addNode(ctx, "Add read and write procedures to the address table");
+		addNode(ctx, "Predefine the read and write procedures");
 	    predefine();
-		addNode(ctx, "Visit variable declarations");
+		addNode(ctx, "Walk var-decl generating code");
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 	    for (FunParser.Var_declContext vd : var_decl)
 		visit(vd);
 	    int calladdr = obj.currentOffset();
-		addNode(ctx, "Emit instruction 'CALL 0'");
+		addNode(ctx, "Note the current instruction address, c1 (" + calladdr + ")");
+		addNode(ctx, "Emit 'CALL 0'");
 	    obj.emit12(SVM.CALL, 0);
-		addNode(ctx, "Emit instruction 'HALT'");
+		addNode(ctx, "Emit 'HALT'");
 	    obj.emit1(SVM.HALT);
-		addNode(ctx, "Visit procedure declarations");
+		addNode(ctx, "Walk proc-decl generating code");
 	    List<FunParser.Proc_declContext> proc_decl = ctx.proc_decl();
 	    for (FunParser.Proc_declContext pd : proc_decl)
 		visit(pd);
 	    int mainaddr = addrTable.get("main").offset;
-		addNode(ctx, "Get the address of 'main' from the address table: " + Integer.toString(mainaddr));
-		addNode(ctx, "Patch the address of 'main' into the previous 'CALL': " + Integer.toString(mainaddr));
+		addNode(ctx, "Lookup 'main' and retrieve its address, " + mainaddr);
+		addNode(ctx, "Patch address of 'main' (" + mainaddr + ") into the call at c1 (" + calladdr + ")");
 	    obj.patch12(calladdr, mainaddr);
 	    return null;
 	}
