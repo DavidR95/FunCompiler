@@ -41,7 +41,12 @@
                         <h4><b>Node: </b><span></span></h4>
                     </div>
                     <div class="data-container">
+                        <div class="contextual-explanations">
+                            <h4>Code Checker Actions</h4>
+                            <p></p>
+                        </div>
                         <div class="type-table-container">
+                            <h4>Type Table</h4>
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
@@ -57,10 +62,6 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="contextual-explanations">
-                            <h4>Explanations</h4>
-                            <p></p>
-                        </div>
                     </div>
                 </div>
                 <div class="right-generation-container">
@@ -73,7 +74,7 @@
                             <p></p>
                         </div>
                         <div class="generation-explanations">
-                            <h4>Explanations</h4>
+                            <h4>Code Generator Actions</h4>
                             <p></p>
                         </div>
                         <div class="address-table-container">

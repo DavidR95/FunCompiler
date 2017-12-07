@@ -32690,33 +32690,35 @@ var showGenerationAnimation;
 
 function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
-        var explanationsContainer = $(".generation-explanations p");
-        var table = $(".address-table tbody");
-        var codeTemplateContainer = $(".code-template p");
+        var explanationsText = $(".generation-explanations p");
+        var tableBody = $(".address-table tbody");
+        var codeTemplateText = $(".code-template p");
     } else {
-        var explanations_container = $(".contextual-explanations p");
-        var table = $(".type-table tbody");
+        var explanationsText = $(".contextual-explanations p");
+        var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
         currentNodeIndex = currentNode;
         $(".data-heading-container span").html($("#node-" + node.id).data("name"));
-        table.text("");
+
+        var tableEntries = "";
         $.each(node.table, function (index, tableEntry) {
-            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
+            tableEntries += "<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>";
         });
+        tableBody.html(tableEntries);
 
         var explanations = "";
         $.each(node.explanations, function (index, explanation) {
             explanations += explanation + "<br>";
         });
-        explanationsContainer.html(explanations);
+        explanationsText.html(explanations);
 
         if (showGenerationAnimation) {
             var codeTemplate = "";
             $.each(node.codeTemplate, function (index, codeTemplateString) {
                 codeTemplate += codeTemplateString + "<br>";
             });
-            codeTemplateContainer.html(codeTemplate);
+            codeTemplateText.html(codeTemplate);
         }
     }).on("end", function () {
         if (currentNode === numNodes - 1) is_playing = false;

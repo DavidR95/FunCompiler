@@ -8825,6 +8825,7 @@ html,
 }
 
 .type-table-container {
+  margin-top: 10px;
   height: 50%;
   overflow: auto;
 }
@@ -8836,7 +8837,6 @@ html,
 }
 
 .contextual-explanations {
-  margin-top: 10px;
   height: 50%;
   overflow: auto;
 }
