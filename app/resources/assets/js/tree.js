@@ -118,7 +118,7 @@ var is_playing;
 var showGenerationAnimation;
 var previousNode = null;
 
-function animateNode(node, currentNode, delayOffset, numNodes) {
+function animateNode(node, currentNode, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
         var tableBody = $(".address-table tbody");
@@ -128,10 +128,12 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .delay(delayOffset * 1000).style("fill", "yellow")
+        .delay(delayOffset * 1000).style("fill", "#3e4153")
         .on("start", function() {
+            $(this).next("text").css({"fill": "white", "font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
                 $(previousNode).css("fill", "white");
+                $(previousNode).next("text").css({"fill": "#3e4153", "font-weight": "normal"});
             }
             currentNodeIndex = currentNode;
             $(".data-heading-container span").html($("#node-"+node.id).data("name"));
@@ -158,11 +160,8 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
                 });
                 codeTemplateText.html(codeTemplate);
             }
-
         }).on("end", function() {
             previousNode = this;
-            if (currentNode === numNodes-1)
-                is_playing = false;
         });
 }
 
@@ -170,7 +169,7 @@ function animateTree() {
     currentNodeIndex = (currentNodeIndex == -1 ? 0 : currentNodeIndex);
     for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
         var node = Tree.nodeOrder[i];
-        animateNode(node, i, j, Tree.nodeOrder.length);
+        animateNode(node, i, j);
     }
 }
 
@@ -193,12 +192,12 @@ function forward() {
     if (is_playing)
         pause();
     var node = Tree.nodeOrder[currentNodeIndex+1];
-    animateNode(node, currentNodeIndex+1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex+1, 0);
 }
 
 function reverse() {
     if (is_playing)
         pause();
     var node = Tree.nodeOrder[currentNodeIndex-1];
-    animateNode(node, currentNodeIndex-1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex-1, 0);
 }
