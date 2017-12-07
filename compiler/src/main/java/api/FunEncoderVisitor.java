@@ -179,8 +179,8 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
-		addNode(ctx, "Emit 'RETURN 0'");
 	    obj.emit11(SVM.RETURN, 0);
+		addNode(ctx, "Emit 'RETURN 0'");
 	    addrTable.exitLocalScope();
 	    currentLocale = Address.GLOBAL;
 	    return null;
@@ -223,7 +223,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitFormal(FunParser.FormalContext ctx) {
 		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
 			Arrays.asList(
-				"STOREL d",
 				"COPYARG"
 			)
 		));
@@ -231,10 +230,12 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    if (tc != null) {
 			String id = ctx.ID().getText();
 			addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
-			addNode(ctx, "Insert " + id + " into the address table at " + localvaraddr + " with a scope of local");
-			addNode(ctx, "Emit instruction 'COPYARG 1'");
+			addNode(ctx, "Insert '" + id + "' into the address table at address " + localvaraddr + " (scope: local)");
 			obj.emit11(SVM.COPYARG, 1);
-	    }
+			addNode(ctx, "Emit 'COPYARG 1'");
+	    } else {
+			addNode(ctx, "Note: no formal parameters");
+		}
 	    return null;
 	}
 
