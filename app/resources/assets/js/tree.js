@@ -85,7 +85,7 @@ var Tree = module.exports = {
             $(".right-generation-container").css("display", "table");
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function() {
@@ -93,7 +93,7 @@ var Tree = module.exports = {
             $(".right-generation-container").hide();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
     },
@@ -116,50 +116,60 @@ var Tree = module.exports = {
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;
+var previousNode = null;
 
-function animateNode(node, currentNode, delayOffset, numNodes) {
+function animateNode(node, currentNode, delayOffset) {
     if (showGenerationAnimation) {
-        var explanations = $(".generation-explanations");
-        var table = $(".address-table tbody");
-        var codeTemplate = $(".code-template");
+        var explanationsText = $(".generation-explanations p");
+        var tableBody = $(".address-table tbody");
+        var codeTemplateText = $(".code-template p");
     } else {
-        var explanations = $(".contextual-explanations");
-        var table = $(".type-table tbody");
+        var explanationsText = $(".contextual-explanations p");
+        var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .duration(500).delay(delayOffset * 1000).style("fill", "yellow")
+        .delay(delayOffset * 1000).style("fill", "#3e4153")
         .on("start", function() {
+            $(this).next("text").css({"fill": "white", "font-weight": "900"});
+            if (previousNode != null && previousNode !== this) {
+                $(previousNode).css("fill", "white");
+                $(previousNode).next("text").css({"fill": "#3e4153", "font-weight": "normal"});
+            }
             currentNodeIndex = currentNode;
-            table.text("");
-            explanations.html("<p>Explanations</p>");
-            if (showGenerationAnimation)
-                codeTemplate.html("<p>Code Template</p>");
+            $(".data-heading-container span").html($("#node-"+node.id).data("name"));
+
+            var tableEntries = "";
             $.each(node.table, function(index, tableEntry) {
-                table.append("<tr><td>" + tableEntry.scope +
-                                             "</td><td>" + tableEntry.id +
-                                             "</td><td>" + tableEntry.type_address +
-                                             "</td></tr>");
+                tableEntries += "<tr><td>" + tableEntry.scope +
+                                "</td><td>" + tableEntry.id +
+                                "</td><td>" + tableEntry.type_address +
+                                "</td></tr>";
             });
-            explanations.append("<b>Node: " + $("#node-"+node.id).data("name") + "</b><br>");
+            tableBody.html(tableEntries);
+
+            var explanations = "";
             $.each(node.explanations, function(index, explanation) {
-                explanations.append(explanation + "<br>");
+                explanations += explanation + "<br>";
             });
+            explanationsText.html(explanations);
+
             if (showGenerationAnimation) {
+                var codeTemplate = "";
                 $.each(node.codeTemplate, function(index, codeTemplateString) {
-                    codeTemplate.append(codeTemplateString + "<br>");
+                    codeTemplate += codeTemplateString + "<br>";
                 });
+                codeTemplateText.html(codeTemplate);
             }
         }).on("end", function() {
-            if (currentNode === numNodes-1)
-                is_playing = false;
-        }).transition().style("fill", "white");
+            previousNode = this;
+        });
 }
 
 function animateTree() {
     currentNodeIndex = (currentNodeIndex == -1 ? 0 : currentNodeIndex);
     for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
         var node = Tree.nodeOrder[i];
-        animateNode(node, i, j, Tree.nodeOrder.length);
+        animateNode(node, i, j);
     }
 }
 
@@ -176,20 +186,18 @@ function pause() {
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("rect").interrupt();
-    d3.select("#node-" + node.id).select("rect")
-        .transition().style("fill", "yellow");
 }
 
 function forward() {
     if (is_playing)
         pause();
     var node = Tree.nodeOrder[currentNodeIndex+1];
-    animateNode(node, currentNodeIndex+1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex+1, 0);
 }
 
 function reverse() {
     if (is_playing)
         pause();
     var node = Tree.nodeOrder[currentNodeIndex-1];
-    animateNode(node, currentNodeIndex-1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex-1, 0);
 }

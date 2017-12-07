@@ -18982,7 +18982,7 @@ module.exports = __webpack_require__(472);
 
 __webpack_require__(174);
 
-__webpack_require__(484);
+__webpack_require__(177);
 
 /***/ }),
 /* 174 */
@@ -31643,7 +31643,56 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 177 */,
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(178);
+
+var Tree = __webpack_require__(180);
+
+$("#execute-form").submit(function (e) {
+    // Get the form that was submitted
+    var $form = $(this);
+    // Stop the form submitting normally (i.e., don't route to action parameter)
+    e.preventDefault();
+    // Get the intended controller route
+    var url = $form.attr("action");
+    // Get csrf token from page meta-data
+    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    // Serialise the form inputs, add csrf token
+    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
+    // Post to the controller
+    $.post(url, data, function (responseData) {
+        var response = responseData.response;
+        var numSyntaxErrors = response.numSyntaxErrors;
+        var syntaxErrors = response.syntaxErrors;
+        var numContextualErrors = response.numContextualErrors;
+        var contextualErrors = response.contextualErrors;
+        var treeNodes = response.treeNodes;
+        var objectCode = response.objectCode;
+        var output = response.output;
+        var contextualNodeOrder = response.contextualNodeOrder;
+        var generationNodeOrder = response.generationNodeOrder;
+        $(".program-tree-container").text("");
+        if (numSyntaxErrors > 0) {
+            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
+            $(".program-tree-container").append("Syntax errors: <br>");
+            $.each(syntaxErrors, function (index, syntaxError) {
+                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
+            });
+            $(".program-tree-container").append("<br>");
+        } else {
+            Tree.drawTree(treeNodes);
+            Tree.setNodeOrder(contextualNodeOrder);
+            Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
+            Tree.setUpPlaybackListeners();
+        }
+    }).fail(function (responseData) {
+        alert(responseData.responseJSON.errors.program);
+    });
+});
+
+/***/ }),
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32608,7 +32657,7 @@ var Tree = module.exports = {
             $(".right-generation-container").css("display", "table");
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder;
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function () {
@@ -32616,7 +32665,7 @@ var Tree = module.exports = {
             $(".right-generation-container").hide();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder;
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
     },
     setUpPlaybackListeners: function setUpPlaybackListeners() {
@@ -32638,43 +32687,55 @@ var Tree = module.exports = {
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;
+var previousNode = null;
 
-function animateNode(node, currentNode, delayOffset, numNodes) {
+function animateNode(node, currentNode, delayOffset) {
     if (showGenerationAnimation) {
-        var explanations = $(".generation-explanations");
-        var table = $(".address-table tbody");
-        var codeTemplate = $(".code-template");
+        var explanationsText = $(".generation-explanations p");
+        var tableBody = $(".address-table tbody");
+        var codeTemplateText = $(".code-template p");
     } else {
-        var explanations = $(".contextual-explanations");
-        var table = $(".type-table tbody");
+        var explanationsText = $(".contextual-explanations p");
+        var tableBody = $(".type-table tbody");
     }
-    d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
+    d3.select("#node-" + node.id).select("rect").transition().delay(delayOffset * 1000).style("fill", "#3e4153").on("start", function () {
+        $(this).next("text").css({ "fill": "white", "font-weight": "900" });
+        if (previousNode != null && previousNode !== this) {
+            $(previousNode).css("fill", "white");
+            $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+        }
         currentNodeIndex = currentNode;
-        table.text("");
-        explanations.html("<p>Explanations</p>");
-        if (showGenerationAnimation) codeTemplate.html("<p>Code Template</p>");
+        $(".data-heading-container span").html($("#node-" + node.id).data("name"));
+
+        var tableEntries = "";
         $.each(node.table, function (index, tableEntry) {
-            table.append("<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>");
+            tableEntries += "<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>";
         });
-        explanations.append("<b>Node: " + $("#node-" + node.id).data("name") + "</b><br>");
+        tableBody.html(tableEntries);
+
+        var explanations = "";
         $.each(node.explanations, function (index, explanation) {
-            explanations.append(explanation + "<br>");
+            explanations += explanation + "<br>";
         });
+        explanationsText.html(explanations);
+
         if (showGenerationAnimation) {
+            var codeTemplate = "";
             $.each(node.codeTemplate, function (index, codeTemplateString) {
-                codeTemplate.append(codeTemplateString + "<br>");
+                codeTemplate += codeTemplateString + "<br>";
             });
+            codeTemplateText.html(codeTemplate);
         }
     }).on("end", function () {
-        if (currentNode === numNodes - 1) is_playing = false;
-    }).transition().style("fill", "white");
+        previousNode = this;
+    });
 }
 
 function animateTree() {
     currentNodeIndex = currentNodeIndex == -1 ? 0 : currentNodeIndex;
     for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
         var node = Tree.nodeOrder[i];
-        animateNode(node, i, j, Tree.nodeOrder.length);
+        animateNode(node, i, j);
     }
 }
 
@@ -32691,19 +32752,18 @@ function pause() {
     $("#play-button").show();
     $("#pause-button").hide();
     d3.selectAll("rect").interrupt();
-    d3.select("#node-" + node.id).select("rect").transition().style("fill", "yellow");
 }
 
 function forward() {
     if (is_playing) pause();
     var node = Tree.nodeOrder[currentNodeIndex + 1];
-    animateNode(node, currentNodeIndex + 1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex + 1, 0);
 }
 
 function reverse() {
     if (is_playing) pause();
     var node = Tree.nodeOrder[currentNodeIndex - 1];
-    animateNode(node, currentNodeIndex - 1, 0, Tree.nodeOrder.length);
+    animateNode(node, currentNodeIndex - 1, 0);
 }
 
 /***/ }),
@@ -46242,67 +46302,6 @@ function nopropagation() {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 473 */,
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(178);
-
-var Tree = __webpack_require__(180);
-
-$("#execute-form").submit(function (e) {
-    // Get the form that was submitted
-    var $form = $(this);
-    // Stop the form submitting normally (i.e., don't route to action parameter)
-    e.preventDefault();
-    // Get the intended controller route
-    var url = $form.attr("action");
-    // Get csrf token from page meta-data
-    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
-    // Serialise the form inputs, add csrf token
-    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
-    // Post to the controller
-    $.post(url, data, function (responseData) {
-        var response = responseData.response;
-        var numSyntaxErrors = response.numSyntaxErrors;
-        var syntaxErrors = response.syntaxErrors;
-        var numContextualErrors = response.numContextualErrors;
-        var contextualErrors = response.contextualErrors;
-        var treeNodes = response.treeNodes;
-        var objectCode = response.objectCode;
-        var output = response.output;
-        var contextualNodeOrder = response.contextualNodeOrder;
-        var generationNodeOrder = response.generationNodeOrder;
-        $(".program-tree-container").text("");
-        if (numSyntaxErrors > 0) {
-            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
-            $(".program-tree-container").append("Syntax errors: <br>");
-            $.each(syntaxErrors, function (index, syntaxError) {
-                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
-            });
-            $(".program-tree-container").append("<br>");
-        } else {
-            Tree.drawTree(treeNodes);
-            Tree.setNodeOrder(contextualNodeOrder);
-            Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
-            Tree.setUpPlaybackListeners();
-        }
-    }).fail(function (responseData) {
-        alert(responseData.responseJSON.errors.program);
-    });
-});
 
 /***/ })
 /******/ ]);

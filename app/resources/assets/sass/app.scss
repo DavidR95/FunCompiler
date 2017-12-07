@@ -52,9 +52,9 @@ body, html, .container-fluid, .row {
 }
 
 .data-heading-container {
-    p {
+    h4 {
         margin-top: 45px;
-        margin-bottom: 0;
+        margin-bottom: 5px;
     }
 }
 
@@ -93,17 +93,18 @@ body, html, .container-fluid, .row {
 }
 
 .type-table-container {
+    margin-top: 10px;
     height: 50%;
     overflow: auto;
 }
 
 .address-table-container {
+    margin-top: 10px;
     height: 40%;
     overflow: auto;
 }
 
 .contextual-explanations {
-    margin-top: 10px;
     height: 50%;
     overflow: auto;
 }
@@ -115,7 +116,6 @@ body, html, .container-fluid, .row {
 }
 
 .code-template {
-    margin-top: 10px;
     height: 30%;
     overflow: auto;
 }

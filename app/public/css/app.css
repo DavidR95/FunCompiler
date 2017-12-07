@@ -8780,9 +8780,9 @@ html,
   color: #121319;
 }
 
-.data-heading-container p {
+.data-heading-container h4 {
   margin-top: 45px;
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 .program-input-container,
@@ -8825,17 +8825,18 @@ html,
 }
 
 .type-table-container {
+  margin-top: 10px;
   height: 50%;
   overflow: auto;
 }
 
 .address-table-container {
+  margin-top: 10px;
   height: 40%;
   overflow: auto;
 }
 
 .contextual-explanations {
-  margin-top: 10px;
   height: 50%;
   overflow: auto;
 }
@@ -8847,7 +8848,6 @@ html,
 }
 
 .code-template {
-  margin-top: 10px;
   height: 30%;
   overflow: auto;
 }
