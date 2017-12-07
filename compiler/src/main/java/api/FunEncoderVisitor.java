@@ -385,17 +385,20 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			)
 		));
 	    int startaddr = obj.currentOffset();
-		addNode(ctx, "Visit the expression");
+		addNode(ctx, "Note the current instruction address, c1 (" + startaddr + ")");
+		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.expr());
 	    int condaddr = obj.currentOffset();
+		addNode(ctx, "Note the current instruction address, c2 (" + condaddr + ")");
 		addNode(ctx, "Emit 'JUMPF 0'");
 	    obj.emit12(SVM.JUMPF, 0);
-		addNode(ctx, "Visit the sequential command");
+		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
-		addNode(ctx, "Emit 'JUMP " + startaddr + "'");
+		addNode(ctx, "Emit 'JUMP c1 (" + startaddr + ")'");
 	    obj.emit12(SVM.JUMP, startaddr);
 	    int exitaddr = obj.currentOffset();
-		addNode(ctx, "Patch the exit address, " + exitaddr + ", into the jumpf command");
+		addNode(ctx, "Note the current instruction address, c3 (" + exitaddr + ")");
+		addNode(ctx, "Patch c3 (" + exitaddr + ") into the jump at c2 (" + condaddr + ")");
 	    obj.patch12(condaddr, exitaddr);
 	    return null;
 	}
