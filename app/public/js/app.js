@@ -18982,7 +18982,7 @@ module.exports = __webpack_require__(472);
 
 __webpack_require__(174);
 
-__webpack_require__(484);
+__webpack_require__(177);
 
 /***/ }),
 /* 174 */
@@ -31643,7 +31643,56 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 177 */,
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(178);
+
+var Tree = __webpack_require__(180);
+
+$("#execute-form").submit(function (e) {
+    // Get the form that was submitted
+    var $form = $(this);
+    // Stop the form submitting normally (i.e., don't route to action parameter)
+    e.preventDefault();
+    // Get the intended controller route
+    var url = $form.attr("action");
+    // Get csrf token from page meta-data
+    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    // Serialise the form inputs, add csrf token
+    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
+    // Post to the controller
+    $.post(url, data, function (responseData) {
+        var response = responseData.response;
+        var numSyntaxErrors = response.numSyntaxErrors;
+        var syntaxErrors = response.syntaxErrors;
+        var numContextualErrors = response.numContextualErrors;
+        var contextualErrors = response.contextualErrors;
+        var treeNodes = response.treeNodes;
+        var objectCode = response.objectCode;
+        var output = response.output;
+        var contextualNodeOrder = response.contextualNodeOrder;
+        var generationNodeOrder = response.generationNodeOrder;
+        $(".program-tree-container").text("");
+        if (numSyntaxErrors > 0) {
+            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
+            $(".program-tree-container").append("Syntax errors: <br>");
+            $.each(syntaxErrors, function (index, syntaxError) {
+                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
+            });
+            $(".program-tree-container").append("<br>");
+        } else {
+            Tree.drawTree(treeNodes);
+            Tree.setNodeOrder(contextualNodeOrder);
+            Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
+            Tree.setUpPlaybackListeners();
+        }
+    }).fail(function (responseData) {
+        alert(responseData.responseJSON.errors.program);
+    });
+});
+
+/***/ }),
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32608,7 +32657,7 @@ var Tree = module.exports = {
             $(".right-generation-container").css("display", "table");
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder;
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function () {
@@ -32616,7 +32665,7 @@ var Tree = module.exports = {
             $(".right-generation-container").hide();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder;
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
     },
     setUpPlaybackListeners: function setUpPlaybackListeners() {
@@ -46242,67 +46291,6 @@ function nopropagation() {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 473 */,
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(178);
-
-var Tree = __webpack_require__(180);
-
-$("#execute-form").submit(function (e) {
-    // Get the form that was submitted
-    var $form = $(this);
-    // Stop the form submitting normally (i.e., don't route to action parameter)
-    e.preventDefault();
-    // Get the intended controller route
-    var url = $form.attr("action");
-    // Get csrf token from page meta-data
-    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
-    // Serialise the form inputs, add csrf token
-    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
-    // Post to the controller
-    $.post(url, data, function (responseData) {
-        var response = responseData.response;
-        var numSyntaxErrors = response.numSyntaxErrors;
-        var syntaxErrors = response.syntaxErrors;
-        var numContextualErrors = response.numContextualErrors;
-        var contextualErrors = response.contextualErrors;
-        var treeNodes = response.treeNodes;
-        var objectCode = response.objectCode;
-        var output = response.output;
-        var contextualNodeOrder = response.contextualNodeOrder;
-        var generationNodeOrder = response.generationNodeOrder;
-        $(".program-tree-container").text("");
-        if (numSyntaxErrors > 0) {
-            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
-            $(".program-tree-container").append("Syntax errors: <br>");
-            $.each(syntaxErrors, function (index, syntaxError) {
-                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
-            });
-            $(".program-tree-container").append("<br>");
-        } else {
-            Tree.drawTree(treeNodes);
-            Tree.setNodeOrder(contextualNodeOrder);
-            Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
-            Tree.setUpPlaybackListeners();
-        }
-    }).fail(function (responseData) {
-        alert(responseData.responseJSON.errors.program);
-    });
-});
 
 /***/ })
 /******/ ]);

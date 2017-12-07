@@ -85,7 +85,7 @@ var Tree = module.exports = {
             $(".right-generation-container").css("display", "table");
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function() {
@@ -93,7 +93,7 @@ var Tree = module.exports = {
             $(".right-generation-container").hide();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder
-            currentNodeIndex = 0;
+            currentNodeIndex = -1;
         });
 
     },
