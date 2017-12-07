@@ -563,7 +563,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		));
 	    String id = ctx.ID().getText();
 	    Address varaddr = addrTable.get(id);
-		addNode(ctx, "Retrieve " + id + " fron the address table and get address: " + varaddr.offset);
+		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + varaddr.offset);
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
 				addNode(ctx, "Emit 'LOADG " + varaddr.offset + "'");
