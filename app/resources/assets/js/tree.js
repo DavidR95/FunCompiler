@@ -119,9 +119,9 @@ var showGenerationAnimation;
 
 function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
-        var explanations_container = $(".generation-explanations p");
+        var explanationsContainer = $(".generation-explanations p");
         var table = $(".address-table tbody");
-        var codeTemplate = $(".code-template");
+        var codeTemplateContainer = $(".code-template p");
     } else {
         var explanations_container = $(".contextual-explanations p");
         var table = $(".type-table tbody");
@@ -132,24 +132,27 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
             currentNodeIndex = currentNode;
             $(".data-heading-container span").html($("#node-"+node.id).data("name"));
             table.text("");
-            if (showGenerationAnimation)
-                codeTemplate.html("<p>Code Template</p>");
             $.each(node.table, function(index, tableEntry) {
                 table.append("<tr><td>" + tableEntry.scope +
                                              "</td><td>" + tableEntry.id +
                                              "</td><td>" + tableEntry.type_address +
                                              "</td></tr>");
             });
+
             var explanations = "";
             $.each(node.explanations, function(index, explanation) {
                 explanations += explanation + "<br>";
             });
-            explanations_container.html(explanations);
+            explanationsContainer.html(explanations);
+
             if (showGenerationAnimation) {
+                var codeTemplate = "";
                 $.each(node.codeTemplate, function(index, codeTemplateString) {
-                    codeTemplate.append(codeTemplateString + "<br>");
+                    codeTemplate += codeTemplateString + "<br>";
                 });
+                codeTemplateContainer.html(codeTemplate);
             }
+
         }).on("end", function() {
             if (currentNode === numNodes-1)
                 is_playing = false;

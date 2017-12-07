@@ -8830,6 +8830,7 @@ html,
 }
 
 .address-table-container {
+  margin-top: 10px;
   height: 40%;
   overflow: auto;
 }
@@ -8847,7 +8848,6 @@ html,
 }
 
 .code-template {
-  margin-top: 10px;
   height: 30%;
   overflow: auto;
 }
