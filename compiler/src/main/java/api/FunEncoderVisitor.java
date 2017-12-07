@@ -117,26 +117,30 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				"Code to evaulate procedure declarations"
 			)
 		));
-		addNode(ctx, "Predefine the read and write procedures");
 	    predefine();
-		addNode(ctx, "Walk var-decl generating code");
+		addNode(ctx, "Predefine the read and write procedures");
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
-	    for (FunParser.Var_declContext vd : var_decl)
-		visit(vd);
+		if (!var_decl.isEmpty()) {
+			addNode(ctx, "Walk var-decl, generating code");
+		    for (FunParser.Var_declContext vd : var_decl)
+				visit(vd);
+		}
 	    int calladdr = obj.currentOffset();
 		addNode(ctx, "Note the current instruction address, c1 (" + calladdr + ")");
-		addNode(ctx, "Emit 'CALL 0'");
 	    obj.emit12(SVM.CALL, 0);
-		addNode(ctx, "Emit 'HALT'");
+		addNode(ctx, "Emit 'CALL 0'");
 	    obj.emit1(SVM.HALT);
-		addNode(ctx, "Walk proc-decl generating code");
+		addNode(ctx, "Emit 'HALT'");
 	    List<FunParser.Proc_declContext> proc_decl = ctx.proc_decl();
-	    for (FunParser.Proc_declContext pd : proc_decl)
-		visit(pd);
+		if (!proc_decl.isEmpty()) {
+			addNode(ctx, "Walk proc-decl, generating code");
+		    for (FunParser.Proc_declContext pd : proc_decl)
+				visit(pd);
+		}
 	    int mainaddr = addrTable.get("main").offset;
 		addNode(ctx, "Lookup 'main' and retrieve its address, " + mainaddr);
-		addNode(ctx, "Patch address of 'main' (" + mainaddr + ") into the call at c1 (" + calladdr + ")");
 	    obj.patch12(calladdr, mainaddr);
+		addNode(ctx, "Patch address of 'main' (" + mainaddr + ") into the call at c1 (" + calladdr + ")");
 	    return null;
 	}
 
@@ -149,7 +153,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitProc(FunParser.ProcContext ctx) {
 		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
 			Arrays.asList(
-				"STOREL d",
 				"Code to evaluate formal declarations",
 				"Code to evaluate variable declarations",
 				"RETURN"
@@ -157,28 +160,27 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		));
 	    String id = ctx.ID().getText();
 	    Address procaddr = new Address(obj.currentOffset(), Address.CODE);
-		addNode(ctx, "Insert " + id + " into the address table at " + obj.currentOffset() + " with a scope of code");
+		addNode(ctx, "Insert '" + id + "' into the address table at address " + obj.currentOffset() + " (scope: code)");
 	    addrTable.put(id, procaddr);
-		addNode(ctx, "Enter the local scope of the procedure");
 	    addrTable.enterLocalScope();
 	    currentLocale = Address.LOCAL;
 	    localvaraddr = 2;
 	    // ... allows 2 words for link data
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 	    if (fd != null) {
-			addNode(ctx, "Visit the formal declaration");
+			addNode(ctx, "Walk formal-decl, generating code");
 			visit(fd);
 		}
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 		if(!var_decl.isEmpty()) {
-			addNode(ctx, "Visit all variable declarations");
+			addNode(ctx, "Walk var-decl, generating code");
 		    for (FunParser.Var_declContext vd : var_decl)
 				visit(vd);
 		}
+		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
-		addNode(ctx, "Emit instruction 'RETURN 0'");
+		addNode(ctx, "Emit 'RETURN 0'");
 	    obj.emit11(SVM.RETURN, 0);
-		addNode(ctx, "Exit the local scope of the procedure");
 	    addrTable.exitLocalScope();
 	    currentLocale = Address.GLOBAL;
 	    return null;
