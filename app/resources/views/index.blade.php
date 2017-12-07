@@ -64,7 +64,7 @@
                 </div>
                 <div class="right-generation-container">
                     <div class="data-heading-container">
-                        <p>Address Table</p>
+                        <p><b>Node: </b><span></span></p>
                     </div>
                     <div class="data-container">
                         <div class="address-table-container">
