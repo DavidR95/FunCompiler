@@ -32687,6 +32687,7 @@ var Tree = module.exports = {
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;
+var previousNode = null;
 
 function animateNode(node, currentNode, delayOffset, numNodes) {
     if (showGenerationAnimation) {
@@ -32697,7 +32698,11 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
     }
-    d3.select("#node-" + node.id).select("rect").transition().duration(500).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
+    d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "yellow").on("start", function () {
+        if (previousNode != null && previousNode !== this) {
+            d3.select(previousNode).transition().style("fill", "white");
+        }
+        previousNode = this;
         currentNodeIndex = currentNode;
         $(".data-heading-container span").html($("#node-" + node.id).data("name"));
 
@@ -32722,7 +32727,7 @@ function animateNode(node, currentNode, delayOffset, numNodes) {
         }
     }).on("end", function () {
         if (currentNode === numNodes - 1) is_playing = false;
-    }).transition().style("fill", "white");
+    });
 }
 
 function animateTree() {
