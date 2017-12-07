@@ -229,8 +229,8 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    FunParser.TypeContext tc = ctx.type();
 	    if (tc != null) {
 			String id = ctx.ID().getText();
-			addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
 			addNode(ctx, "Insert '" + id + "' into the address table at address " + localvaraddr + " (scope: local)");
+			addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
 			obj.emit11(SVM.COPYARG, 1);
 			addNode(ctx, "Emit 'COPYARG 1'");
 	    } else {
@@ -248,20 +248,19 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitVar(FunParser.VarContext ctx) {
 		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
 			Arrays.asList(
-				"Code to evaluate expr",
-				"STOREG d or STOREL d"
+				"Code to evaluate expr"
 			)
 		));
-		addNode(ctx, "Visit the expression");
+		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.expr());
 	    String id = ctx.ID().getText();
 	    switch (currentLocale) {
 		    case Address.LOCAL:
-				addNode(ctx, "Insert " + id + " into the address table at " + localvaraddr + " with a scope of local");
+				addNode(ctx, "Insert '" + id + "' into the address table at address " + localvaraddr + " (scope: local)");
 				addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
 				break;
 		    case Address.GLOBAL:
-				addNode(ctx, "Insert " + id + " into the address table at " + globalvaraddr + " with a scope of global");
+				addNode(ctx, "Insert '" + id + "' into the address table at address " + globalvaraddr + " (scope: global)");
 				addrTable.put(id, new Address(globalvaraddr++, Address.GLOBAL));
 				break;
 	    }
