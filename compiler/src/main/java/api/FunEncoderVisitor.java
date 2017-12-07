@@ -309,10 +309,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				"STOREG d or STOREL d"
 			)
 		));
-		addNode(ctx, "Visit the expression");
+		addNode(ctx, "Walk expr generating code");
 	    visit(ctx.expr());
 	    String id = ctx.ID().getText();
 	    Address varaddr = addrTable.get(id);
+		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + varaddr.offset);
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
 				addNode(ctx, "Emit STOREG " + varaddr.offset);
