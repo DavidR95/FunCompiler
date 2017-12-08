@@ -131,12 +131,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 * @param decl the parse tree
    	 */
 	private void define (String id, Type type, ParserRuleContext decl) {
-		addNode(decl, "Attempting to add " + id + " to the type table along with its type, " + type);
 		boolean ok = typeTable.put(id, type);
 		if (ok) {
-			addNode(decl, type + " " + id + " successfully added to the type table");
+			addNode(decl, "Insert '" + id + "' into the type table with type, " + type);
 		} else {
-			addNode(decl, "Type error, " + id + " is already declared");
+			addNode(decl, "Type Error: " + id + " has already been declared");
 			reportError(id + " is redeclared", decl);
 		}
 	}
@@ -289,27 +288,24 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	 // NOT SURE THIS IS WORKING PROPERLY IN REGARDS TO IT VISITING FORMAL DECLARATION WHEN IT SHOULDN'T
 	public Type visitProc(FunParser.ProcContext ctx) {
-		addNode(ctx, "Enter the local scope of the procedure");
 	    typeTable.enterLocalScope();
 	    Type t;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 	    if (fd != null) {
-			addNode(ctx, "Visit the formal declaration");
+			addNode(ctx, "Walk formal-decl");
 			t = visit(fd);
 	    } else
 			t = Type.VOID;
 	    Type proctype = new Type.Mapping(t, Type.VOID);
-		addNode(ctx, "Retrieve the ID of the procedure");
-		addNode(ctx.ID(), ctx.ID().getText());
 	    define(ctx.ID().getText(), proctype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 		if (!var_decl.isEmpty()) {
-			addNode(ctx, "Visit all variable declarations");
+			addNode(ctx, "Walk var-decl");
 		    for (FunParser.Var_declContext vd : var_decl)
 				visit(vd);
 		}
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
-		addNode(ctx, "Exit the local scope of the procedure");
 	    typeTable.exitLocalScope();
 	    define(ctx.ID().getText(), proctype, ctx);
 	    return null;
