@@ -32693,7 +32693,7 @@ function animateNode(node, currentNode, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
         var tableBody = $(".address-table tbody");
-        var codeTemplateText = $(".code-template p");
+        var codeTemplateImage = $(".code-template img");
     } else {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
@@ -32705,7 +32705,8 @@ function animateNode(node, currentNode, delayOffset) {
             $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
         }
         currentNodeIndex = currentNode;
-        $(".data-heading-container span").html($("#node-" + node.id).data("name"));
+        var nodeName = $("#node-" + node.id).data("name");
+        $(".data-heading-container span").html(nodeName);
 
         var tableEntries = "";
         $.each(node.table, function (index, tableEntry) {
@@ -32720,11 +32721,8 @@ function animateNode(node, currentNode, delayOffset) {
         explanationsText.html(explanations);
 
         if (showGenerationAnimation) {
-            var codeTemplate = "";
-            $.each(node.codeTemplate, function (index, codeTemplateString) {
-                codeTemplate += codeTemplateString + "<br>";
-            });
-            codeTemplateText.html(codeTemplate);
+            var codeTemplateURL = "images/" + nodeName + ".png";
+            codeTemplateImage.attr("src", codeTemplateURL);
         }
     }).on("end", function () {
         previousNode = this;
