@@ -36,22 +36,28 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         return treeNodes;
     }
 
+    private void createJsonObject(Object ctx, String nodeName) {
+        createJsonObject(ctx, nodeName, nodeName);
+    }
+
     /**
     * Creates a new JSON object. Uses the node on top of the parentNodes stack
     * to determine who the parent is. Adds the newly created JSON object to an
     * ordered JSON array.
     * @param ctx the parse tree
-    * @param name the name of the node
+    * @param nodeName the name of the node
+    * @param nodeValue the value stored in the node (if token)
     * @return the visitor result
     */
-    private void createJsonObject(Object ctx, String name) {
+    private void createJsonObject(Object ctx, String nodeName, String nodeValue) {
         JsonObject data_object = new JsonObject();
         // use the object's hash as an id
         int id = ctx.hashCode();
         // parent is -1 if at the root, top of the stack otherwise
         int parent_id = (parentNodes.empty() ? -1 : parentNodes.peek());
         data_object.addProperty("id", id);
-        data_object.addProperty("name", name);
+        data_object.addProperty("nodeName", nodeName);
+        data_object.addProperty("nodeValue", nodeValue);
         data_object.addProperty("parent_id", parent_id);
         // add the newly created JSON object to JSON array
         treeNodes.add(data_object);
@@ -318,7 +324,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * @return the visitor result
     */
     public Void visitNum(FunParser.NumContext ctx) {
-        createJsonObject(ctx, ctx.getText());
+        createJsonObject(ctx, "NUM", ctx.getText());
         return null;
     }
 
@@ -329,7 +335,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * @return the visitor result
     */
     public Void visitId(FunParser.IdContext ctx) {
-        createJsonObject(ctx, ctx.getText());
+        createJsonObject(ctx, "ID", ctx.getText());
         return null;
     }
 
@@ -342,7 +348,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     public Void visitFunccall(FunParser.FunccallContext ctx) {
         createJsonObject(ctx, "FUNCCALL");
         parentNodes.push(ctx.hashCode());
-        createJsonObject(ctx.ID(), ctx.ID().getText());
+        createJsonObject(ctx.ID(), "ID", ctx.ID().getText());
         visit(ctx.actual());
         parentNodes.pop();
         return null;
