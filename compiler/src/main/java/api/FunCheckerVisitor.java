@@ -133,9 +133,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private void define (String id, Type type, ParserRuleContext decl) {
 		boolean ok = typeTable.put(id, type);
 		if (ok) {
-			addNode(decl, "Insert '" + id + "' into the type table with type, " + type);
+			addNode(decl, "Insert '" + id + "' into the type table with type, " + type + " (scope: " + typeTable.getScope() + ")");
 		} else {
-			addNode(decl, "Scope Error: " + id + " has already been declared");
+			addNode(decl, "Scope Error: " + id + " has already been declared in " + typeTable.getScope() + " scope");
 			reportError(id + " is redeclared", decl);
 		}
 	}
@@ -288,10 +288,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitProc(FunParser.ProcContext ctx) {
 	    typeTable.enterLocalScope();
-	    Type t;
+		addNode(ctx, "Enter local scope");
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
 		addNode(ctx, "Walk formal-decl");
-		t = visit(fd);
+		Type t = visit(fd);
 	    Type proctype = new Type.Mapping(t, Type.VOID);
 	    define(ctx.ID().getText(), proctype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
@@ -303,6 +303,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
 	    typeTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    define(ctx.ID().getText(), proctype, ctx);
 	    return null;
 	}
@@ -315,23 +316,28 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitFunc(FunParser.FuncContext ctx) {
 	    typeTable.enterLocalScope();
+		addNode(ctx, "Enter local scope");
+		addNode(ctx, "Walk return type");
 	    Type t1 = visit(ctx.type());
-	    Type t2;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null) {
-			t2 = visit(fd);
-	    } else
-			t2 = Type.VOID;
+		addNode(ctx, "Walk formal-decl");
+		Type t2 = visit(fd);
 	    Type functype = new Type.Mapping(t2, t1);
 	    define(ctx.ID().getText(), functype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
-	    for (FunParser.Var_declContext vd : var_decl) {
-			visit(vd);
+		if (!var_decl.isEmpty()) {
+			addNode(ctx, "Walk var-decl");
+		    for (FunParser.Var_declContext vd : var_decl)
+				visit(vd);
 		}
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
+		addNode(ctx, "Walk return expression");
 	    Type returntype = visit(ctx.expr());
+		addNode(ctx, "Check return expression has type '" + returntype + "'");
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    define(ctx.ID().getText(), functype, ctx);
 	    return null;
 	}
