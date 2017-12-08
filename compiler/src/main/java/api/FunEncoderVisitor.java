@@ -155,6 +155,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			Arrays.asList(
 				"Code to evaluate formal declarations",
 				"Code to evaluate variable declarations",
+				"Code to execute com",
 				"RETURN"
 			)
 		));
@@ -163,6 +164,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Insert '" + id + "' into the address table at address " + obj.currentOffset() + " (scope: code)");
 	    addrTable.put(id, procaddr);
 	    addrTable.enterLocalScope();
+		addNode(ctx, "Enter local scope");
 	    currentLocale = Address.LOCAL;
 	    localvaraddr = 2;
 	    // ... allows 2 words for link data
@@ -180,6 +182,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    obj.emit11(SVM.RETURN, 0);
 		addNode(ctx, "Emit 'RETURN 0'");
 	    addrTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    currentLocale = Address.GLOBAL;
 	    return null;
 	}
@@ -191,23 +194,41 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitFunc(FunParser.FuncContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate formal declarations",
+				"Code to evaluate variable declarations",
+				"Code to execute com",
+				"Code to evaluate return expr",
+				"RETURN"
+			)
+		));
 	    String id = ctx.ID().getText();
 	    Address procaddr = new Address(obj.currentOffset(), Address.CODE);
+		addNode(ctx, "Insert '" + id + "' into the address table at address " + obj.currentOffset() + " (scope: code)");
 	    addrTable.put(id, procaddr);
 	    addrTable.enterLocalScope();
+		addNode(ctx, "Enter local scope");
 	    currentLocale = Address.LOCAL;
 	    localvaraddr = 2;
 	    // ... allows 2 words for link data
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null)
+		addNode(ctx, "Walk formal-decl, generating code");
 		visit(fd);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
-	    for (FunParser.Var_declContext vd : var_decl)
-		visit(vd);
+		if (!var_decl.isEmpty()) {
+			addNode(ctx, "Walk var-decl, generating code");
+		    for (FunParser.Var_declContext vd : var_decl)
+				visit(vd);
+		}
+		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
-            visit(ctx.expr());
+		addNode(ctx, "Walk return expr, generating code");
+        visit(ctx.expr());
 	    obj.emit11(SVM.RETURN, 1);
+		addNode(ctx, "Emit 'RETURN 1'");
 	    addrTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    currentLocale = Address.GLOBAL;
 	    return null;
 	}
