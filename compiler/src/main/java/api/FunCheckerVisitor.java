@@ -210,10 +210,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	                        ParserRuleContext call) {
 		Type typeProc = retrieve(id, call);
 		if (!(typeProc instanceof Type.Mapping)) {
+			addNode(call, "Type Error: '" + id + "' is not a procedure");
 			reportError(id + " is not a procedure", call);
 			return Type.ERROR;
 		} else {
 			Type.Mapping mapping = (Type.Mapping)typeProc;
+			addNode(call, "Check expression has type " + mapping.domain);
 			checkType(mapping.domain, typeArg, call);
 			return mapping.range;
 		}
@@ -356,9 +358,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			t = visit(tc);
 			define(ctx.ID().getText(), t, ctx);
 	    }
-	    else
+	    else {
 			addNode(ctx, "Note: no formal parameters defined");
 			t = Type.VOID;
+		}
 	    return t;
 	}
 
@@ -423,10 +426,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProccall(FunParser.ProccallContext ctx) {
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.actual());
 	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
-	    if (! tres.equiv(Type.VOID))
-		reportError("procedure should be void", ctx);
+		// Cannot figure what this check is attempting to do
+	    if (!tres.equiv(Type.VOID))
+			reportError("procedure should be void", ctx);
 	    return null;
 	}
 
