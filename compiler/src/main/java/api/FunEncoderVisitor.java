@@ -368,23 +368,46 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitIf(FunParser.IfContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate expr",
+				"JUMPF"
+			)
+		));
+		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.expr());
 	    int condaddr = obj.currentOffset();
+		addNode(ctx, "Note the current instruction address, c1 (" + condaddr + ")");
 	    obj.emit12(SVM.JUMPF, 0);
-	    if (ctx.c2 == null) { // IF without ELSE
-		visit(ctx.c1);
-		int exitaddr = obj.currentOffset();
-		obj.patch12(condaddr, exitaddr);
-	    }
-	    else {                // IF ... ELSE
-		visit(ctx.c1);
-		int jumpaddr = obj.currentOffset();
-		obj.emit12(SVM.JUMP, 0);
-		int elseaddr = obj.currentOffset();
-		obj.patch12(condaddr, elseaddr);
-		visit(ctx.c2);
-		int exitaddr = obj.currentOffset();
-		obj.patch12(jumpaddr, exitaddr);
+		addNode(ctx, "Emit 'JUMPF 0'");
+	    if (ctx.c2 == null) {
+			codeTemplates.get(ctx.hashCode()).add("Code to evaluate com");
+			addNode(ctx, "Walk com, generating code");
+			visit(ctx.c1);
+			int exitaddr = obj.currentOffset();
+			addNode(ctx, "Note the current instruction address, c2 (" + exitaddr + ")");
+			obj.patch12(condaddr, exitaddr);
+			addNode(ctx, "Patch c2 (" + exitaddr + ") into the jump at c1 (" + condaddr + ")");
+	    } else {
+			codeTemplates.get(ctx.hashCode()).add("Code to evaluate com1");
+			addNode(ctx, "Walk com1, generating code");
+			visit(ctx.c1);
+			int jumpaddr = obj.currentOffset();
+			addNode(ctx, "Note the current instruction address, c2 (" + jumpaddr + ")");
+			obj.emit12(SVM.JUMP, 0);
+			addNode(ctx, "Emit 'JUMP 0'");
+			codeTemplates.get(ctx.hashCode()).add("JUMP");
+			int elseaddr = obj.currentOffset();
+			addNode(ctx, "Note the current instruction address, c3 (" + elseaddr + ")");
+			obj.patch12(condaddr, elseaddr);
+			addNode(ctx, "Patch c3 (" + elseaddr + ") into the jump at c1 (" + condaddr + ")");
+			codeTemplates.get(ctx.hashCode()).add("Code to evaluate com2");
+			addNode(ctx, "Walk com2, generating code");
+			visit(ctx.c2);
+			int exitaddr = obj.currentOffset();
+			addNode(ctx, "Note the current instruction address, c4 (" + exitaddr + ")");
+			obj.patch12(jumpaddr, exitaddr);
+			addNode(ctx, "Patch c4 (" + exitaddr + ") into the jump at c2 (" + jumpaddr + ")");
 	    }
 	    return null;
 	}
