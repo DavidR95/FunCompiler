@@ -32639,12 +32639,14 @@ var Tree = module.exports = {
             return "translate(" + d.x + "," + d.y + ")";
         }).attr("id", function (d) {
             return "node-" + d.data.id;
-        }).attr("data-name", function (d) {
-            return d.data.name;
+        }).attr("data-node-name", function (d) {
+            return d.data.nodeName;
+        }).attr("data-node-value", function (d) {
+            return d.data.nodeValue;
         });
         node.append("rect").attr("x", -25).attr("y", -12.5).attr("width", 50).attr("height", 25);
         node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
-            var name = d.data.name;
+            var name = d.data.nodeValue;
             if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
         });
     },
@@ -32705,7 +32707,9 @@ function animateNode(node, currentNode, delayOffset) {
             $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
         }
         currentNodeIndex = currentNode;
-        var nodeName = $("#node-" + node.id).data("name");
+
+        var nodeName = $("#node-" + node.id).data("node-name");
+
         $(".data-heading-container span").html(nodeName);
 
         var tableEntries = "";
