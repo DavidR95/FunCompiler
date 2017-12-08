@@ -408,12 +408,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitAssn(FunParser.AssnContext ctx) {
-		addNode(ctx, ctx.ID().getText());
 	    Type tvar = retrieve(ctx.ID().getText(), ctx);
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t);
-		addNode(ctx, "Check type of " + ctx.ID().getText() + " (" + t + ") is the same type of the expression (" + t + ")");
+		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t);
 	    checkType(tvar, t, ctx);
 	    return null;
 	}
