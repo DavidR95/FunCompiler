@@ -131,7 +131,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
             createJsonObject(ctx, "FORMAL");
             parentNodes.push(ctx.hashCode());
             visit(tc);
-            createJsonObject(ctx.ID(), ctx.ID().getText());
+            createJsonObject(ctx.ID(), "ID", ctx.ID().getText());
             parentNodes.pop();
         } else {
             createJsonObject(ctx, "NOFORMAL");
@@ -149,7 +149,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         createJsonObject(ctx, "VAR");
         parentNodes.push(ctx.hashCode());
         visit(ctx.type());
-        createJsonObject(ctx.ID(), ctx.ID().getText());
+        createJsonObject(ctx.ID(), "ID", ctx.ID().getText());
         visit(ctx.expr());
         parentNodes.pop();
         return null;
@@ -186,7 +186,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     public Void visitAssn(FunParser.AssnContext ctx) {
         createJsonObject(ctx, "ASSN");
         parentNodes.push(ctx.hashCode());
-        createJsonObject(ctx.ID(), ctx.ID().getText());
+        createJsonObject(ctx.ID(), "ID", ctx.ID().getText());
         visit(ctx.expr());
         parentNodes.pop();
         return null;
@@ -201,7 +201,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     public Void visitProccall(FunParser.ProccallContext ctx) {
         createJsonObject(ctx, "PROCCALL");
         parentNodes.push(ctx.hashCode());
-        createJsonObject(ctx.ID(), ctx.ID().getText());
+        createJsonObject(ctx.ID(), "ID", ctx.ID().getText());
         visit(ctx.actual());
         parentNodes.pop();
         return null;
