@@ -319,7 +319,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 				"STOREG d or STOREL d"
 			)
 		));
-		addNode(ctx, "Walk expr generating code");
+		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.expr());
 	    String id = ctx.ID().getText();
 	    Address varaddr = addrTable.get(id);
@@ -344,10 +344,19 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitProccall(FunParser.ProccallContext ctx) {
+		codeTemplates.put(ctx.hashCode(), new LinkedList<String>(
+			Arrays.asList(
+				"Code to evaluate expr",
+				"CALL d"
+			)
+		));
+		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.actual());
 	    String id = ctx.ID().getText();
 	    Address procaddr = addrTable.get(id);
+		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + procaddr.offset);
 	    // Assume procaddr.locale == CODE.
+		addNode(ctx, "Emit CALL " + procaddr.offset);
 	    obj.emit12(SVM.CALL,procaddr.offset);
 	    return null;
 	}
