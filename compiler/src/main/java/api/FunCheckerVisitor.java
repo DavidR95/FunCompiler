@@ -135,7 +135,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		if (ok) {
 			addNode(decl, "Insert '" + id + "' into the type table with type, " + type);
 		} else {
-			addNode(decl, "Type Error: " + id + " has already been declared");
+			addNode(decl, "Scope Error: " + id + " has already been declared");
 			reportError(id + " is redeclared", decl);
 		}
 	}
@@ -150,7 +150,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private Type retrieve (String id, ParserRuleContext occ) {
 		Type type = typeTable.get(id);
 		if (type == null) {
-			addNode(occ, "Type Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
+			addNode(occ, "Scope Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
@@ -286,16 +286,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	 // NOT SURE THIS IS WORKING PROPERLY IN REGARDS TO IT VISITING FORMAL DECLARATION WHEN IT SHOULDN'T
 	public Type visitProc(FunParser.ProcContext ctx) {
 	    typeTable.enterLocalScope();
 	    Type t;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null) {
-			addNode(ctx, "Walk formal-decl");
-			t = visit(fd);
-	    } else
-			t = Type.VOID;
+		addNode(ctx, "Walk formal-decl");
+		t = visit(fd);
 	    Type proctype = new Type.Mapping(t, Type.VOID);
 	    define(ctx.ID().getText(), proctype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
