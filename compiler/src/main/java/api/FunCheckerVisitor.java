@@ -462,11 +462,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitWhile(FunParser.WhileContext ctx) {
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk conditional expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t);
-		addNode(ctx, "Check expression type is bool");
+		addNode(ctx, "Check conditional expression has type bool");
 		checkType(Type.BOOL, t, ctx);
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
 	    return null;
 	}
