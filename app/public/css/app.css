@@ -8852,6 +8852,11 @@ html,
   overflow: auto;
 }
 
+.code-template img {
+  display: block;
+  margin: 30px auto;
+}
+
 .node rect {
   fill: #fff;
   stroke: #282a36;

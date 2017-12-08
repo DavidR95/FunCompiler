@@ -71,7 +71,7 @@
                     <div class="data-container">
                         <div class="code-template">
                             <h4>Code Template</h4>
-                            <p></p>
+                            <img>
                         </div>
                         <div class="generation-explanations">
                             <h4>Code Generator Actions</h4>

@@ -32639,12 +32639,14 @@ var Tree = module.exports = {
             return "translate(" + d.x + "," + d.y + ")";
         }).attr("id", function (d) {
             return "node-" + d.data.id;
-        }).attr("data-name", function (d) {
-            return d.data.name;
+        }).attr("data-node-name", function (d) {
+            return d.data.nodeName;
+        }).attr("data-node-value", function (d) {
+            return d.data.nodeValue;
         });
         node.append("rect").attr("x", -25).attr("y", -12.5).attr("width", 50).attr("height", 25);
         node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
-            var name = d.data.name;
+            var name = d.data.nodeValue;
             if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
         });
     },
@@ -32693,7 +32695,7 @@ function animateNode(node, currentNode, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
         var tableBody = $(".address-table tbody");
-        var codeTemplateText = $(".code-template p");
+        var codeTemplateImage = $(".code-template img");
     } else {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
@@ -32705,7 +32707,10 @@ function animateNode(node, currentNode, delayOffset) {
             $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
         }
         currentNodeIndex = currentNode;
-        $(".data-heading-container span").html($("#node-" + node.id).data("name"));
+
+        var nodeName = $("#node-" + node.id).data("node-name");
+
+        $(".data-heading-container span").html(nodeName);
 
         var tableEntries = "";
         $.each(node.table, function (index, tableEntry) {
@@ -32720,11 +32725,8 @@ function animateNode(node, currentNode, delayOffset) {
         explanationsText.html(explanations);
 
         if (showGenerationAnimation) {
-            var codeTemplate = "";
-            $.each(node.codeTemplate, function (index, codeTemplateString) {
-                codeTemplate += codeTemplateString + "<br>";
-            });
-            codeTemplateText.html(codeTemplate);
+            var codeTemplateURL = "images/" + nodeName + ".png";
+            codeTemplateImage.attr("src", codeTemplateURL);
         }
     }).on("end", function () {
         previousNode = this;
