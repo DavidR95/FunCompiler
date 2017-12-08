@@ -334,7 +334,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    visit(ctx.seq_com());
 		addNode(ctx, "Walk return expression");
 	    Type returntype = visit(ctx.expr());
-		addNode(ctx, "Check return expression has type '" + returntype + "'");
+		addNode(ctx, "Check return expression has type " + returntype);
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -369,17 +369,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitVar(FunParser.VarContext ctx) {
-		addNode(ctx, "Retrieve the declared type");
+		addNode(ctx, "Walk type");
 	    Type t1 = visit(ctx.type());
-		addNode(ctx, "Type retrieved was: " + t1);
-		addNode(ctx, "Retrieve the ID of the declaration");
-		addNode(ctx.ID(), "ID: " + ctx.ID().getText());
-		addNode(ctx, "ID retrieved was " + ctx.ID().getText());
 		define(ctx.ID().getText(), t1, ctx);
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk expr");
 	    Type t2 = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t2);
-		addNode(ctx, "Check declared type (" + t1 + ") is the same as the type of the expression (" + t2 + ")");
+		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
 	    checkType(t1, t2, ctx);
 	    return null;
 	}
