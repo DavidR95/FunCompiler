@@ -231,10 +231,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	private Type checkUnary (Type.Mapping typeOp, Type typeArg,
 	                         ParserRuleContext op) {
-		if (!(typeOp.domain instanceof Type.Primitive))
+		if (!(typeOp.domain instanceof Type.Primitive)) {
+			addNode(op, "Type Error: unary operator should have 1 operand");
 			reportError("unary operator should have 1 operand", op);
-		else
+		} else {
+			addNode(op, "Check expression has type " + typeOp.domain);
 			checkType(typeOp.domain, typeArg, op);
+		}
 		return typeOp.range;
 	}
 
@@ -585,6 +588,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNot(FunParser.NotContext ctx) {
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.prim_expr());
 	    return checkUnary(NOTTYPE, t, ctx);
 	}
