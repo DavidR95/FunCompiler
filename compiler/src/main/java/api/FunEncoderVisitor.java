@@ -46,14 +46,14 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 
 	private JsonArray nodeOrder = new JsonArray();
 
-	private static final Map<Integer, String> convertLocale = createConverter();
-    private static Map<Integer, String> createConverter() {
-        Map<Integer,String> convertLocale = new HashMap<Integer,String>();
-        convertLocale.put(0, "code");
-        convertLocale.put(1, "global");
-		convertLocale.put(2, "local");
-        return convertLocale;
-    }
+	private String convertLocale(int locale) {
+		switch(locale) {
+			case 0: return "code";
+			case 1: return "global";
+			case 2: return "local";
+		}
+		return "Unrecognised locale";
+	}
 
 	private Map<Integer,LinkedList<String>> codeTemplates = new HashMap<Integer,LinkedList<String>>();
 
@@ -79,14 +79,14 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		JsonArray addrTableArray = new JsonArray();
 		addrTable.getGlobals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
-			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
+			addrTableObject.addProperty("scope", convertLocale(addr.locale));
 			addrTableObject.addProperty("id", id);
 			addrTableObject.addProperty("type_address", Integer.toString(addr.offset));
 			addrTableArray.add(addrTableObject);
 		});
 		addrTable.getLocals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
-			addrTableObject.addProperty("scope", convertLocale.get(addr.locale));
+			addrTableObject.addProperty("scope", convertLocale(addr.locale));
 			addrTableObject.addProperty("id", id);
 			addrTableObject.addProperty("type_address", Integer.toString(addr.offset));
 			addrTableArray.add(addrTableObject);
