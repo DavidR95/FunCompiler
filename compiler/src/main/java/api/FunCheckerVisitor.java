@@ -149,14 +149,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the type
    	 */
 	private Type retrieve (String id, ParserRuleContext occ) {
-		addNode(occ, "Attempting to retrieve " + id + " from the type table");
 		Type type = typeTable.get(id);
 		if (type == null) {
-			addNode(occ, "Type error, " + id + " is undeclared");
+			addNode(occ, "Type Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
-			addNode(occ, id + " successfully retrieved from the type table");
+			addNode(occ, "Lookup '" + id + "' and retrieve its type, " + type);
 			return type;
 	}
 
@@ -191,9 +190,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		else
 			ctx = construct;
 		if (typeActual.equiv(typeExpected)) {
-			addNode(ctx, "Success, " + typeActual + " and " + typeExpected + " are of the same type");
+			addNode(ctx, "Success, both types are " + typeActual);
 		} else {
-			addNode(ctx, "Type error, type is " + typeActual + ", should be " + typeExpected);
+			addNode(ctx, "Type Error: type is " + typeActual + ", should be " + typeExpected);
 			reportError("type is " + typeActual+ ", should be " + typeExpected,
 				construct);
 		}
@@ -272,13 +271,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		addNode(ctx, "Predefine read and write procedures");
+		addNode(ctx, "Predefine the read and write procedures");
 		predefine();
-		addNode(ctx, "Visit children");
+		addNode(ctx, "Walk children");
 	    visitChildren(ctx);
-		addNode(ctx, "Check a main procedure has been declared");
 	    Type tmain = retrieve("main", ctx);
-		addNode(ctx, "Check main procedure is a void -> void procedure");
+		addNode(ctx, "Check 'main' procedure has type void -> void");
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
 	}
