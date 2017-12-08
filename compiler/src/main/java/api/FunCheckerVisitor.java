@@ -352,16 +352,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    FunParser.TypeContext tc = ctx.type();
 	    Type t;
 	    if (tc != null) {
-			addNode(ctx, "Retrieve the declared type");
+			addNode(ctx, "Walk type");
 			t = visit(tc);
-			addNode(ctx, "Type retrieved was: " + t);
-			addNode(ctx, "Retrieve the ID of the declaration");
-			addNode(ctx.ID(), "ID: " + ctx.ID().getText());
-			addNode(ctx, "ID retrieved was " + ctx.ID().getText());
 			define(ctx.ID().getText(), t, ctx);
 	    }
 	    else
-			addNode(ctx, "No formal paramters defined");
+			addNode(ctx, "Note: no formal parameters defined");
 			t = Type.VOID;
 	    return t;
 	}
