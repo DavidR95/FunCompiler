@@ -131,12 +131,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
    	 * @param decl the parse tree
    	 */
 	private void define (String id, Type type, ParserRuleContext decl) {
-		addNode(decl, "Attempting to add " + id + " to the type table along with its type, " + type);
 		boolean ok = typeTable.put(id, type);
 		if (ok) {
-			addNode(decl, type + " " + id + " successfully added to the type table");
+			addNode(decl, "Insert '" + id + "' into the type table with type, " + type + " (scope: " + typeTable.getScope() + ")");
 		} else {
-			addNode(decl, "Type error, " + id + " is already declared");
+			addNode(decl, "Scope Error: " + id + " has already been declared in " + typeTable.getScope() + " scope");
 			reportError(id + " is redeclared", decl);
 		}
 	}
@@ -149,14 +148,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the type
    	 */
 	private Type retrieve (String id, ParserRuleContext occ) {
-		addNode(occ, "Attempting to retrieve " + id + " from the type table");
 		Type type = typeTable.get(id);
 		if (type == null) {
-			addNode(occ, "Type error, " + id + " is undeclared");
+			addNode(occ, "Scope Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
-			addNode(occ, id + " successfully retrieved from the type table");
+			addNode(occ, "Lookup '" + id + "' and retrieve its type, " + type);
 			return type;
 	}
 
@@ -191,9 +189,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		else
 			ctx = construct;
 		if (typeActual.equiv(typeExpected)) {
-			addNode(ctx, "Success, " + typeActual + " and " + typeExpected + " are of the same type");
+			addNode(ctx, "Success, both types are " + typeActual);
 		} else {
-			addNode(ctx, "Type error, type is " + typeActual + ", should be " + typeExpected);
+			addNode(ctx, "Type Error: type is " + typeActual + ", should be " + typeExpected);
 			reportError("type is " + typeActual+ ", should be " + typeExpected,
 				construct);
 		}
@@ -212,10 +210,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	                        ParserRuleContext call) {
 		Type typeProc = retrieve(id, call);
 		if (!(typeProc instanceof Type.Mapping)) {
+			addNode(call, "Type Error: '" + id + "' is not a procedure");
 			reportError(id + " is not a procedure", call);
 			return Type.ERROR;
 		} else {
 			Type.Mapping mapping = (Type.Mapping)typeProc;
+			addNode(call, "Check expression has type " + mapping.domain);
 			checkType(mapping.domain, typeArg, call);
 			return mapping.range;
 		}
@@ -231,10 +231,13 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	private Type checkUnary (Type.Mapping typeOp, Type typeArg,
 	                         ParserRuleContext op) {
-		if (!(typeOp.domain instanceof Type.Primitive))
+		if (!(typeOp.domain instanceof Type.Primitive)) {
+			addNode(op, "Type Error: unary operator should have 1 operand");
 			reportError("unary operator should have 1 operand", op);
-		else
+		} else {
+			addNode(op, "Check expression has type " + typeOp.domain);
 			checkType(typeOp.domain, typeArg, op);
+		}
 		return typeOp.range;
 	}
 
@@ -251,7 +254,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 							  Type typeArg2, ParserRuleContext op,
 							  Object operatorCtx) {
 		if (!(typeOp.domain instanceof Type.Pair)) {
-			addNode(operatorCtx, "Type error, binary operator should have 2 operands");
+			addNode(operatorCtx, "Type Error: binary operator should have 2 operands");
 			reportError("binary operator should have 2 operands", op);
 		} else {
 			Type.Pair pair = (Type.Pair)typeOp.domain;
@@ -272,13 +275,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		addNode(ctx, "Predefine read and write procedures");
+		addNode(ctx, "Predefine the read and write procedures");
 		predefine();
-		addNode(ctx, "Visit children");
+		addNode(ctx, "Walk children");
 	    visitChildren(ctx);
-		addNode(ctx, "Check a main procedure has been declared");
 	    Type tmain = retrieve("main", ctx);
-		addNode(ctx, "Check main procedure is a void -> void procedure");
+		addNode(ctx, "Check 'main' procedure has type void -> void");
 	    checkType(MAINTYPE, tmain, ctx);
 	    return null;
 	}
@@ -289,30 +291,24 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	 // NOT SURE THIS IS WORKING PROPERLY IN REGARDS TO IT VISITING FORMAL DECLARATION WHEN IT SHOULDN'T
 	public Type visitProc(FunParser.ProcContext ctx) {
-		addNode(ctx, "Enter the local scope of the procedure");
 	    typeTable.enterLocalScope();
-	    Type t;
+		addNode(ctx, "Enter local scope");
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null) {
-			addNode(ctx, "Visit the formal declaration");
-			t = visit(fd);
-	    } else
-			t = Type.VOID;
+		addNode(ctx, "Walk formal-decl");
+		Type t = visit(fd);
 	    Type proctype = new Type.Mapping(t, Type.VOID);
-		addNode(ctx, "Retrieve the ID of the procedure");
-		addNode(ctx.ID(), ctx.ID().getText());
 	    define(ctx.ID().getText(), proctype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 		if (!var_decl.isEmpty()) {
-			addNode(ctx, "Visit all variable declarations");
+			addNode(ctx, "Walk var-decl");
 		    for (FunParser.Var_declContext vd : var_decl)
 				visit(vd);
 		}
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
-		addNode(ctx, "Exit the local scope of the procedure");
 	    typeTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    define(ctx.ID().getText(), proctype, ctx);
 	    return null;
 	}
@@ -325,23 +321,28 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitFunc(FunParser.FuncContext ctx) {
 	    typeTable.enterLocalScope();
+		addNode(ctx, "Enter local scope");
+		addNode(ctx, "Walk return type");
 	    Type t1 = visit(ctx.type());
-	    Type t2;
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null) {
-			t2 = visit(fd);
-	    } else
-			t2 = Type.VOID;
+		addNode(ctx, "Walk formal-decl");
+		Type t2 = visit(fd);
 	    Type functype = new Type.Mapping(t2, t1);
 	    define(ctx.ID().getText(), functype, ctx);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
-	    for (FunParser.Var_declContext vd : var_decl) {
-			visit(vd);
+		if (!var_decl.isEmpty()) {
+			addNode(ctx, "Walk var-decl");
+		    for (FunParser.Var_declContext vd : var_decl)
+				visit(vd);
 		}
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
+		addNode(ctx, "Walk return expression");
 	    Type returntype = visit(ctx.expr());
+		addNode(ctx, "Check return expression has type " + returntype);
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
+		addNode(ctx, "Exit local scope");
 	    define(ctx.ID().getText(), functype, ctx);
 	    return null;
 	}
@@ -356,17 +357,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    FunParser.TypeContext tc = ctx.type();
 	    Type t;
 	    if (tc != null) {
-			addNode(ctx, "Retrieve the declared type");
+			addNode(ctx, "Walk type");
 			t = visit(tc);
-			addNode(ctx, "Type retrieved was: " + t);
-			addNode(ctx, "Retrieve the ID of the declaration");
-			addNode(ctx.ID(), "ID: " + ctx.ID().getText());
-			addNode(ctx, "ID retrieved was " + ctx.ID().getText());
 			define(ctx.ID().getText(), t, ctx);
 	    }
-	    else
-			addNode(ctx, "No formal paramters defined");
+	    else {
+			addNode(ctx, "Note: no formal parameters defined");
 			t = Type.VOID;
+		}
 	    return t;
 	}
 
@@ -377,17 +375,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitVar(FunParser.VarContext ctx) {
-		addNode(ctx, "Retrieve the declared type");
+		addNode(ctx, "Walk type");
 	    Type t1 = visit(ctx.type());
-		addNode(ctx, "Type retrieved was: " + t1);
-		addNode(ctx, "Retrieve the ID of the declaration");
-		addNode(ctx.ID(), "ID: " + ctx.ID().getText());
-		addNode(ctx, "ID retrieved was " + ctx.ID().getText());
 		define(ctx.ID().getText(), t1, ctx);
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk expr");
 	    Type t2 = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t2);
-		addNode(ctx, "Check declared type (" + t1 + ") is the same as the type of the expression (" + t2 + ")");
+		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
 	    checkType(t1, t2, ctx);
 	    return null;
 	}
@@ -421,12 +414,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitAssn(FunParser.AssnContext ctx) {
-		addNode(ctx, ctx.ID().getText());
 	    Type tvar = retrieve(ctx.ID().getText(), ctx);
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t);
-		addNode(ctx, "Check type of " + ctx.ID().getText() + " (" + t + ") is the same type of the expression (" + t + ")");
+		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t);
 	    checkType(tvar, t, ctx);
 	    return null;
 	}
@@ -438,10 +429,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProccall(FunParser.ProccallContext ctx) {
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.actual());
 	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
-	    if (! tres.equiv(Type.VOID))
-		reportError("procedure should be void", ctx);
+		// Cannot figure what this check is attempting to do
+	    if (!tres.equiv(Type.VOID))
+			reportError("procedure should be void", ctx);
 	    return null;
 	}
 
@@ -452,11 +445,15 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitIf(FunParser.IfContext ctx) {
+		addNode(ctx, "Walk conditional expr");
 	    Type t = visit(ctx.expr());
+		addNode(ctx, "Walk 'if' com");
 	    visit(ctx.c1);
 	    if (ctx.c2 != null) {
+			addNode(ctx, "Walk 'else' com");
 			visit(ctx.c2);
 		}
+		addNode(ctx, "Check conditional expression has type bool");
 	    checkType(Type.BOOL, t, ctx);
 	    return null;
 	}
@@ -468,11 +465,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitWhile(FunParser.WhileContext ctx) {
-		addNode(ctx, "Retrieve the type of the expression");
+		addNode(ctx, "Walk conditional expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Type received was: " + t);
-		addNode(ctx, "Check expression type is bool");
+		addNode(ctx, "Check conditional expression has type bool");
 		checkType(Type.BOOL, t, ctx);
+		addNode(ctx, "Walk com");
 	    visit(ctx.seq_com());
 	    return null;
 	}
@@ -484,7 +481,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitSeq(FunParser.SeqContext ctx) {
-		addNode(ctx, "Visit the sequential command");
+		addNode(ctx, "Walk com");
 	    visitChildren(ctx);
 	    return null;
 	}
@@ -496,13 +493,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitExpr(FunParser.ExprContext ctx) {
 	    if (ctx.e2 != null) {
-			addNode(ctx.op, "Retrieve the type of the first expression");
+			addNode(ctx.op, "Walk expr1");
 			Type t1 = visit(ctx.e1);
-			addNode(ctx.op, "Type received was: " + t1);
-			addNode(ctx.op, "Retrieve the type of the second expression");
+			addNode(ctx.op, "Walk expr2");
 			Type t2 = visit(ctx.e2);
-			addNode(ctx.op, "Type received was: " + t2);
-			addNode(ctx.op, "Check both expressions are comparable types");
+			addNode(ctx.op, "Check both expressions have type int");
 			return checkBinary(COMPTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
@@ -516,13 +511,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 */
 	public Type visitSec_expr(FunParser.Sec_exprContext ctx) {
 	    if (ctx.e2 != null) {
-			addNode(ctx.op, "Retrieve the type of the first expression");
+			addNode(ctx.op, "Walk expr1");
 			Type t1 = visit(ctx.e1);
-			addNode(ctx.op, "Type received was: " + t1);
-			addNode(ctx.op, "Retrieve the type of the second expression");
+			addNode(ctx.op, "Walk expr2");
 			Type t2 = visit(ctx.e2);
-			addNode(ctx.op, "Type received was: " + t2);
-			addNode(ctx.op, "Check both expressions are arithmetic types");
+			addNode(ctx.op, "Check both expressions have type int");
 			return checkBinary(ARITHTYPE, t1, t2, ctx, ctx.op);
 	    } else {
 			return visit(ctx.e1);
@@ -536,7 +529,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFalse(FunParser.FalseContext ctx) {
-		addNode(ctx, "False");
+		addNode(ctx, "Value: false");
 	    return Type.BOOL;
 	}
 
@@ -547,7 +540,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitTrue(FunParser.TrueContext ctx) {
-		addNode(ctx, "True");
+		addNode(ctx, "Value: true");
 	    return Type.BOOL;
 	}
 
@@ -558,7 +551,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNum(FunParser.NumContext ctx) {
-		addNode(ctx, ctx.getText());
+		addNode(ctx, "Value: " + ctx.NUM().getText());
 	    return Type.INT;
 	}
 
@@ -569,7 +562,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitId(FunParser.IdContext ctx) {
-		addNode(ctx, ctx.ID().getText());
 	    return retrieve(ctx.ID().getText(), ctx);
 	}
 
@@ -580,10 +572,12 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitFunccall(FunParser.FunccallContext ctx) {
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.actual());
 	    Type tres = checkCall(ctx.ID().getText(), t, ctx);
+		// Cannot figure what this check is attempting to do
 	    if (tres.equiv(Type.VOID))
-		reportError("procedure should be non-void", ctx);
+			reportError("procedure should be non-void", ctx);
 	    return tres;
 	}
 
@@ -594,6 +588,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitNot(FunParser.NotContext ctx) {
+		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.prim_expr());
 	    return checkUnary(NOTTYPE, t, ctx);
 	}

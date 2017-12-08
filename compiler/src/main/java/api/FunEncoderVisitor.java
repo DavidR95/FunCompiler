@@ -167,10 +167,8 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    localvaraddr = 2;
 	    // ... allows 2 words for link data
 	    FunParser.Formal_declContext fd = ctx.formal_decl();
-	    if (fd != null) {
-			addNode(ctx, "Walk formal-decl, generating code");
-			visit(fd);
-		}
+		addNode(ctx, "Walk formal-decl, generating code");
+		visit(fd);
 	    List<FunParser.Var_declContext> var_decl = ctx.var_decl();
 		if(!var_decl.isEmpty()) {
 			addNode(ctx, "Walk var-decl, generating code");

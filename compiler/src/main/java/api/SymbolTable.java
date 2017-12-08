@@ -23,6 +23,8 @@ public class SymbolTable<A> {
 
 	private HashMap<String,A> globals, locals;
 
+	private String currentScope = "global";
+
 	public SymbolTable () {
 		globals = new HashMap<String,A>();
 		locals = null;  // initially disabled
@@ -66,12 +68,14 @@ public class SymbolTable<A> {
 	// Enable the local part of this symbol table.
 		// Assume that locals == null.
 		locals = new HashMap<String,A>();
+		currentScope = "local";
 	}
 
 	public void exitLocalScope () {
 	// Discard all entries in the local part of this
 	// symbol table, and disable the local part.
 		locals = null;
+		currentScope = "global";
 	}
 
 	/**
@@ -91,6 +95,10 @@ public class SymbolTable<A> {
 			return locals;
 		}
 		return new HashMap<String, A>();
+	}
+
+	public String getScope() {
+		return currentScope;
 	}
 
 	public String toString () {
