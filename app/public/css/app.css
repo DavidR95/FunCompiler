@@ -8953,7 +8953,9 @@ fieldset[disabled] .btn-execute.focus {
 }
 
 #pause-button,
-.right-generation-container {
+.right-generation-container,
+.right-contextual-container,
+.center-container {
   display: none;
 }
 
