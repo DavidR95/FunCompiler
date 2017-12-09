@@ -182,7 +182,7 @@ function animateTree() {
 function play() {
     is_playing = true;
     togglePlayButton();
-    if (isAnimationFinished())
+    if (hasAnimationFinished())
         currentNodeIndex = -1;
     animateTree();
 }
