@@ -32731,7 +32731,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         }
     }).on("end", function () {
         previousNode = this;
-        if (isAnimationFinished() && is_playing) {
+        if (hasAnimationFinished() && is_playing) {
             is_playing = false;
             togglePlayButton();
         }
@@ -32760,7 +32760,7 @@ function pause() {
 
 function forward() {
     if (is_playing) pause();
-    if (!isAnimationFinished()) {
+    if (!hasAnimationFinished()) {
         var node = Tree.nodeOrder[currentNodeIndex + 1];
         animateNode(node, true, 0);
     }
@@ -32768,7 +32768,7 @@ function forward() {
 
 function reverse() {
     if (is_playing) pause();
-    if (currentNodeIndex > 0) {
+    if (hasAnimationStarted()) {
         var node = Tree.nodeOrder[currentNodeIndex - 1];
         animateNode(node, false, 0);
     }
@@ -32779,8 +32779,12 @@ function togglePlayButton() {
     $("#pause-button").toggle();
 }
 
-function isAnimationFinished() {
+function hasAnimationFinished() {
     return currentNodeIndex === Tree.nodeOrder.length - 1;
+}
+
+function hasAnimationStarted() {
+    return currentNodeIndex > 0;
 }
 
 /***/ }),
