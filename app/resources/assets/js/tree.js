@@ -130,7 +130,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .delay(delayOffset * 1000).style("fill", "#3e4153")
+        .duration(0).delay(delayOffset * 1000).style("fill", "#3e4153")
         .on("start", function() {
             $(this).next("text").css({"fill": "white", "font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
