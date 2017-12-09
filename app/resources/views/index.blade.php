@@ -30,7 +30,7 @@
                         <i id="pause-button" class="glyphicon glyphicon-pause"></i>
                         <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
                         <button id="generation-button" href="#" class="btn btn-execute btn-small pull-right">Code-generation</button>
-                        <button id="contextual-button" href="#" class="btn btn-execute btn-small pull-right">Contextual-analysis</button>
+                        <button id="contextual-button" href="#" class="btn btn-execute btn-small pull-right disabled">Contextual-analysis</button>
                     </div>
                     <div class="program-tree-container"></div>
                 </div>

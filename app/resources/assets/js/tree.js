@@ -83,6 +83,8 @@ var Tree = module.exports = {
     },
     setUpSwitchListeners: function(contextualNodeOrder, generationNodeOrder) {
         $("#generation-button").on("click", function() {
+            $("#generation-button").addClass("disabled");
+            $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
             showGenerationAnimation = true;
@@ -91,6 +93,8 @@ var Tree = module.exports = {
         });
 
         $("#contextual-button").on("click", function() {
+            $("#contextual-button").addClass("disabled");
+            $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
             showGenerationAnimation = false;
