@@ -32800,6 +32800,9 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
+    var currentNode = $("#node-" + Tree.nodeOrder[currentNodeIndex].id);
+    currentNode.find("rect").css("fill", "white");
+    currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
