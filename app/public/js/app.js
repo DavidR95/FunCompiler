@@ -32661,9 +32661,9 @@ var Tree = module.exports = {
             $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
+            resetAnimation();
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder;
-            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function () {
@@ -32671,9 +32671,9 @@ var Tree = module.exports = {
             $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
+            resetAnimation();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder;
-            currentNodeIndex = -1;
         });
     },
     setUpPlaybackListeners: function setUpPlaybackListeners() {
@@ -32739,7 +32739,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         previousNode = this;
         if (hasAnimationFinished() && is_playing) {
             is_playing = false;
-            togglePlayButton();
+            enablePlayButton();
         }
     });
 }
@@ -32753,14 +32753,14 @@ function animateTree() {
 
 function play() {
     is_playing = true;
-    togglePlayButton();
+    enablePauseButton();
     if (hasAnimationFinished()) currentNodeIndex = -1;
     animateTree();
 }
 
 function pause() {
     is_playing = false;
-    togglePlayButton();
+    enablePlayButton();
     d3.selectAll("rect").interrupt();
 }
 
@@ -32780,9 +32780,14 @@ function reverse() {
     }
 }
 
-function togglePlayButton() {
-    $("#play-button").toggle();
-    $("#pause-button").toggle();
+function enablePlayButton() {
+    $("#play-button").show();
+    $("#pause-button").hide();
+}
+
+function enablePauseButton() {
+    $("#play-button").hide();
+    $("#pause-button").show();
 }
 
 function hasAnimationFinished() {
@@ -32791,6 +32796,19 @@ function hasAnimationFinished() {
 
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
+}
+
+function resetAnimation() {
+    pause();
+    currentNodeIndex = -1;
+    if (showGenerationAnimation) {
+        $(".generation-explanations p").text("");
+        $(".address-table tbody").text("");
+        $(".code-template img").removeAttr("src");
+    } else {
+        $(".contextual-explanations p").text("");
+        $(".type-table tbody").text("");
+    }
 }
 
 /***/ }),
