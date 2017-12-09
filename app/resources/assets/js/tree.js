@@ -120,7 +120,7 @@ var is_playing;
 var showGenerationAnimation;
 var previousNode = null;
 
-function animateNode(node, currentNode, delayOffset) {
+function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
         var tableBody = $(".address-table tbody");
@@ -137,7 +137,8 @@ function animateNode(node, currentNode, delayOffset) {
                 $(previousNode).css("fill", "white");
                 $(previousNode).next("text").css({"fill": "#3e4153", "font-weight": "normal"});
             }
-            currentNodeIndex = currentNode;
+
+            isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
 
             var nodeName = $("#node-"+node.id).data("node-name");
 
@@ -171,7 +172,7 @@ function animateTree() {
     currentNodeIndex = (currentNodeIndex === -1 ? 0 : currentNodeIndex);
     for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
         var node = Tree.nodeOrder[i];
-        animateNode(node, i, j);
+        animateNode(node, true, j);
     }
 }
 
@@ -192,7 +193,7 @@ function forward() {
         pause();
     if (currentNodeIndex < Tree.nodeOrder.length - 1) {
         var node = Tree.nodeOrder[currentNodeIndex+1];
-        animateNode(node, currentNodeIndex+1, 0);
+        animateNode(node, true, 0);
     }
 }
 
@@ -201,7 +202,7 @@ function reverse() {
         pause();
     if (currentNodeIndex > 0) {
         var node = Tree.nodeOrder[currentNodeIndex-1];
-        animateNode(node, currentNodeIndex-1, 0);
+        animateNode(node, false, 0);
     }
 }
 
