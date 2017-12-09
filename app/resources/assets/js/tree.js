@@ -165,13 +165,16 @@ function animateNode(node, isPlayingForward, delayOffset) {
             }
         }).on("end", function() {
             previousNode = this;
+            if (isAnimationFinished() && is_playing) {
+                is_playing = false;
+                togglePlayButton();
+            }
         });
 }
 
 function animateTree() {
-    currentNodeIndex = (currentNodeIndex === -1 ? 0 : currentNodeIndex);
-    for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
-        var node = Tree.nodeOrder[i];
+    for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length-1; i++, j++) {
+        var node = Tree.nodeOrder[i+1];
         animateNode(node, true, j);
     }
 }
@@ -179,6 +182,8 @@ function animateTree() {
 function play() {
     is_playing = true;
     togglePlayButton();
+    if (isAnimationFinished())
+        currentNodeIndex = -1;
     animateTree();
 }
 
@@ -191,7 +196,7 @@ function pause() {
 function forward() {
     if (is_playing)
         pause();
-    if (currentNodeIndex < Tree.nodeOrder.length - 1) {
+    if (!isAnimationFinished()) {
         var node = Tree.nodeOrder[currentNodeIndex+1];
         animateNode(node, true, 0);
     }
@@ -209,4 +214,8 @@ function reverse() {
 function togglePlayButton() {
     $("#play-button").toggle();
     $("#pause-button").toggle();
+}
+
+function isAnimationFinished() {
+    return currentNodeIndex === Tree.nodeOrder.length-1;
 }
