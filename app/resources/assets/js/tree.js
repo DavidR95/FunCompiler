@@ -182,7 +182,6 @@ function play() {
 }
 
 function pause() {
-    var node = Tree.nodeOrder[currentNodeIndex];
     is_playing = false;
     togglePlayButton(true);
     d3.selectAll("rect").interrupt();
@@ -191,7 +190,7 @@ function pause() {
 function forward() {
     if (is_playing)
         pause();
-    if (currentNodeIndex < Tree.nodeOrder.length) {
+    if (currentNodeIndex < Tree.nodeOrder.length - 1) {
         var node = Tree.nodeOrder[currentNodeIndex+1];
         animateNode(node, currentNodeIndex+1, 0);
     }
@@ -200,8 +199,10 @@ function forward() {
 function reverse() {
     if (is_playing)
         pause();
-    var node = Tree.nodeOrder[currentNodeIndex-1];
-    animateNode(node, currentNodeIndex-1, 0);
+    if (currentNodeIndex > 0) {
+        var node = Tree.nodeOrder[currentNodeIndex-1];
+        animateNode(node, currentNodeIndex-1, 0);
+    }
 }
 
 function togglePlayButton(toggle) {
