@@ -236,6 +236,7 @@ function hasAnimationStarted() {
 function resetAnimation() {
     pause();
     currentNodeIndex = -1;
+    $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
         $(".generation-explanations p").text("");
         $(".address-table tbody").text("");
