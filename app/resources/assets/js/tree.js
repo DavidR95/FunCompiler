@@ -168,7 +168,7 @@ function animateNode(node, currentNode, delayOffset) {
 }
 
 function animateTree() {
-    currentNodeIndex = (currentNodeIndex == -1 ? 0 : currentNodeIndex);
+    currentNodeIndex = (currentNodeIndex === -1 ? 0 : currentNodeIndex);
     for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
         var node = Tree.nodeOrder[i];
         animateNode(node, i, j);
@@ -177,13 +177,13 @@ function animateTree() {
 
 function play() {
     is_playing = true;
-    togglePlayButton(false);
+    togglePlayButton();
     animateTree();
 }
 
 function pause() {
     is_playing = false;
-    togglePlayButton(true);
+    togglePlayButton();
     d3.selectAll("rect").interrupt();
 }
 
@@ -205,12 +205,7 @@ function reverse() {
     }
 }
 
-function togglePlayButton(toggle) {
-    if (toggle) {
-        $("#play-button").show();
-        $("#pause-button").hide();
-    } else {
-        $("#play-button").hide();
-        $("#pause-button").show();
-    }
+function togglePlayButton() {
+    $("#play-button").toggle();
+    $("#pause-button").toggle();
 }
