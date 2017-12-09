@@ -177,24 +177,24 @@ function animateTree() {
 
 function play() {
     is_playing = true;
-    $("#play-button").hide();
-    $("#pause-button").show();
+    togglePlayButton(false);
     animateTree();
 }
 
 function pause() {
     var node = Tree.nodeOrder[currentNodeIndex];
     is_playing = false;
-    $("#play-button").show();
-    $("#pause-button").hide();
+    togglePlayButton(true);
     d3.selectAll("rect").interrupt();
 }
 
 function forward() {
     if (is_playing)
         pause();
-    var node = Tree.nodeOrder[currentNodeIndex+1];
-    animateNode(node, currentNodeIndex+1, 0);
+    if (currentNodeIndex < Tree.nodeOrder.length) {
+        var node = Tree.nodeOrder[currentNodeIndex+1];
+        animateNode(node, currentNodeIndex+1, 0);
+    }
 }
 
 function reverse() {
@@ -202,4 +202,14 @@ function reverse() {
         pause();
     var node = Tree.nodeOrder[currentNodeIndex-1];
     animateNode(node, currentNodeIndex-1, 0);
+}
+
+function togglePlayButton(toggle) {
+    if (toggle) {
+        $("#play-button").show();
+        $("#pause-button").hide();
+    } else {
+        $("#play-button").hide();
+        $("#pause-button").show();
+    }
 }
