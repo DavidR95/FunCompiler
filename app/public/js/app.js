@@ -31663,6 +31663,8 @@ $("#execute-form").submit(function (e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function (responseData) {
+        $(".right-contextual-container").css("display", "table");
+        $(".center-container").css("display", "table");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
@@ -32598,11 +32600,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 var d3 = __webpack_require__(181);
 
 var Tree = module.exports = {
-    nodeOrder: null,
     drawTree: function drawTree(data) {
-        currentNodeIndex = -1;
-        is_playing = false;
-
         var dataMap = data.reduce(function (map, node) {
             map[node.id] = node;
             return map;
@@ -32655,19 +32653,23 @@ var Tree = module.exports = {
     },
     setUpSwitchListeners: function setUpSwitchListeners(contextualNodeOrder, generationNodeOrder) {
         $("#generation-button").on("click", function () {
+            $("#generation-button").addClass("disabled");
+            $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
+            resetAnimation();
             showGenerationAnimation = true;
             Tree.nodeOrder = generationNodeOrder;
-            currentNodeIndex = -1;
         });
 
         $("#contextual-button").on("click", function () {
+            $("#contextual-button").addClass("disabled");
+            $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
+            resetAnimation();
             showGenerationAnimation = false;
             Tree.nodeOrder = contextualNodeOrder;
-            currentNodeIndex = -1;
         });
     },
     setUpPlaybackListeners: function setUpPlaybackListeners() {
@@ -32686,12 +32688,13 @@ var Tree = module.exports = {
     }
 };
 
-var currentNodeIndex;
-var is_playing;
-var showGenerationAnimation;
+var nodeOrder = null;
+var currentNodeIndex = -1;
+var is_playing = false;
+var showGenerationAnimation = false;
 var previousNode = null;
 
-function animateNode(node, currentNode, delayOffset) {
+function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
         var tableBody = $(".address-table tbody");
@@ -32700,13 +32703,14 @@ function animateNode(node, currentNode, delayOffset) {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
     }
-    d3.select("#node-" + node.id).select("rect").transition().delay(delayOffset * 1000).style("fill", "#3e4153").on("start", function () {
+    d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "#3e4153").on("start", function () {
         $(this).next("text").css({ "fill": "white", "font-weight": "900" });
         if (previousNode != null && previousNode !== this) {
             $(previousNode).css("fill", "white");
             $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
         }
-        currentNodeIndex = currentNode;
+
+        isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
 
         var nodeName = $("#node-" + node.id).data("node-name");
 
@@ -32730,42 +32734,82 @@ function animateNode(node, currentNode, delayOffset) {
         }
     }).on("end", function () {
         previousNode = this;
+        if (hasAnimationFinished() && is_playing) {
+            is_playing = false;
+            enablePlayButton();
+        }
     });
 }
 
 function animateTree() {
-    currentNodeIndex = currentNodeIndex == -1 ? 0 : currentNodeIndex;
-    for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length; i++, j++) {
-        var node = Tree.nodeOrder[i];
-        animateNode(node, i, j);
+    for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length - 1; i++, j++) {
+        var node = Tree.nodeOrder[i + 1];
+        animateNode(node, true, j);
     }
 }
 
 function play() {
     is_playing = true;
-    $("#play-button").hide();
-    $("#pause-button").show();
+    enablePauseButton();
+    if (hasAnimationFinished()) currentNodeIndex = -1;
     animateTree();
 }
 
 function pause() {
-    var node = Tree.nodeOrder[currentNodeIndex];
     is_playing = false;
-    $("#play-button").show();
-    $("#pause-button").hide();
+    enablePlayButton();
     d3.selectAll("rect").interrupt();
 }
 
 function forward() {
     if (is_playing) pause();
-    var node = Tree.nodeOrder[currentNodeIndex + 1];
-    animateNode(node, currentNodeIndex + 1, 0);
+    if (!hasAnimationFinished()) {
+        var node = Tree.nodeOrder[currentNodeIndex + 1];
+        animateNode(node, true, 0);
+    }
 }
 
 function reverse() {
     if (is_playing) pause();
-    var node = Tree.nodeOrder[currentNodeIndex - 1];
-    animateNode(node, currentNodeIndex - 1, 0);
+    if (hasAnimationStarted()) {
+        var node = Tree.nodeOrder[currentNodeIndex - 1];
+        animateNode(node, false, 0);
+    }
+}
+
+function enablePlayButton() {
+    $("#play-button").show();
+    $("#pause-button").hide();
+}
+
+function enablePauseButton() {
+    $("#play-button").hide();
+    $("#pause-button").show();
+}
+
+function hasAnimationFinished() {
+    return currentNodeIndex === Tree.nodeOrder.length - 1;
+}
+
+function hasAnimationStarted() {
+    return currentNodeIndex > 0;
+}
+
+function resetAnimation() {
+    pause();
+    var currentNode = $("#node-" + Tree.nodeOrder[currentNodeIndex].id);
+    currentNode.find("rect").css("fill", "white");
+    currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+    currentNodeIndex = -1;
+    $(".data-heading-container span").text("");
+    if (showGenerationAnimation) {
+        $(".generation-explanations p").text("");
+        $(".address-table tbody").text("");
+        $(".code-template img").removeAttr("src");
+    } else {
+        $(".contextual-explanations p").text("");
+        $(".type-table tbody").text("");
+    }
 }
 
 /***/ }),
