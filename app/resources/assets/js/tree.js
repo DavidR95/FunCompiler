@@ -75,10 +75,6 @@ var Tree = module.exports = {
             });
     },
     setNodeOrder: function(nodeOrder) {
-        if (showGenerationAnimation)
-            $(".right-generation-container").css("display", "table");
-        else
-            $(".right-contextual-container").css("display", "table");
         Tree.nodeOrder = nodeOrder;
     },
     setUpSwitchListeners: function(contextualNodeOrder, generationNodeOrder) {
@@ -236,11 +232,9 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
-    if (currentNodeIndex > -1) {
-        var currentNode = $("#node-"+Tree.nodeOrder[currentNodeIndex].id);
-        currentNode.find("rect").css("fill", "white");
-        currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
-    }
+    var currentNode = $("#node-"+Tree.nodeOrder[currentNodeIndex].id);
+    currentNode.find("rect").css("fill", "white");
+    currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
