@@ -22429,7 +22429,6 @@ $("#execute-form").submit(function (e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function (responseData) {
-        $(".right-contextual-container").css("display", "table");
         $(".center-container").css("display", "table");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
@@ -22441,7 +22440,6 @@ $("#execute-form").submit(function (e) {
         var output = response.output;
         var contextualNodeOrder = response.contextualNodeOrder;
         var generationNodeOrder = response.generationNodeOrder;
-        $(".program-tree-container").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
             $(".program-tree-container").append("Syntax errors: <br>");
@@ -22450,12 +22448,12 @@ $("#execute-form").submit(function (e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.drawTree(treeNodes);
             Tree.contextualNodeOrder = contextualNodeOrder;
             Tree.generationNodeOrder = generationNodeOrder;
             Tree.setNodeOrder();
             Tree.setUpSwitchListeners();
             Tree.setUpPlaybackListeners();
+            Tree.drawTree(treeNodes);
         }
     }).fail(function (responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -23396,7 +23394,7 @@ var Tree = module.exports = {
         var treemap = d3.tree().size([width, height]);
         var nodes = d3.hierarchy(treeData[0]);
         nodes = treemap(nodes);
-        var svg = d3.select(".program-tree-container").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 800 650").classed("svg-content-responsive", true);
+        var svg = d3.select(".program-tree-container").html("").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 800 650").classed("svg-content-responsive", true);
         var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         g.selectAll(".link").data(nodes.descendants().slice(1)).enter().append("path").attr("class", "link").attr("d", function (d) {
             return "M" + d.x + "," + d.y + "C" + d.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + d.parent.y;
@@ -23417,27 +23415,34 @@ var Tree = module.exports = {
             var name = d.data.nodeValue;
             if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
         });
+        if (firstPlay) firstPlay = false;
     },
     setNodeOrder: function setNodeOrder() {
-        if (showGenerationAnimation) nodeOrder = Tree.generationNodeOrder;else nodeOrder = Tree.contextualNodeOrder;
+        if (firstPlay) {
+            nodeOrder = Tree.contextualNodeOrder;
+            $(".right-contextual-container").css("display", "table");
+        } else {
+            resetAnimation();
+            if (showGenerationAnimation) nodeOrder = Tree.generationNodeOrder;else nodeOrder = Tree.contextualNodeOrder;
+        }
     },
     setUpSwitchListeners: function setUpSwitchListeners() {
         $("#generation-button").on("click", function () {
+            resetAnimation();
             $("#generation-button").addClass("disabled");
             $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
-            resetAnimation();
             showGenerationAnimation = true;
             nodeOrder = Tree.generationNodeOrder;
         });
 
         $("#contextual-button").on("click", function () {
+            resetAnimation();
             $("#contextual-button").addClass("disabled");
             $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
-            resetAnimation();
             showGenerationAnimation = false;
             nodeOrder = Tree.contextualNodeOrder;
         });
@@ -23463,6 +23468,7 @@ var currentNodeIndex = -1;
 var is_playing = false;
 var showGenerationAnimation = false;
 var previousNode = null;
+var firstPlay = true;
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
@@ -23567,9 +23573,11 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
-    var currentNode = $("#node-" + nodeOrder[currentNodeIndex].id);
-    currentNode.find("rect").css("fill", "white");
-    currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+    if (currentNodeIndex > -1) {
+        var currentNode = $("#node-" + nodeOrder[currentNodeIndex].id);
+        currentNode.find("rect").css("fill", "white");
+        currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+    }
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
