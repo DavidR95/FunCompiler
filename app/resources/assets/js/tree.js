@@ -1,7 +1,6 @@
 var d3 = require('d3');
 
 var Tree = module.exports = {
-    nodeOrder: null,
     drawTree: function(data) {
         currentNodeIndex = -1;
         is_playing = false;
@@ -119,6 +118,7 @@ var Tree = module.exports = {
     }
 }
 
+var nodeOrder = null;
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;

@@ -32600,7 +32600,6 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 var d3 = __webpack_require__(181);
 
 var Tree = module.exports = {
-    nodeOrder: null,
     drawTree: function drawTree(data) {
         currentNodeIndex = -1;
         is_playing = false;
@@ -32692,6 +32691,7 @@ var Tree = module.exports = {
     }
 };
 
+var nodeOrder = null;
 var currentNodeIndex;
 var is_playing;
 var showGenerationAnimation;
