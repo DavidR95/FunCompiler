@@ -31663,7 +31663,6 @@ $("#execute-form").submit(function (e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function (responseData) {
-        $(".right-contextual-container").css("display", "table");
         $(".center-container").css("display", "table");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
@@ -32601,9 +32600,6 @@ var d3 = __webpack_require__(181);
 
 var Tree = module.exports = {
     drawTree: function drawTree(data) {
-        currentNodeIndex = -1;
-        is_playing = false;
-
         var dataMap = data.reduce(function (map, node) {
             map[node.id] = node;
             return map;
@@ -32652,6 +32648,7 @@ var Tree = module.exports = {
         });
     },
     setNodeOrder: function setNodeOrder(nodeOrder) {
+        if (showGenerationAnimation) $(".right-generation-container").css("display", "table");else $(".right-contextual-container").css("display", "table");
         Tree.nodeOrder = nodeOrder;
     },
     setUpSwitchListeners: function setUpSwitchListeners(contextualNodeOrder, generationNodeOrder) {
@@ -32692,9 +32689,9 @@ var Tree = module.exports = {
 };
 
 var nodeOrder = null;
-var currentNodeIndex;
-var is_playing;
-var showGenerationAnimation;
+var currentNodeIndex = -1;
+var is_playing = false;
+var showGenerationAnimation = false;
 var previousNode = null;
 
 function animateNode(node, isPlayingForward, delayOffset) {
@@ -32800,9 +32797,11 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
-    var currentNode = $("#node-" + Tree.nodeOrder[currentNodeIndex].id);
-    currentNode.find("rect").css("fill", "white");
-    currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+    if (currentNodeIndex > -1) {
+        var currentNode = $("#node-" + Tree.nodeOrder[currentNodeIndex].id);
+        currentNode.find("rect").css("fill", "white");
+        currentNode.find("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+    }
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {

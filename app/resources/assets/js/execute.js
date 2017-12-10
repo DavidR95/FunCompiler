@@ -15,7 +15,6 @@ $("#execute-form").submit(function(e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function(responseData) {
-        $(".right-contextual-container").css("display", "table");
         $(".center-container").css("display", "table");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;

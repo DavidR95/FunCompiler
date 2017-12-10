@@ -2,9 +2,6 @@ var d3 = require('d3');
 
 var Tree = module.exports = {
     drawTree: function(data) {
-        currentNodeIndex = -1;
-        is_playing = false;
-
         var dataMap = data.reduce(function(map, node) {
             map[node.id] = node;
             return map;
@@ -78,6 +75,10 @@ var Tree = module.exports = {
             });
     },
     setNodeOrder: function(nodeOrder) {
+        if (showGenerationAnimation)
+            $(".right-generation-container").css("display", "table");
+        else
+            $(".right-contextual-container").css("display", "table");
         Tree.nodeOrder = nodeOrder;
     },
     setUpSwitchListeners: function(contextualNodeOrder, generationNodeOrder) {
@@ -119,9 +120,9 @@ var Tree = module.exports = {
 }
 
 var nodeOrder = null;
-var currentNodeIndex;
-var is_playing;
-var showGenerationAnimation;
+var currentNodeIndex = -1;
+var is_playing = false;
+var showGenerationAnimation = false;
 var previousNode = null;
 
 function animateNode(node, isPlayingForward, delayOffset) {
@@ -235,9 +236,11 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
-    var currentNode = $("#node-"+Tree.nodeOrder[currentNodeIndex].id);
-    currentNode.find("rect").css("fill", "white");
-    currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
+    if (currentNodeIndex > -1) {
+        var currentNode = $("#node-"+Tree.nodeOrder[currentNodeIndex].id);
+        currentNode.find("rect").css("fill", "white");
+        currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
+    }
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
