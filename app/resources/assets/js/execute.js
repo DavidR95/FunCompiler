@@ -15,7 +15,6 @@ $("#execute-form").submit(function(e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function(responseData) {
-        $(".right-contextual-container").css("display", "table");
         $(".center-container").css("display", "table");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
@@ -27,7 +26,6 @@ $("#execute-form").submit(function(e) {
         var output = response.output;
         var contextualNodeOrder = response.contextualNodeOrder;
         var generationNodeOrder = response.generationNodeOrder;
-        $(".program-tree-container").text("");
         if (numSyntaxErrors > 0) {
             $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
             $(".program-tree-container").append("Syntax errors: <br>");
@@ -36,10 +34,12 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.drawTree(treeNodes);
-            Tree.setNodeOrder(contextualNodeOrder);
-            Tree.setUpSwitchListeners(contextualNodeOrder, generationNodeOrder);
+            Tree.contextualNodeOrder = contextualNodeOrder;
+            Tree.generationNodeOrder = generationNodeOrder;
+            Tree.setNodeOrder();
+            Tree.setUpSwitchListeners();
             Tree.setUpPlaybackListeners();
+            Tree.drawTree(treeNodes);
         }
     }).fail(function(responseData) {
         alert(responseData.responseJSON.errors.program);

@@ -1,6 +1,8 @@
 var d3 = require('d3');
 
 var Tree = module.exports = {
+    contextualNodeOrder: null,
+    generationNodeOrder: null,
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
             map[node.id] = node;
@@ -28,6 +30,7 @@ var Tree = module.exports = {
         var nodes = d3.hierarchy(treeData[0]);
         nodes = treemap(nodes);
         var svg = d3.select(".program-tree-container")
+            .html("")
             .append("div")
             .classed("svg-container", true)
             .append("svg")
@@ -73,29 +76,40 @@ var Tree = module.exports = {
                 else
                     return name.substring(0, 5) + "...";
             });
+        if (firstPlay)
+            firstPlay = false;
     },
-    setNodeOrder: function(nodeOrder) {
-        Tree.nodeOrder = nodeOrder;
+    setNodeOrder: function() {
+        if (firstPlay) {
+            nodeOrder = Tree.contextualNodeOrder;
+            $(".right-contextual-container").css("display", "table");
+        } else {
+            resetAnimation();
+            if (showGenerationAnimation)
+                nodeOrder = Tree.generationNodeOrder;
+            else
+                nodeOrder = Tree.contextualNodeOrder;
+        }
     },
-    setUpSwitchListeners: function(contextualNodeOrder, generationNodeOrder) {
+    setUpSwitchListeners: function() {
         $("#generation-button").on("click", function() {
+            resetAnimation();
             $("#generation-button").addClass("disabled");
             $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
-            resetAnimation();
             showGenerationAnimation = true;
-            Tree.nodeOrder = generationNodeOrder
+            nodeOrder = Tree.generationNodeOrder
         });
 
         $("#contextual-button").on("click", function() {
+            resetAnimation();
             $("#contextual-button").addClass("disabled");
             $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
-            resetAnimation();
             showGenerationAnimation = false;
-            Tree.nodeOrder = contextualNodeOrder
+            nodeOrder = Tree.contextualNodeOrder
         });
 
     },
@@ -120,6 +134,7 @@ var currentNodeIndex = -1;
 var is_playing = false;
 var showGenerationAnimation = false;
 var previousNode = null;
+var firstPlay = true;
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
@@ -174,8 +189,8 @@ function animateNode(node, isPlayingForward, delayOffset) {
 }
 
 function animateTree() {
-    for (var i = currentNodeIndex, j = 0; i < Tree.nodeOrder.length-1; i++, j++) {
-        var node = Tree.nodeOrder[i+1];
+    for (var i = currentNodeIndex, j = 0; i < nodeOrder.length-1; i++, j++) {
+        var node = nodeOrder[i+1];
         animateNode(node, true, j);
     }
 }
@@ -198,7 +213,7 @@ function forward() {
     if (is_playing)
         pause();
     if (!hasAnimationFinished()) {
-        var node = Tree.nodeOrder[currentNodeIndex+1];
+        var node = nodeOrder[currentNodeIndex+1];
         animateNode(node, true, 0);
     }
 }
@@ -207,7 +222,7 @@ function reverse() {
     if (is_playing)
         pause();
     if (hasAnimationStarted()) {
-        var node = Tree.nodeOrder[currentNodeIndex-1];
+        var node = nodeOrder[currentNodeIndex-1];
         animateNode(node, false, 0);
     }
 }
@@ -223,7 +238,7 @@ function enablePauseButton() {
 }
 
 function hasAnimationFinished() {
-    return currentNodeIndex === Tree.nodeOrder.length-1;
+    return currentNodeIndex === nodeOrder.length-1;
 }
 
 function hasAnimationStarted() {
@@ -232,9 +247,11 @@ function hasAnimationStarted() {
 
 function resetAnimation() {
     pause();
-    var currentNode = $("#node-"+Tree.nodeOrder[currentNodeIndex].id);
-    currentNode.find("rect").css("fill", "white");
-    currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
+    if (currentNodeIndex > -1) {
+        var currentNode = $("#node-"+nodeOrder[currentNodeIndex].id);
+        currentNode.find("rect").css("fill", "white");
+        currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
+    }
     currentNodeIndex = -1;
     $(".data-heading-container span").text("");
     if (showGenerationAnimation) {
