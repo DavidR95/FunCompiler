@@ -2,7 +2,6 @@
 
 var CodeMirror = require('codemirror');
 
-require('codemirror/mode/javascript/javascript');
 require('codemirror/addon/mode/simple');
 
 CodeMirror.defineSimpleMode("simplemode", {
