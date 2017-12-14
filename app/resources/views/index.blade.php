@@ -16,7 +16,8 @@
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button class="btn btn-execute" type="submit"><b>Execute</b></button>
+                                <button id="ca-button" class="btn btn-execute" value="ca" type="submit"><b>Contextual Analysis</b></button>
+                                <button id="cg-button" class="btn btn-execute" value="cg" type="submit"><b>Code Generation</b></button>
                             </div>
                         </form>
                     </div>

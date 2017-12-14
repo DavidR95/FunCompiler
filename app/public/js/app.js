@@ -31650,6 +31650,12 @@ __webpack_require__(178);
 
 var Tree = __webpack_require__(180);
 
+var whichButton;
+
+$("button[type='submit']").click(function () {
+    whichButton = $(this).val();
+});
+
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
     var $form = $(this);

@@ -2,6 +2,12 @@ require("./codemirror.js");
 
 var Tree = require("./tree.js");
 
+var whichButton;
+
+$("button[type='submit']").click(function() {
+    whichButton = $(this).val();
+});
+
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
     var $form = $(this);
