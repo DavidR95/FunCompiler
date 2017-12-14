@@ -9,7 +9,7 @@ CodeMirror.defineSimpleMode("simplemode", {
     {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
     {regex: /(function)(\s+)([a-z$][\w$]*)/,
      token: ["keyword", null, "variable-2"]},
-    {regex: /(?:func|proc|return|if|while|else)\b/,
+    {regex: /(?:func|proc|return|if|while|else|not)\b/,
      token: "keyword"},
     {regex: /true|false/, token: "atom"},
     {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
@@ -18,15 +18,9 @@ CodeMirror.defineSimpleMode("simplemode", {
     {regex: /\/(?:[^\\]|\\.)*?\//, token: "variable-3"},
     // A next property will cause the mode to move to a different state
     {regex: /\/\*/, token: "comment", next: "comment"},
-    {regex: /[-+\/*=<>!]+/, token: "operator"},
-    // indent and dedent properties guide autoindentation
-    {regex: /[\{\[\(\:]/, indent: true},
-    {regex: /[\}\]\)]/, dedent: true},
+    {regex: /[-+\/*=<>]+/, token: "operator"},
+    {regex: /[\:]/, indent: true},
     {regex: /[a-z$][\w$]*/, token: "variable"},
-    // You can embed other modes with the mode property. This rule
-    // causes all code between << and >> to be highlighted with the XML
-    // mode.
-    {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}}
   ],
   comment: []
 });
