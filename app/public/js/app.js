@@ -31650,10 +31650,10 @@ __webpack_require__(178);
 
 var Tree = __webpack_require__(180);
 
-var whichButton;
+var url;
 
 $("button[type='submit']").click(function () {
-    whichButton = $(this).val();
+    url = $(this).val();
 });
 
 $("#execute-form").submit(function (e) {
@@ -31661,8 +31661,6 @@ $("#execute-form").submit(function (e) {
     var $form = $(this);
     // Stop the form submitting normally (i.e., don't route to action parameter)
     e.preventDefault();
-    // Get the intended controller route
-    var url = $form.attr("action");
     // Get csrf token from page meta-data
     var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
     // Serialise the form inputs, add csrf token
