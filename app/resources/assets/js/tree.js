@@ -80,6 +80,7 @@ var Tree = module.exports = {
             firstPlay = false;
     },
     setNodeOrder: function() {
+        previousNode = null;
         if (firstPlay) {
             nodeOrder = Tree.contextualNodeOrder;
             $(".right-contextual-container").css("display", "table");
@@ -114,18 +115,20 @@ var Tree = module.exports = {
 
     },
     setUpPlaybackListeners: function() {
-        $("#play-button").on("click", function() {
-            play();
-        });
-        $("#pause-button").on("click", function() {
-            pause();
-        });
-        $("#forward-button").on("click", function() {
-            forward();
-        });
-        $("#reverse-button").on("click", function() {
-            reverse();
-        });
+        if (firstPlay) {
+            $("#play-button").on("click", function() {
+                play();
+            });
+            $("#pause-button").on("click", function() {
+                pause();
+            });
+            $("#forward-button").on("click", function() {
+                forward();
+            });
+            $("#reverse-button").on("click", function() {
+                reverse();
+            });
+        }
     }
 }
 
