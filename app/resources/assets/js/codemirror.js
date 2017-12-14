@@ -4,7 +4,7 @@ var CodeMirror = require('codemirror');
 
 require('codemirror/addon/mode/simple');
 
-CodeMirror.defineSimpleMode("simplemode", {
+CodeMirror.defineSimpleMode("fun", {
   start: [
     {regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword"},
     {regex: /true|false/, token: "atom"},
@@ -22,5 +22,5 @@ CodeMirror.defineSimpleMode("simplemode", {
 CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
     mode: "simplemode",
-    theme: "dracula"
+    theme: "fun"
 }).setValue("int n = 15\nproc main():\nwhile n > 1:\nn = n/2 .\n.");
