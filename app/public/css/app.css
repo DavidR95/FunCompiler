@@ -8807,6 +8807,10 @@ html,
   max-height: 98%;
 }
 
+.program-input-container form .form-group .CodeMirror .CodeMirror-line {
+  word-break: break-word;
+}
+
 .program-input-container form .form-submit {
   height: 10%;
   padding-bottom: 25px;

@@ -73,6 +73,9 @@ body, html, .container-fluid, .row {
                 border: 2px solid darken($dracula, 10%);
                 min-height: 98%;
                 max-height: 98%;
+                .CodeMirror-line {
+                    word-break: break-word;
+                }
             }
         }
         .form-submit {

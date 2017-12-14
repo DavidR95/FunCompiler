@@ -23,6 +23,7 @@ CodeMirror.defineSimpleMode("fun", {
 CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
     tabSize: 2,
+    lineWrapping: true,
     mode: "fun",
     theme: "dracula"
 }).setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
