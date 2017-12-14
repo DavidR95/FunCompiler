@@ -67,11 +67,12 @@ body, html, .container-fluid, .row {
     form {
         height: 100%;
         .form-group {
-            height:90%;
+            height: 90%;
             margin: 0;
             .CodeMirror {
                 border: 2px solid darken($dracula, 10%);
-                height:98%;
+                min-height: 98%;
+                max-height: 98%;
             }
         }
         .form-submit {
