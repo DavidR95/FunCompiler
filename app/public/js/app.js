@@ -31713,9 +31713,10 @@ CodeMirror.defineSimpleMode("fun", {
 // Note that you cannot use the JQuery DOM selector when using CodeMirror
 CodeMirror.fromTextArea(document.getElementById("code-editor"), {
   lineNumbers: true,
+  tabSize: 2,
   mode: "fun",
   theme: "dracula"
-}).setValue("int n = 15\nproc main():\nwhile n > 1:\nn = n/2 .\n.");
+}).setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
 /***/ }),
 /* 179 */,
