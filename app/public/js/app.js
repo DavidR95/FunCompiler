@@ -31685,8 +31685,6 @@ $("#execute-form").submit(function (e) {
             Tree.contextualNodeOrder = contextualNodeOrder;
             Tree.generationNodeOrder = generationNodeOrder;
             Tree.setNodeOrder();
-            Tree.setUpSwitchListeners();
-            Tree.setUpPlaybackListeners();
             Tree.drawTree(treeNodes);
         }
     }).fail(function (responseData) {
@@ -32008,43 +32006,6 @@ var Tree = module.exports = {
             resetAnimation();
             if (showGenerationAnimation) nodeOrder = Tree.generationNodeOrder;else nodeOrder = Tree.contextualNodeOrder;
         }
-    },
-    setUpSwitchListeners: function setUpSwitchListeners() {
-        $("#generation-button").on("click", function () {
-            resetAnimation();
-            $("#generation-button").addClass("disabled");
-            $("#contextual-button").removeClass("disabled");
-            $(".right-contextual-container").hide();
-            $(".right-generation-container").css("display", "table");
-            showGenerationAnimation = true;
-            nodeOrder = Tree.generationNodeOrder;
-        });
-
-        $("#contextual-button").on("click", function () {
-            resetAnimation();
-            $("#contextual-button").addClass("disabled");
-            $("#generation-button").removeClass("disabled");
-            $(".right-contextual-container").css("display", "table");
-            $(".right-generation-container").hide();
-            showGenerationAnimation = false;
-            nodeOrder = Tree.contextualNodeOrder;
-        });
-    },
-    setUpPlaybackListeners: function setUpPlaybackListeners() {
-        if (firstPlay) {
-            $("#play-button").on("click", function () {
-                play();
-            });
-            $("#pause-button").on("click", function () {
-                pause();
-            });
-            $("#forward-button").on("click", function () {
-                forward();
-            });
-            $("#reverse-button").on("click", function () {
-                reverse();
-            });
-        }
     }
 };
 
@@ -32054,6 +32015,39 @@ var is_playing = false;
 var showGenerationAnimation = false;
 var previousNode = null;
 var firstPlay = true;
+
+$("#play-button").on("click", function () {
+    play();
+});
+$("#pause-button").on("click", function () {
+    pause();
+});
+$("#forward-button").on("click", function () {
+    forward();
+});
+$("#reverse-button").on("click", function () {
+    reverse();
+});
+
+$("#generation-button").on("click", function () {
+    resetAnimation();
+    $("#generation-button").addClass("disabled");
+    $("#contextual-button").removeClass("disabled");
+    $(".right-contextual-container").hide();
+    $(".right-generation-container").css("display", "table");
+    showGenerationAnimation = true;
+    nodeOrder = Tree.generationNodeOrder;
+});
+
+$("#contextual-button").on("click", function () {
+    resetAnimation();
+    $("#contextual-button").addClass("disabled");
+    $("#generation-button").removeClass("disabled");
+    $(".right-contextual-container").css("display", "table");
+    $(".right-generation-container").hide();
+    showGenerationAnimation = false;
+    nodeOrder = Tree.contextualNodeOrder;
+});
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
