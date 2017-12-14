@@ -80,6 +80,7 @@ var Tree = module.exports = {
             firstPlay = false;
     },
     setNodeOrder: function() {
+        previousNode = null;
         if (firstPlay) {
             nodeOrder = Tree.contextualNodeOrder;
             $(".right-contextual-container").css("display", "table");
@@ -90,42 +91,6 @@ var Tree = module.exports = {
             else
                 nodeOrder = Tree.contextualNodeOrder;
         }
-    },
-    setUpSwitchListeners: function() {
-        $("#generation-button").on("click", function() {
-            resetAnimation();
-            $("#generation-button").addClass("disabled");
-            $("#contextual-button").removeClass("disabled");
-            $(".right-contextual-container").hide();
-            $(".right-generation-container").css("display", "table");
-            showGenerationAnimation = true;
-            nodeOrder = Tree.generationNodeOrder
-        });
-
-        $("#contextual-button").on("click", function() {
-            resetAnimation();
-            $("#contextual-button").addClass("disabled");
-            $("#generation-button").removeClass("disabled");
-            $(".right-contextual-container").css("display", "table");
-            $(".right-generation-container").hide();
-            showGenerationAnimation = false;
-            nodeOrder = Tree.contextualNodeOrder
-        });
-
-    },
-    setUpPlaybackListeners: function() {
-        $("#play-button").on("click", function() {
-            play();
-        });
-        $("#pause-button").on("click", function() {
-            pause();
-        });
-        $("#forward-button").on("click", function() {
-            forward();
-        });
-        $("#reverse-button").on("click", function() {
-            reverse();
-        });
     }
 }
 
@@ -135,6 +100,39 @@ var is_playing = false;
 var showGenerationAnimation = false;
 var previousNode = null;
 var firstPlay = true;
+
+$("#play-button").on("click", function() {
+    play();
+});
+$("#pause-button").on("click", function() {
+    pause();
+});
+$("#forward-button").on("click", function() {
+    forward();
+});
+$("#reverse-button").on("click", function() {
+    reverse();
+});
+
+$("#generation-button").on("click", function() {
+    resetAnimation();
+    $("#generation-button").addClass("disabled");
+    $("#contextual-button").removeClass("disabled");
+    $(".right-contextual-container").hide();
+    $(".right-generation-container").css("display", "table");
+    showGenerationAnimation = true;
+    nodeOrder = Tree.generationNodeOrder
+});
+
+$("#contextual-button").on("click", function() {
+    resetAnimation();
+    $("#contextual-button").addClass("disabled");
+    $("#generation-button").removeClass("disabled");
+    $(".right-contextual-container").css("display", "table");
+    $(".right-generation-container").hide();
+    showGenerationAnimation = false;
+    nodeOrder = Tree.contextualNodeOrder
+});
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
