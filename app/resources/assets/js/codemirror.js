@@ -13,6 +13,7 @@ CodeMirror.defineSimpleMode("fun", {
     {regex: /#.*/, token: "comment"},
     {regex: /[-+\/*=<>]+/, token: "operator"},
     {regex: /[\:]/, indent: true},
+    {regex: /[\.]/, dedent: true},
     {regex: /[a-z$][\w$]*/, token: "variable"},
   ],
   comment: []
@@ -21,6 +22,6 @@ CodeMirror.defineSimpleMode("fun", {
 // Note that you cannot use the JQuery DOM selector when using CodeMirror
 CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
-    mode: "simplemode",
-    theme: "fun"
+    mode: "fun",
+    theme: "dracula"
 }).setValue("int n = 15\nproc main():\nwhile n > 1:\nn = n/2 .\n.");
