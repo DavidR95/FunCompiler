@@ -8803,7 +8803,12 @@ html,
 
 .program-input-container form .form-group .CodeMirror {
   border: 2px solid #121319;
-  height: 98%;
+  min-height: 98%;
+  max-height: 98%;
+}
+
+.program-input-container form .form-group .CodeMirror .CodeMirror-line {
+  word-break: break-word;
 }
 
 .program-input-container form .form-submit {
