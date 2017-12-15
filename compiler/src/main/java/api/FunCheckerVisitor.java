@@ -64,11 +64,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		return contextualErrors;
 	}
 
-	// Clear the contextual errors ArrayList
-	public void reset() {
-		contextualErrors.clear();
-	}
-
 	private JsonArray nodeOrder = new JsonArray();
 
 	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
