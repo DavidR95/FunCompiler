@@ -12,14 +12,13 @@ import java.util.List;
 
 import com.google.gson.JsonArray;
 
-public class FunResponse {
+public class CGFunResponse {
     private int numSyntaxErrors;
     private int numContextualErrors;
     private List<String> syntaxErrors;
     private List<String> contextualErrors;
     private List<String> objectCode;
-    private JsonArray contextualNodeOrder;
-    private JsonArray generationNodeOrder;
+    private JsonArray nodeOrder;
     private JsonArray treeNodes;
     private String output;
 
@@ -43,12 +42,8 @@ public class FunResponse {
         this.objectCode = objectCode;
     }
 
-    public void setContextualNodeOrder(JsonArray contextualNodeOrder) {
-        this.contextualNodeOrder = contextualNodeOrder;
-    }
-
-    public void setGenerationNodeOrder(JsonArray generationNodeOrder) {
-        this.generationNodeOrder = generationNodeOrder;
+    public void setNodeOrder(JsonArray nodeOrder) {
+        this.nodeOrder = nodeOrder;
     }
 
     public void setTreeNodes(JsonArray treeNodes) {
