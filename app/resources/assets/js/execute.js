@@ -28,8 +28,7 @@ $("#execute-form").submit(function(e) {
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
-        var contextualNodeOrder = response.contextualNodeOrder;
-        var generationNodeOrder = response.generationNodeOrder;
+        var nodeOrder = response.nodeOrder;
         if (numSyntaxErrors > 0) {
             $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
             $(".program-tree-container").append("Syntax errors: <br>");
@@ -38,8 +37,7 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.contextualNodeOrder = contextualNodeOrder;
-            Tree.generationNodeOrder = generationNodeOrder;
+            Tree.nodeOrder = nodeOrder;
             Tree.setNodeOrder();
             Tree.drawTree(treeNodes);
         }

@@ -1,8 +1,6 @@
 var d3 = require('d3');
 
 var Tree = module.exports = {
-    contextualNodeOrder: null,
-    generationNodeOrder: null,
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
             map[node.id] = node;
@@ -79,18 +77,13 @@ var Tree = module.exports = {
         if (firstPlay)
             firstPlay = false;
     },
-    setNodeOrder: function() {
+    setNodeOrder: function(executionNodeOrder) {
         previousNode = null;
-        if (firstPlay) {
-            nodeOrder = Tree.contextualNodeOrder;
+        nodeOrder = executionNodeOrder
+        if (firstPlay)
             $(".right-contextual-container").css("display", "table");
-        } else {
+        else
             resetAnimation();
-            if (showGenerationAnimation)
-                nodeOrder = Tree.generationNodeOrder;
-            else
-                nodeOrder = Tree.contextualNodeOrder;
-        }
     }
 }
 
