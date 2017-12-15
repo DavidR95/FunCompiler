@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.google.gson.JsonArray;
 
-public class FunResponse {
+public class CAFunResponse {
     private int numSyntaxErrors;
     private int numContextualErrors;
     private List<String> syntaxErrors;

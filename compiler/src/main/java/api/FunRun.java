@@ -19,16 +19,16 @@ import com.google.gson.JsonArray;
 
 public class FunRun {
 
-	// Response object to hold all information related to the program execution
-	private static FunResponse response;
+	private static CAFunResponse CAresponse;
+	private static CGFunResponse CGresponse;
 
 	// Executes the code specified in the program InputStream
 	public static FunResponse execute(InputStream program, String type) {
 		try {
-			// Create a blank Response object for each execution
-			response = new FunResponse();
+			CAresponse = new CAFunResponse();
+			CGresponse = new CGFunResponse();
 			SVM objprog = compile(program);
-			objprog.interpret(response);
+			objprog.interpret();
 		} catch (FunException e) {
 			response.setOutput("Compilation failed");
 		} catch (Exception e) {
@@ -136,8 +136,7 @@ public class FunRun {
 		JsonArray nodeOrder = encoder.getNodeOrder();
 		response.setGenerationNodeOrder(nodeOrder);
 		SVM objectprog = encoder.getSVM();
-		// Pass the response object
-		objectprog.showCode(response);
+		objectprog.showCode();
 		return objectprog;
 	}
 

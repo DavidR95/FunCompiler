@@ -148,7 +148,7 @@ public class SVM {
 
 	private static Scanner in = new Scanner(System.in);
 
-	public void interpret (FunResponse response) {
+	public void interpret() {
 		// Interpret the program starting at offset 0
 		// in the code store.
 		data = new int[32768];
@@ -280,7 +280,7 @@ public class SVM {
 					   code[pc++]<<8 |
 					   (code[pc++]&0xFF);
 					if (c >= IOBASE) {
-						callIO(c, response);
+						callIO(c);
 						break;
 					}
 					data[sp++] = fp;  // dyn link
@@ -324,7 +324,7 @@ public class SVM {
 		} while (status == RUNNING);
 	}
 
-	private void callIO (int c, FunResponse response) {
+	private void callIO (int c) {
 	// Execute a call to an IO routine.
 		switch (c) {
 			case READOFFSET: {
@@ -334,8 +334,6 @@ public class SVM {
 			}
 			case WRITEOFFSET: {
 				int w = data[--sp];
-				// Set the output of the response object
-				response.setOutput(Integer.toString(w));
 				break;
 			}
 		}
@@ -345,7 +343,7 @@ public class SVM {
 	// CODE DISPLAY
 
 	// Return a textual representation of all the code.
-	public void showCode (FunResponse response) {
+	public void showCode() {
 		// An ArrayList of Strings, each entry holding an instruction
 		ArrayList<String> assembly = new ArrayList<String>();
 		for (int c = 0; c < cl;) {
@@ -353,8 +351,6 @@ public class SVM {
 			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
-		// Set the object code of the response object
-		response.setObjectCode(assembly);
 	}
 
 	private String showInstruction (int c) {
