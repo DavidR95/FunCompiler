@@ -21,6 +21,7 @@ $("#execute-form").submit(function(e) {
     $.post(url, data, function(responseData) {
         $(".center-container").css("display", "table");
         var response = responseData.response;
+        var executionType = response.executionType;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
         var numContextualErrors = response.numContextualErrors;
@@ -37,8 +38,7 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.nodeOrder = nodeOrder;
-            Tree.setNodeOrder();
+            Tree.setNodeOrder(nodeOrder);
             Tree.drawTree(treeNodes);
         }
     }).fail(function(responseData) {

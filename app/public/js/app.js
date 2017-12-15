@@ -31669,6 +31669,7 @@ $("#execute-form").submit(function (e) {
     $.post(url, data, function (responseData) {
         $(".center-container").css("display", "table");
         var response = responseData.response;
+        var executionType = response.executionType;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
         var numContextualErrors = response.numContextualErrors;
@@ -31685,8 +31686,7 @@ $("#execute-form").submit(function (e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.nodeOrder = nodeOrder;
-            Tree.setNodeOrder();
+            Tree.setNodeOrder(nodeOrder);
             Tree.drawTree(treeNodes);
         }
     }).fail(function (responseData) {
@@ -32030,8 +32030,6 @@ $("#generation-button").on("click", function () {
     $("#contextual-button").removeClass("disabled");
     $(".right-contextual-container").hide();
     $(".right-generation-container").css("display", "table");
-    showGenerationAnimation = true;
-    nodeOrder = Tree.generationNodeOrder;
 });
 
 $("#contextual-button").on("click", function () {
@@ -32040,8 +32038,6 @@ $("#contextual-button").on("click", function () {
     $("#generation-button").removeClass("disabled");
     $(".right-contextual-container").css("display", "table");
     $(".right-generation-container").hide();
-    showGenerationAnimation = false;
-    nodeOrder = Tree.contextualNodeOrder;
 });
 
 function animateNode(node, isPlayingForward, delayOffset) {

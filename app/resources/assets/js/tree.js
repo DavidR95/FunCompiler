@@ -113,8 +113,6 @@ $("#generation-button").on("click", function() {
     $("#contextual-button").removeClass("disabled");
     $(".right-contextual-container").hide();
     $(".right-generation-container").css("display", "table");
-    showGenerationAnimation = true;
-    nodeOrder = Tree.generationNodeOrder
 });
 
 $("#contextual-button").on("click", function() {
@@ -123,8 +121,6 @@ $("#contextual-button").on("click", function() {
     $("#generation-button").removeClass("disabled");
     $(".right-contextual-container").css("display", "table");
     $(".right-generation-container").hide();
-    showGenerationAnimation = false;
-    nodeOrder = Tree.contextualNodeOrder
 });
 
 function animateNode(node, isPlayingForward, delayOffset) {

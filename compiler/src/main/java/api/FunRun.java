@@ -28,6 +28,7 @@ public class FunRun {
 		try {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
+			response.setExecutionType(type);
 			responseType = type;
 			SVM objprog = compile(program);
 			objprog.interpret();
