@@ -8760,9 +8760,8 @@ html,
   display: table-row;
 }
 
-.controls-container button {
-  margin-top: 45px;
-  margin-right: 5px;
+.controls-container {
+  text-align: right;
 }
 
 .controls-container .glyphicon {
