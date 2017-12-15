@@ -97,11 +97,11 @@ var Tree = module.exports = {
     }
 }
 
-var nodeOrder = null;
-var currentNodeIndex = -1;
-var is_playing = false;
-var showGenerationAnimation = false;
-var previousNode = null;
+var nodeOrder;
+var currentNodeIndex;
+var is_playing;
+var showGenerationAnimation;
+var previousNode;
 
 $("#play-button").on("click", function() {
     play();
