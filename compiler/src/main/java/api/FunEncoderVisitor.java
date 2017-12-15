@@ -30,19 +30,8 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	private int currentLocale = Address.GLOBAL;
 	private int currentOffset = 0;
 
-	// Add a 1 byte instruction to the code.
-	public void emit1 () {
-		currentOffset += 1;
-	}
-
-	// Add a 1+1 byte instruction to the code.
-	public void emit11 () {
-		currentOffset += 2;
-	}
-
-	// Add a 1+2 byte instruction to the code.
-	public void emit12 () {
-		currentOffset += 3;
+	public void incrementOffset(int offsetAmount) {
+		currentOffset += offsetAmount;
 	}
 
 	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
@@ -121,9 +110,9 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 	    int calladdr = currentOffset;
 		addNode(ctx, "Note the current instruction address, c1 (" + calladdr + ")");
-	    emit12();
+	    incrementOffset(3);
 		addNode(ctx, "Emit 'CALL 0'");
-	    emit1();
+	    incrementOffset(1);
 		addNode(ctx, "Emit 'HALT'");
 	    List<FunParser.Proc_declContext> proc_decl = ctx.proc_decl();
 		if (!proc_decl.isEmpty()) {
@@ -164,7 +153,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
-	    emit11();
+	    incrementOffset(2);
 		addNode(ctx, "Emit 'RETURN 0'");
 	    addrTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -201,7 +190,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    visit(ctx.seq_com());
 		addNode(ctx, "Walk return expr, generating code");
         visit(ctx.expr());
-	    emit11();
+	    incrementOffset(2);
 		addNode(ctx, "Emit 'RETURN 1'");
 	    addrTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -221,7 +210,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			String id = ctx.ID().getText();
 			addNode(ctx, "Insert '" + id + "' into the address table at address " + localvaraddr + " (scope: local)");
 			addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
-			emit11();
+			incrementOffset(2);
 			addNode(ctx, "Emit 'COPYARG 1'");
 	    } else {
 			addNode(ctx, "Note: no formal parameters");
@@ -287,11 +276,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
 				addNode(ctx, "Emit STOREG " + varaddr.offset);
-				emit12();
+				incrementOffset(3);
 				break;
 		    case Address.LOCAL:
 				addNode(ctx, "Emit STOREL " + varaddr.offset);
-				emit12();
+				incrementOffset(3);
 				break;
 	    }
 	    return null;
@@ -311,7 +300,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + procaddr.offset);
 	    // Assume procaddr.locale == CODE.
 		addNode(ctx, "Emit 'CALL " + procaddr.offset + "'");
-	    emit12();
+	    incrementOffset(3);
 	    return null;
 	}
 
@@ -326,7 +315,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    visit(ctx.expr());
 	    int condaddr = currentOffset;
 		addNode(ctx, "Note the current instruction address, c1 (" + condaddr + ")");
-	    emit12();
+	    incrementOffset(3);
 		addNode(ctx, "Emit 'JUMPF 0'");
 	    if (ctx.c2 == null) {
 			addNode(ctx, "Walk com, generating code");
@@ -339,7 +328,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			visit(ctx.c1);
 			int jumpaddr = currentOffset;
 			addNode(ctx, "Note the current instruction address, c2 (" + jumpaddr + ")");
-			emit12();
+			incrementOffset(3);
 			addNode(ctx, "Emit 'JUMP 0'");
 			int elseaddr = currentOffset;
 			addNode(ctx, "Note the current instruction address, c3 (" + elseaddr + ")");
@@ -367,11 +356,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    int condaddr = currentOffset;
 		addNode(ctx, "Note the current instruction address, c2 (" + condaddr + ")");
 		addNode(ctx, "Emit 'JUMPF 0'");
-	    emit12();
+	    incrementOffset(3);
 		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
 		addNode(ctx, "Emit 'JUMP c1 (" + startaddr + ")'");
-	    emit12();
+	    incrementOffset(3);
 	    int exitaddr = currentOffset;
 		addNode(ctx, "Note the current instruction address, c3 (" + exitaddr + ")");
 		addNode(ctx, "Patch c3 (" + exitaddr + ") into the jump at c2 (" + condaddr + ")");
@@ -404,15 +393,15 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			switch (ctx.op.getType()) {
 				case FunParser.EQ:
 					addNode(ctx.op, "Emit 'CMPEQ'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 				case FunParser.LT:
 					addNode(ctx.op, "Emit 'LT'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 				case FunParser.GT:
 					addNode(ctx.op, "Emit 'GT'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 			}
 	    } else {
@@ -435,19 +424,19 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			switch (ctx.op.getType()) {
 				case FunParser.PLUS:
 					addNode(ctx.op, "Emit 'ADD'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 				case FunParser.MINUS:
 					addNode(ctx.op, "Emit 'SUB'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 				case FunParser.TIMES:
 					addNode(ctx.op, "Emit 'MUL'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 				case FunParser.DIV:
 					addNode(ctx.op, "Emit 'DIV'");
-				    emit1();
+				    incrementOffset(1);
 				    break;
 			}
 	    } else {
@@ -464,7 +453,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitFalse(FunParser.FalseContext ctx) {
 		addNode(ctx, "Emit 'LOADC 0'");
-	    emit12();
+	    incrementOffset(3);
 	    return null;
 	}
 
@@ -476,7 +465,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitTrue(FunParser.TrueContext ctx) {
 		addNode(ctx, "Emit 'LOADC 1'");
-	    emit12();
+	    incrementOffset(3);
 	    return null;
 	}
 
@@ -489,7 +478,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitNum(FunParser.NumContext ctx) {
 	    int value = Integer.parseInt(ctx.NUM().getText());
 		addNode(ctx, "Emit 'LOADC " + value + "'");
-	    emit12();
+	    incrementOffset(3);
 	    return null;
 	}
 
@@ -506,11 +495,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
 				addNode(ctx, "Emit 'LOADG " + varaddr.offset + "'");
-				emit12();
+				incrementOffset(3);
 				break;
 		    case Address.LOCAL:
 				addNode(ctx, "Emit 'LOADC " + varaddr.offset + "'");
-				emit12();
+				incrementOffset(3);
 				break;
 	    }
 	    return null;
@@ -530,7 +519,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + funcaddr.offset);
 	    // Assume funcaddr.locale == CODE.
 		addNode(ctx, "Emit 'CALL " + funcaddr.offset + "'");
-	    emit12();
+	    incrementOffset(3);
 	    return null;
 	}
 
@@ -544,7 +533,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.prim_expr());
 		addNode(ctx, "Emit 'INV'");
-	    emit1();
+	    incrementOffset(1);
 	    return null;
 	}
 
