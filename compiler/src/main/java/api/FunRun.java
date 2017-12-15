@@ -21,12 +21,14 @@ public class FunRun {
 
 	// Response object to hold all information related to the program execution
 	private static FunResponse response;
+	private static String responseType;
 
 	// Executes the code specified in the program InputStream
 	public static FunResponse execute(InputStream program, String type) {
 		try {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
+			responseType = type;
 			SVM objprog = compile(program);
 			objprog.interpret();
 		} catch (FunException e) {
@@ -115,7 +117,7 @@ public class FunRun {
 		checker.reset();
 		checker.visit(parseTree);
 		JsonArray nodeOrder = checker.getNodeOrder();
-		response.setContextualNodeOrder(nodeOrder);
+		response.setNodeOrder(nodeOrder);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
 		List<String> errors = checker.getContextualErrors();
@@ -134,7 +136,8 @@ public class FunRun {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(parseTree);
 		JsonArray nodeOrder = encoder.getNodeOrder();
-		response.setGenerationNodeOrder(nodeOrder);
+		if (responseType.equals("cg"))
+			response.setNodeOrder(nodeOrder);
 		SVM objectprog = encoder.getSVM();
 		// Pass the response object
 		objectprog.showCode();
