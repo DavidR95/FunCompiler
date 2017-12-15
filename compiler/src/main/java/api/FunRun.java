@@ -21,15 +21,13 @@ public class FunRun {
 
 	// Response object to hold all information related to the program execution
 	private static FunResponse response;
-	private static String responseType;
 
 	// Executes the code specified in the program InputStream
-	public static FunResponse execute(InputStream program, String type) {
+	public static FunResponse execute(InputStream program, String executionType) {
 		try {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
-			responseType = type;
-			compile(program);
+			compile(program, executionType);
 		} catch (FunException e) {
 			response.setOutput("Compilation failed");
 		} catch (Exception e) {
@@ -39,7 +37,7 @@ public class FunRun {
 	}
 
 	// Compile a Fun source program to SVM code.
-	private static void compile (InputStream source) throws Exception {
+	private static void compile (InputStream source, String executionType) throws Exception {
 		// Remove any old error messages
 		SyntaxErrorListener.reset();
 		// Convert the source code into an ANTLR input stream
@@ -58,6 +56,8 @@ public class FunRun {
 		JsonArray treeNodes = astVisitor.getTreeNodes();
 		response.setTreeNodes(treeNodes);
 		contextualAnalyse(parseTree,tokens);
+		if (executionType.equals("cg"))
+			codeGenerate(parseTree);
 	}
 
 	private static FunLexer createLexer(ANTLRInputStream inputStream) {
@@ -133,8 +133,7 @@ public class FunRun {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(parseTree);
 		JsonArray nodeOrder = encoder.getNodeOrder();
-		if (responseType.equals("cg"))
-			response.setNodeOrder(nodeOrder);
+		response.setNodeOrder(nodeOrder);
 	}
 
 	private static class FunException extends Exception {
