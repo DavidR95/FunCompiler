@@ -29,7 +29,7 @@ public class FunRun {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
 			responseType = type;
-			SVM objprog = compile(program);
+			compile(program);
 		} catch (FunException e) {
 			response.setOutput("Compilation failed");
 		} catch (Exception e) {
@@ -39,7 +39,7 @@ public class FunRun {
 	}
 
 	// Compile a Fun source program to SVM code.
-	private static SVM compile (InputStream source) throws Exception {
+	private static void compile (InputStream source) throws Exception {
 		// Remove any old error messages
 		SyntaxErrorListener.reset();
 		// Convert the source code into an ANTLR input stream
@@ -58,8 +58,6 @@ public class FunRun {
 		JsonArray treeNodes = astVisitor.getTreeNodes();
 		response.setTreeNodes(treeNodes);
 		contextualAnalyse(parseTree,tokens);
-		SVM objprog = codeGenerate(parseTree);
-		return objprog;
 	}
 
 	private static FunLexer createLexer(ANTLRInputStream inputStream) {
@@ -131,14 +129,12 @@ public class FunRun {
 	// Perform code generation of a Fun program,
 	// represented by a parse tree, emitting SVM code.
 	// Also print the object code.
-	private static SVM codeGenerate (ParseTree parseTree) throws Exception  {
+	private static void codeGenerate (ParseTree parseTree) throws Exception  {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(parseTree);
 		JsonArray nodeOrder = encoder.getNodeOrder();
 		if (responseType.equals("cg"))
 			response.setNodeOrder(nodeOrder);
-		SVM objectprog = encoder.getSVM();
-		return objectprog;
 	}
 
 	private static class FunException extends Exception {
