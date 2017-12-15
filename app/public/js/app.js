@@ -31663,6 +31663,7 @@ $("#execute-form").submit(function (e) {
     e.preventDefault();
     // Get csrf token from page meta-data
     var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    // Create the url to use within the post request
     var url = "/" + executionType;
     // Serialise the form inputs, add csrf token
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
@@ -31670,7 +31671,6 @@ $("#execute-form").submit(function (e) {
     $.post(url, data, function (responseData) {
         $(".center-container").css("display", "table");
         var response = responseData.response;
-        var executionType = response.executionType;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
         var numContextualErrors = response.numContextualErrors;

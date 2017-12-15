@@ -13,7 +13,6 @@ import java.util.List;
 import com.google.gson.JsonArray;
 
 public class FunResponse {
-    private String executionType;
     private int numSyntaxErrors;
     private int numContextualErrors;
     private List<String> syntaxErrors;
@@ -21,10 +20,6 @@ public class FunResponse {
     private JsonArray nodeOrder;
     private JsonArray treeNodes;
     private String output;
-
-    public void setExecutionType(String executionType) {
-        this.executionType = executionType;
-    }
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
         this.numSyntaxErrors = numSyntaxErrors;
