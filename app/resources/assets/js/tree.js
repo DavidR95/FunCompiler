@@ -74,16 +74,33 @@ var Tree = module.exports = {
                 else
                     return name.substring(0, 5) + "...";
             });
-        if (firstPlay)
-            firstPlay = false;
     },
-    setNodeOrder: function(executionNodeOrder) {
+    initialise: function(executionType, executionNodeOrder) {
         previousNode = null;
-        nodeOrder = executionNodeOrder
-        if (firstPlay)
+        currentNodeIndex = -1;
+        pause();
+        showGenerationAnimation = (executionType === "cg") ? true : false;
+        if (showGenerationAnimation) {
+            $("#generation-button").addClass("disabled");
+            $("#contextual-button").removeClass("disabled");
+            $(".right-contextual-container").hide();
+            $(".right-generation-container").css("display", "table");
+        } else {
+            $("#contextual-button").addClass("disabled");
+            $("#generation-button").removeClass("disabled");
             $(".right-contextual-container").css("display", "table");
-        else
-            resetAnimation();
+            $(".right-generation-container").hide();
+        }
+        $(".data-heading-container span").text("");
+        if (showGenerationAnimation) {
+            $(".generation-explanations p").text("");
+            $(".address-table tbody").text("");
+            $(".code-template img").removeAttr("src");
+        } else {
+            $(".contextual-explanations p").text("");
+            $(".type-table tbody").text("");
+        }
+        nodeOrder = executionNodeOrder
     }
 }
 
@@ -92,7 +109,6 @@ var currentNodeIndex = -1;
 var is_playing = false;
 var showGenerationAnimation = false;
 var previousNode = null;
-var firstPlay = true;
 
 $("#play-button").on("click", function() {
     play();
@@ -105,22 +121,6 @@ $("#forward-button").on("click", function() {
 });
 $("#reverse-button").on("click", function() {
     reverse();
-});
-
-$("#generation-button").on("click", function() {
-    resetAnimation();
-    $("#generation-button").addClass("disabled");
-    $("#contextual-button").removeClass("disabled");
-    $(".right-contextual-container").hide();
-    $(".right-generation-container").css("display", "table");
-});
-
-$("#contextual-button").on("click", function() {
-    resetAnimation();
-    $("#contextual-button").addClass("disabled");
-    $("#generation-button").removeClass("disabled");
-    $(".right-contextual-container").css("display", "table");
-    $(".right-generation-container").hide();
 });
 
 function animateNode(node, isPlayingForward, delayOffset) {
@@ -230,23 +230,4 @@ function hasAnimationFinished() {
 
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
-}
-
-function resetAnimation() {
-    pause();
-    if (currentNodeIndex > -1) {
-        var currentNode = $("#node-"+nodeOrder[currentNodeIndex].id);
-        currentNode.find("rect").css("fill", "white");
-        currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
-    }
-    currentNodeIndex = -1;
-    $(".data-heading-container span").text("");
-    if (showGenerationAnimation) {
-        $(".generation-explanations p").text("");
-        $(".address-table tbody").text("");
-        $(".code-template img").removeAttr("src");
-    } else {
-        $(".contextual-explanations p").text("");
-        $(".type-table tbody").text("");
-    }
 }

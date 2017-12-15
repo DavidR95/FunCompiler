@@ -38,7 +38,7 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.setNodeOrder(nodeOrder);
+            Tree.initialise(executionType, nodeOrder);
             Tree.drawTree(treeNodes);
         }
     }).fail(function(responseData) {
