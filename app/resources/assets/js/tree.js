@@ -76,27 +76,20 @@ var Tree = module.exports = {
             });
     },
     initialise: function(executionType, executionNodeOrder) {
+        pause();
         previousNode = null;
         currentNodeIndex = -1;
-        pause();
+        $(".data-heading-container span").text("");
         showGenerationAnimation = (executionType === "cg") ? true : false;
         if (showGenerationAnimation) {
-            $("#generation-button").addClass("disabled");
-            $("#contextual-button").removeClass("disabled");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
-        } else {
-            $("#contextual-button").addClass("disabled");
-            $("#generation-button").removeClass("disabled");
-            $(".right-contextual-container").css("display", "table");
-            $(".right-generation-container").hide();
-        }
-        $(".data-heading-container span").text("");
-        if (showGenerationAnimation) {
             $(".generation-explanations p").text("");
             $(".address-table tbody").text("");
             $(".code-template img").removeAttr("src");
         } else {
+            $(".right-contextual-container").css("display", "table");
+            $(".right-generation-container").hide();
             $(".contextual-explanations p").text("");
             $(".type-table tbody").text("");
         }
