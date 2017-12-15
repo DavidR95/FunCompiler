@@ -30,7 +30,6 @@ public class FunRun {
 			response = new FunResponse();
 			responseType = type;
 			SVM objprog = compile(program);
-			objprog.interpret();
 		} catch (FunException e) {
 			response.setOutput("Compilation failed");
 		} catch (Exception e) {
@@ -139,8 +138,6 @@ public class FunRun {
 		if (responseType.equals("cg"))
 			response.setNodeOrder(nodeOrder);
 		SVM objectprog = encoder.getSVM();
-		// Pass the response object
-		objectprog.showCode();
 		return objectprog;
 	}
 
