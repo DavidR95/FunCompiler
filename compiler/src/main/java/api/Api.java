@@ -22,7 +22,7 @@ public class Api {
             // Convert the input String to an InputStream
             InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
             // Pass the InputStream to the Fun compiler
-            return FunRun.execute(programInputStream);
+            return FunRun.execute(programInputStream, type);
         }, gson::toJson);
 
     }

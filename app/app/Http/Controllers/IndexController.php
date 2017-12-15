@@ -23,12 +23,9 @@ class IndexController extends Controller
      */
     public function execute()
     {
-        // Validate these parameters
+        // An empty program cannot be submitted
         request()->validate([
-            // An empty program cannot be submitted
-            'program' => 'required',
-            // Must specify a type (contextual analysis or code generation)
-            'type' => 'required'
+            'program' => 'required'
         ]);
         // Create a new Guzzle client
         $client = new \GuzzleHttp\Client();

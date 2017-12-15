@@ -23,7 +23,7 @@ public class FunRun {
 	private static FunResponse response;
 
 	// Executes the code specified in the program InputStream
-	public static FunResponse execute(InputStream program) {
+	public static FunResponse execute(InputStream program, String type) {
 		try {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
