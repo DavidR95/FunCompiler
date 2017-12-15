@@ -1,8 +1,5 @@
 package api;
 
-import java.io.*;
-import java.util.*;
-
 public class SVM {
 
 	// code limit
