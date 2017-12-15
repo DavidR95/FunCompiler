@@ -17,12 +17,12 @@
                             </div>
                             <div class="form-submit">
                                 <button id="ca-button" class="btn btn-execute"
-                                        value="{{ route('execute') }}"
+                                        value="{{ route('execute', ['type' => 'ca']) }}"
                                         type="submit">
                                     <b>Contextual Analysis</b>
                                 </button>
                                 <button id="cg-button" class="btn btn-execute"
-                                        value="{{ route('execute') }}"
+                                        value="{{ route('execute', ['type' => 'cg']) }}"
                                         type="submit">
                                     <b>Code Generation</b>
                                 </button>
