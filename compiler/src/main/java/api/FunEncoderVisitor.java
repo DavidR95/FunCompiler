@@ -50,16 +50,10 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	}
 
 	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
-	private JsonArray objectCode = new JsonArray();
 
 	private void addNode(Object ctx, String explanation, int offsetAmount) {
 		int contextHash = ctx.hashCode();
-		if (offsetAmount > 0) {
-			objectCode.add(explanation);
-			currentOffset += offsetAmount;
-		}
-		JsonArray currentObjectCodeArray = new JsonArray();
-		currentObjectCodeArray.addAll(objectCode);
+		currentOffset += offsetAmount;
 		List<String> explanationList = nodeExplanations.get(contextHash);
 		if (explanationList != null) {
 			explanationList.add(explanation);
@@ -88,7 +82,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		});
 		nodeObject.addProperty("id", contextHash);
 		nodeObject.add("explanations", explanationArray);
-		nodeObject.add("objectCode", currentObjectCodeArray);
 		nodeObject.add("table", addrTableArray);
 		nodeOrder.add(nodeObject);
 	}
