@@ -31650,10 +31650,10 @@ __webpack_require__(178);
 
 var Tree = __webpack_require__(180);
 
-var url;
+var executionType;
 
 $("button[type='submit']").click(function () {
-    url = $(this).val();
+    executionType = $(this).val();
 });
 
 $("#execute-form").submit(function (e) {
@@ -31663,6 +31663,7 @@ $("#execute-form").submit(function (e) {
     e.preventDefault();
     // Get csrf token from page meta-data
     var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    var url = "/" + executionType;
     // Serialise the form inputs, add csrf token
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
