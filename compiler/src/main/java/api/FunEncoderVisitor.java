@@ -40,10 +40,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addrTable.put("write", new Address(SVM.WRITEOFFSET, Address.CODE));
 	}
 
-	public SVM getSVM() {
-	    return obj;
-	}
-
 	private JsonArray nodeOrder = new JsonArray();
 
 	private String convertLocale(int locale) {
