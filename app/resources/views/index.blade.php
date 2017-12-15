@@ -34,10 +34,13 @@
             <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
-                        <i id="play-button" class="glyphicon glyphicon-play"></i>
-                        <i id="pause-button" class="glyphicon glyphicon-pause"></i>
-                        <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
+                        <h4><b><span></span></b></h4>
+                        <div class="playback-buttons">
+                            <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
+                            <i id="play-button" class="glyphicon glyphicon-play"></i>
+                            <i id="pause-button" class="glyphicon glyphicon-pause"></i>
+                            <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
+                        </div>
                     </div>
                     <div class="program-tree-container"></div>
                 </div>

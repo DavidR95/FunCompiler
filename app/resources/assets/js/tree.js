@@ -82,12 +82,14 @@ var Tree = module.exports = {
         $(".data-heading-container span").text("");
         showGenerationAnimation = (executionType === "cg") ? true : false;
         if (showGenerationAnimation) {
+            $(".controls-container span").html("Code Generation");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
             $(".generation-explanations p").text("");
             $(".address-table tbody").text("");
             $(".code-template img").removeAttr("src");
         } else {
+            $(".controls-container span").html("Contextual Analysis");
             $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
             $(".contextual-explanations p").text("");

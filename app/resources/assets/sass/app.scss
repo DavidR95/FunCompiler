@@ -33,17 +33,23 @@ body, html, .container-fluid, .row {
 }
 
 .controls-container {
-    text-align: right;
-    .glyphicon {
+    h4 {
         margin-top: 45px;
-        margin-left: 5px;
-        font-size: 1.75em;
-        cursor: pointer;
-        &:hover {
-            color: $dracula;
-        }
-        &:active {
-            color: darken($dracula, 10%);
+        float: left;
+    }
+    .playback-buttons {
+        float: right;
+        .glyphicon {
+            margin-top: 45px;
+            margin-left: 5px;
+            font-size: 1.75em;
+            cursor: pointer;
+            &:hover {
+                color: $dracula;
+            }
+            &:active {
+                color: darken($dracula, 10%);
+            }
         }
     }
 }

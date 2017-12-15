@@ -8760,22 +8760,27 @@ html,
   display: table-row;
 }
 
-.controls-container {
-  text-align: right;
+.controls-container h4 {
+  margin-top: 45px;
+  float: left;
 }
 
-.controls-container .glyphicon {
+.controls-container .playback-buttons {
+  float: right;
+}
+
+.controls-container .playback-buttons .glyphicon {
   margin-top: 45px;
   margin-left: 5px;
   font-size: 1.75em;
   cursor: pointer;
 }
 
-.controls-container .glyphicon:hover {
+.controls-container .playback-buttons .glyphicon:hover {
   color: #282a36;
 }
 
-.controls-container .glyphicon:active {
+.controls-container .playback-buttons .glyphicon:active {
   color: #121319;
 }
 
