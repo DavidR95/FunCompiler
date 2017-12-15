@@ -33,7 +33,9 @@ class IndexController extends Controller
         $res = $client->request('POST', 'http://compiler:4567', [
             'form_params' => [
                 // Pass the input program as a parameter
-                'program' => request()->program
+                'program' => request()->program,
+                // Pass the execution type as a parameter
+                'type' => request()->type
             ]
         ]);
         // Convert the body of the response to an associative array

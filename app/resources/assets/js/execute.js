@@ -2,15 +2,21 @@ require("./codemirror.js");
 
 var Tree = require("./tree.js");
 
+var executionType;
+
+$("button[type='submit']").click(function() {
+    executionType = $(this).val();
+});
+
 $("#execute-form").submit(function(e) {
     // Get the form that was submitted
     var $form = $(this);
     // Stop the form submitting normally (i.e., don't route to action parameter)
     e.preventDefault();
-    // Get the intended controller route
-    var url = $form.attr("action");
     // Get csrf token from page meta-data
     var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    // Create the url to use within the post request
+    var url = "/" + executionType;
     // Serialise the form inputs, add csrf token
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
@@ -24,8 +30,7 @@ $("#execute-form").submit(function(e) {
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
         var output = response.output;
-        var contextualNodeOrder = response.contextualNodeOrder;
-        var generationNodeOrder = response.generationNodeOrder;
+        var nodeOrder = response.nodeOrder;
         if (numSyntaxErrors > 0) {
             $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
             $(".program-tree-container").append("Syntax errors: <br>");
@@ -34,9 +39,7 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
-            Tree.contextualNodeOrder = contextualNodeOrder;
-            Tree.generationNodeOrder = generationNodeOrder;
-            Tree.setNodeOrder();
+            Tree.initialise(executionType, nodeOrder);
             Tree.drawTree(treeNodes);
         }
     }).fail(function(responseData) {

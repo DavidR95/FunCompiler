@@ -23,12 +23,11 @@ public class FunRun {
 	private static FunResponse response;
 
 	// Executes the code specified in the program InputStream
-	public static FunResponse execute(InputStream program) {
+	public static FunResponse execute(InputStream program, String executionType) {
 		try {
 			// Create a blank Response object for each execution
 			response = new FunResponse();
-			SVM objprog = compile(program);
-			objprog.interpret(response);
+			compile(program, executionType);
 		} catch (FunException e) {
 			response.setOutput("Compilation failed");
 		} catch (Exception e) {
@@ -38,7 +37,7 @@ public class FunRun {
 	}
 
 	// Compile a Fun source program to SVM code.
-	private static SVM compile (InputStream source) throws Exception {
+	private static void compile (InputStream source, String executionType) throws Exception {
 		// Remove any old error messages
 		SyntaxErrorListener.reset();
 		// Convert the source code into an ANTLR input stream
@@ -57,8 +56,8 @@ public class FunRun {
 		JsonArray treeNodes = astVisitor.getTreeNodes();
 		response.setTreeNodes(treeNodes);
 		contextualAnalyse(parseTree,tokens);
-		SVM objprog = codeGenerate(parseTree);
-		return objprog;
+		if (executionType.equals("cg"))
+			codeGenerate(parseTree);
 	}
 
 	private static FunLexer createLexer(ANTLRInputStream inputStream) {
@@ -115,7 +114,7 @@ public class FunRun {
 		checker.reset();
 		checker.visit(parseTree);
 		JsonArray nodeOrder = checker.getNodeOrder();
-		response.setContextualNodeOrder(nodeOrder);
+		response.setNodeOrder(nodeOrder);
 		int numErrors = checker.getNumberOfContextualErrors();
 		// Retrieve all contextual errors reported
 		List<String> errors = checker.getContextualErrors();
@@ -130,15 +129,11 @@ public class FunRun {
 	// Perform code generation of a Fun program,
 	// represented by a parse tree, emitting SVM code.
 	// Also print the object code.
-	private static SVM codeGenerate (ParseTree parseTree) throws Exception  {
+	private static void codeGenerate (ParseTree parseTree) throws Exception  {
 		FunEncoderVisitor encoder = new FunEncoderVisitor();
 		encoder.visit(parseTree);
 		JsonArray nodeOrder = encoder.getNodeOrder();
-		response.setGenerationNodeOrder(nodeOrder);
-		SVM objectprog = encoder.getSVM();
-		// Pass the response object
-		objectprog.showCode(response);
-		return objectprog;
+		response.setNodeOrder(nodeOrder);
 	}
 
 	private static class FunException extends Exception {

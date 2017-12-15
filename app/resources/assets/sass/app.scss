@@ -33,20 +33,23 @@ body, html, .container-fluid, .row {
 }
 
 .controls-container {
-    button {
+    h4 {
         margin-top: 45px;
-        margin-right: 5px;
+        float: left;
     }
-    .glyphicon {
-        margin-top: 45px;
-        margin-left: 5px;
-        font-size: 1.75em;
-        cursor: pointer;
-        &:hover {
-            color: $dracula;
-        }
-        &:active {
-            color: darken($dracula, 10%);
+    .playback-buttons {
+        float: right;
+        .glyphicon {
+            margin-top: 45px;
+            margin-left: 5px;
+            font-size: 1.75em;
+            cursor: pointer;
+            &:hover {
+                color: $dracula;
+            }
+            &:active {
+                color: darken($dracula, 10%);
+            }
         }
     }
 }
@@ -71,8 +74,8 @@ body, html, .container-fluid, .row {
             margin: 0;
             .CodeMirror {
                 border: 2px solid darken($dracula, 10%);
-                min-height: 98%;
-                max-height: 98%;
+                min-height: 100%;
+                max-height: 100%;
                 .CodeMirror-line {
                     word-break: break-word;
                 }
@@ -82,8 +85,17 @@ body, html, .container-fluid, .row {
             height: 10%;
             padding-bottom: 25px;
             button {
+                border-radius: 0px;
                 height: 100%;
                 width: 100%;
+            }
+            #ca-button {
+                width: 50%;
+                float: left
+            }
+            #cg-button {
+                width: 50%;
+                float: right;
             }
         }
     }

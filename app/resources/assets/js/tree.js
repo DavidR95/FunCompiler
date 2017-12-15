@@ -1,8 +1,6 @@
 var d3 = require('d3');
 
 var Tree = module.exports = {
-    contextualNodeOrder: null,
-    generationNodeOrder: null,
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
             map[node.id] = node;
@@ -76,30 +74,36 @@ var Tree = module.exports = {
                 else
                     return name.substring(0, 5) + "...";
             });
-        if (firstPlay)
-            firstPlay = false;
     },
-    setNodeOrder: function() {
+    initialise: function(executionType, executionNodeOrder) {
+        pause();
         previousNode = null;
-        if (firstPlay) {
-            nodeOrder = Tree.contextualNodeOrder;
-            $(".right-contextual-container").css("display", "table");
+        currentNodeIndex = -1;
+        $(".data-heading-container span").text("");
+        showGenerationAnimation = (executionType === "cg") ? true : false;
+        if (showGenerationAnimation) {
+            $(".controls-container span").html("Code Generation");
+            $(".right-contextual-container").hide();
+            $(".right-generation-container").css("display", "table");
+            $(".generation-explanations p").text("");
+            $(".address-table tbody").text("");
+            $(".code-template img").removeAttr("src");
         } else {
-            resetAnimation();
-            if (showGenerationAnimation)
-                nodeOrder = Tree.generationNodeOrder;
-            else
-                nodeOrder = Tree.contextualNodeOrder;
+            $(".controls-container span").html("Contextual Analysis");
+            $(".right-contextual-container").css("display", "table");
+            $(".right-generation-container").hide();
+            $(".contextual-explanations p").text("");
+            $(".type-table tbody").text("");
         }
+        nodeOrder = executionNodeOrder
     }
 }
 
-var nodeOrder = null;
-var currentNodeIndex = -1;
-var is_playing = false;
-var showGenerationAnimation = false;
-var previousNode = null;
-var firstPlay = true;
+var nodeOrder;
+var currentNodeIndex;
+var is_playing;
+var showGenerationAnimation;
+var previousNode;
 
 $("#play-button").on("click", function() {
     play();
@@ -112,26 +116,6 @@ $("#forward-button").on("click", function() {
 });
 $("#reverse-button").on("click", function() {
     reverse();
-});
-
-$("#generation-button").on("click", function() {
-    resetAnimation();
-    $("#generation-button").addClass("disabled");
-    $("#contextual-button").removeClass("disabled");
-    $(".right-contextual-container").hide();
-    $(".right-generation-container").css("display", "table");
-    showGenerationAnimation = true;
-    nodeOrder = Tree.generationNodeOrder
-});
-
-$("#contextual-button").on("click", function() {
-    resetAnimation();
-    $("#contextual-button").addClass("disabled");
-    $("#generation-button").removeClass("disabled");
-    $(".right-contextual-container").css("display", "table");
-    $(".right-generation-container").hide();
-    showGenerationAnimation = false;
-    nodeOrder = Tree.contextualNodeOrder
 });
 
 function animateNode(node, isPlayingForward, delayOffset) {
@@ -241,23 +225,4 @@ function hasAnimationFinished() {
 
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
-}
-
-function resetAnimation() {
-    pause();
-    if (currentNodeIndex > -1) {
-        var currentNode = $("#node-"+nodeOrder[currentNodeIndex].id);
-        currentNode.find("rect").css("fill", "white");
-        currentNode.find("text").css({"fill": "#3e4153", "font-weight": "normal"});
-    }
-    currentNodeIndex = -1;
-    $(".data-heading-container span").text("");
-    if (showGenerationAnimation) {
-        $(".generation-explanations p").text("");
-        $(".address-table tbody").text("");
-        $(".code-template img").removeAttr("src");
-    } else {
-        $(".contextual-explanations p").text("");
-        $(".type-table tbody").text("");
-    }
 }

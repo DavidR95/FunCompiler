@@ -11,12 +11,21 @@
                         </p>
                     </div>
                     <div class="program-input-container">
-                        <form id="execute-form" action="{{ route('execute') }}" method="post">
+                        <form id="execute-form" method="post">
                             <div class="form-group">
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button class="btn btn-execute" type="submit"><b>Execute</b></button>
+                                <button id="ca-button" class="btn btn-execute"
+                                        value="ca"
+                                        type="submit">
+                                    <b>Contextual Analysis</b>
+                                </button>
+                                <button id="cg-button" class="btn btn-execute"
+                                        value="cg"
+                                        type="submit">
+                                    <b>Code Generation</b>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -25,12 +34,13 @@
             <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
-                        <i id="play-button" class="glyphicon glyphicon-play"></i>
-                        <i id="pause-button" class="glyphicon glyphicon-pause"></i>
-                        <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
-                        <button id="generation-button" href="#" class="btn btn-execute btn-small pull-right">Code-generation</button>
-                        <button id="contextual-button" href="#" class="btn btn-execute btn-small pull-right disabled">Contextual-analysis</button>
+                        <h4><b><span></span></b></h4>
+                        <div class="playback-buttons">
+                            <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
+                            <i id="play-button" class="glyphicon glyphicon-play"></i>
+                            <i id="pause-button" class="glyphicon glyphicon-pause"></i>
+                            <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
+                        </div>
                     </div>
                     <div class="program-tree-container"></div>
                 </div>
