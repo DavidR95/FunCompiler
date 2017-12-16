@@ -12,10 +12,10 @@
 @import "~codemirror/theme/dracula.css";
 
 body, html, .container-fluid, .row {
-    background: $gradient-start;
-    background: -webkit-linear-gradient(to right, $gradient-end, $gradient-start);
-    background: linear-gradient(to right, $gradient-end, $gradient-start);
-    color: $text-color;
+    background: $periwinkle;
+    background: -webkit-linear-gradient(to right, $mercury, $periwinkle);
+    background: linear-gradient(to right, $mercury, $periwinkle);
+    color: $dracula;
     height: 100%;
 }
 
