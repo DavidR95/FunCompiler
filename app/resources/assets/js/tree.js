@@ -129,9 +129,9 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .duration(0).delay(delayOffset * 1000).style("fill", "white")
+        .duration(0).delay(delayOffset * 1000).style("fill", "#035a80")
         .on("start", function() {
-            $(this).next("text").css({"fill": "#282a36", "font-weight": "900"});
+            $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
                 $(previousNode).css("fill", "#3e4153");
                 $(previousNode).next("text").css({"fill": "white", "font-weight": "normal"});
@@ -155,8 +155,6 @@ function animateNode(node, isPlayingForward, delayOffset) {
             var explanations = "";
             $.each(node.explanations, function(index, explanation) {
                 explanations += "<li>> " + explanation + "</li>";
-                if (index === node.explanations.length-1)
-                    console.log("SHIT");
             });
             explanationsText.html(explanations);
 
