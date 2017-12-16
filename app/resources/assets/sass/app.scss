@@ -235,7 +235,7 @@ body, html, .container-fluid, .row {
         }
         tr:hover {
             cursor: pointer;
-            background-color: lighten($dracula, 10%);
+            background-color: $orient;
         }
     }
 }
