@@ -2,7 +2,8 @@
 
 var CodeMirror = require('codemirror');
 
-require('codemirror/addon/mode/simple');
+require('codemirror/addon/mode/simple.js');
+require('codemirror/addon/selection/active-line.js');
 
 CodeMirror.defineSimpleMode("fun", {
   start: [
@@ -24,6 +25,7 @@ CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,
+    styleActiveLine: true,
     mode: "fun",
     theme: "dracula"
 }).setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
