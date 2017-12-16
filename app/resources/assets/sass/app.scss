@@ -53,10 +53,10 @@ body, html, .container-fluid, .row {
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
-                color: $dracula;
+                color: lighten($orient, 10%);
             }
             &:active {
-                color: darken($dracula, 10%);
+                color: $orient;
             }
         }
     }
