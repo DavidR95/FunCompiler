@@ -32055,11 +32055,11 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var explanationsText = $(".contextual-explanations p");
         var tableBody = $(".type-table tbody");
     }
-    d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "#3e4153").on("start", function () {
-        $(this).next("text").css({ "fill": "white", "font-weight": "900" });
+    d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "white").on("start", function () {
+        $(this).next("text").css({ "fill": "#282a36", "font-weight": "900" });
         if (previousNode != null && previousNode !== this) {
-            $(previousNode).css("fill", "white");
-            $(previousNode).next("text").css({ "fill": "#3e4153", "font-weight": "normal" });
+            $(previousNode).css("fill", "#3e4153");
+            $(previousNode).next("text").css({ "fill": "white", "font-weight": "normal" });
         }
 
         isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
