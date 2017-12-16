@@ -75,25 +75,25 @@
                 </div>
                 <div class="right-generation-container">
                     <div class="data-heading-container">
-                        <h4><b>Node: </b><span></span></h4>
+                        <h3><b>Node: </b><span></span></h3>
                     </div>
                     <div class="data-container">
                         <div class="code-template-object-code-container">
                             <div class="col-md-6 code-template">
-                                <h4>Code Template</h4>
+                                <h3><b>Code Template</b></h3>
                                 <img></img>
                             </div>
                             <div class="col-md-6 object-code">
-                                <h4>Object Code</h4>
+                                <h3><b>Object Code</b></h3>
                                 <p></p>
                             </div>
                         </div>
                         <div class="generation-explanations">
-                            <h4>Code Generator Actions</h4>
+                            <h3><b>Code Generator Actions</b></h3>
                             <p></p>
                         </div>
                         <div class="address-table-container">
-                            <h4>Address Table</h4>
+                            <h3><b>Address Table</b></h3>
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
