@@ -68,8 +68,8 @@ body, html, .container-fluid, .row {
 
 .program-input-container {
     form {
-        border: 2px solid darken($dracula, 10%);
         height: 98%;
+        border: 2px solid darken($dracula, 10%);
         .form-group {
             height: 88%;
             margin: 0;
@@ -86,14 +86,16 @@ body, html, .container-fluid, .row {
             button {
                 background-color: $dracula;
                 border: none;
+                border-top: 2px solid darken($dracula, 10%);
                 height: 100%;
-                width: 100%;
             }
             #ca-button {
+                border-right: 1px solid darken($dracula, 10%);
                 width: 50%;
                 float: left
             }
             #cg-button {
+                border-left: 1px solid darken($dracula, 10%);
                 width: 50%;
                 float: right;
             }

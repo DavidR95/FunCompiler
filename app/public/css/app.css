@@ -8797,8 +8797,8 @@ html,
 }
 
 .program-input-container form {
-  border: 2px solid #121319;
   height: 98%;
+  border: 2px solid #121319;
 }
 
 .program-input-container form .form-group {
@@ -8822,16 +8822,18 @@ html,
 .program-input-container form .form-submit button {
   background-color: #282a36;
   border: none;
+  border-top: 2px solid #121319;
   height: 100%;
-  width: 100%;
 }
 
 .program-input-container form .form-submit #ca-button {
+  border-right: 1px solid #121319;
   width: 50%;
   float: left;
 }
 
 .program-input-container form .form-submit #cg-button {
+  border-left: 1px solid #121319;
   width: 50%;
   float: right;
 }
