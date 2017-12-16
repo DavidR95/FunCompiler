@@ -16,12 +16,12 @@
                                 <textarea id="code-editor" name="program" autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button id="ca-button" class="btn btn-execute"
+                                <button id="ca-button" class="hvr-bounce-to-left"
                                         value="ca"
                                         type="submit">
                                     <b>Contextual Analysis</b>
                                 </button>
-                                <button id="cg-button" class="btn btn-execute"
+                                <button id="cg-button" class="hvr-bounce-to-right"
                                         value="cg"
                                         type="submit">
                                     <b>Code Generation</b>

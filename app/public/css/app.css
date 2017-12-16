@@ -8821,7 +8821,6 @@ html,
 }
 
 .program-input-container form .form-submit button {
-  border-radius: 0px;
   height: 100%;
   width: 100%;
 }
@@ -8911,72 +8910,6 @@ html,
 .svg-content-responsive {
   display: inline-block;
   position: absolute;
-}
-
-.btn-execute {
-  color: white;
-  background-color: #282a36;
-  border-color: #121319;
-  border-width: 2px;
-}
-
-.btn-execute:focus,
-.btn-execute.focus {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:hover {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:active,
-.btn-execute.active,
-.open > .btn-execute.dropdown-toggle {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:active:hover,
-.btn-execute:active:focus,
-.btn-execute:active.focus,
-.btn-execute.active:hover,
-.btn-execute.active:focus,
-.btn-execute.active.focus,
-.open > .btn-execute.dropdown-toggle:hover,
-.open > .btn-execute.dropdown-toggle:focus,
-.open > .btn-execute.dropdown-toggle.focus {
-  color: white;
-  background-color: #030304;
-  border-color: black;
-}
-
-.btn-execute:active,
-.btn-execute.active,
-.open > .btn-execute.dropdown-toggle {
-  background-image: none;
-}
-
-.btn-execute.disabled:hover,
-.btn-execute.disabled:focus,
-.btn-execute.disabled.focus,
-.btn-execute[disabled]:hover,
-.btn-execute[disabled]:focus,
-.btn-execute[disabled].focus,
-fieldset[disabled] .btn-execute:hover,
-fieldset[disabled] .btn-execute:focus,
-fieldset[disabled] .btn-execute.focus {
-  background-color: #282a36;
-  border-color: #121319;
-}
-
-.btn-execute .badge {
-  color: #282a36;
-  background-color: white;
 }
 
 #pause-button,

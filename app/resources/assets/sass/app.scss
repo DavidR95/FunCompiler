@@ -85,7 +85,6 @@ body, html, .container-fluid, .row {
             height: 10%;
             padding-bottom: 25px;
             button {
-                border-radius: 0px;
                 height: 100%;
                 width: 100%;
             }
@@ -171,11 +170,6 @@ body, html, .container-fluid, .row {
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
-}
-
-.btn-execute {
-    @include button-variant(white, $dracula, darken($dracula, 10%));
-    border-width: 2px;
 }
 
 #pause-button, .right-generation-container, .right-contextual-container, .center-container {
