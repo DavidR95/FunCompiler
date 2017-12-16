@@ -79,11 +79,11 @@
                     </div>
                     <div class="data-container">
                         <div class="code-template-object-code-container">
-                            <div class="col-md-6 code-template">
+                            <div class="code-template">
                                 <h3><b>Code Template</b></h3>
                                 <ul></ul>
                             </div>
-                            <div class="col-md-6 object-code">
+                            <div class="object-code">
                                 <h3><b>Object Code</b></h3>
                                 <ul></ul>
                             </div>

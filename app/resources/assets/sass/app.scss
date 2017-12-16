@@ -196,18 +196,28 @@ body, html, .container-fluid, .row {
     height: 30%;
     .code-template {
         height: 100%;
+        width: 50%;
+        float: left;
         overflow: auto;
-        img {
-            display: block;
-        }
         h3 {
             padding-bottom: 3px;
             border-bottom: 2px solid darken($dracula, 10%);
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            font-weight: bold;
+            padding-left: 3px;
         }
     }
     .object-code {
         height: 100%;
         overflow: auto;
+        width: 50%;
+        float: right;
         h3 {
             padding-bottom: 3px;
             border-bottom: 2px solid darken($dracula, 10%);

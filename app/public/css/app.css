@@ -8943,11 +8943,9 @@ html,
 
 .code-template-object-code-container .code-template {
   height: 100%;
+  width: 50%;
+  float: left;
   overflow: auto;
-}
-
-.code-template-object-code-container .code-template img {
-  display: block;
 }
 
 .code-template-object-code-container .code-template h3 {
@@ -8955,9 +8953,22 @@ html,
   border-bottom: 2px solid #121319;
 }
 
+.code-template-object-code-container .code-template ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.code-template-object-code-container .code-template li {
+  font-weight: bold;
+  padding-left: 3px;
+}
+
 .code-template-object-code-container .object-code {
   height: 100%;
   overflow: auto;
+  width: 50%;
+  float: right;
 }
 
 .code-template-object-code-container .object-code h3 {
