@@ -13,15 +13,19 @@
                     <div class="program-input-container">
                         <form id="execute-form" method="post">
                             <div class="form-group">
-                                <textarea id="code-editor" name="program" autofocus></textarea>
+                                <textarea id="code-editor"
+                                          name="program"
+                                          autofocus></textarea>
                             </div>
                             <div class="form-submit">
-                                <button id="ca-button" class="hvr-bounce-to-left"
+                                <button id="ca-button"
+                                        class="hvr-bounce-to-left"
                                         value="ca"
                                         type="submit">
                                     <b>Contextual Analysis</b>
                                 </button>
-                                <button id="cg-button" class="hvr-bounce-to-right"
+                                <button id="cg-button"
+                                        class="hvr-bounce-to-right"
                                         value="cg"
                                         type="submit">
                                     <b>Code Generation</b>
@@ -36,10 +40,14 @@
                     <div class="controls-container">
                         <h3><b><span></span></b></h3>
                         <div class="playback-buttons">
-                            <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
-                            <i id="play-button" class="glyphicon glyphicon-play"></i>
-                            <i id="pause-button" class="glyphicon glyphicon-pause"></i>
-                            <i id="forward-button" class="glyphicon glyphicon-step-forward"></i>
+                            <i id="reverse-button"
+                               class="glyphicon glyphicon-step-backward"></i>
+                            <i id="play-button"
+                               class="glyphicon glyphicon-play"></i>
+                            <i id="pause-button"
+                               class="glyphicon glyphicon-pause"></i>
+                            <i id="forward-button"
+                               class="glyphicon glyphicon-step-forward"></i>
                         </div>
                     </div>
                     <div class="program-tree-container"></div>
