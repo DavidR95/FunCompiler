@@ -64,19 +64,18 @@ public class SVM {
 
 	// CODE DISPLAY
 
-	public JsonArray showCode() {
+	public JsonArray getObjectCode() {
 		JsonArray assembly = new JsonArray();
 		for (int c = 0; c < cl;) {
-			assembly.add(showInstruction(c));
+			assembly.add(getInstruction(c));
 			c += bytes[code[c]];
 		}
         return assembly;
 	}
 
-	private String showInstruction (int c) {
+	private String getInstruction (int c) {
 		byte opcode = code[c++];
-		String line =
-		   String.format("%d: %s ", c-1, mnemonic[opcode]);
+		String line = String.format("%d: %s ", c-1, mnemonic[opcode]);
 		switch (bytes[opcode]) {
 			case 1:
 				break;
@@ -86,8 +85,7 @@ public class SVM {
 				break;
 			}
 			case 3: {
-				int operand =
-				   code[c++]<<8 | (code[c++]&0xFF);
+				int operand = code[c++]<<8 | (code[c++]&0xFF);
 				line += operand;
 				break;
 			}

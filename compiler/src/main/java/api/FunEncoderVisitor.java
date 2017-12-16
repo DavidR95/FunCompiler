@@ -83,7 +83,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		});
 		nodeObject.addProperty("id", contextHash);
 		nodeObject.add("explanations", explanationArray);
-		nodeObject.add("objectCode", obj.showCode());
+		nodeObject.add("objectCode", obj.getObjectCode());
 		nodeObject.add("table", addrTableArray);
 		nodeOrder.add(nodeObject);
 	}
