@@ -150,6 +150,14 @@ body, html, .container-fluid, .row {
     }
     height: 50%;
     overflow: auto;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        font-weight: bold;
+    }
 }
 
 .generation-explanations {

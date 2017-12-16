@@ -8889,6 +8889,16 @@ html,
   border-bottom: 2px solid #121319;
 }
 
+.contextual-explanations ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contextual-explanations li {
+  font-weight: bold;
+}
+
 .generation-explanations {
   margin-top: 10px;
   height: 30%;

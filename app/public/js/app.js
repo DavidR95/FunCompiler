@@ -32052,7 +32052,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableBody = $(".address-table tbody");
         var codeTemplateImage = $(".code-template img");
     } else {
-        var explanationsText = $(".contextual-explanations p");
+        var explanationsText = $(".contextual-explanations ul");
         var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "white").on("start", function () {
@@ -32076,7 +32076,8 @@ function animateNode(node, isPlayingForward, delayOffset) {
 
         var explanations = "";
         $.each(node.explanations, function (index, explanation) {
-            explanations += explanation + "<br>";
+            explanations += "<li>> " + explanation + "</li>";
+            if (index === node.explanations.length - 1) console.log("SHIT");
         });
         explanationsText.html(explanations);
 

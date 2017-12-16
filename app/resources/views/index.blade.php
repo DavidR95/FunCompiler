@@ -53,7 +53,7 @@
                     <div class="data-container">
                         <div class="contextual-explanations">
                             <h3><b>Code Checker Actions</b></h4>
-                            <p></p>
+                            <ul></ul>
                         </div>
                         <div class="type-table-container">
                             <h3><b>Type Table</b></h3>
