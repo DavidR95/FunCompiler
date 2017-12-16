@@ -20,25 +20,25 @@ import java.util.HashMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
 	private SVM obj = new SVM();
-
+	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
+	private JsonArray nodeOrder = new JsonArray();
+	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 	private int globalvaraddr = 0;
 	private int localvaraddr = 0;
 	private int currentLocale = Address.GLOBAL;
 
-	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
+	public JsonArray getNodeOrder() {
+		return nodeOrder;
+	}
 
 	private void predefine () {
-	// Add predefined procedures to the address table.
 		addrTable.put("read", new Address(SVM.READOFFSET, Address.CODE));
 		addrTable.put("write", new Address(SVM.WRITEOFFSET, Address.CODE));
 	}
-
-	private JsonArray nodeOrder = new JsonArray();
 
 	private String convertLocale(int locale) {
 		switch(locale) {
@@ -48,8 +48,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 		return "Unrecognised locale";
 	}
-
-	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
@@ -88,9 +86,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		nodeOrder.add(nodeObject);
 	}
 
-	public JsonArray getNodeOrder() {
-		return nodeOrder;
-	}
+/*============================== VISITORS ==============================*/
 
 	/**
 	 * Visit a parse tree produced by the {@code prog}

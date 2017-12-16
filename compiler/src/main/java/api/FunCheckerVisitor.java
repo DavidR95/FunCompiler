@@ -18,23 +18,38 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Arrays;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
-	// An ArrayList of Strings, each entry holding an error
 	private List<String> contextualErrors = new LinkedList<String>();
-
 	private int errorCount = 0;
-
+	private SymbolTable<Type> typeTable = new SymbolTable<Type>();
 	private CommonTokenStream tokens;
+	private JsonArray nodeOrder = new JsonArray();
+	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 
 	public FunCheckerVisitor(CommonTokenStream toks) {
 	    tokens = toks;
+	}
+
+	public JsonArray getNodeOrder() {
+		return nodeOrder;
+	}
+
+	public int getNumberOfContextualErrors () {
+		return errorCount;
+	}
+
+	public List<String> getContextualErrors() {
+		return contextualErrors;
+	}
+
+	private void predefine () {
+		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
+		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
 	}
 
 	private void reportError (String message, ParserRuleContext ctx) {
@@ -53,20 +68,6 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		   		   		     + " " + message);
 		errorCount++;
 	}
-
-	// Return the total number of errors so far detected.
-	public int getNumberOfContextualErrors () {
-		return errorCount;
-	}
-
-	// Return the actual contextual errors
-	public List<String> getContextualErrors() {
-		return contextualErrors;
-	}
-
-	private JsonArray nodeOrder = new JsonArray();
-
-	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
@@ -104,21 +105,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		nodeOrder.add(nodeObject);
 	}
 
-	public JsonArray getNodeOrder() {
-		return nodeOrder;
-	}
-
-	//-- Scope checking --//
-
-	private SymbolTable<Type> typeTable = new SymbolTable<Type>();
-
-	/**
-	 * Add predefined procedures to the type table.
-	 */
-	private void predefine () {
-		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
-		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
-	}
+	/*============================== VISITORS ==============================*/
 
 	/**
    	 * Add an id with its type to the type table, checking
