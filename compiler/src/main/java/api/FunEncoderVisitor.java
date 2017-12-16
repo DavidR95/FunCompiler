@@ -111,6 +111,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Note the current instruction address, c1 (" + calladdr + ")");
 		obj.emit12(SVM.CALL, 0);
 		addNode(ctx, "Emit 'CALL 0'");
+		obj.emit1(SVM.HALT);
 		addNode(ctx, "Emit 'HALT'");
 	    List<FunParser.Proc_declContext> proc_decl = ctx.proc_decl();
 		if (!proc_decl.isEmpty()) {
@@ -120,6 +121,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 	    int mainaddr = addrTable.get("main").offset;
 		addNode(ctx, "Lookup 'main' and retrieve its address, " + mainaddr);
+		obj.patch12(calladdr, mainaddr);
 		addNode(ctx, "Patch address of 'main' (" + mainaddr + ") into the call at c1 (" + calladdr + ")");
 	    return null;
 	}
@@ -151,6 +153,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		}
 		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
+		obj.emit11(SVM.RETURN, 0);
 		addNode(ctx, "Emit 'RETURN 0'");
 	    addrTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -187,6 +190,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    visit(ctx.seq_com());
 		addNode(ctx, "Walk return expr, generating code");
         visit(ctx.expr());
+		obj.emit11(SVM.RETURN, 1);
 		addNode(ctx, "Emit 'RETURN 1'");
 	    addrTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -206,6 +210,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			String id = ctx.ID().getText();
 			addNode(ctx, "Insert '" + id + "' into the address table at address " + localvaraddr + " (scope: local)");
 			addrTable.put(id, new Address(localvaraddr++, Address.LOCAL));
+			obj.emit11(SVM.COPYARG, 1);
 			addNode(ctx, "Emit 'COPYARG 1'");
 	    } else {
 			addNode(ctx, "Note: no formal parameters");
@@ -270,9 +275,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + varaddr.offset);
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
+				obj.emit12(SVM.STOREG, varaddr.offset);
 				addNode(ctx, "Emit STOREG " + varaddr.offset);
 				break;
 		    case Address.LOCAL:
+				obj.emit12(SVM.STOREL, varaddr.offset);
 				addNode(ctx, "Emit STOREL " + varaddr.offset);
 				break;
 	    }
@@ -292,6 +299,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    Address procaddr = addrTable.get(id);
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + procaddr.offset);
 	    // Assume procaddr.locale == CODE.
+		obj.emit12(SVM.CALL, procaddr.offset);
 		addNode(ctx, "Emit 'CALL " + procaddr.offset + "'");
 	    return null;
 	}
@@ -307,26 +315,31 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    visit(ctx.expr());
 	    int condaddr = obj.currentOffset();
 		addNode(ctx, "Note the current instruction address, c1 (" + condaddr + ")");
+		obj.emit12(SVM.JUMPF, 0);
 		addNode(ctx, "Emit 'JUMPF 0'");
 	    if (ctx.c2 == null) {
 			addNode(ctx, "Walk com, generating code");
 			visit(ctx.c1);
 			int exitaddr = obj.currentOffset();
 			addNode(ctx, "Note the current instruction address, c2 (" + exitaddr + ")");
+			obj.patch12(condaddr, exitaddr);
 			addNode(ctx, "Patch c2 (" + exitaddr + ") into the jump at c1 (" + condaddr + ")");
 	    } else {
 			addNode(ctx, "Walk com1, generating code");
 			visit(ctx.c1);
 			int jumpaddr = obj.currentOffset();
 			addNode(ctx, "Note the current instruction address, c2 (" + jumpaddr + ")");
+			obj.emit12(SVM.JUMP, 0);
 			addNode(ctx, "Emit 'JUMP 0'");
 			int elseaddr = obj.currentOffset();
 			addNode(ctx, "Note the current instruction address, c3 (" + elseaddr + ")");
+			obj.patch12(condaddr, elseaddr);
 			addNode(ctx, "Patch c3 (" + elseaddr + ") into the jump at c1 (" + condaddr + ")");
 			addNode(ctx, "Walk com2, generating code");
 			visit(ctx.c2);
 			int exitaddr = obj.currentOffset();
 			addNode(ctx, "Note the current instruction address, c4 (" + exitaddr + ")");
+			obj.patch12(jumpaddr, exitaddr);
 			addNode(ctx, "Patch c4 (" + exitaddr + ") into the jump at c2 (" + jumpaddr + ")");
 	    }
 	    return null;
@@ -345,12 +358,15 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    visit(ctx.expr());
 	    int condaddr = obj.currentOffset();
 		addNode(ctx, "Note the current instruction address, c2 (" + condaddr + ")");
+		obj.emit12(SVM.JUMPF, 0);
 		addNode(ctx, "Emit 'JUMPF 0'");
 		addNode(ctx, "Walk com, generating code");
 	    visit(ctx.seq_com());
+		obj.emit12(SVM.JUMP, startaddr);
 		addNode(ctx, "Emit 'JUMP c1 (" + startaddr + ")'");
 	    int exitaddr = obj.currentOffset();
 		addNode(ctx, "Note the current instruction address, c3 (" + exitaddr + ")");
+		obj.patch12(condaddr, exitaddr);
 		addNode(ctx, "Patch c3 (" + exitaddr + ") into the jump at c2 (" + condaddr + ")");
 	    return null;
 	}
@@ -380,13 +396,16 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.EQ:
+					obj.emit1(SVM.CMPLT);
 					addNode(ctx.op, "Emit 'CMPEQ'");
 				    break;
 				case FunParser.LT:
-					addNode(ctx.op, "Emit 'LT'");
+					obj.emit1(SVM.CMPLT);
+					addNode(ctx.op, "Emit 'CMPLT'");
 				    break;
 				case FunParser.GT:
-					addNode(ctx.op, "Emit 'GT'");
+					obj.emit1(SVM.CMPGT);
+					addNode(ctx.op, "Emit 'CMPGT'");
 				    break;
 			}
 	    } else {
@@ -408,15 +427,19 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			visit(ctx.e2);
 			switch (ctx.op.getType()) {
 				case FunParser.PLUS:
+					obj.emit1(SVM.ADD);
 					addNode(ctx.op, "Emit 'ADD'");
 				    break;
 				case FunParser.MINUS:
+					obj.emit1(SVM.SUB);
 					addNode(ctx.op, "Emit 'SUB'");
 				    break;
 				case FunParser.TIMES:
+					obj.emit1(SVM.MUL);
 					addNode(ctx.op, "Emit 'MUL'");
 				    break;
 				case FunParser.DIV:
+					obj.emit1(SVM.DIV);
 					addNode(ctx.op, "Emit 'DIV'");
 				    break;
 			}
@@ -433,6 +456,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitFalse(FunParser.FalseContext ctx) {
+		obj.emit12(SVM.LOADC, 0);
 		addNode(ctx, "Emit 'LOADC 0'");
 	    return null;
 	}
@@ -444,6 +468,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 * @return the visitor result
 	 */
 	public Void visitTrue(FunParser.TrueContext ctx) {
+		obj.emit12(SVM.LOADC, 1);
 		addNode(ctx, "Emit 'LOADC 1'");
 	    return null;
 	}
@@ -456,6 +481,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	 */
 	public Void visitNum(FunParser.NumContext ctx) {
 	    int value = Integer.parseInt(ctx.NUM().getText());
+		obj.emit12(SVM.LOADC, value);
 		addNode(ctx, "Emit 'LOADC " + value + "'");
 	    return null;
 	}
@@ -472,9 +498,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + varaddr.offset);
 	    switch (varaddr.locale) {
 		    case Address.GLOBAL:
+				obj.emit12(SVM.LOADG, varaddr.offset);
 				addNode(ctx, "Emit 'LOADG " + varaddr.offset + "'");
 				break;
 		    case Address.LOCAL:
+				obj.emit12(SVM.LOADC, varaddr.offset);
 				addNode(ctx, "Emit 'LOADC " + varaddr.offset + "'");
 				break;
 	    }
@@ -494,6 +522,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	    Address funcaddr = addrTable.get(id);
 		addNode(ctx, "Lookup '" + id + "' and retrieve its address, " + funcaddr.offset);
 	    // Assume funcaddr.locale == CODE.
+		obj.emit12(SVM.CALL, funcaddr.offset);
 		addNode(ctx, "Emit 'CALL " + funcaddr.offset + "'");
 	    return null;
 	}
@@ -507,6 +536,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	public Void visitNot(FunParser.NotContext ctx) {
 		addNode(ctx, "Walk expr, generating code");
 	    visit(ctx.prim_expr());
+		obj.emit1(SVM.INV);
 		addNode(ctx, "Emit 'INV'");
 	    return null;
 	}
