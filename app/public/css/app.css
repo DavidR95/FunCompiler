@@ -8897,6 +8897,12 @@ html,
 
 .contextual-explanations li {
   font-weight: bold;
+  padding-left: 3px;
+}
+
+.contextual-explanations li:last-child {
+  color: white;
+  background-color: #035a80;
 }
 
 .generation-explanations {

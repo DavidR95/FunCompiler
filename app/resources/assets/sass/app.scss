@@ -157,6 +157,11 @@ body, html, .container-fluid, .row {
     }
     li {
         font-weight: bold;
+        padding-left: 3px;
+    }
+    li:last-child {
+        color: white;
+        background-color: $orient;
     }
 }
 
