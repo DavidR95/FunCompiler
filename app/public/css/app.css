@@ -8880,6 +8880,11 @@ html,
   margin: 30px auto;
 }
 
+.code-template-object-code-container .object-code {
+  height: 100%;
+  overflow: auto;
+}
+
 .node rect {
   fill: #fff;
   stroke: #282a36;

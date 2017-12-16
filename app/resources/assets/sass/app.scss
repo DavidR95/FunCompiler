@@ -140,6 +140,10 @@ body, html, .container-fluid, .row {
             margin: 30px auto;
         }
     }
+    .object-code {
+        height: 100%;
+        overflow: auto;
+    }
 }
 
 .node rect {

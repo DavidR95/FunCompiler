@@ -32043,6 +32043,7 @@ $("#reverse-button").on("click", function () {
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations p");
+        var objectCodeText = $(".object-code p");
         var tableBody = $(".address-table tbody");
         var codeTemplateImage = $(".code-template img");
     } else {
@@ -32075,6 +32076,11 @@ function animateNode(node, isPlayingForward, delayOffset) {
         explanationsText.html(explanations);
 
         if (showGenerationAnimation) {
+            var objectCodeInstructions = "";
+            $.each(node.objectCode, function (index, objectCode) {
+                objectCodeInstructions += objectCode + "<br>";
+            });
+            objectCodeText.html(objectCodeInstructions);
             var codeTemplateURL = "images/" + nodeName + ".png";
             codeTemplateImage.attr("src", codeTemplateURL);
         }

@@ -84,8 +84,8 @@
                                 <h4>Code Template</h4>
                                 <img></img>
                             </div>
-                            <div class="col-md-6">
-                                <h4>Object</h4>
+                            <div class="col-md-6 object-code">
+                                <h4>Object Code</h4>
                                 <p></p>
                             </div>
                         </div>
