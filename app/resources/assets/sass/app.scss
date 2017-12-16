@@ -159,19 +159,19 @@ body, html, .container-fluid, .row {
 }
 
 .node rect {
-    fill: #fff;
+    fill: lighten($dracula, 10%);
     stroke: $dracula;
     stroke-width: 3px;
 }
 
 .node text {
     font: 11px "Raleway";
-    fill: $dracula;
+    fill: white;
 }
 
 .link {
     fill: none;
-    stroke: #ccc;
+    stroke: darken($dracula, 10%);
     stroke-width: 2px;
 }
 

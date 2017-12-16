@@ -8897,19 +8897,19 @@ html,
 }
 
 .node rect {
-  fill: #fff;
+  fill: #3e4153;
   stroke: #282a36;
   stroke-width: 3px;
 }
 
 .node text {
   font: 11px "Raleway";
-  fill: #282a36;
+  fill: white;
 }
 
 .link {
   fill: none;
-  stroke: #ccc;
+  stroke: #121319;
   stroke-width: 2px;
 }
 
