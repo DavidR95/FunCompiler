@@ -8790,9 +8790,11 @@ html,
   color: #035a80;
 }
 
-.data-heading-container h4 {
+.data-heading-container h3 {
   margin-top: 45px;
   margin-bottom: 5px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #121319;
 }
 
 .program-input-container,
@@ -8866,6 +8868,11 @@ html,
   overflow: auto;
 }
 
+.type-table-container h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
 .address-table-container {
   margin-top: 10px;
   height: 40%;
@@ -8875,6 +8882,11 @@ html,
 .contextual-explanations {
   height: 50%;
   overflow: auto;
+}
+
+.contextual-explanations h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
 }
 
 .generation-explanations {

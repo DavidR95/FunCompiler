@@ -63,9 +63,11 @@ body, html, .container-fluid, .row {
 }
 
 .data-heading-container {
-    h4 {
+    h3 {
         margin-top: 45px;
         margin-bottom: 5px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid darken($dracula, 10%);
     }
 }
 
@@ -126,6 +128,10 @@ body, html, .container-fluid, .row {
 }
 
 .type-table-container {
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
     margin-top: 10px;
     height: 50%;
     overflow: auto;
@@ -138,6 +144,10 @@ body, html, .container-fluid, .row {
 }
 
 .contextual-explanations {
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
     height: 50%;
     overflow: auto;
 }

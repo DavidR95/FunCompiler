@@ -48,15 +48,15 @@
             <div class="col-md-3 table-container">
                 <div class="right-contextual-container">
                     <div class="data-heading-container">
-                        <h4><b>Node: </b><span></span></h4>
+                        <h3><b>Node: </b><span></span></h3>
                     </div>
                     <div class="data-container">
                         <div class="contextual-explanations">
-                            <h4>Code Checker Actions</h4>
+                            <h3><b>Code Checker Actions</b></h4>
                             <p></p>
                         </div>
                         <div class="type-table-container">
-                            <h4>Type Table</h4>
+                            <h3><b>Type Table</b></h3>
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
