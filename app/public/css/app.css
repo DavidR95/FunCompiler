@@ -8744,7 +8744,6 @@ html,
 
 .table-container {
   height: 100%;
-  border-left: 2px solid #121319;
 }
 
 .left-container,
@@ -8760,6 +8759,11 @@ html,
 .controls-container,
 .data-heading-container {
   display: table-row;
+}
+
+.title-container h1 {
+  font-size: 40px;
+  letter-spacing: 1.5px;
 }
 
 .controls-container h4 {

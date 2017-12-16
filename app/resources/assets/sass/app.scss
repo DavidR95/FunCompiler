@@ -21,7 +21,6 @@ body, html, .container-fluid, .row {
 
 .table-container {
     height: 100%;
-    border-left: 2px solid darken($dracula, 10%);
 }
 
 .left-container, .center-container, .right-contextual-container, .right-generation-container {
@@ -32,6 +31,13 @@ body, html, .container-fluid, .row {
 
 .title-container, .controls-container, .data-heading-container {
     display: table-row;
+}
+
+.title-container {
+    h1 {
+        font-size: 40px;
+        letter-spacing: 1.5px;
+    }
 }
 
 .controls-container {
