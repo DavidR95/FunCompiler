@@ -18,23 +18,38 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Arrays;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements FunVisitor<Type> {
 
-	// An ArrayList of Strings, each entry holding an error
 	private List<String> contextualErrors = new LinkedList<String>();
-
 	private int errorCount = 0;
-
+	private SymbolTable<Type> typeTable = new SymbolTable<Type>();
 	private CommonTokenStream tokens;
+	private JsonArray nodeOrder = new JsonArray();
+	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 
 	public FunCheckerVisitor(CommonTokenStream toks) {
 	    tokens = toks;
+	}
+
+	public JsonArray getNodeOrder() {
+		return nodeOrder;
+	}
+
+	public int getNumberOfContextualErrors () {
+		return errorCount;
+	}
+
+	public List<String> getContextualErrors() {
+		return contextualErrors;
+	}
+
+	private void predefine () {
+		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
+		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
 	}
 
 	private void reportError (String message, ParserRuleContext ctx) {
@@ -54,33 +69,20 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		errorCount++;
 	}
 
-	// Return the total number of errors so far detected.
-	public int getNumberOfContextualErrors () {
-		return errorCount;
-	}
-
-	// Return the actual contextual errors
-	public List<String> getContextualErrors() {
-		return contextualErrors;
-	}
-
-	private JsonArray nodeOrder = new JsonArray();
-
-	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
-
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
-		List<String> explanationList = nodeExplanations.get(contextHash);
-		if (explanationList != null) {
-			explanationList.add(explanation);
-		} else {
-			nodeExplanations.put(contextHash, new LinkedList<String>(Arrays.asList(explanation)));
-		}
 		JsonObject nodeObject = new JsonObject();
-		JsonArray explanationArray = new JsonArray();
-		for (String nodeExplanation : nodeExplanations.get(contextHash)) {
-			explanationArray.add(new JsonPrimitive(nodeExplanation));
+
+		JsonArray currentExplanationArray = new JsonArray();
+		JsonArray previousExplanationArray = nodeExplanations.get(contextHash);
+		if (previousExplanationArray != null) {
+			currentExplanationArray.addAll(previousExplanationArray);
+			currentExplanationArray.add(explanation);
+		} else {
+			currentExplanationArray.add(explanation);
 		}
+		nodeExplanations.put(contextHash, currentExplanationArray);
+
 		JsonArray typeTableArray = new JsonArray();
 		typeTable.getGlobals().forEach((id,type) -> {
 			JsonObject typeTableObject = new JsonObject();
@@ -96,27 +98,14 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			typeTableObject.addProperty("type_address", type.toString());
 			typeTableArray.add(typeTableObject);
 		});
+
 		nodeObject.addProperty("id", contextHash);
-		nodeObject.add("explanations", explanationArray);
+		nodeObject.add("explanations", currentExplanationArray);
 		nodeObject.add("table", typeTableArray);
 		nodeOrder.add(nodeObject);
 	}
 
-	public JsonArray getNodeOrder() {
-		return nodeOrder;
-	}
-
-	//-- Scope checking --//
-
-	private SymbolTable<Type> typeTable = new SymbolTable<Type>();
-
-	/**
-	 * Add predefined procedures to the type table.
-	 */
-	private void predefine () {
-		typeTable.put("read", new Type.Mapping(Type.VOID, Type.INT));
-		typeTable.put("write", new Type.Mapping(Type.INT, Type.VOID));
-	}
+	/*============================== VISITORS ==============================*/
 
 	/**
    	 * Add an id with its type to the type table, checking
