@@ -60,7 +60,6 @@
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
-                                                table-bordered
                                                 type-table">
                                 <thead>
                                     <tr>
@@ -98,7 +97,6 @@
                             <table class="table table-striped
                                                 table-hover
                                                 table-responsive
-                                                table-bordered
                                                 address-table">
                                 <thead>
                                     <tr>
