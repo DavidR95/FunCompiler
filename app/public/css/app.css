@@ -8943,7 +8943,7 @@ html,
 
 .code-template-object-code-container .code-template {
   height: 100%;
-  width: 50%;
+  width: 47%;
   float: left;
   overflow: auto;
 }
@@ -8967,7 +8967,7 @@ html,
 .code-template-object-code-container .object-code {
   height: 100%;
   overflow: auto;
-  width: 50%;
+  width: 47%;
   float: right;
 }
 
