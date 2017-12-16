@@ -54,6 +54,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
 
 	private void addNode(Object ctx, String explanation) {
+		System.err.println(obj.showCode());
 		int contextHash = ctx.hashCode();
 		List<String> explanationList = nodeExplanations.get(contextHash);
 		if (explanationList != null) {

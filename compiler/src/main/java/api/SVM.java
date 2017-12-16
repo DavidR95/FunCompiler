@@ -142,7 +142,7 @@ public class SVM {
 	// CODE DISPLAY
 
 	// Return a textual representation of all the code.
-	public void showCode() {
+	public ArrayList<String> showCode() {
 		// An ArrayList of Strings, each entry holding an instruction
 		ArrayList<String> assembly = new ArrayList<String>();
 		for (int c = 0; c < cl;) {
@@ -150,6 +150,7 @@ public class SVM {
 			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
+        return assembly;
 	}
 
 	private String showInstruction (int c) {
