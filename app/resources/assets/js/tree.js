@@ -167,7 +167,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 var codeTemplateInstructions = "";
                 var codeTemplate = CodeTemplates.getTemplate(nodeName);
                 $.each(codeTemplate, function(index, codeTemplateInstruction) {
-                    codeTemplateInstructions += "<li>" + codeTemplateInstruction + "</li>";
+                    codeTemplateInstructions += "<li>> " + codeTemplateInstruction + "</li>";
                 })
                 codeTemplateText.html(codeTemplateInstructions);
             }
