@@ -68,12 +68,12 @@ body, html, .container-fluid, .row {
 
 .program-input-container {
     form {
-        height: 100%;
+        border: 2px solid darken($dracula, 10%);
+        height: 98%;
         .form-group {
-            height: 90%;
+            height: 88%;
             margin: 0;
             .CodeMirror {
-                border: 2px solid darken($dracula, 10%);
                 min-height: 100%;
                 max-height: 100%;
                 .CodeMirror-line {
@@ -82,9 +82,10 @@ body, html, .container-fluid, .row {
             }
         }
         .form-submit {
-            height: 10%;
-            padding-bottom: 25px;
+            height: 12%;
             button {
+                background-color: $dracula;
+                border: none;
                 height: 100%;
                 width: 100%;
             }

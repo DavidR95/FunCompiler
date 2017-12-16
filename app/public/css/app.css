@@ -8797,16 +8797,16 @@ html,
 }
 
 .program-input-container form {
-  height: 100%;
+  border: 2px solid #121319;
+  height: 98%;
 }
 
 .program-input-container form .form-group {
-  height: 90%;
+  height: 88%;
   margin: 0;
 }
 
 .program-input-container form .form-group .CodeMirror {
-  border: 2px solid #121319;
   min-height: 100%;
   max-height: 100%;
 }
@@ -8816,11 +8816,12 @@ html,
 }
 
 .program-input-container form .form-submit {
-  height: 10%;
-  padding-bottom: 25px;
+  height: 12%;
 }
 
 .program-input-container form .form-submit button {
+  background-color: #282a36;
+  border: none;
   height: 100%;
   width: 100%;
 }
