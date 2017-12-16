@@ -8826,6 +8826,7 @@ html,
 }
 
 .program-input-container form .form-submit button {
+  color: white;
   background-color: #282a36;
   border: none;
   border-top: 2px solid #121319;

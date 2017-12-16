@@ -92,6 +92,7 @@ body, html, .container-fluid, .row {
         .form-submit {
             height: 12%;
             button {
+                color: white;
                 background-color: $dracula;
                 border: none;
                 border-top: 2px solid darken($dracula, 10%);
