@@ -174,14 +174,14 @@ body, html, .container-fluid, .row {
 
 .code-template-object-code-container {
     height: 30%;
-    .code-template {
+    .code-template, .object-code {
         height: 100%;
         width: 47%;
+    }
+    .code-template {
         float: left;
     }
     .object-code {
-        height: 100%;
-        width: 47%;
         float: right;
     }
 }
@@ -207,8 +207,8 @@ body, html, .container-fluid, .row {
     display: inline-block;
     position: relative;
     width: 100%;
-    vertical-align: top;
 }
+
 .svg-content-responsive {
     display: inline-block;
     position: absolute;

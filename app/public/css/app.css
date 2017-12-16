@@ -8924,15 +8924,17 @@ html,
   height: 30%;
 }
 
-.code-template-object-code-container .code-template {
+.code-template-object-code-container .code-template,
+.code-template-object-code-container .object-code {
   height: 100%;
   width: 47%;
+}
+
+.code-template-object-code-container .code-template {
   float: left;
 }
 
 .code-template-object-code-container .object-code {
-  height: 100%;
-  width: 47%;
   float: right;
 }
 
@@ -8957,7 +8959,6 @@ html,
   display: inline-block;
   position: relative;
   width: 100%;
-  vertical-align: top;
 }
 
 .svg-content-responsive {
