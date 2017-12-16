@@ -51,21 +51,20 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		return "Unrecognised locale";
 	}
 
-	private Map<Integer,LinkedList<String>> nodeExplanations = new HashMap<Integer,LinkedList<String>>();
+	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
-		List<String> explanationList = nodeExplanations.get(contextHash);
-		if (explanationList != null) {
-			explanationList.add(explanation);
+		JsonArray currentExplanationArray = new JsonArray();
+		JsonArray previousExplanationArray = nodeExplanations.get(contextHash);
+		if (previousExplanationArray != null) {
+			currentExplanationArray.addAll(previousExplanationArray);
+			currentExplanationArray.add(explanation);
 		} else {
-			nodeExplanations.put(contextHash, new LinkedList<String>(Arrays.asList(explanation)));
+			currentExplanationArray.add(explanation);
 		}
+		nodeExplanations.put(contextHash, currentExplanationArray);
 		JsonObject nodeObject = new JsonObject();
-		JsonArray explanationArray = new JsonArray();
-		for (String nodeExplanation : nodeExplanations.get(contextHash)) {
-			explanationArray.add(new JsonPrimitive(nodeExplanation));
-		}
 		JsonArray addrTableArray = new JsonArray();
 		addrTable.getGlobals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
@@ -82,7 +81,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			addrTableArray.add(addrTableObject);
 		});
 		nodeObject.addProperty("id", contextHash);
-		nodeObject.add("explanations", explanationArray);
+		nodeObject.add("explanations", currentExplanationArray);
 		nodeObject.add("objectCode", obj.getObjectCode());
 		nodeObject.add("table", addrTableArray);
 		nodeOrder.add(nodeObject);
