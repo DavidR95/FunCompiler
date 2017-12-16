@@ -79,9 +79,15 @@
                         <h4><b>Node: </b><span></span></h4>
                     </div>
                     <div class="data-container">
-                        <div class="code-template">
-                            <h4>Code Template</h4>
-                            <img>
+                        <div class="code-template-object-code-container">
+                            <div class="col-md-6 code-template">
+                                <h4>Code Template</h4>
+                                <img></img>
+                            </div>
+                            <div class="col-md-6 object-code">
+                                <h4>Object Code</h4>
+                                <p></p>
+                            </div>
                         </div>
                         <div class="generation-explanations">
                             <h4>Code Generator Actions</h4>

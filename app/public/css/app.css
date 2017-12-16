@@ -8867,14 +8867,21 @@ html,
   overflow: auto;
 }
 
-.code-template {
+.code-template-object-code-container {
   height: 30%;
+}
+
+.code-template-object-code-container .code-template {
   overflow: auto;
 }
 
-.code-template img {
+.code-template-object-code-container .code-template img {
   display: block;
-  margin: 30px auto;
+}
+
+.code-template-object-code-container .object-code {
+  height: 100%;
+  overflow: auto;
 }
 
 .node rect {

@@ -131,12 +131,17 @@ body, html, .container-fluid, .row {
     overflow: auto;
 }
 
-.code-template {
+.code-template-object-code-container {
     height: 30%;
-    overflow: auto;
-    img {
-        display: block;
-        margin: 30px auto;
+    .code-template {
+        overflow: auto;
+        img {
+            display: block;
+        }
+    }
+    .object-code {
+        height: 100%;
+        overflow: auto;
     }
 }
 
