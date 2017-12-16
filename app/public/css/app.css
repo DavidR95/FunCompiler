@@ -8761,6 +8761,13 @@ html,
   display: table-row;
 }
 
+.program-input-container,
+.program-tree-container,
+.data-container {
+  display: table-cell;
+  height: 100%;
+}
+
 .title-container h1 {
   font-size: 40px;
   letter-spacing: 1.5px;
@@ -8792,16 +8799,8 @@ html,
 
 .data-heading-container h3 {
   margin-top: 45px;
-  margin-bottom: 5px;
   padding-bottom: 8px;
   border-bottom: 2px solid #121319;
-}
-
-.program-input-container,
-.program-tree-container,
-.data-container {
-  display: table-cell;
-  height: 100%;
 }
 
 .program-input-container form {
@@ -8830,6 +8829,7 @@ html,
 }
 
 .program-input-container form .form-submit button {
+  width: 50%;
   outline: 0;
   color: white;
   background-color: #333545;
@@ -8840,20 +8840,16 @@ html,
 
 .program-input-container form .form-submit #ca-button {
   border-right: 2px solid #121319;
-  width: 50%;
   float: left;
 }
 
 .program-input-container form .form-submit #cg-button {
   border-left: 2px solid #121319;
-  width: 50%;
   float: right;
 }
 
 .program-tree-container,
 .data-container {
-  height: 100%;
-  padding-top: 5px;
   padding-bottom: 25px;
   overflow: auto;
 }
@@ -8862,15 +8858,20 @@ html,
   border-top: 2px solid #121319;
 }
 
+.type-table-container h3,
+.address-table-container h3,
+.contextual-explanations h3,
+.generation-explanations h3,
+.code-template h3,
+.object-code h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
 .type-table-container {
   margin-top: 10px;
   height: 50%;
   overflow: auto;
-}
-
-.type-table-container h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
 }
 
 .address-table-container {
@@ -8879,19 +8880,9 @@ html,
   overflow: auto;
 }
 
-.address-table-container h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
-}
-
 .contextual-explanations {
   height: 50%;
   overflow: auto;
-}
-
-.contextual-explanations h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
 }
 
 .contextual-explanations ul {
@@ -8914,11 +8905,6 @@ html,
   margin-top: 10px;
   height: 30%;
   overflow: auto;
-}
-
-.generation-explanations h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
 }
 
 .generation-explanations ul {
@@ -8948,11 +8934,6 @@ html,
   overflow: auto;
 }
 
-.code-template-object-code-container .code-template h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
-}
-
 .code-template-object-code-container .code-template ul {
   list-style-type: none;
   margin: 0;
@@ -8969,11 +8950,6 @@ html,
   overflow: auto;
   width: 47%;
   float: right;
-}
-
-.code-template-object-code-container .object-code h3 {
-  padding-bottom: 3px;
-  border-bottom: 2px solid #121319;
 }
 
 .code-template-object-code-container .object-code ul {
