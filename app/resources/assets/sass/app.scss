@@ -131,53 +131,42 @@ body, html, .container-fluid, .row {
     }
 }
 
-.type-table-container {
+.type-table-container, .address-table-container {
     margin-top: 10px;
-    height: 50%;
     overflow: auto;
 }
 
+.type-table-container {
+    height: 50%;
+}
+
 .address-table-container {
-    margin-top: 10px;
     height: 40%;
+}
+
+.contextual-explanations, .generation-explanations {
     overflow: auto;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        font-weight: bold;
+        padding-left: 3px;
+    }
+    li:last-child {
+        color: white;
+        background-color: $orient;
+    }
 }
 
 .contextual-explanations {
     height: 50%;
-    overflow: auto;
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-    li {
-        font-weight: bold;
-        padding-left: 3px;
-    }
-    li:last-child {
-        color: white;
-        background-color: $orient;
-    }
 }
 
 .generation-explanations {
-    margin-top: 10px;
     height: 30%;
-    overflow: auto;
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-    li {
-        font-weight: bold;
-        padding-left: 3px;
-    }
-    li:last-child {
-        color: white;
-        background-color: $orient;
-    }
 }
 
 .code-template-object-code-container {

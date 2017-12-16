@@ -8868,59 +8868,50 @@ html,
   border-bottom: 2px solid #121319;
 }
 
-.type-table-container {
+.type-table-container,
+.address-table-container {
   margin-top: 10px;
-  height: 50%;
   overflow: auto;
+}
+
+.type-table-container {
+  height: 50%;
 }
 
 .address-table-container {
-  margin-top: 10px;
   height: 40%;
-  overflow: auto;
 }
 
-.contextual-explanations {
-  height: 50%;
-  overflow: auto;
-}
-
-.contextual-explanations ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.contextual-explanations li {
-  font-weight: bold;
-  padding-left: 3px;
-}
-
-.contextual-explanations li:last-child {
-  color: white;
-  background-color: #035a80;
-}
-
+.contextual-explanations,
 .generation-explanations {
-  margin-top: 10px;
-  height: 30%;
   overflow: auto;
 }
 
+.contextual-explanations ul,
 .generation-explanations ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
+.contextual-explanations li,
 .generation-explanations li {
   font-weight: bold;
   padding-left: 3px;
 }
 
+.contextual-explanations li:last-child,
 .generation-explanations li:last-child {
   color: white;
   background-color: #035a80;
+}
+
+.contextual-explanations {
+  height: 50%;
+}
+
+.generation-explanations {
+  height: 30%;
 }
 
 .code-template-object-code-container {
