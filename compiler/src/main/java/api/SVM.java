@@ -1,6 +1,6 @@
 package api;
 
-import java.util.*;
+import com.google.gson.JsonArray;
 
 public class SVM {
 
@@ -64,12 +64,9 @@ public class SVM {
 
 	// CODE DISPLAY
 
-	// Return a textual representation of all the code.
-	public ArrayList<String> showCode() {
-		// An ArrayList of Strings, each entry holding an instruction
-		ArrayList<String> assembly = new ArrayList<String>();
+	public JsonArray showCode() {
+		JsonArray assembly = new JsonArray();
 		for (int c = 0; c < cl;) {
-			// Add the new instruction to the ArrayList
 			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
@@ -77,8 +74,6 @@ public class SVM {
 	}
 
 	private String showInstruction (int c) {
-	// Return a textual representation of the instruction
-	// at offset c in the code store.
 		byte opcode = code[c++];
 		String line =
 		   String.format("%d: %s ", c-1, mnemonic[opcode]);
