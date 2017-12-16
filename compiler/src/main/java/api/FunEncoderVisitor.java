@@ -64,6 +64,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			currentExplanationArray.add(explanation);
 		}
 		nodeExplanations.put(contextHash, currentExplanationArray);
+
 		JsonArray addrTableArray = new JsonArray();
 		addrTable.getGlobals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
@@ -79,6 +80,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			addrTableObject.addProperty("type_address", Integer.toString(addr.offset));
 			addrTableArray.add(addrTableObject);
 		});
+
 		nodeObject.addProperty("id", contextHash);
 		nodeObject.add("explanations", currentExplanationArray);
 		nodeObject.add("objectCode", obj.getObjectCode());
