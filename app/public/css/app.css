@@ -8954,6 +8954,22 @@ html,
   overflow: auto;
 }
 
+.code-template-object-code-container .object-code h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
+.code-template-object-code-container .object-code ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.code-template-object-code-container .object-code li {
+  font-weight: bold;
+  padding-left: 3px;
+}
+
 .node rect {
   fill: #3e4153;
   stroke: #282a36;

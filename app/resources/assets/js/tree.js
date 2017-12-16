@@ -119,7 +119,7 @@ $("#reverse-button").on("click", function() {
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations ul");
-        var objectCodeText = $(".object-code p");
+        var objectCodeText = $(".object-code ul");
         var tableBody = $(".address-table tbody");
         var codeTemplateImage = $(".code-template img");
     } else {
@@ -159,7 +159,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
             if (showGenerationAnimation) {
                 var objectCodeInstructions = "";
                 $.each(node.objectCode, function(index, objectCode) {
-                    objectCodeInstructions += objectCode + "<br>";
+                    objectCodeInstructions += "<li>" + objectCode + "</li>";
                 });
                 objectCodeText.html(objectCodeInstructions);
                 var codeTemplateURL = "images/" + nodeName + ".png";

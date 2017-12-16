@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-md-6 object-code">
                                 <h3><b>Object Code</b></h3>
-                                <p></p>
+                                <ul></ul>
                             </div>
                         </div>
                         <div class="generation-explanations">
