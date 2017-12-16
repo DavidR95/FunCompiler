@@ -79,27 +79,21 @@ var Tree = module.exports = {
         pause();
         previousNode = null;
         currentNodeIndex = -1;
-        $(".data-heading-container span").text("");
         showGenerationAnimation = (executionType === "cg") ? true : false;
         if (showGenerationAnimation) {
             $(".controls-container span").html("Code Generation");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
-            $(".generation-explanations p").text("");
-            $(".address-table tbody").text("");
-            $(".code-template img").removeAttr("src");
         } else {
             $(".controls-container span").html("Contextual Analysis");
-            $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
-            $(".contextual-explanations p").text("");
-            $(".type-table tbody").text("");
+            $(".right-contextual-container").css("display", "table");
         }
         nodeOrder = executionNodeOrder
     },
     highlightFirstNode: function() {
         var node = nodeOrder[currentNodeIndex+1];
-        animateNode(node, true, 0);        
+        animateNode(node, true, 0);
     }
 }
 
@@ -124,7 +118,7 @@ $("#reverse-button").on("click", function() {
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
-        var explanationsText = $(".generation-explanations p");
+        var explanationsText = $(".generation-explanations ul");
         var objectCodeText = $(".object-code p");
         var tableBody = $(".address-table tbody");
         var codeTemplateImage = $(".code-template img");

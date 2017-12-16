@@ -138,18 +138,22 @@ body, html, .container-fluid, .row {
 }
 
 .address-table-container {
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
     margin-top: 10px;
     height: 40%;
     overflow: auto;
 }
 
 .contextual-explanations {
+    height: 50%;
+    overflow: auto;
     h3 {
         padding-bottom: 3px;
         border-bottom: 2px solid darken($dracula, 10%);
     }
-    height: 50%;
-    overflow: auto;
     ul {
         list-style-type: none;
         margin: 0;
@@ -169,6 +173,23 @@ body, html, .container-fluid, .row {
     margin-top: 10px;
     height: 30%;
     overflow: auto;
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        font-weight: bold;
+        padding-left: 3px;
+    }
+    li:last-child {
+        color: white;
+        background-color: $orient;
+    }
 }
 
 .code-template-object-code-container {

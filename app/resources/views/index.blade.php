@@ -90,7 +90,7 @@
                         </div>
                         <div class="generation-explanations">
                             <h3><b>Code Generator Actions</b></h3>
-                            <p></p>
+                            <ul></ul>
                         </div>
                         <div class="address-table-container">
                             <h3><b>Address Table</b></h3>

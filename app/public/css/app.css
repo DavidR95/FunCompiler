@@ -8879,6 +8879,11 @@ html,
   overflow: auto;
 }
 
+.address-table-container h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
 .contextual-explanations {
   height: 50%;
   overflow: auto;
@@ -8909,6 +8914,27 @@ html,
   margin-top: 10px;
   height: 30%;
   overflow: auto;
+}
+
+.generation-explanations h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
+.generation-explanations ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.generation-explanations li {
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.generation-explanations li:last-child {
+  color: white;
+  background-color: #035a80;
 }
 
 .code-template-object-code-container {
