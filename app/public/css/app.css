@@ -8735,14 +8735,15 @@ body,
 html,
 .container-fluid,
 .row {
-  background-color: #3e4153;
-  color: white;
+  background: #C9D6FF;
+  background: -webkit-gradient(linear, left top, right top, from(#E2E2E2), to(#C9D6FF));
+  background: linear-gradient(to right, #E2E2E2, #C9D6FF);
+  color: #282a36;
   height: 100%;
 }
 
 .table-container {
   height: 100%;
-  border-left: 2px solid #121319;
 }
 
 .left-container,
@@ -8760,8 +8761,21 @@ html,
   display: table-row;
 }
 
-.controls-container h4 {
-  margin-top: 45px;
+.program-input-container,
+.program-tree-container,
+.data-container {
+  display: table-cell;
+  height: 100%;
+}
+
+.title-container h1 {
+  font-size: 40px;
+  letter-spacing: 1.5px;
+}
+
+.controls-container h3 {
+  margin-bottom: 0px;
+  margin-top: 50px;
   float: left;
 }
 
@@ -8770,43 +8784,38 @@ html,
 }
 
 .controls-container .playback-buttons .glyphicon {
-  margin-top: 45px;
-  margin-left: 5px;
+  margin: 45px 0px 10px 5px;
   font-size: 1.75em;
   cursor: pointer;
 }
 
 .controls-container .playback-buttons .glyphicon:hover {
-  color: #282a36;
+  color: #047db2;
 }
 
 .controls-container .playback-buttons .glyphicon:active {
-  color: #121319;
+  color: #035a80;
 }
 
-.data-heading-container h4 {
+.data-heading-container h3 {
   margin-top: 45px;
-  margin-bottom: 5px;
-}
-
-.program-input-container,
-.program-tree-container,
-.data-container {
-  display: table-cell;
-  height: 100%;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #121319;
 }
 
 .program-input-container form {
-  height: 100%;
+  height: 98%;
+  border: 4px solid #121319;
+  -webkit-box-shadow: 0px 0px 6px 1px #282a36;
+          box-shadow: 0px 0px 6px 1px #282a36;
 }
 
 .program-input-container form .form-group {
-  height: 90%;
+  height: 88%;
   margin: 0;
 }
 
 .program-input-container form .form-group .CodeMirror {
-  border: 2px solid #121319;
   min-height: 100%;
   max-height: 100%;
 }
@@ -8816,88 +8825,133 @@ html,
 }
 
 .program-input-container form .form-submit {
-  height: 10%;
-  padding-bottom: 25px;
+  height: 12%;
 }
 
 .program-input-container form .form-submit button {
-  border-radius: 0px;
+  width: 50%;
+  outline: 0;
+  color: white;
+  background-color: #333545;
+  border: none;
+  border-top: 4px solid #121319;
   height: 100%;
-  width: 100%;
 }
 
 .program-input-container form .form-submit #ca-button {
-  width: 50%;
+  border-right: 2px solid #121319;
   float: left;
 }
 
 .program-input-container form .form-submit #cg-button {
-  width: 50%;
+  border-left: 2px solid #121319;
   float: right;
 }
 
 .program-tree-container,
 .data-container {
-  height: 100%;
-  padding-top: 5px;
   padding-bottom: 25px;
   overflow: auto;
 }
 
-.type-table-container {
+.program-tree-container {
+  border-top: 2px solid #121319;
+}
+
+.type-table-container h3,
+.address-table-container h3,
+.contextual-explanations h3,
+.generation-explanations h3,
+.code-template h3,
+.object-code h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
+}
+
+.type-table-container,
+.address-table-container {
   margin-top: 10px;
-  height: 50%;
   overflow: auto;
 }
 
+.type-table-container {
+  height: 50%;
+}
+
 .address-table-container {
-  margin-top: 10px;
   height: 40%;
+}
+
+.contextual-explanations,
+.generation-explanations,
+.code-template,
+.object-code {
   overflow: auto;
+}
+
+.contextual-explanations ul,
+.generation-explanations ul,
+.code-template ul,
+.object-code ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contextual-explanations li,
+.generation-explanations li,
+.code-template li,
+.object-code li {
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.contextual-explanations li:last-child,
+.generation-explanations li:last-child {
+  color: white;
+  background-color: #035a80;
 }
 
 .contextual-explanations {
   height: 50%;
-  overflow: auto;
 }
 
 .generation-explanations {
-  margin-top: 10px;
   height: 30%;
-  overflow: auto;
 }
 
 .code-template-object-code-container {
   height: 30%;
 }
 
-.code-template-object-code-container .code-template {
-  overflow: auto;
+.code-template-object-code-container .code-template,
+.code-template-object-code-container .object-code {
+  height: 100%;
+  width: 47%;
 }
 
-.code-template-object-code-container .code-template img {
-  display: block;
+.code-template-object-code-container .code-template {
+  float: left;
 }
 
 .code-template-object-code-container .object-code {
-  height: 100%;
-  overflow: auto;
+  float: right;
 }
 
 .node rect {
-  fill: #fff;
+  fill: #3e4153;
   stroke: #282a36;
   stroke-width: 3px;
 }
 
 .node text {
   font: 11px "Raleway";
-  fill: #282a36;
+  fill: white;
 }
 
 .link {
   fill: none;
-  stroke: #ccc;
+  stroke: #121319;
   stroke-width: 2px;
 }
 
@@ -8905,7 +8959,6 @@ html,
   display: inline-block;
   position: relative;
   width: 100%;
-  vertical-align: top;
 }
 
 .svg-content-responsive {
@@ -8913,77 +8966,24 @@ html,
   position: absolute;
 }
 
-.btn-execute {
-  color: white;
-  background-color: #282a36;
-  border-color: #121319;
-  border-width: 2px;
-}
-
-.btn-execute:focus,
-.btn-execute.focus {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:hover {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:active,
-.btn-execute.active,
-.open > .btn-execute.dropdown-toggle {
-  color: white;
-  background-color: #121319;
-  border-color: black;
-}
-
-.btn-execute:active:hover,
-.btn-execute:active:focus,
-.btn-execute:active.focus,
-.btn-execute.active:hover,
-.btn-execute.active:focus,
-.btn-execute.active.focus,
-.open > .btn-execute.dropdown-toggle:hover,
-.open > .btn-execute.dropdown-toggle:focus,
-.open > .btn-execute.dropdown-toggle.focus {
-  color: white;
-  background-color: #030304;
-  border-color: black;
-}
-
-.btn-execute:active,
-.btn-execute.active,
-.open > .btn-execute.dropdown-toggle {
-  background-image: none;
-}
-
-.btn-execute.disabled:hover,
-.btn-execute.disabled:focus,
-.btn-execute.disabled.focus,
-.btn-execute[disabled]:hover,
-.btn-execute[disabled]:focus,
-.btn-execute[disabled].focus,
-fieldset[disabled] .btn-execute:hover,
-fieldset[disabled] .btn-execute:focus,
-fieldset[disabled] .btn-execute.focus {
-  background-color: #282a36;
-  border-color: #121319;
-}
-
-.btn-execute .badge {
-  color: #282a36;
-  background-color: white;
-}
-
 #pause-button,
 .right-generation-container,
 .right-contextual-container,
 .center-container {
   display: none;
+}
+
+.table-striped {
+  width: 95%;
+  margin: 0 auto;
+  color: white;
+  border: 4px solid #121319;
+  -webkit-box-shadow: 0px 0px 6px 1px #282a36;
+          box-shadow: 0px 0px 6px 1px #282a36;
+}
+
+.table-striped thead {
+  background-color: #3e4153;
 }
 
 .table-striped tbody tr:nth-child(odd) {
@@ -8996,6 +8996,6 @@ fieldset[disabled] .btn-execute.focus {
 
 .table-striped tbody tr:hover {
   cursor: pointer;
-  background-color: #3e4153;
+  background-color: #035a80;
 }
 

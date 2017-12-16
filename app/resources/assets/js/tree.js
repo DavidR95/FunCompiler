@@ -1,5 +1,7 @@
 var d3 = require('d3');
 
+var CodeTemplates = require('./codetemplates.js');
+
 var Tree = module.exports = {
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
@@ -79,23 +81,21 @@ var Tree = module.exports = {
         pause();
         previousNode = null;
         currentNodeIndex = -1;
-        $(".data-heading-container span").text("");
         showGenerationAnimation = (executionType === "cg") ? true : false;
         if (showGenerationAnimation) {
             $(".controls-container span").html("Code Generation");
             $(".right-contextual-container").hide();
             $(".right-generation-container").css("display", "table");
-            $(".generation-explanations p").text("");
-            $(".address-table tbody").text("");
-            $(".code-template img").removeAttr("src");
         } else {
             $(".controls-container span").html("Contextual Analysis");
-            $(".right-contextual-container").css("display", "table");
             $(".right-generation-container").hide();
-            $(".contextual-explanations p").text("");
-            $(".type-table tbody").text("");
+            $(".right-contextual-container").css("display", "table");
         }
         nodeOrder = executionNodeOrder
+    },
+    highlightFirstNode: function() {
+        var node = nodeOrder[currentNodeIndex+1];
+        animateNode(node, true, 0);
     }
 }
 
@@ -120,21 +120,21 @@ $("#reverse-button").on("click", function() {
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
-        var explanationsText = $(".generation-explanations p");
-        var objectCodeText = $(".object-code p");
+        var explanationsText = $(".generation-explanations ul");
+        var objectCodeText = $(".object-code ul");
         var tableBody = $(".address-table tbody");
-        var codeTemplateImage = $(".code-template img");
+        var codeTemplateText = $(".code-template ul");
     } else {
-        var explanationsText = $(".contextual-explanations p");
+        var explanationsText = $(".contextual-explanations ul");
         var tableBody = $(".type-table tbody");
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .duration(0).delay(delayOffset * 1000).style("fill", "#3e4153")
+        .duration(0).delay(delayOffset * 1000).style("fill", "#035a80")
         .on("start", function() {
-            $(this).next("text").css({"fill": "white", "font-weight": "900"});
+            $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
-                $(previousNode).css("fill", "white");
-                $(previousNode).next("text").css({"fill": "#3e4153", "font-weight": "normal"});
+                $(previousNode).css("fill", "#3e4153");
+                $(previousNode).next("text").css({"fill": "white", "font-weight": "normal"});
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -154,18 +154,22 @@ function animateNode(node, isPlayingForward, delayOffset) {
 
             var explanations = "";
             $.each(node.explanations, function(index, explanation) {
-                explanations += explanation + "<br>";
+                explanations += "<li>> " + explanation + "</li>";
             });
             explanationsText.html(explanations);
 
             if (showGenerationAnimation) {
                 var objectCodeInstructions = "";
                 $.each(node.objectCode, function(index, objectCode) {
-                    objectCodeInstructions += objectCode + "<br>";
+                    objectCodeInstructions += "<li>" + objectCode + "</li>";
                 });
                 objectCodeText.html(objectCodeInstructions);
-                var codeTemplateURL = "images/" + nodeName + ".png";
-                codeTemplateImage.attr("src", codeTemplateURL);
+                var codeTemplateInstructions = "";
+                var codeTemplate = CodeTemplates.getTemplate(nodeName);
+                $.each(codeTemplate, function(index, codeTemplateInstruction) {
+                    codeTemplateInstructions += "<li>> " + codeTemplateInstruction + "</li>";
+                })
+                codeTemplateText.html(codeTemplateInstructions);
             }
         }).on("end", function() {
             previousNode = this;

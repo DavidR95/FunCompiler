@@ -259,8 +259,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	 * @return the visitor result
 	 */
 	public Type visitProg(FunParser.ProgContext ctx) {
-		addNode(ctx, "Predefine the read and write procedures");
 		predefine();
+		addNode(ctx, "Predefine the read and write procedures");
 		addNode(ctx, "Walk children");
 	    visitChildren(ctx);
 	    Type tmain = retrieve("main", ctx);

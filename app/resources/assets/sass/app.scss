@@ -12,14 +12,15 @@
 @import "~codemirror/theme/dracula.css";
 
 body, html, .container-fluid, .row {
-    background-color: lighten($dracula, 10%);
-    color: white;
+    background: $periwinkle;
+    background: -webkit-linear-gradient(to right, $mercury, $periwinkle);
+    background: linear-gradient(to right, $mercury, $periwinkle);
+    color: $dracula;
     height: 100%;
 }
 
 .table-container {
     height: 100%;
-    border-left: 2px solid darken($dracula, 10%);
 }
 
 .left-container, .center-container, .right-contextual-container, .right-generation-container {
@@ -32,48 +33,57 @@ body, html, .container-fluid, .row {
     display: table-row;
 }
 
+.program-input-container, .program-tree-container, .data-container {
+    display: table-cell;
+    height: 100%;
+}
+
+.title-container {
+    h1 {
+        font-size: 40px;
+        letter-spacing: 1.5px;
+    }
+}
+
 .controls-container {
-    h4 {
-        margin-top: 45px;
+    h3 {
+        margin-bottom: 0px;
+        margin-top: 50px;
         float: left;
     }
     .playback-buttons {
         float: right;
         .glyphicon {
-            margin-top: 45px;
-            margin-left: 5px;
+            margin: 45px 0px 10px 5px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
-                color: $dracula;
+                color: lighten($orient, 10%);
             }
             &:active {
-                color: darken($dracula, 10%);
+                color: $orient;
             }
         }
     }
 }
 
 .data-heading-container {
-    h4 {
+    h3 {
         margin-top: 45px;
-        margin-bottom: 5px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid darken($dracula, 10%);
     }
-}
-
-.program-input-container, .program-tree-container, .data-container {
-    display: table-cell;
-    height: 100%;
 }
 
 .program-input-container {
     form {
-        height: 100%;
+        height: 98%;
+        border: 4px solid darken($dracula, 10%);
+        box-shadow: 0px 0px 6px 1px $dracula;
         .form-group {
-            height: 90%;
+            height: 88%;
             margin: 0;
             .CodeMirror {
-                border: 2px solid darken($dracula, 10%);
                 min-height: 100%;
                 max-height: 100%;
                 .CodeMirror-line {
@@ -82,19 +92,22 @@ body, html, .container-fluid, .row {
             }
         }
         .form-submit {
-            height: 10%;
-            padding-bottom: 25px;
+            height: 12%;
             button {
-                border-radius: 0px;
+                width: 50%;
+                outline: 0;
+                color: white;
+                background-color: lighten($dracula, 5%);
+                border: none;
+                border-top: 4px solid darken($dracula, 10%);
                 height: 100%;
-                width: 100%;
             }
             #ca-button {
-                width: 50%;
+                border-right: 2px solid darken($dracula, 10%);
                 float: left
             }
             #cg-button {
-                width: 50%;
+                border-left: 2px solid darken($dracula, 10%);
                 float: right;
             }
         }
@@ -102,63 +115,91 @@ body, html, .container-fluid, .row {
 }
 
 .program-tree-container, .data-container {
-    height: 100%;
-    padding-top: 5px;
     padding-bottom: 25px;
     overflow: auto;
 }
 
-.type-table-container {
+.program-tree-container {
+    border-top: 2px solid darken($dracula, 10%);
+}
+
+.type-table-container, .address-table-container, .contextual-explanations,
+.generation-explanations, .code-template, .object-code {
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
+}
+
+.type-table-container, .address-table-container {
     margin-top: 10px;
-    height: 50%;
     overflow: auto;
 }
 
+.type-table-container {
+    height: 50%;
+}
+
 .address-table-container {
-    margin-top: 10px;
     height: 40%;
+}
+
+.contextual-explanations, .generation-explanations, .code-template, .object-code {
     overflow: auto;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        font-weight: bold;
+        padding-left: 3px;
+    }
+}
+
+.contextual-explanations, .generation-explanations {
+    li:last-child {
+        color: white;
+        background-color: $orient;
+    }
 }
 
 .contextual-explanations {
     height: 50%;
-    overflow: auto;
 }
 
 .generation-explanations {
-    margin-top: 10px;
     height: 30%;
-    overflow: auto;
 }
 
 .code-template-object-code-container {
     height: 30%;
+    .code-template, .object-code {
+        height: 100%;
+        width: 47%;
+    }
     .code-template {
-        overflow: auto;
-        img {
-            display: block;
-        }
+        float: left;
     }
     .object-code {
-        height: 100%;
-        overflow: auto;
+        float: right;
     }
 }
 
 .node rect {
-    fill: #fff;
+    fill: lighten($dracula, 10%);
     stroke: $dracula;
     stroke-width: 3px;
 }
 
 .node text {
     font: 11px "Raleway";
-    fill: $dracula;
+    fill: white;
 }
 
 .link {
     fill: none;
-    stroke: #ccc;
+    stroke: darken($dracula, 10%);
     stroke-width: 2px;
 }
 
@@ -166,31 +207,36 @@ body, html, .container-fluid, .row {
     display: inline-block;
     position: relative;
     width: 100%;
-    vertical-align: top;
 }
+
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
-}
-
-.btn-execute {
-    @include button-variant(white, $dracula, darken($dracula, 10%));
-    border-width: 2px;
 }
 
 #pause-button, .right-generation-container, .right-contextual-container, .center-container {
     display: none;
 }
 
-.table-striped tbody {
-    tr:nth-child(odd) {
-	    background-color: $dracula;
-    }
-    tr:nth-child(even) {
-        background-color: darken($dracula, 10%);
-    }
-    tr:hover {
-        cursor: pointer;
+.table-striped {
+    width: 95%;
+    margin: 0 auto;
+    color: white;
+    border: 4px solid darken($dracula, 10%);
+    box-shadow: 0px 0px 6px 1px $dracula;
+    thead {
         background-color: lighten($dracula, 10%);
+    }
+    tbody {
+        tr:nth-child(odd) {
+    	    background-color: $dracula;
+        }
+        tr:nth-child(even) {
+            background-color: darken($dracula, 10%);
+        }
+        tr:hover {
+            cursor: pointer;
+            background-color: $orient;
+        }
     }
 }
