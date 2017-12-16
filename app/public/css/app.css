@@ -8883,19 +8883,25 @@ html,
 }
 
 .contextual-explanations,
-.generation-explanations {
+.generation-explanations,
+.code-template,
+.object-code {
   overflow: auto;
 }
 
 .contextual-explanations ul,
-.generation-explanations ul {
+.generation-explanations ul,
+.code-template ul,
+.object-code ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
 .contextual-explanations li,
-.generation-explanations li {
+.generation-explanations li,
+.code-template li,
+.object-code li {
   font-weight: bold;
   padding-left: 3px;
 }
@@ -8922,36 +8928,12 @@ html,
   height: 100%;
   width: 47%;
   float: left;
-  overflow: auto;
-}
-
-.code-template-object-code-container .code-template ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.code-template-object-code-container .code-template li {
-  font-weight: bold;
-  padding-left: 3px;
 }
 
 .code-template-object-code-container .object-code {
   height: 100%;
-  overflow: auto;
   width: 47%;
   float: right;
-}
-
-.code-template-object-code-container .object-code ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.code-template-object-code-container .object-code li {
-  font-weight: bold;
-  padding-left: 3px;
 }
 
 .node rect {
