@@ -43,6 +43,7 @@ $("#execute-form").submit(function(e) {
         } else {
             Tree.initialise(executionType, nodeOrder);
             Tree.drawTree(treeNodes);
+            Tree.highlightFirstNode();
         }
     }).fail(function(responseData) {
         alert(responseData.responseJSON.errors.program);

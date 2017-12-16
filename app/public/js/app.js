@@ -31692,6 +31692,7 @@ $("#execute-form").submit(function (e) {
         } else {
             Tree.initialise(executionType, nodeOrder);
             Tree.drawTree(treeNodes);
+            Tree.highlightFirstNode();
         }
     }).fail(function (responseData) {
         alert(responseData.responseJSON.errors.program);
@@ -32023,6 +32024,10 @@ var Tree = module.exports = {
             $(".type-table tbody").text("");
         }
         nodeOrder = executionNodeOrder;
+    },
+    highlightFirstNode: function highlightFirstNode() {
+        var node = nodeOrder[currentNodeIndex + 1];
+        animateNode(node, true, 0);
     }
 };
 

@@ -96,6 +96,10 @@ var Tree = module.exports = {
             $(".type-table tbody").text("");
         }
         nodeOrder = executionNodeOrder
+    },
+    highlightFirstNode: function() {
+        var node = nodeOrder[currentNodeIndex+1];
+        animateNode(node, true, 0);        
     }
 }
 
