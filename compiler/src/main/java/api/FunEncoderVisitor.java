@@ -15,10 +15,8 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.*;
 
 import java.util.List;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Arrays;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -55,6 +53,8 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
+		JsonObject nodeObject = new JsonObject();
+
 		JsonArray currentExplanationArray = new JsonArray();
 		JsonArray previousExplanationArray = nodeExplanations.get(contextHash);
 		if (previousExplanationArray != null) {
@@ -64,7 +64,6 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 			currentExplanationArray.add(explanation);
 		}
 		nodeExplanations.put(contextHash, currentExplanationArray);
-		JsonObject nodeObject = new JsonObject();
 		JsonArray addrTableArray = new JsonArray();
 		addrTable.getGlobals().forEach((id,addr) -> {
 			JsonObject addrTableObject = new JsonObject();
