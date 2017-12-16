@@ -1,5 +1,7 @@
 var d3 = require('d3');
 
+var CodeTemplates = require('./codetemplates.js');
+
 var Tree = module.exports = {
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
@@ -121,7 +123,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var explanationsText = $(".generation-explanations ul");
         var objectCodeText = $(".object-code ul");
         var tableBody = $(".address-table tbody");
-        var codeTemplateImage = $(".code-template img");
+        var codeTemplateText = $(".code-template ul");
     } else {
         var explanationsText = $(".contextual-explanations ul");
         var tableBody = $(".type-table tbody");
@@ -162,8 +164,12 @@ function animateNode(node, isPlayingForward, delayOffset) {
                     objectCodeInstructions += "<li>" + objectCode + "</li>";
                 });
                 objectCodeText.html(objectCodeInstructions);
-                var codeTemplateURL = "images/" + nodeName + ".png";
-                codeTemplateImage.attr("src", codeTemplateURL);
+                var codeTemplateInstructions = "";
+                var codeTemplate = CodeTemplates.getTemplate(nodeName);
+                $.each(codeTemplate, function(index, codeTemplateInstruction) {
+                    codeTemplateInstructions += "<li>" + codeTemplateInstruction + "</li>";
+                })
+                codeTemplateText.html(codeTemplateInstructions);
             }
         }).on("end", function() {
             previousNode = this;

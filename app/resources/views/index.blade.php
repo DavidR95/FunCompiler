@@ -81,7 +81,7 @@
                         <div class="code-template-object-code-container">
                             <div class="col-md-6 code-template">
                                 <h3><b>Code Template</b></h3>
-                                <img></img>
+                                <ul></ul>
                             </div>
                             <div class="col-md-6 object-code">
                                 <h3><b>Object Code</b></h3>

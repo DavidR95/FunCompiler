@@ -8942,11 +8942,17 @@ html,
 }
 
 .code-template-object-code-container .code-template {
+  height: 100%;
   overflow: auto;
 }
 
 .code-template-object-code-container .code-template img {
   display: block;
+}
+
+.code-template-object-code-container .code-template h3 {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #121319;
 }
 
 .code-template-object-code-container .object-code {

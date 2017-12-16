@@ -195,9 +195,14 @@ body, html, .container-fluid, .row {
 .code-template-object-code-container {
     height: 30%;
     .code-template {
+        height: 100%;
         overflow: auto;
         img {
             display: block;
+        }
+        h3 {
+            padding-bottom: 3px;
+            border-bottom: 2px solid darken($dracula, 10%);
         }
     }
     .object-code {

@@ -32032,6 +32032,8 @@ CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 
 var d3 = __webpack_require__(182);
 
+var CodeTemplates = __webpack_require__(487);
+
 var Tree = module.exports = {
     drawTree: function drawTree(data) {
         var dataMap = data.reduce(function (map, node) {
@@ -32127,7 +32129,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var explanationsText = $(".generation-explanations ul");
         var objectCodeText = $(".object-code ul");
         var tableBody = $(".address-table tbody");
-        var codeTemplateImage = $(".code-template img");
+        var codeTemplateText = $(".code-template ul");
     } else {
         var explanationsText = $(".contextual-explanations ul");
         var tableBody = $(".type-table tbody");
@@ -32163,8 +32165,12 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 objectCodeInstructions += "<li>" + objectCode + "</li>";
             });
             objectCodeText.html(objectCodeInstructions);
-            var codeTemplateURL = "images/" + nodeName + ".png";
-            codeTemplateImage.attr("src", codeTemplateURL);
+            var codeTemplateInstructions = "";
+            var codeTemplate = CodeTemplates.getTemplate(nodeName);
+            $.each(codeTemplate, function (index, codeTemplateInstruction) {
+                codeTemplateInstructions += "<li>" + codeTemplateInstruction + "</li>";
+            });
+            codeTemplateText.html(codeTemplateInstructions);
         }
     }).on("end", function () {
         previousNode = this;
@@ -45771,6 +45777,32 @@ function nopropagation() {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 475 */,
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */
+/***/ (function(module, exports) {
+
+var CodeTemplates = module.exports = {
+    getTemplate: function getTemplate(templateName) {
+        return templates[templateName];
+    }
+};
+
+var templates = {
+    WHILE: ["Code to evaluate expr", "JUMPF", "Code to execute com", "JUMP"]
+};
 
 /***/ })
 /******/ ]);
