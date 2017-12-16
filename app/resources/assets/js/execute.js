@@ -6,6 +6,8 @@ var executionType;
 
 $("button[type='submit']").click(function() {
     executionType = $(this).val();
+    $(this).siblings().css("background-color", "#333545")
+    $(this).css("background-color", "#035a80");
 });
 
 $("#execute-form").submit(function(e) {
