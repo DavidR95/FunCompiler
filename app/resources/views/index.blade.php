@@ -34,7 +34,7 @@
             <div class="col-md-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
-                        <h4><b><span></span></b></h4>
+                        <h3><b><span></span></b></h3>
                         <div class="playback-buttons">
                             <i id="reverse-button" class="glyphicon glyphicon-step-backward"></i>
                             <i id="play-button" class="glyphicon glyphicon-play"></i>

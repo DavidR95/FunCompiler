@@ -8766,8 +8766,9 @@ html,
   letter-spacing: 1.5px;
 }
 
-.controls-container h4 {
-  margin-top: 45px;
+.controls-container h3 {
+  margin-bottom: 0px;
+  margin-top: 50px;
   float: left;
 }
 
@@ -8776,8 +8777,7 @@ html,
 }
 
 .controls-container .playback-buttons .glyphicon {
-  margin-top: 45px;
-  margin-left: 5px;
+  margin: 45px 0px 10px 5px;
   font-size: 1.75em;
   cursor: pointer;
 }
@@ -8854,6 +8854,10 @@ html,
   padding-top: 5px;
   padding-bottom: 25px;
   overflow: auto;
+}
+
+.program-tree-container {
+  border-top: 2px solid #121319;
 }
 
 .type-table-container {

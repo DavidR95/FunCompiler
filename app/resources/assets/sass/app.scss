@@ -41,15 +41,15 @@ body, html, .container-fluid, .row {
 }
 
 .controls-container {
-    h4 {
-        margin-top: 45px;
+    h3 {
+        margin-bottom: 0px;
+        margin-top: 50px;
         float: left;
     }
     .playback-buttons {
         float: right;
         .glyphicon {
-            margin-top: 45px;
-            margin-left: 5px;
+            margin: 45px 0px 10px 5px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
@@ -119,6 +119,10 @@ body, html, .container-fluid, .row {
     padding-top: 5px;
     padding-bottom: 25px;
     overflow: auto;
+}
+
+.program-tree-container {
+    border-top: 2px solid darken($dracula, 10%);
 }
 
 .type-table-container {
