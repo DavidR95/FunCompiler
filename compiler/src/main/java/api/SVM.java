@@ -150,8 +150,6 @@ public class SVM {
 			assembly.add(showInstruction(c));
 			c += bytes[code[c]];
 		}
-		// Set the object code of the response object
-		response.setObjectCode(assembly);
 	}
 
 	private String showInstruction (int c) {
