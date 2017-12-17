@@ -88,11 +88,11 @@
                     <div class="data-container">
                         <div class="code-template-object-code-container">
                             <div class="code-template">
-                                <h3><b>Code Template</b></h3>
+                                <h3><b>Code<br>Template</b></h3>
                                 <ul></ul>
                             </div>
                             <div class="object-code">
-                                <h3><b>Object Code</b></h3>
+                                <h3><b>Object<br>Code</b></h3>
                                 <ul></ul>
                             </div>
                         </div>
