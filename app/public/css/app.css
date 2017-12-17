@@ -8954,17 +8954,6 @@ html,
   stroke-width: 2px;
 }
 
-.svg-container {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-}
-
-.svg-content-responsive {
-  display: inline-block;
-  position: absolute;
-}
-
 #pause-button,
 .right-generation-container,
 .right-contextual-container,
