@@ -203,6 +203,14 @@ body, html, .container-fluid, .row {
     stroke-width: 2px;
 }
 
+.svg-container {
+    height: 100%;
+    svg {
+        height: 100%;
+        width: 100%;
+    }
+}
+
 #pause-button, .right-generation-container, .right-contextual-container, .center-container {
     display: none;
 }
