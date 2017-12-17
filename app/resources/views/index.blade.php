@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 table-container">
+            <div class="col-lg-3 table-container">
                 <div class="left-container">
                     <div class="title-container">
                         <h1>Fun<b>Compiler</b></h1>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 table-container">
+            <div class="col-lg-6 table-container">
                 <div class="center-container">
                     <div class="controls-container">
                         <h3><b><span></span></b></h3>
@@ -53,7 +53,7 @@
                     <div class="program-tree-container"></div>
                 </div>
             </div>
-            <div class="col-md-3 table-container">
+            <div class="col-lg-3 table-container">
                 <div class="right-contextual-container">
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
