@@ -18973,8 +18973,8 @@ function transform(node) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(173);
-__webpack_require__(473);
-module.exports = __webpack_require__(474);
+__webpack_require__(474);
+module.exports = __webpack_require__(475);
 
 
 /***/ }),
@@ -32032,7 +32032,7 @@ CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 
 var d3 = __webpack_require__(182);
 
-var CodeTemplates = __webpack_require__(487);
+var CodeTemplates = __webpack_require__(473);
 
 var Tree = module.exports = {
     drawTree: function drawTree(data) {
@@ -45770,30 +45770,6 @@ function nopropagation() {
 /* 473 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 474 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */
-/***/ (function(module, exports) {
-
 var CodeTemplates = module.exports = {
     getTemplate: function getTemplate(templateName) {
         return templates[templateName];
@@ -45827,6 +45803,18 @@ var templates = {
     VAR: ["Code to evaluate expr"],
     WHILE: ["Label: 'start_address'", "Code to evaluate expr", "JUMPF exit_address", "Code to execute com", "JUMP start_address", "Label: 'exit_address'"]
 };
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 475 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

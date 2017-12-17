@@ -21,6 +21,7 @@ body, html, .container-fluid, .row {
 
 .table-container {
     height: 100%;
+    min-height: 600px;
 }
 
 .left-container, .center-container, .right-contextual-container, .right-generation-container {
@@ -132,7 +133,6 @@ body, html, .container-fluid, .row {
 }
 
 .type-table-container, .address-table-container {
-    margin-top: 10px;
     overflow: auto;
 }
 
