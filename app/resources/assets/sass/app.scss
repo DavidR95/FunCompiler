@@ -127,7 +127,6 @@ body, html, .container-fluid, .row {
 .type-table-container, .address-table-container, .contextual-explanations,
 .generation-explanations, .code-template, .object-code {
     h3 {
-        word-break: keep-all;
         padding-bottom: 3px;
         border-bottom: 2px solid darken($dracula, 10%);
     }
@@ -146,9 +145,8 @@ body, html, .container-fluid, .row {
 }
 
 .contextual-explanations, .generation-explanations, .code-template, .object-code {
+    overflow: auto;
     ul {
-        height: calc(100% - 75px);
-        overflow: auto;
         list-style-type: none;
         margin: 0;
         padding: 0;

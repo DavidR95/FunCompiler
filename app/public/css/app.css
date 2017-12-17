@@ -8864,7 +8864,6 @@ html,
 .generation-explanations h3,
 .code-template h3,
 .object-code h3 {
-  word-break: keep-all;
   padding-bottom: 3px;
   border-bottom: 2px solid #121319;
 }
@@ -8882,12 +8881,17 @@ html,
   height: 40%;
 }
 
+.contextual-explanations,
+.generation-explanations,
+.code-template,
+.object-code {
+  overflow: auto;
+}
+
 .contextual-explanations ul,
 .generation-explanations ul,
 .code-template ul,
 .object-code ul {
-  height: calc(100% - 75px);
-  overflow: auto;
   list-style-type: none;
   margin: 0;
   padding: 0;
