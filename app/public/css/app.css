@@ -8858,12 +8858,7 @@ html,
   border-top: 2px solid #121319;
 }
 
-.type-table-container h3,
-.address-table-container h3,
-.contextual-explanations h3,
-.generation-explanations h3,
-.code-template h3,
-.object-code h3 {
+.data-container h3 {
   padding-bottom: 3px;
   border-bottom: 2px solid #121319;
 }
