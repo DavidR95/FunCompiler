@@ -8849,8 +8849,7 @@ html,
   float: right;
 }
 
-.program-tree-container,
-.data-container {
+.program-tree-container {
   padding-bottom: 25px;
   overflow: auto;
 }
