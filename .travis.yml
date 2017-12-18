@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  - docker-compose build
+  - docker-compose -f docker-compose.production.yml build
