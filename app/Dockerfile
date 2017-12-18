@@ -6,5 +6,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /app
 # Copy all files in current directory to the working directory of the container
 COPY . /app
+# Update packages and install composer and PHP dependencies.
+RUN apt-get update -yqq
+RUN apt-get install git zlib1g-dev -yqq
+# Compile PHP, include these extensions.
+RUN docker-php-ext-install zip
 # Use the 'composer.json' file to download any PHP dependencies (including Laravel)
 RUN composer install
