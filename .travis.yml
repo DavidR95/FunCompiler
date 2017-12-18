@@ -5,3 +5,5 @@ services:
 
 script:
   - docker-compose -f docker-compose.production.yml build
+  - cd app
+  - phpunit
