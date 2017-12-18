@@ -3,8 +3,5 @@ sudo: required
 services:
   - docker
 
-before_script:
-  - bash .travis.sh > /dev/null
-
 script:
   - docker-compose build
