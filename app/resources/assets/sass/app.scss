@@ -21,6 +21,7 @@ body, html, .container-fluid, .row {
 
 .table-container {
     height: 100%;
+    min-height: 700px;
 }
 
 .left-container, .center-container, .right-contextual-container, .right-generation-container {
@@ -114,7 +115,7 @@ body, html, .container-fluid, .row {
     }
 }
 
-.program-tree-container, .data-container {
+.program-tree-container {
     padding-bottom: 25px;
     overflow: auto;
 }
@@ -123,8 +124,7 @@ body, html, .container-fluid, .row {
     border-top: 2px solid darken($dracula, 10%);
 }
 
-.type-table-container, .address-table-container, .contextual-explanations,
-.generation-explanations, .code-template, .object-code {
+.data-container {
     h3 {
         padding-bottom: 3px;
         border-bottom: 2px solid darken($dracula, 10%);
@@ -132,7 +132,6 @@ body, html, .container-fluid, .row {
 }
 
 .type-table-container, .address-table-container {
-    margin-top: 10px;
     overflow: auto;
 }
 
@@ -204,14 +203,11 @@ body, html, .container-fluid, .row {
 }
 
 .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-}
-
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
+    height: 100%;
+    svg {
+        height: 100%;
+        width: 100%;
+    }
 }
 
 #pause-button, .right-generation-container, .right-contextual-container, .center-container {

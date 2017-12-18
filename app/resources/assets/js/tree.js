@@ -34,9 +34,8 @@ var Tree = module.exports = {
             .append("div")
             .classed("svg-container", true)
             .append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("preserveAspectRatio", "none")
             .attr("viewBox", "0 0 800 650")
-            .classed("svg-content-responsive", true);
         var g = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         g.selectAll(".link")

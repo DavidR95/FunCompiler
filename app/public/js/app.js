@@ -18973,8 +18973,8 @@ function transform(node) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(173);
-__webpack_require__(473);
-module.exports = __webpack_require__(474);
+__webpack_require__(474);
+module.exports = __webpack_require__(475);
 
 
 /***/ }),
@@ -32032,7 +32032,7 @@ CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 
 var d3 = __webpack_require__(182);
 
-var CodeTemplates = __webpack_require__(487);
+var CodeTemplates = __webpack_require__(473);
 
 var Tree = module.exports = {
     drawTree: function drawTree(data) {
@@ -32061,7 +32061,7 @@ var Tree = module.exports = {
         var treemap = d3.tree().size([width, height]);
         var nodes = d3.hierarchy(treeData[0]);
         nodes = treemap(nodes);
-        var svg = d3.select(".program-tree-container").html("").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 800 650").classed("svg-content-responsive", true);
+        var svg = d3.select(".program-tree-container").html("").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "none").attr("viewBox", "0 0 800 650");
         var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         g.selectAll(".link").data(nodes.descendants().slice(1)).enter().append("path").attr("class", "link").attr("d", function (d) {
             return "M" + d.x + "," + d.y + "C" + d.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + d.parent.y;
@@ -45770,30 +45770,6 @@ function nopropagation() {
 /* 473 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 474 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */
-/***/ (function(module, exports) {
-
 var CodeTemplates = module.exports = {
     getTemplate: function getTemplate(templateName) {
         return templates[templateName];
@@ -45827,6 +45803,18 @@ var templates = {
     VAR: ["Code to evaluate expr"],
     WHILE: ["Label: 'start_address'", "Code to evaluate expr", "JUMPF exit_address", "Code to execute com", "JUMP start_address", "Label: 'exit_address'"]
 };
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 475 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

@@ -8744,6 +8744,7 @@ html,
 
 .table-container {
   height: 100%;
+  min-height: 700px;
 }
 
 .left-container,
@@ -8848,8 +8849,7 @@ html,
   float: right;
 }
 
-.program-tree-container,
-.data-container {
+.program-tree-container {
   padding-bottom: 25px;
   overflow: auto;
 }
@@ -8858,19 +8858,13 @@ html,
   border-top: 2px solid #121319;
 }
 
-.type-table-container h3,
-.address-table-container h3,
-.contextual-explanations h3,
-.generation-explanations h3,
-.code-template h3,
-.object-code h3 {
+.data-container h3 {
   padding-bottom: 3px;
   border-bottom: 2px solid #121319;
 }
 
 .type-table-container,
 .address-table-container {
-  margin-top: 10px;
   overflow: auto;
 }
 
@@ -8956,14 +8950,12 @@ html,
 }
 
 .svg-container {
-  display: inline-block;
-  position: relative;
-  width: 100%;
+  height: 100%;
 }
 
-.svg-content-responsive {
-  display: inline-block;
-  position: absolute;
+.svg-container svg {
+  height: 100%;
+  width: 100%;
 }
 
 #pause-button,
