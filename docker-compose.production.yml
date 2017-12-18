@@ -4,10 +4,14 @@ version: '3'
 # Individual components of the overall product (the web app and the compiler api)
 services:
     compiler:
+        # Name the resulting container
+        container_name: FunCompiler
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./compiler
 
     app:
+        # Name the resulting container
+        container_name: FunApp
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./app
         # Starts services in dependency order, i.e., compiler before app
