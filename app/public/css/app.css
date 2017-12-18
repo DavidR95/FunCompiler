@@ -8849,7 +8849,8 @@ html,
   float: right;
 }
 
-.program-tree-container {
+.program-tree-container,
+.data-container {
   padding-bottom: 25px;
   overflow: auto;
 }
@@ -8939,7 +8940,6 @@ html,
 }
 
 .node text {
-  font: 11px "Raleway";
   fill: white;
 }
 

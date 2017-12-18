@@ -60,7 +60,7 @@
                     </div>
                     <div class="data-container">
                         <div class="contextual-explanations">
-                            <h3><b>Code Checker Actions</b></h4>
+                            <h3><b>Code Checker Actions</b></h3>
                             <ul></ul>
                         </div>
                         <div class="type-table-container">
@@ -86,6 +86,10 @@
                         <h3><b>Node: </b><span></span></h3>
                     </div>
                     <div class="data-container">
+                        <div class="generation-explanations">
+                            <h3><b>Code Generator Actions</b></h3>
+                            <ul></ul>
+                        </div>
                         <div class="code-template-object-code-container">
                             <div class="code-template">
                                 <h3><b>Code<br>Template</b></h3>
@@ -95,10 +99,6 @@
                                 <h3><b>Object<br>Code</b></h3>
                                 <ul></ul>
                             </div>
-                        </div>
-                        <div class="generation-explanations">
-                            <h3><b>Code Generator Actions</b></h3>
-                            <ul></ul>
                         </div>
                         <div class="address-table-container">
                             <h3><b>Address Table</b></h3>

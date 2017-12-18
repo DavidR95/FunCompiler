@@ -115,7 +115,7 @@ body, html, .container-fluid, .row {
     }
 }
 
-.program-tree-container {
+.program-tree-container, .data-container  {
     padding-bottom: 25px;
     overflow: auto;
 }
@@ -192,7 +192,6 @@ body, html, .container-fluid, .row {
 }
 
 .node text {
-    font: 11px "Raleway";
     fill: white;
 }
 
