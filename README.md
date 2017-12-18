@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DavidR95/FunCompiler.svg?branch=master)](https://travis-ci.org/DavidR95/FunCompiler)
+
 # FunCompiler
 Compiles, executes and animates programs written in the "Fun" programming language.
 
