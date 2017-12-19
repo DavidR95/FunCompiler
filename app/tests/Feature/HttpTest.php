@@ -20,7 +20,11 @@ class HttpTest extends TestCase
             'program' => 'int n = 15 proc main(): while n > 1: n = n/2 . .'
         ]));
 
-        $response->assertStatus(200);
+        $response->assertSuccessful()
+                 ->assertJsonFragment([
+                     'redirect_url' => '/',
+                     'numSyntaxErrors' => 0
+                 ]);
     }
 
 }

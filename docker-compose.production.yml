@@ -8,12 +8,22 @@ services:
         container_name: FunCompiler
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./compiler
+        # Launch the Spark web server (the compiler API)
+        command: java -jar target/api-jar-with-dependencies.jar
+        # Expose port 8001 on the host and 4567 on the container
+        ports:
+            - 8001:4567
 
     app:
         # Name the resulting container
         container_name: FunApp
         # Configuration options applied at build time (i.e., location of Dockerfile)
         build: ./app
+        # Launch the Laravel server (the web app)
+        command: php artisan serve --host=0.0.0.0 --port=8000
+        # Expose port 8000 on the host and port 8000 on the container
+        ports:
+            - 8000:8000
         # Starts services in dependency order, i.e., compiler before app
         depends_on:
             - compiler
