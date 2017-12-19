@@ -11,4 +11,4 @@ script:
   - docker exec FunApp sh -c "mkdir storage/framework/views"
   - docker exec FunApp sh -c "cp .env.example .env"
   - docker exec FunApp sh -c "php artisan key:generate"
-  - docker exec FunApp sh -c "vendor/bin/phpunit"
+  - docker exec FunApp sh -c "vendor/bin/phpunit --coverage-text"

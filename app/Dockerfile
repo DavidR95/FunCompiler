@@ -9,7 +9,9 @@ COPY . /app
 # Update packages and install composer and PHP dependencies.
 RUN apt-get update -yqq
 RUN apt-get install git zlib1g-dev -yqq
+RUN pecl install xdebug
 # Compile PHP, include these extensions.
 RUN docker-php-ext-install zip
+RUN docker-php-ext-enable xdebug
 # Use the 'composer.json' file to download any PHP dependencies (including Laravel)
 RUN composer install
