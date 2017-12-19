@@ -78,7 +78,7 @@ body, html, .container-fluid, .row {
 
 .program-input-container {
     form {
-        height: 98%;
+        height: 100%;
         border: 4px solid darken($dracula, 10%);
         box-shadow: 0px 0px 6px 1px $dracula;
         .form-group {
@@ -115,7 +115,7 @@ body, html, .container-fluid, .row {
     }
 }
 
-.program-tree-container, .data-container  {
+.program-input-container, .program-tree-container, .data-container  {
     padding-bottom: 25px;
     overflow: auto;
 }
