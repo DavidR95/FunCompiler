@@ -7,12 +7,12 @@ use Tests\TestCase;
 class HttpTest extends TestCase
 {
     /**
-     * Make a post request for a contextual analysis result and ensure only
-     * the correct fragments are returned.
+     * Make a post request for a contextual analysis result with a correct
+     * program and ensure only the correct fragments are returned.
      *
      * @return void
      */
-    public function testSuccessfulCARequest()
+    public function testSuccessfulAndValidCARequest()
     {
         $response = $this->json('POST', route('execute', [
             'type' => 'ca',
@@ -30,6 +30,30 @@ class HttpTest extends TestCase
                  ->assertSeeText('nodeOrder')
                  ->assertSeeText('treeNodes')
                  ->assertDontSeeText('objectCode');
+    }
+
+    /**
+    * Make a post request for a contextual analysis result with an incorrect
+    * program and ensure only the correct fragments are returned.
+     *
+     * @return void
+     */
+    public function testSuccessfulAndInvalidCARequest()
+    {
+        $response = $this->json('POST', route('execute', [
+            'type' => 'ca',
+            'program' => 'int n = 15 proc main(): while n > 1 n = n/2 . .'
+        ]));
+
+        $response->assertSuccessful()
+                 ->assertJsonFragment([
+                     'redirect_url' => '/',
+                     'numSyntaxErrors' => 1,
+                     'numContextualErrors' => 0,
+                     'syntaxErrors' => ['line 1:36 missing \':\' at \'n\''],
+                 ])
+                 ->assertDontSeeText('nodeOrder')
+                 ->assertDontSeeText('treeNodes');
     }
 
     /**
@@ -55,7 +79,7 @@ class HttpTest extends TestCase
      *
      * @return void
      */
-    public function testSuccessfulCGRequest()
+    public function testSuccessfulAndValidCGRequest()
     {
         $response = $this->json('POST', route('execute', [
             'type' => 'cg',
@@ -73,6 +97,30 @@ class HttpTest extends TestCase
                  ->assertSeeText('nodeOrder')
                  ->assertSeeText('treeNodes')
                  ->assertSeeText('objectCode');
+    }
+
+    /**
+    * Make a post request for a code generation result with an incorrect
+    * program and ensure only the correct fragments are returned.
+     *
+     * @return void
+     */
+    public function testSuccessfulAndInvalidCGRequest()
+    {
+        $response = $this->json('POST', route('execute', [
+            'type' => 'cg',
+            'program' => 'int n = 15 proc main(): while n > 1 n = n/2 . .'
+        ]));
+
+        $response->assertSuccessful()
+                 ->assertJsonFragment([
+                     'redirect_url' => '/',
+                     'numSyntaxErrors' => 1,
+                     'numContextualErrors' => 0,
+                     'syntaxErrors' => ['line 1:36 missing \':\' at \'n\''],
+                 ])
+                 ->assertDontSeeText('nodeOrder')
+                 ->assertDontSeeText('treeNodes');
     }
 
     /**
