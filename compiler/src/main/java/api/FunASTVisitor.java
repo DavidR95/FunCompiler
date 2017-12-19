@@ -375,7 +375,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * @return the visitor result
     */
     public Void visitParens(FunParser.ParensContext ctx) {
-        return null;
+        return visit(ctx.expr());
     }
 
     /**
