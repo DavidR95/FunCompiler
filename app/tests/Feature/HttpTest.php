@@ -33,7 +33,24 @@ class HttpTest extends TestCase
     }
 
     /**
-     * Make a post request for a contextual analysis result and ensure only
+     * Make a post request for a contextual analysis result with an empty
+     * and ensure a 422 'Unprocessable Entity' status code is returned.
+     *
+     * @return void
+     */
+    public function testUnsuccessfulCARequest()
+    {
+        $response = $this->json('POST', route('execute', [
+            'type' => 'ca',
+            'program' => ''
+        ]));
+
+        $response->assertStatus(422)
+                 ->assertSeeText('The program field is required.');
+    }
+
+    /**
+     * Make a post request for a code generation result and ensure only
      * the correct fragments are returned.
      *
      * @return void
@@ -56,5 +73,22 @@ class HttpTest extends TestCase
                  ->assertSeeText('nodeOrder')
                  ->assertSeeText('treeNodes')
                  ->assertSeeText('objectCode');
+    }
+
+    /**
+     * Make a post request for a code generation result with an empty
+     * and ensure a 422 'Unprocessable Entity' status code is returned.
+     *
+     * @return void
+     */
+    public function testUnsuccessfulCGRequest()
+    {
+        $response = $this->json('POST', route('execute', [
+            'type' => 'cg',
+            'program' => ''
+        ]));
+
+        $response->assertStatus(422)
+                 ->assertSeeText('The program field is required.');
     }
 }
