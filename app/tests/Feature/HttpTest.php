@@ -7,6 +7,16 @@ use Tests\TestCase;
 class HttpTest extends TestCase
 {
     /**
+     * Ensure the 'index' view is rendered when navigating to '/'.
+     *
+     * @return void
+     */
+    public function testIndexView() {
+        $response = $this->get('/');
+        $response->assertViewIs('index');
+    }
+
+    /**
      * Make a post request for a contextual analysis result with a correct
      * program and ensure only the correct fragments are returned.
      *
