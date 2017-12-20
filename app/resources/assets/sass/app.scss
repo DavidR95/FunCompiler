@@ -65,13 +65,13 @@ body, html {
 .controls-container {
     h3 {
         margin-bottom: 0px;
-        margin-top: 50px;
+        margin-top: 40px;
         float: left;
     }
     .playback-buttons {
         float: right;
         .glyphicon {
-            margin: 45px 0px 10px 5px;
+            margin: 40px 0px 10px 5px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
@@ -90,7 +90,7 @@ body, html {
 
 .data-heading-container {
     h3 {
-        margin-top: 45px;
+        margin-top: 40px;
         padding-bottom: 8px;
         border-bottom: 2px solid darken($dracula, 10%);
     }

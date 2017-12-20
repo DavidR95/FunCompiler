@@ -12,7 +12,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="#">Default</a></li>
+                <li><a href="#">Default</a></li>
                 <li><a href="#">Static top</a></li>
                 <li><a href="#">Fixed top</a></li>
             </ul>
