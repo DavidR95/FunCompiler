@@ -8769,50 +8769,6 @@ html {
   letter-spacing: 1.5px;
 }
 
-.program-tree-container {
-  height: 90%;
-}
-
-.controls-container {
-  height: 10%;
-}
-
-.controls-container h3 {
-  margin: 0;
-  padding: 35px 0px 3px 0px;
-  float: left;
-  border-bottom: 2px solid #121319;
-}
-
-.controls-container .playback-buttons {
-  float: right;
-}
-
-.controls-container .playback-buttons .glyphicon {
-  margin: 0;
-  padding: 35px 0px 8px 0px;
-  font-size: 1.75em;
-  cursor: pointer;
-}
-
-.controls-container .playback-buttons .glyphicon:hover {
-  color: #047db2;
-}
-
-.controls-container .playback-buttons .glyphicon:active {
-  color: #035a80;
-}
-
-.data-heading-container {
-  height: 10%;
-}
-
-.data-heading-container h3 {
-  margin: 0;
-  padding: 35px 0px 3px 0px;
-  border-bottom: 2px solid #121319;
-}
-
 #execute-form {
   height: 100%;
   border: 4px solid #121319;
@@ -8862,9 +8818,83 @@ html {
   float: right;
 }
 
+.program-tree-container {
+  height: 90%;
+}
+
+.controls-container {
+  height: 10%;
+}
+
+.controls-container h3 {
+  margin: 0;
+  padding: 35px 0px 3px 0px;
+  float: left;
+  border-bottom: 2px solid #121319;
+}
+
+.controls-container .playback-buttons {
+  float: right;
+}
+
+.controls-container .playback-buttons .glyphicon {
+  margin: 0;
+  padding: 35px 0px 8px 0px;
+  font-size: 1.75em;
+  cursor: pointer;
+}
+
+.controls-container .playback-buttons .glyphicon:hover {
+  color: #047db2;
+}
+
+.controls-container .playback-buttons .glyphicon:active {
+  color: #035a80;
+}
+
 #display-program-tree {
   height: 100%;
   display: none;
+}
+
+.node rect {
+  fill: #3e4153;
+  stroke: #282a36;
+  stroke-width: 3px;
+}
+
+.node text {
+  fill: white;
+}
+
+.link {
+  fill: none;
+  stroke: #121319;
+  stroke-width: 2px;
+}
+
+.svg-container {
+  height: 100%;
+  overflow: auto;
+}
+
+.svg-container svg {
+  height: 100%;
+  width: 100%;
+}
+
+#pause-button {
+  display: none;
+}
+
+.data-heading-container {
+  height: 10%;
+}
+
+.data-heading-container h3 {
+  margin: 0;
+  padding: 35px 0px 3px 0px;
+  border-bottom: 2px solid #121319;
 }
 
 #display-contextual-container,
@@ -8943,36 +8973,6 @@ html {
 
 .object-code {
   float: right;
-}
-
-.node rect {
-  fill: #3e4153;
-  stroke: #282a36;
-  stroke-width: 3px;
-}
-
-.node text {
-  fill: white;
-}
-
-.link {
-  fill: none;
-  stroke: #121319;
-  stroke-width: 2px;
-}
-
-.svg-container {
-  height: 100%;
-  overflow: auto;
-}
-
-.svg-container svg {
-  height: 100%;
-  width: 100%;
-}
-
-#pause-button {
-  display: none;
 }
 
 .table-striped {
