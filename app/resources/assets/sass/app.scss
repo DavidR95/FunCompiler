@@ -104,9 +104,8 @@ body, html {
     }
     .playback-buttons {
         float: right;
+        padding: 35px 0px 8px 0px;
         .glyphicon {
-            margin: 0;
-            padding: 35px 0px 8px 0px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
@@ -121,6 +120,7 @@ body, html {
 
 .program-tree-container {
     height: 90%;
+    padding-bottom: 25px;
 }
 
 .node rect {
@@ -141,7 +141,6 @@ body, html {
 
 .svg-container {
     height: 100%;
-    overflow: auto;
     svg {
         height: 100%;
         width: 100%;

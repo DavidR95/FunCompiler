@@ -8831,11 +8831,10 @@ html {
 
 .controls-container .playback-buttons {
   float: right;
+  padding: 35px 0px 8px 0px;
 }
 
 .controls-container .playback-buttons .glyphicon {
-  margin: 0;
-  padding: 35px 0px 8px 0px;
   font-size: 1.75em;
   cursor: pointer;
 }
@@ -8850,6 +8849,7 @@ html {
 
 .program-tree-container {
   height: 90%;
+  padding-bottom: 25px;
 }
 
 .node rect {
@@ -8870,7 +8870,6 @@ html {
 
 .svg-container {
   height: 100%;
-  overflow: auto;
 }
 
 .svg-container svg {
