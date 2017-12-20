@@ -21,11 +21,24 @@ CodeMirror.defineSimpleMode("fun", {
 });
 
 // Note that you cannot use the JQuery DOM selector when using CodeMirror
-CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,
     styleActiveLine: true,
     mode: "fun",
     theme: "dracula"
-}).setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
+});
+cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
+
+function getExample(exampleName) {
+    return examples[exampleName];
+}
+
+$(".code-example").on("click", function() {
+    cm.setValue(getExample($(this).data("example")));
+});
+
+var examples = {
+    IF: "int m = 7\nproc main():\n\tint n = m - 4\n\tif m > 0: write(m) .\n\tif m < n:\n\t\tm = m + 1\n\t\twrite(m)\n\telse:\n\t\tn = n + 1\n\t\twrite(n)\n\t.\n."
+}
