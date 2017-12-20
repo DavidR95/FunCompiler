@@ -1,10 +1,22 @@
-"use strict";
+/* ==========================================================================
+ * codemirror.js
+ *
+ * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
+ * the 'Fun' programming language.
+ *
+ * Stores an array of example programs which will be used to update the contents
+ * of the code editor when selected.
+ * ========================================================================== */
 
+// Import CodeMirror node module
 var CodeMirror = require('codemirror');
 
+// Import the CodeMirror 'simple-mode' addon
 require('codemirror/addon/mode/simple.js');
+// Import the CodeMirror 'active-line' addon
 require('codemirror/addon/selection/active-line.js');
 
+// Define a 'mode' for the Fun programming language, i.e., syntax highlighting
 CodeMirror.defineSimpleMode("fun", {
   start: [
     {regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword"},
@@ -20,7 +32,7 @@ CodeMirror.defineSimpleMode("fun", {
   comment: []
 });
 
-// Note that you cannot use the JQuery DOM selector when using CodeMirror
+// Create a CodeMirror object from a text area
 var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
     tabSize: 2,
@@ -29,16 +41,22 @@ var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     mode: "fun",
     theme: "dracula"
 });
+
+// Set the default value of the code mirror to be the program below
 cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
+// Returns an example program given the example program name
 function getExample(exampleName) {
     return examples[exampleName];
 }
 
+// Bind a 'click' event listener to all links with the class 'code-example'
 $(".code-example").on("click", function() {
+    // Get the example name from the 'example' data-attribute and update
     cm.setValue(getExample($(this).data("example")));
 });
 
+// A list of example Fun programs
 var examples = {
     ASSIGN: "proc main():\n\tint g = 7\n\tg = g + 1\n\tg = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
     FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
