@@ -83,12 +83,12 @@ var Tree = module.exports = {
         showGenerationAnimation = (executionType === "cg") ? true : false;
         if (showGenerationAnimation) {
             $(".controls-container span").html("Code Generation");
-            $(".right-contextual-container").hide();
-            $(".right-generation-container").css("display", "table");
+            $("#display-contextual-container").hide();
+            $("#display-generation-container").show();
         } else {
             $(".controls-container span").html("Contextual Analysis");
-            $(".right-generation-container").hide();
-            $(".right-contextual-container").css("display", "table");
+            $("#display-generation-container").hide();
+            $("#display-contextual-container").show();
         }
         nodeOrder = executionNodeOrder
     },

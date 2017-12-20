@@ -11,51 +11,101 @@
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/theme/dracula.css";
 
-body, html, .container-fluid, .row {
+//== MAIN ==//
+
+body, html {
     background: $periwinkle;
     background: -webkit-linear-gradient(to right, $mercury, $periwinkle);
     background: linear-gradient(to right, $mercury, $periwinkle);
     color: $dracula;
     height: 100%;
-}
-
-.table-container {
-    height: 100%;
     min-height: 700px;
 }
 
-.left-container, .center-container, .right-contextual-container, .right-generation-container {
-    display: table;
-    width: 100%;
+.container-fluid {
+    height: calc(100% - 62px);
+}
+
+.row {
     height: 100%;
 }
 
-.title-container, .controls-container, .data-heading-container {
-    display: table-row;
-}
-
-.program-input-container, .program-tree-container, .data-container {
-    display: table-cell;
+.col-container {
     height: 100%;
-}
-
-.title-container {
-    h1 {
-        font-size: 40px;
-        letter-spacing: 1.5px;
+    &:first-child {
+        padding-left: 0;
     }
+}
+
+.navbar {
+    border: 0;
+    border-bottom: 2px solid darken($orient, 10%);
+    box-shadow: 0px 0px 6px 1px darken($orient, 10%);
+    .navbar-header {
+        a {
+            font-size: 25px;
+            letter-spacing: 1.5px;
+        }
+    }
+}
+
+//== LEFT ==/
+
+#execute-form {
+    height: 100%;
+    border: 4px solid darken($dracula, 10%);
+    box-shadow: 0px 0px 6px 1px $dracula;
+    .form-group {
+        height: 90%;
+        margin: 0;
+        .CodeMirror {
+            min-height: 100%;
+            .CodeMirror-gutters {
+                background-color: darken($dracula, 10%) !important;
+            }
+        }
+    }
+    .form-submit {
+        height: 10%;
+        button {
+            width: 50%;
+            outline: 0;
+            color: white;
+            background-color: lighten($dracula, 5%);
+            border: none;
+            border-top: 4px solid darken($dracula, 10%);
+            height: 100%;
+        }
+        #ca-button {
+            border-right: 2px solid darken($dracula, 10%);
+            float: left
+        }
+        #cg-button {
+            border-left: 2px solid darken($dracula, 10%);
+            float: right;
+        }
+    }
+}
+
+//== CENTER ==//
+
+#display-program-tree {
+    height: 100%;
+    display: none;
 }
 
 .controls-container {
+    height: 10%;
     h3 {
-        margin-bottom: 0px;
-        margin-top: 50px;
+        margin: 0;
+        padding: 35px 0px 3px 0px;
         float: left;
+        border-bottom: 2px solid darken($dracula, 10%);
     }
     .playback-buttons {
         float: right;
+        padding: 35px 0px 8px 0px;
         .glyphicon {
-            margin: 45px 0px 10px 5px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
@@ -68,121 +118,9 @@ body, html, .container-fluid, .row {
     }
 }
 
-.data-heading-container {
-    h3 {
-        margin-top: 45px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid darken($dracula, 10%);
-    }
-}
-
-.program-input-container {
-    form {
-        height: 100%;
-        border: 4px solid darken($dracula, 10%);
-        box-shadow: 0px 0px 6px 1px $dracula;
-        .form-group {
-            height: 88%;
-            margin: 0;
-            .CodeMirror {
-                min-height: 100%;
-                max-height: 100%;
-                .CodeMirror-line {
-                    word-break: break-word;
-                }
-            }
-        }
-        .form-submit {
-            height: 12%;
-            button {
-                width: 50%;
-                outline: 0;
-                color: white;
-                background-color: lighten($dracula, 5%);
-                border: none;
-                border-top: 4px solid darken($dracula, 10%);
-                height: 100%;
-            }
-            #ca-button {
-                border-right: 2px solid darken($dracula, 10%);
-                float: left
-            }
-            #cg-button {
-                border-left: 2px solid darken($dracula, 10%);
-                float: right;
-            }
-        }
-    }
-}
-
-.program-input-container, .program-tree-container, .data-container  {
-    padding-bottom: 25px;
-    overflow: auto;
-}
-
 .program-tree-container {
-    border-top: 2px solid darken($dracula, 10%);
-}
-
-.data-container {
-    h3 {
-        padding-bottom: 3px;
-        border-bottom: 2px solid darken($dracula, 10%);
-    }
-}
-
-.type-table-container, .address-table-container {
-    overflow: auto;
-}
-
-.type-table-container {
-    height: 50%;
-}
-
-.address-table-container {
-    height: 40%;
-}
-
-.contextual-explanations, .generation-explanations, .code-template, .object-code {
-    overflow: auto;
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-    li {
-        font-weight: bold;
-        padding-left: 3px;
-    }
-}
-
-.contextual-explanations, .generation-explanations {
-    li:last-child {
-        color: white;
-        background-color: $orient;
-    }
-}
-
-.contextual-explanations {
-    height: 50%;
-}
-
-.generation-explanations {
-    height: 30%;
-}
-
-.code-template-object-code-container {
-    height: 30%;
-    .code-template, .object-code {
-        height: 100%;
-        width: 47%;
-    }
-    .code-template {
-        float: left;
-    }
-    .object-code {
-        float: right;
-    }
+    height: 90%;
+    padding-bottom: 25px;
 }
 
 .node rect {
@@ -209,8 +147,81 @@ body, html, .container-fluid, .row {
     }
 }
 
-#pause-button, .right-generation-container, .right-contextual-container, .center-container {
+#pause-button {
     display: none;
+}
+
+//== RIGHT ==//
+
+.data-heading-container {
+    height: 10%;
+    h3 {
+        margin: 0;
+        padding-top: 35px;
+    }
+}
+
+#display-contextual-container, #display-generation-container {
+    height: 100%;
+    display: none;
+    h3 {
+        padding-bottom: 3px;
+        border-bottom: 2px solid darken($dracula, 10%);
+    }
+}
+
+.type-table-container, .address-table-container {
+    overflow: auto;
+}
+
+.generation-explanations {
+    height: 30%;
+}
+
+.address-table-container {
+    clear: both;
+    height: 30%;
+}
+
+.contextual-explanations {
+    height: 45%;
+}
+
+.type-table-container {
+    height: 45%;
+}
+
+.contextual-explanations, .generation-explanations, .code-template, .object-code {
+    overflow: auto;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        font-weight: bold;
+        padding-left: 3px;
+    }
+}
+
+.contextual-explanations, .generation-explanations {
+    li:last-child {
+        color: white;
+        background-color: $orient;
+    }
+}
+
+.code-template, .object-code {
+    height: 30%;
+    width: 47%;
+}
+
+.code-template {
+    float: left;
+}
+
+.object-code {
+    float: right;
 }
 
 .table-striped {
