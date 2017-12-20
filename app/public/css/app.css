@@ -8783,11 +8783,6 @@ html {
 
 #execute-form .form-group .CodeMirror {
   min-height: 100%;
-  max-height: 100%;
-}
-
-#execute-form .form-group .CodeMirror .CodeMirror-line {
-  word-break: break-word;
 }
 
 #execute-form .form-group .CodeMirror .CodeMirror-gutters {
@@ -8818,8 +8813,9 @@ html {
   float: right;
 }
 
-.program-tree-container {
-  height: 90%;
+#display-program-tree {
+  height: 100%;
+  display: none;
 }
 
 .controls-container {
@@ -8852,9 +8848,8 @@ html {
   color: #035a80;
 }
 
-#display-program-tree {
-  height: 100%;
-  display: none;
+.program-tree-container {
+  height: 90%;
 }
 
 .node rect {
