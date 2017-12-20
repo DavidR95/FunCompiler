@@ -8828,7 +8828,7 @@ html {
 }
 
 .program-input-container form .form-group {
-  height: 88%;
+  height: 90%;
   margin: 0;
 }
 
@@ -8846,7 +8846,7 @@ html {
 }
 
 .program-input-container form .form-submit {
-  height: 12%;
+  height: 10%;
 }
 
 .program-input-container form .form-submit button {
@@ -8867,12 +8867,6 @@ html {
 .program-input-container form .form-submit #cg-button {
   border-left: 2px solid #121319;
   float: right;
-}
-
-.program-tree-container,
-.data-container {
-  padding-bottom: 25px;
-  overflow: auto;
 }
 
 .program-tree-container {
