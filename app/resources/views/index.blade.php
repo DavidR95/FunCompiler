@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-container">
-                <div class="right-contextual-container">
+                <div id="display-contextual-container">
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
                     </div>
@@ -87,7 +87,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="right-generation-container">
+                <div id="display-generation-container">
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
                     </div>

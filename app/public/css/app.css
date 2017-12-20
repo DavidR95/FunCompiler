@@ -8864,15 +8864,17 @@ html {
 
 #display-program-tree {
   height: 100%;
+  display: none;
 }
 
-.right-contextual-container,
-.right-generation-container {
+#display-contextual-container,
+#display-generation-container {
   height: 100%;
+  display: none;
 }
 
-.right-contextual-container h3,
-.right-generation-container h3 {
+#display-contextual-container h3,
+#display-generation-container h3 {
   border-bottom: 2px solid #121319;
 }
 
@@ -8968,10 +8970,7 @@ html {
   width: 100%;
 }
 
-#pause-button,
-#display-program-tree,
-.right-generation-container,
-.right-contextual-container {
+#pause-button {
   display: none;
 }
 
