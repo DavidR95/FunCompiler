@@ -20,31 +20,29 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 table-container">
-                <div class="left-container">
-                    <div class="program-input-container">
-                        <form id="execute-form" method="post">
-                            <div class="form-group">
-                                <textarea id="code-editor"
-                                          name="program"
-                                          autofocus></textarea>
-                            </div>
-                            <div class="form-submit">
-                                <button id="ca-button"
-                                        class="hvr-bounce-to-left"
-                                        value="ca"
-                                        type="submit">
-                                    <b>Contextual Analysis</b>
-                                </button>
-                                <button id="cg-button"
-                                        class="hvr-bounce-to-right"
-                                        value="cg"
-                                        type="submit">
-                                    <b>Code Generation</b>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+            <div class="col-lg-3 outer-container">
+                <div class="program-input-container">
+                    <form id="execute-form" method="post">
+                        <div class="form-group">
+                            <textarea id="code-editor"
+                                      name="program"
+                                      autofocus></textarea>
+                        </div>
+                        <div class="form-submit">
+                            <button id="ca-button"
+                                    class="hvr-bounce-to-left"
+                                    value="ca"
+                                    type="submit">
+                                <b>Contextual Analysis</b>
+                            </button>
+                            <button id="cg-button"
+                                    class="hvr-bounce-to-right"
+                                    value="cg"
+                                    type="submit">
+                                <b>Code Generation</b>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-lg-6 table-container">

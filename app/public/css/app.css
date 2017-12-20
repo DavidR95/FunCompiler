@@ -8748,6 +8748,14 @@ html {
   height: 100%;
 }
 
+.outer-container {
+  height: 100%;
+}
+
+.outer-container:first-child {
+  padding-left: 0;
+}
+
 .navbar {
   border: 0;
   border-bottom: 2px solid #02374e;
@@ -8765,11 +8773,6 @@ html {
   min-height: 700px;
 }
 
-.table-container:first-child {
-  padding-left: 0;
-}
-
-.left-container,
 .center-container,
 .right-contextual-container,
 .right-generation-container {
@@ -8783,7 +8786,6 @@ html {
   display: table-row;
 }
 
-.program-input-container,
 .program-tree-container,
 .data-container {
   display: table-cell;
@@ -8814,14 +8816,14 @@ html {
   color: #035a80;
 }
 
-.program-tree-container {
-  padding-bottom: 25px;
-}
-
 .data-heading-container h3 {
   margin-top: 40px;
   padding-bottom: 8px;
   border-bottom: 2px solid #121319;
+}
+
+.program-input-container {
+  height: 100%;
 }
 
 .program-input-container form {
@@ -8969,6 +8971,7 @@ html {
 
 .svg-container {
   height: 100%;
+  overflow: auto;
 }
 
 .svg-container svg {
