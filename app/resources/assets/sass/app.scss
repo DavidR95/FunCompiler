@@ -25,6 +25,9 @@ body, html {
 
 .row {
     height: 100%;
+    .table-container:first-child {
+        padding-left: 0;
+    }
 }
 
 .navbar {
