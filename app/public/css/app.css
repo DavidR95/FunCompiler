@@ -8779,7 +8779,7 @@ html {
 
 .controls-container h3 {
   margin: 0;
-  padding: 45px 0px 3px 0px;
+  padding: 35px 0px 3px 0px;
   float: left;
   border-bottom: 2px solid #121319;
 }
@@ -8790,7 +8790,7 @@ html {
 
 .controls-container .playback-buttons .glyphicon {
   margin: 0;
-  padding: 45px 0px 8px 0px;
+  padding: 35px 0px 8px 0px;
   font-size: 1.75em;
   cursor: pointer;
 }
@@ -8809,7 +8809,7 @@ html {
 
 .data-heading-container h3 {
   margin: 0;
-  padding: 45px 0px 3px 0px;
+  padding: 35px 0px 3px 0px;
   border-bottom: 2px solid #121319;
 }
 

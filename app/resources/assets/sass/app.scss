@@ -55,7 +55,7 @@ body, html {
     height: 10%;
     h3 {
         margin: 0;
-        padding: 45px 0px 3px 0px;
+        padding: 35px 0px 3px 0px;
         float: left;
         border-bottom: 2px solid darken($dracula, 10%);
     }
@@ -63,7 +63,7 @@ body, html {
         float: right;
         .glyphicon {
             margin: 0;
-            padding: 45px 0px 8px 0px;
+            padding: 35px 0px 8px 0px;
             font-size: 1.75em;
             cursor: pointer;
             &:hover {
@@ -80,7 +80,7 @@ body, html {
     height: 10%;
     h3 {
         margin: 0;
-        padding: 45px 0px 3px 0px;
+        padding: 35px 0px 3px 0px;
         border-bottom: 2px solid darken($dracula, 10%);
     }
 }
