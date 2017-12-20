@@ -20,7 +20,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-container">
                 <form id="execute-form" method="post">
                     <div class="form-group">
                         <textarea id="code-editor"
@@ -43,8 +43,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-6 table-container">
-                <div class="center-container">
+            <div class="col-lg-6 col-container">
+                <div class="program-tree">
                     <div class="controls-container">
                         <h3><b><span></span></b></h3>
                         <div class="playback-buttons">
@@ -61,7 +61,7 @@
                     <div class="program-tree-container"></div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-container">
                 <div class="right-contextual-container">
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
