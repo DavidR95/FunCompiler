@@ -1,15 +1,27 @@
 @extends('layouts.master')
 @section('content')
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FunCompiler</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#">Default</a></li>
+                <li><a href="#">Static top</a></li>
+                <li><a href="#">Fixed top</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3 table-container">
                 <div class="left-container">
-                    <div class="title-container">
-                        <h1>Fun<b>Compiler</b></h1>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis egestas lacus eget semper. Aliquam erat volutpat. In aliquet sodales tortor eu ornare. Curabitur dignissim eget dolor a malesuada.
-                        </p>
-                    </div>
                     <div class="program-input-container">
                         <form id="execute-form" method="post">
                             <div class="form-group">
