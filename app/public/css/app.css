@@ -8814,6 +8814,10 @@ html {
   color: #035a80;
 }
 
+.program-tree-container {
+  padding-bottom: 25px;
+}
+
 .data-heading-container h3 {
   margin-top: 45px;
   padding-bottom: 8px;
