@@ -1,5 +1,3 @@
-require("./codemirror.js");
-
 var Tree = require("./tree.js");
 
 var executionType;

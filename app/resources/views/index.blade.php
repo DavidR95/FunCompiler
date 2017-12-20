@@ -12,9 +12,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Default</a></li>
-                <li><a href="#">Static top</a></li>
-                <li><a href="#">Fixed top</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Examples<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="code-example" data-example="ASSIGN" href="#">Assign</a></li>
+                        <li><a class="code-example" data-example="FACTORIAL" href="#">Factorial</a></li>
+                        <li><a class="code-example" data-example="FUNCTION" href="#">Function</a></li>
+                        <li><a class="code-example" data-example="IF" href="#">If</a></li>
+                        <li><a class="code-example" data-example="IO" href="#">IO</a></li>
+                        <li><a class="code-example" data-example="OCTAL" href="#">Octal</a></li>
+                        <li><a class="code-example" data-example="PROC" href="#">Procedure</a></li>
+                        <li><a class="code-example" data-example="SCOPE_CHECKING" href="#">Scope Checking</a></li>
+                        <li><a class="code-example" data-example="TYPE_CHECKING" href="#">Type Checking</a></li>
+                        <li><a class="code-example" data-example="WHILE" href="#">While</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </nav>
