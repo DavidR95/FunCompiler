@@ -20,30 +20,28 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 outer-container">
-                <div class="program-input-container">
-                    <form id="execute-form" method="post">
-                        <div class="form-group">
-                            <textarea id="code-editor"
-                                      name="program"
-                                      autofocus></textarea>
-                        </div>
-                        <div class="form-submit">
-                            <button id="ca-button"
-                                    class="hvr-bounce-to-left"
-                                    value="ca"
-                                    type="submit">
-                                <b>Contextual Analysis</b>
-                            </button>
-                            <button id="cg-button"
-                                    class="hvr-bounce-to-right"
-                                    value="cg"
-                                    type="submit">
-                                <b>Code Generation</b>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+            <div class="col-lg-3">
+                <form id="execute-form" method="post">
+                    <div class="form-group">
+                        <textarea id="code-editor"
+                                  name="program"
+                                  autofocus></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <button id="ca-button"
+                                class="hvr-bounce-to-left"
+                                value="ca"
+                                type="submit">
+                            <b>Contextual Analysis</b>
+                        </button>
+                        <button id="cg-button"
+                                class="hvr-bounce-to-right"
+                                value="cg"
+                                type="submit">
+                            <b>Code Generation</b>
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="col-lg-6 table-container">
                 <div class="center-container">
@@ -63,32 +61,30 @@
                     <div class="program-tree-container"></div>
                 </div>
             </div>
-            <div class="col-lg-3 table-container">
+            <div class="col-lg-3">
                 <div class="right-contextual-container">
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
                     </div>
-                    <div class="data-container">
-                        <div class="contextual-explanations">
-                            <h3><b>Code Checker Actions</b></h3>
-                            <ul></ul>
-                        </div>
-                        <div class="type-table-container">
-                            <h3><b>Type Table</b></h3>
-                            <table class="table table-striped
-                                                table-hover
-                                                table-responsive
-                                                type-table">
-                                <thead>
-                                    <tr>
-                                        <th>Scope</th>
-                                        <th>ID</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                    <div class="contextual-explanations">
+                        <h3><b>Code Checker Actions</b></h3>
+                        <ul></ul>
+                    </div>
+                    <div class="type-table-container">
+                        <h3><b>Type Table</b></h3>
+                        <table class="table table-striped
+                                            table-hover
+                                            table-responsive
+                                            type-table">
+                            <thead>
+                                <tr>
+                                    <th>Scope</th>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="right-generation-container">

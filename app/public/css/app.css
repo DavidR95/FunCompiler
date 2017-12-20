@@ -8748,11 +8748,11 @@ html {
   height: 100%;
 }
 
-.outer-container {
+.col-lg-3 {
   height: 100%;
 }
 
-.outer-container:first-child {
+.col-lg-3:first-child {
   padding-left: 0;
 }
 
@@ -8774,20 +8774,17 @@ html {
 }
 
 .center-container,
-.right-contextual-container,
 .right-generation-container {
   display: table;
   width: 100%;
   height: 100%;
 }
 
-.controls-container,
-.data-heading-container {
+.controls-container {
   display: table-row;
 }
 
-.program-tree-container,
-.data-container {
+.program-tree-container {
   display: table-cell;
   height: 100%;
 }
@@ -8816,46 +8813,46 @@ html {
   color: #035a80;
 }
 
+.data-heading-container {
+  height: 10%;
+}
+
 .data-heading-container h3 {
-  margin-top: 40px;
-  padding-bottom: 8px;
+  margin: 0;
+  padding: 40px 0px 8px 0px;
   border-bottom: 2px solid #121319;
 }
 
-.program-input-container {
-  height: 100%;
-}
-
-.program-input-container form {
+form {
   height: 100%;
   border: 4px solid #121319;
   -webkit-box-shadow: 0px 0px 6px 1px #282a36;
           box-shadow: 0px 0px 6px 1px #282a36;
 }
 
-.program-input-container form .form-group {
+form .form-group {
   height: 90%;
   margin: 0;
 }
 
-.program-input-container form .form-group .CodeMirror {
+form .form-group .CodeMirror {
   min-height: 100%;
   max-height: 100%;
 }
 
-.program-input-container form .form-group .CodeMirror .CodeMirror-line {
+form .form-group .CodeMirror .CodeMirror-line {
   word-break: break-word;
 }
 
-.program-input-container form .form-group .CodeMirror .CodeMirror-gutters {
+form .form-group .CodeMirror .CodeMirror-gutters {
   background-color: #121319 !important;
 }
 
-.program-input-container form .form-submit {
+form .form-submit {
   height: 10%;
 }
 
-.program-input-container form .form-submit button {
+form .form-submit button {
   width: 50%;
   outline: 0;
   color: white;
@@ -8865,12 +8862,12 @@ html {
   height: 100%;
 }
 
-.program-input-container form .form-submit #ca-button {
+form .form-submit #ca-button {
   border-right: 2px solid #121319;
   float: left;
 }
 
-.program-input-container form .form-submit #cg-button {
+form .form-submit #cg-button {
   border-left: 2px solid #121319;
   float: right;
 }
@@ -8879,18 +8876,26 @@ html {
   border-top: 2px solid #121319;
 }
 
-.data-container h3 {
+.right-contextual-container {
+  height: 100%;
+}
+
+.right-contextual-container h3 {
   padding-bottom: 3px;
   border-bottom: 2px solid #121319;
+}
+
+.right-contextual-container .contextual-explanations {
+  height: 45%;
+}
+
+.right-contextual-container .type-table-container {
+  height: 45%;
 }
 
 .type-table-container,
 .address-table-container {
   overflow: auto;
-}
-
-.type-table-container {
-  height: 50%;
 }
 
 .address-table-container {
@@ -8925,10 +8930,6 @@ html {
 .generation-explanations li:last-child {
   color: white;
   background-color: #035a80;
-}
-
-.contextual-explanations {
-  height: 50%;
 }
 
 .generation-explanations {

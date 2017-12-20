@@ -32091,11 +32091,11 @@ var Tree = module.exports = {
         if (showGenerationAnimation) {
             $(".controls-container span").html("Code Generation");
             $(".right-contextual-container").hide();
-            $(".right-generation-container").css("display", "table");
+            $(".right-generation-container").show();
         } else {
             $(".controls-container span").html("Contextual Analysis");
             $(".right-generation-container").hide();
-            $(".right-contextual-container").css("display", "table");
+            $(".right-contextual-container").show();
         }
         nodeOrder = executionNodeOrder;
     },
