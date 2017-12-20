@@ -91,37 +91,33 @@
                     <div class="data-heading-container">
                         <h3><b>Node: </b><span></span></h3>
                     </div>
-                    <div class="data-container">
-                        <div class="generation-explanations">
-                            <h3><b>Code Generator Actions</b></h3>
-                            <ul></ul>
-                        </div>
-                        <div class="code-template-object-code-container">
-                            <div class="code-template">
-                                <h3><b>Code<br>Template</b></h3>
-                                <ul></ul>
-                            </div>
-                            <div class="object-code">
-                                <h3><b>Object<br>Code</b></h3>
-                                <ul></ul>
-                            </div>
-                        </div>
-                        <div class="address-table-container">
-                            <h3><b>Address Table</b></h3>
-                            <table class="table table-striped
-                                                table-hover
-                                                table-responsive
-                                                address-table">
-                                <thead>
-                                    <tr>
-                                        <th>Scope</th>
-                                        <th>ID</th>
-                                        <th>Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                    <div class="generation-explanations">
+                        <h3><b>Code Generator Actions</b></h3>
+                        <ul></ul>
+                    </div>
+                    <div class="code-template">
+                        <h3><b>Code<br>Template</b></h3>
+                        <ul></ul>
+                    </div>
+                    <div class="object-code">
+                        <h3><b>Object<br>Code</b></h3>
+                        <ul></ul>
+                    </div>
+                    <div class="address-table-container">
+                        <h3><b>Address Table</b></h3>
+                        <table class="table table-striped
+                                            table-hover
+                                            table-responsive
+                                            address-table">
+                            <thead>
+                                <tr>
+                                    <th>Scope</th>
+                                    <th>ID</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>

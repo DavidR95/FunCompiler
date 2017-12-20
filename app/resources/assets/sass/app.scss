@@ -17,6 +17,7 @@ body, html {
     background: linear-gradient(to right, $mercury, $periwinkle);
     color: $dracula;
     height: 100%;
+    min-height: 700px;
 }
 
 .container-fluid {
@@ -48,10 +49,9 @@ body, html {
 
 .table-container {
     height: 100%;
-    min-height: 700px;
 }
 
-.center-container, .right-generation-container {
+.center-container {
     display: table;
     width: 100%;
     height: 100%;
@@ -141,17 +141,11 @@ form {
     border-top: 2px solid darken($dracula, 10%);
 }
 
-.right-contextual-container {
+.right-contextual-container, .right-generation-container {
     height: 100%;
     h3 {
         padding-bottom: 3px;
         border-bottom: 2px solid darken($dracula, 10%);
-    }
-    .contextual-explanations {
-        height: 45%;
-    }
-    .type-table-container {
-        height: 45%;
     }
 }
 
@@ -159,8 +153,21 @@ form {
     overflow: auto;
 }
 
+.generation-explanations {
+    height: 30%;
+}
+
 .address-table-container {
-    height: 40%;
+    clear: both;
+    height: 30%;
+}
+
+.contextual-explanations {
+    height: 45%;
+}
+
+.type-table-container {
+    height: 45%;
 }
 
 .contextual-explanations, .generation-explanations, .code-template, .object-code {
@@ -183,22 +190,15 @@ form {
     }
 }
 
-.generation-explanations {
+.code-template, .object-code {
     height: 30%;
+    width: 47%;
 }
-
-.code-template-object-code-container {
-    height: 30%;
-    .code-template, .object-code {
-        height: 100%;
-        width: 47%;
-    }
-    .code-template {
-        float: left;
-    }
-    .object-code {
-        float: right;
-    }
+.code-template {
+    float: left;
+}
+.object-code {
+    float: right;
 }
 
 .node rect {
