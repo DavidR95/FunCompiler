@@ -8748,10 +8748,6 @@ html {
   height: 100%;
 }
 
-.row .table-container:first-child {
-  padding-left: 0;
-}
-
 .navbar {
   border: 0;
   border-bottom: 2px solid #02374e;
@@ -8767,6 +8763,10 @@ html {
 .table-container {
   height: 100%;
   min-height: 700px;
+}
+
+.table-container:first-child {
+  padding-left: 0;
 }
 
 .left-container,
@@ -8839,6 +8839,10 @@ html {
 
 .program-input-container form .form-group .CodeMirror .CodeMirror-line {
   word-break: break-word;
+}
+
+.program-input-container form .form-group .CodeMirror .CodeMirror-gutters {
+  background-color: #121319 !important;
 }
 
 .program-input-container form .form-submit {
