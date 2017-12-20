@@ -19,6 +19,18 @@ body, html, .container-fluid, .row {
     height: 100%;
 }
 
+.navbar {
+    border: 0;
+    border-bottom: 2px solid darken($orient, 10%);
+    box-shadow: 0px 0px 6px 1px $dracula;
+    .navbar-header {
+        a {
+            font-size: 25px;
+            letter-spacing: 1.5px;
+        }
+    }
+}
+
 .table-container {
     height: 100%;
     min-height: 700px;
@@ -30,7 +42,7 @@ body, html, .container-fluid, .row {
     height: 100%;
 }
 
-.title-container, .controls-container, .data-heading-container {
+.controls-container, .data-heading-container {
     display: table-row;
 }
 
