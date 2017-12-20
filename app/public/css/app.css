@@ -8732,13 +8732,19 @@ button.close {
 }
 
 body,
-html,
-.container-fluid,
-.row {
+html {
   background: #C9D6FF;
   background: -webkit-gradient(linear, left top, right top, from(#E2E2E2), to(#C9D6FF));
   background: linear-gradient(to right, #E2E2E2, #C9D6FF);
   color: #282a36;
+  height: 100%;
+}
+
+.container-fluid {
+  height: calc(100% - 62px);
+}
+
+.row {
   height: 100%;
 }
 
@@ -8855,7 +8861,6 @@ html,
   float: right;
 }
 
-.program-input-container,
 .program-tree-container,
 .data-container {
   padding-bottom: 25px;

@@ -11,11 +11,19 @@
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/theme/dracula.css";
 
-body, html, .container-fluid, .row {
+body, html {
     background: $periwinkle;
     background: -webkit-linear-gradient(to right, $mercury, $periwinkle);
     background: linear-gradient(to right, $mercury, $periwinkle);
     color: $dracula;
+    height: 100%;
+}
+
+.container-fluid {
+    height: calc(100% - 62px);
+}
+
+.row {
     height: 100%;
 }
 
@@ -120,7 +128,7 @@ body, html, .container-fluid, .row {
     }
 }
 
-.program-input-container, .program-tree-container, .data-container  {
+.program-tree-container, .data-container  {
     padding-bottom: 25px;
     overflow: auto;
 }
