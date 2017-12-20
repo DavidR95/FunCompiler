@@ -8770,7 +8770,7 @@ html {
 }
 
 .program-tree-container {
-  height: 100%;
+  height: 90%;
 }
 
 .controls-container {
@@ -8875,6 +8875,7 @@ html {
 
 #display-contextual-container h3,
 #display-generation-container h3 {
+  padding-bottom: 3px;
   border-bottom: 2px solid #121319;
 }
 
