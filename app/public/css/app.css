@@ -8887,8 +8887,7 @@ html {
 
 .data-heading-container h3 {
   margin: 0;
-  padding: 35px 0px 3px 0px;
-  border-bottom: 2px solid #121319;
+  padding-top: 35px;
 }
 
 #display-contextual-container,
