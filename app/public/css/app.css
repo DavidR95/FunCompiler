@@ -8757,7 +8757,7 @@ html {
   padding: 0;
 }
 
-.col-container:nth-child(2) {
+.col-container:nth-child(3) {
   padding-left: 30px;
 }
 
@@ -8815,6 +8815,10 @@ html {
 #execute-form .form-submit #cg-button {
   border-left: 2px solid #121319;
   float: right;
+}
+
+#display-specification nav {
+  margin-top: 40px;
 }
 
 #display-program-tree {

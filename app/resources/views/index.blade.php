@@ -57,86 +57,87 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-6 col-container">
-                <div id="display-specification">
-                    <p>Hello World</p>
-                </div>
-                <div id="display-program-tree">
-                    <div class="controls-container">
-                        <h3><b><span></span></b></h3>
-                        <div class="playback-buttons">
-                            <i id="reverse-button"
-                               class="glyphicon glyphicon-step-backward"></i>
-                            <i id="play-button"
-                               class="glyphicon glyphicon-play"></i>
-                            <i id="pause-button"
-                               class="glyphicon glyphicon-pause"></i>
-                            <i id="forward-button"
-                               class="glyphicon glyphicon-step-forward"></i>
-                        </div>
+            <div id="display-specification" class="col-lg-9 col-container">
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Menu 1</a></li>
+                    <li><a href="#">Menu 2</a></li>
+                    <li><a href="#">Menu 3</a></li>
+                </ul>
+            </div>
+            <div id="display-program-tree" class="col-lg-6 col-container">
+                <div class="controls-container">
+                    <h3><b><span></span></b></h3>
+                    <div class="playback-buttons">
+                        <i id="reverse-button"
+                           class="glyphicon glyphicon-step-backward"></i>
+                        <i id="play-button"
+                           class="glyphicon glyphicon-play"></i>
+                        <i id="pause-button"
+                           class="glyphicon glyphicon-pause"></i>
+                        <i id="forward-button"
+                           class="glyphicon glyphicon-step-forward"></i>
                     </div>
-                    <div class="program-tree-container"></div>
+                </div>
+                <div class="program-tree-container"></div>
+            </div>
+            <div id="display-contextual-container" class="col-lg-3 col-container">
+                <div class="data-heading-container">
+                    <h3><b>Node: </b><span></span></h3>
+                </div>
+                <div class="contextual-explanations">
+                    <h3><b>Code Checker Actions</b></h3>
+                    <ul></ul>
+                </div>
+                <div class="type-table-container">
+                    <h3><b>Type Table</b></h3>
+                    <div class="table-wrapper">
+                        <table class="table table-striped
+                                            table-hover
+                                            type-table">
+                            <thead>
+                                <tr>
+                                    <th>Scope</th>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-container">
-                <div id="display-contextual-container">
-                    <div class="data-heading-container">
-                        <h3><b>Node: </b><span></span></h3>
-                    </div>
-                    <div class="contextual-explanations">
-                        <h3><b>Code Checker Actions</b></h3>
-                        <ul></ul>
-                    </div>
-                    <div class="type-table-container">
-                        <h3><b>Type Table</b></h3>
-                        <div class="table-wrapper">
-                            <table class="table table-striped
-                                                table-hover
-                                                type-table">
-                                <thead>
-                                    <tr>
-                                        <th>Scope</th>
-                                        <th>ID</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div id="display-generation-container" class="col-lg-3 col-container">
+                <div class="data-heading-container">
+                    <h3><b>Node: </b><span></span></h3>
                 </div>
-                <div id="display-generation-container">
-                    <div class="data-heading-container">
-                        <h3><b>Node: </b><span></span></h3>
-                    </div>
-                    <div class="generation-explanations">
-                        <h3><b>Code Generator Actions</b></h3>
-                        <ul></ul>
-                    </div>
-                    <div class="code-template">
-                        <h3><b>Code<br>Template</b></h3>
-                        <ul></ul>
-                    </div>
-                    <div class="object-code">
-                        <h3><b>Object<br>Code</b></h3>
-                        <ul></ul>
-                    </div>
-                    <div class="address-table-container">
-                        <h3><b>Address Table</b></h3>
-                        <div class="table-wrapper">
-                            <table class="table table-striped
-                                                table-hover
-                                                address-table">
-                                <thead>
-                                    <tr>
-                                        <th>Scope</th>
-                                        <th>ID</th>
-                                        <th>Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                <div class="generation-explanations">
+                    <h3><b>Code Generator Actions</b></h3>
+                    <ul></ul>
+                </div>
+                <div class="code-template">
+                    <h3><b>Code<br>Template</b></h3>
+                    <ul></ul>
+                </div>
+                <div class="object-code">
+                    <h3><b>Object<br>Code</b></h3>
+                    <ul></ul>
+                </div>
+                <div class="address-table-container">
+                    <h3><b>Address Table</b></h3>
+                    <div class="table-wrapper">
+                        <table class="table table-striped
+                                            table-hover
+                                            address-table">
+                            <thead>
+                                <tr>
+                                    <th>Scope</th>
+                                    <th>ID</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
