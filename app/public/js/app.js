@@ -18983,9 +18983,9 @@ module.exports = __webpack_require__(475);
 
 __webpack_require__(174);
 
-__webpack_require__(178);
-
 __webpack_require__(177);
+
+__webpack_require__(180);
 
 /***/ }),
 /* 174 */
@@ -31649,61 +31649,6 @@ if (typeof jQuery === 'undefined') {
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Tree = __webpack_require__(181);
-
-var executionType;
-
-$("button[type='submit']").click(function () {
-    executionType = $(this).val();
-    $(this).siblings().css("background-color", "#333545");
-    $(this).css("background-color", "#035a80");
-});
-
-$("#execute-form").submit(function (e) {
-    // Get the form that was submitted
-    var $form = $(this);
-    // Stop the form submitting normally (i.e., don't route to action parameter)
-    e.preventDefault();
-    // Get csrf token from page meta-data
-    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
-    // Create the url to use within the post request
-    var url = "/" + executionType;
-    // Serialise the form inputs, add csrf token
-    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
-    // Post to the controller
-    $.post(url, data, function (responseData) {
-        $("#display-program-tree").show();
-        var response = responseData.response;
-        var numSyntaxErrors = response.numSyntaxErrors;
-        var syntaxErrors = response.syntaxErrors;
-        var numContextualErrors = response.numContextualErrors;
-        var contextualErrors = response.contextualErrors;
-        var treeNodes = response.treeNodes;
-        var objectCode = response.objectCode;
-        var output = response.output;
-        var nodeOrder = response.nodeOrder;
-        if (numSyntaxErrors > 0) {
-            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
-            $(".program-tree-container").append("Syntax errors: <br>");
-            $.each(syntaxErrors, function (index, syntaxError) {
-                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
-            });
-            $(".program-tree-container").append("<br>");
-        } else {
-            Tree.initialise(executionType, nodeOrder);
-            Tree.drawTree(treeNodes);
-            Tree.highlightFirstNode();
-        }
-    }).fail(function (responseData) {
-        alert(responseData.responseJSON.errors.program);
-    });
-});
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* ==========================================================================
  * codemirror.js
  *
@@ -31718,9 +31663,9 @@ $("#execute-form").submit(function (e) {
 var CodeMirror = __webpack_require__(48);
 
 // Import the CodeMirror 'simple-mode' addon
-__webpack_require__(179);
+__webpack_require__(178);
 // Import the CodeMirror 'active-line' addon
-__webpack_require__(180);
+__webpack_require__(179);
 
 // Define a 'mode' for the Fun programming language, i.e., syntax highlighting
 CodeMirror.defineSimpleMode("fun", {
@@ -31767,7 +31712,7 @@ var examples = {
 };
 
 /***/ }),
-/* 179 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31989,7 +31934,7 @@ var examples = {
 
 
 /***/ }),
-/* 180 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -32067,6 +32012,60 @@ var examples = {
 
 
 /***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Tree = __webpack_require__(181);
+
+var executionType;
+
+$("button[type='submit']").click(function () {
+    executionType = $(this).val();
+    $(this).siblings().css("background-color", "#333545");
+    $(this).css("background-color", "#035a80");
+});
+
+$("#execute-form").submit(function (e) {
+    // Get the form that was submitted
+    var $form = $(this);
+    // Stop the form submitting normally (i.e., don't route to action parameter)
+    e.preventDefault();
+    // Get csrf token from page meta-data
+    var AUTH_TOKEN = $("meta[name='csrf-token']").attr("content");
+    // Create the url to use within the post request
+    var url = "/" + executionType;
+    // Serialise the form inputs, add csrf token
+    var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
+    // Post to the controller
+    $.post(url, data, function (responseData) {
+        $("#display-program-tree").show();
+        var response = responseData.response;
+        var numSyntaxErrors = response.numSyntaxErrors;
+        var syntaxErrors = response.syntaxErrors;
+        var numContextualErrors = response.numContextualErrors;
+        var contextualErrors = response.contextualErrors;
+        var treeNodes = response.treeNodes;
+        var objectCode = response.objectCode;
+        var output = response.output;
+        var nodeOrder = response.nodeOrder;
+        if (numSyntaxErrors > 0) {
+            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
+            $(".program-tree-container").append("Syntax errors: <br>");
+            $.each(syntaxErrors, function (index, syntaxError) {
+                $(".program-tree-container").append(index + 1 + ": " + syntaxError);
+            });
+            $(".program-tree-container").append("<br>");
+        } else {
+            Tree.initialise(executionType, nodeOrder);
+            Tree.drawTree(treeNodes);
+            Tree.highlightFirstNode();
+        }
+    }).fail(function (responseData) {
+        alert(responseData.responseJSON.errors.program);
+    });
+});
+
+/***/ }),
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32117,10 +32116,14 @@ var Tree = module.exports = {
         }).attr("data-node-value", function (d) {
             return d.data.nodeValue;
         });
-        node.append("rect").attr("x", -25).attr("y", -12.5).attr("width", 50).attr("height", 25);
         node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
             var name = d.data.nodeValue;
             if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
+        });
+        node.each(function () {
+            var node = d3.select(this);
+            var bBox = node.select("text").node().getBBox();
+            node.insert("rect", ":first-child").attr("x", bBox.x - 3).attr("y", bBox.y - 3).attr("height", bBox.height + 6).attr("width", bBox.width + 6);
         });
     },
     initialise: function initialise(executionType, executionNodeOrder) {

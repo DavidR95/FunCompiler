@@ -8859,6 +8859,7 @@ html {
 }
 
 .node text {
+  font-size: 0.75em;
   fill: white;
 }
 

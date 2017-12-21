@@ -60,11 +60,6 @@ var Tree = module.exports = {
             }).attr("data-node-value", function(d) {
                 return d.data.nodeValue;
             });
-        node.append("rect")
-            .attr("x", -25)
-            .attr("y", -12.5)
-            .attr("width", 50)
-            .attr("height", 25);
         node.append("text")
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
@@ -75,6 +70,15 @@ var Tree = module.exports = {
                 else
                     return name.substring(0, 5) + "...";
             });
+        node.each(function(){
+            var node = d3.select(this);
+            var bBox = node.select("text").node().getBBox();
+            node.insert("rect", ":first-child")
+            .attr("x", bBox.x - 3)
+            .attr("y", bBox.y - 3)
+            .attr("height", bBox.height + 6)
+            .attr("width", bBox.width + 6);
+        });
     },
     initialise: function(executionType, executionNodeOrder) {
         pause();
