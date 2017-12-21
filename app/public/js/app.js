@@ -32116,7 +32116,7 @@ var Tree = module.exports = {
         }).attr("data-node-value", function (d) {
             return d.data.nodeValue;
         });
-        node.append("text").attr("dy", ".35em").style("text-anchor", "middle").text(function (d) {
+        node.append("text").attr("dy", ".35em").style("text-anchor", "middle").style("font-size", "0.75em").text(function (d) {
             var name = d.data.nodeValue;
             if (name.length <= 5) return name;else return name.substring(0, 5) + "...";
         });

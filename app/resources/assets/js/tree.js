@@ -63,6 +63,7 @@ var Tree = module.exports = {
         node.append("text")
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
+            .style("font-size", "0.75em")
             .text(function(d) {
                 var name = d.data.nodeValue;
                 if (name.length <= 5)
@@ -74,10 +75,10 @@ var Tree = module.exports = {
             var node = d3.select(this);
             var bBox = node.select("text").node().getBBox();
             node.insert("rect", ":first-child")
-            .attr("x", bBox.x - 3)
-            .attr("y", bBox.y - 3)
-            .attr("height", bBox.height + 6)
-            .attr("width", bBox.width + 6);
+                .attr("x", bBox.x - 3)
+                .attr("y", bBox.y - 3)
+                .attr("height", bBox.height + 6)
+                .attr("width", bBox.width + 6);
         });
     },
     initialise: function(executionType, executionNodeOrder) {
