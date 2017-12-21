@@ -195,11 +195,11 @@ body, html {
 }
 
 .contextual-explanations, .generation-explanations, .code-template, .object-code {
-    overflow: auto;
     ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
+        overflow: auto;
     }
     li {
         font-weight: bold;
@@ -208,6 +208,9 @@ body, html {
 }
 
 .contextual-explanations, .generation-explanations {
+    ul {
+        height: calc(100% - 62px);
+    }
     li:last-child {
         color: white;
         background-color: $orient;
@@ -217,6 +220,9 @@ body, html {
 .code-template, .object-code {
     height: 30%;
     width: 47%;
+    ul {
+        height: calc(100% - 88px);
+    }
 }
 
 .code-template {

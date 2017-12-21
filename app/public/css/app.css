@@ -8928,13 +8928,6 @@ html {
   height: 45%;
 }
 
-.contextual-explanations,
-.generation-explanations,
-.code-template,
-.object-code {
-  overflow: auto;
-}
-
 .contextual-explanations ul,
 .generation-explanations ul,
 .code-template ul,
@@ -8942,6 +8935,7 @@ html {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  overflow: auto;
 }
 
 .contextual-explanations li,
@@ -8950,6 +8944,11 @@ html {
 .object-code li {
   font-weight: bold;
   padding-left: 3px;
+}
+
+.contextual-explanations ul,
+.generation-explanations ul {
+  height: calc(100% - 62px);
 }
 
 .contextual-explanations li:last-child,
@@ -8962,6 +8961,11 @@ html {
 .object-code {
   height: 30%;
   width: 47%;
+}
+
+.code-template ul,
+.object-code ul {
+  height: calc(100% - 88px);
 }
 
 .code-template {
