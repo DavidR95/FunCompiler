@@ -5525,7 +5525,7 @@ tbody.collapse.in {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: white;
+  color: white !important;
   background-color: #035a80;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
@@ -5627,7 +5627,7 @@ tbody.collapse.in {
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #fff;
+    border-bottom-color: #121319;
   }
 }
 
@@ -8819,6 +8819,17 @@ html {
 
 #display-specification .nav {
   margin-top: 20px;
+}
+
+#display-specification .nav a {
+  font-weight: bold;
+  border-width: 2px;
+  color: #121319;
+}
+
+#display-specification .nav a:hover {
+  color: white;
+  border: 2px solid #121319;
 }
 
 #display-program-tree {

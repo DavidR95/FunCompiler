@@ -24,8 +24,9 @@ $navbar-default-link-active-color: white;
 // Tabs
 $nav-tabs-justified-link-border-color: darken($dracula, 10%);
 $nav-tabs-active-link-hover-bg: $orient;
-$nav-tabs-active-link-hover-color: white;
+$nav-tabs-active-link-hover-color: white !important;;
 $nav-link-hover-bg: $orient;
+$nav-tabs-justified-active-link-border-color: darken($dracula, 10%);
 
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
