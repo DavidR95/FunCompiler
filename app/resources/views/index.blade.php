@@ -58,6 +58,9 @@
                 </form>
             </div>
             <div class="col-lg-6 col-container">
+                <div id="display-specification">
+                    <p>Hello World</p>
+                </div>
                 <div id="display-program-tree">
                     <div class="controls-container">
                         <h3><b><span></span></b></h3>
