@@ -174,7 +174,13 @@ body, html {
 }
 
 .type-table-container, .address-table-container {
-    overflow: auto;
+    overflow: hidden;
+    .table-wrapper {
+        overflow: auto;
+        max-height: calc(100% - 72px);
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 }
 
 .generation-explanations {
@@ -195,11 +201,12 @@ body, html {
 }
 
 .contextual-explanations, .generation-explanations, .code-template, .object-code {
-    overflow: auto;
+    overflow: hidden;
     ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
+        overflow: auto;
     }
     li {
         font-weight: bold;
@@ -208,6 +215,9 @@ body, html {
 }
 
 .contextual-explanations, .generation-explanations {
+    ul {
+        height: calc(100% - 62px);
+    }
     li:last-child {
         color: white;
         background-color: $orient;
@@ -217,6 +227,9 @@ body, html {
 .code-template, .object-code {
     height: 30%;
     width: 47%;
+    ul {
+        height: calc(100% - 88px);
+    }
 }
 
 .code-template {
@@ -228,8 +241,7 @@ body, html {
 }
 
 .table-striped {
-    width: 95%;
-    margin: 0 auto;
+    margin: 0;
     color: white;
     border: 4px solid darken($dracula, 10%);
     box-shadow: 0px 0px 6px 1px $dracula;
