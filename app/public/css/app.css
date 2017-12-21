@@ -8823,13 +8823,12 @@ html {
 
 #display-specification .nav a {
   font-weight: bold;
-  border-width: 2px;
   color: #121319;
 }
 
 #display-specification .nav a:hover {
   color: white;
-  border: 2px solid #121319;
+  border: 1px solid #121319;
 }
 
 #display-program-tree {
