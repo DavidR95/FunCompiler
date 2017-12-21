@@ -59,14 +59,37 @@
             </div>
             <div id="display-specification" class="col-lg-9 col-container">
                 <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a href="#">Overview</a></li>
-                    <li><a href="#">Programs</a></li>
-                    <li><a href="#">Declarations</a></li>
-                    <li><a href="#">Commands</a></li>
-                    <li><a href="#">Expressions</a></li>
-                    <li><a href="#">Lexicon</a></li>
-                    <li><a href="#">Predefined</a></li>
+                    <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+                    <li><a data-toggle="tab" href="#programs">Programs</a></li>
+                    <li><a data-toggle="tab" href="#declarations">Declarations</a></li>
+                    <li><a data-toggle="tab" href="#commands">Commands</a></li>
+                    <li><a data-toggle="tab" href="#expressions">Expressions</a></li>
+                    <li><a data-toggle="tab" href="#lexicon">Lexicon</a></li>
+                    <li><a data-toggle="tab" href="#predefined">Predefined</a></li>
                 </ul>
+                <div class="tab-content">
+                    <div id="overview" class="tab-pane fade in active">
+                        <p>Overview</p>
+                    </div>
+                    <div id="programs" class="tab-pane fade">
+                        <p>Programs</p>
+                    </div>
+                    <div id="declarations" class="tab-pane fade">
+                        <p>Declarations</p>
+                    </div>
+                    <div id="commands" class="tab-pane fade">
+                        <p>Commands</p>
+                    </div>
+                    <div id="expressions" class="tab-pane fade">
+                        <p>Expressions</p>
+                    </div>
+                    <div id="lexicon" class="tab-pane fade">
+                        <p>Lexicon</p>
+                    </div>
+                    <div id="predefined" class="tab-pane fade">
+                        <p>Predefined</p>
+                    </div>
+                </div>
             </div>
             <div id="display-program-tree" class="col-lg-6 col-container">
                 <div class="controls-container">
