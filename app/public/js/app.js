@@ -32172,10 +32172,12 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var explanationsText = $(".generation-explanations ul");
         var objectCodeText = $(".object-code ul");
         var tableBody = $(".address-table tbody");
+        var tableWrapper = $(".address-table").parent();
         var codeTemplateText = $(".code-template ul");
     } else {
         var explanationsText = $(".contextual-explanations ul");
         var tableBody = $(".type-table tbody");
+        var tableWrapper = $(".type-table").parent();
     }
     d3.select("#node-" + node.id).select("rect").transition().duration(0).delay(delayOffset * 1000).style("fill", "#035a80").on("start", function () {
         $(this).next("text").css({ "font-weight": "900" });
@@ -32195,12 +32197,14 @@ function animateNode(node, isPlayingForward, delayOffset) {
             tableEntries += "<tr><td>" + tableEntry.scope + "</td><td>" + tableEntry.id + "</td><td>" + tableEntry.type_address + "</td></tr>";
         });
         tableBody.html(tableEntries);
+        tableWrapper.scrollTop(tableWrapper.prop("scrollHeight"));
 
         var explanations = "";
         $.each(node.explanations, function (index, explanation) {
             explanations += "<li>> " + explanation + "</li>";
         });
         explanationsText.html(explanations);
+        explanationsText.scrollTop(explanationsText.prop("scrollHeight"));
 
         if (showGenerationAnimation) {
             var objectCodeInstructions = "";
