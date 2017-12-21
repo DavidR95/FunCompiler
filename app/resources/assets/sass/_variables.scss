@@ -21,6 +21,12 @@ $navbar-default-link-hover-color: darken($navbar-default-link-color, 10%);
 $navbar-default-link-hover-bg: darken($orient, 10%);
 $navbar-default-link-active-color: white;
 
+// Tabs
+$nav-tabs-justified-link-border-color: darken($dracula, 10%);
+$nav-tabs-active-link-hover-bg: $orient;
+$nav-tabs-active-link-hover-color: white;
+$nav-link-hover-bg: $orient;
+
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 $font-family-sans-serif: "Raleway", sans-serif;
