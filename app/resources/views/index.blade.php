@@ -59,10 +59,13 @@
             </div>
             <div id="display-specification" class="col-lg-9 col-container">
                 <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Menu 1</a></li>
-                    <li><a href="#">Menu 2</a></li>
-                    <li><a href="#">Menu 3</a></li>
+                    <li class="active"><a href="#">Overview</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Declarations</a></li>
+                    <li><a href="#">Commands</a></li>
+                    <li><a href="#">Expressions</a></li>
+                    <li><a href="#">Lexicon</a></li>
+                    <li><a href="#">Predefined</a></li>
                 </ul>
             </div>
             <div id="display-program-tree" class="col-lg-6 col-container">

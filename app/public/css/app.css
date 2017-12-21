@@ -8817,8 +8817,8 @@ html {
   float: right;
 }
 
-#display-specification nav {
-  margin-top: 40px;
+#display-specification .nav {
+  margin-top: 20px;
 }
 
 #display-program-tree {
