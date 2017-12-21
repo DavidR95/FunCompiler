@@ -8928,6 +8928,13 @@ html {
   height: 45%;
 }
 
+.contextual-explanations,
+.generation-explanations,
+.code-template,
+.object-code {
+  overflow: hidden;
+}
+
 .contextual-explanations ul,
 .generation-explanations ul,
 .code-template ul,
@@ -8977,7 +8984,8 @@ html {
 }
 
 .table-striped {
-  margin: 0;
+  width: 95%;
+  margin: 0 auto;
   color: white;
   border: 4px solid #121319;
   -webkit-box-shadow: 0px 0px 6px 1px #282a36;
