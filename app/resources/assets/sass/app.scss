@@ -33,7 +33,10 @@ body, html {
 .col-container {
     height: 100%;
     &:first-child {
-        padding-left: 0;
+        padding: 0;
+    }
+    &:nth-child(2) {
+        padding-left: 30px;
     }
 }
 
