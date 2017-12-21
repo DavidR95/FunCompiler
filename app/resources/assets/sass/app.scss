@@ -35,6 +35,9 @@ body, html {
     &:first-child {
         padding: 0;
     }
+    &:nth-child(2) {
+        padding-left: 30px;
+    }
 }
 
 .navbar {
