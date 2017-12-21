@@ -8908,7 +8908,15 @@ html {
 
 .type-table-container,
 .address-table-container {
+  overflow: hidden;
+}
+
+.type-table-container .table-wrapper,
+.address-table-container .table-wrapper {
   overflow: auto;
+  max-height: calc(100% - 72px);
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .generation-explanations {
@@ -8984,8 +8992,7 @@ html {
 }
 
 .table-striped {
-  width: 95%;
-  margin: 0 auto;
+  margin: 0;
   color: white;
   border: 4px solid #121319;
   -webkit-box-shadow: 0px 0px 6px 1px #282a36;

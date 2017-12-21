@@ -86,19 +86,20 @@
                     </div>
                     <div class="type-table-container">
                         <h3><b>Type Table</b></h3>
-                        <table class="table table-striped
-                                            table-hover
-                                            table-responsive
-                                            type-table">
-                            <thead>
-                                <tr>
-                                    <th>Scope</th>
-                                    <th>ID</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-wrapper">
+                            <table class="table table-striped
+                                                table-hover
+                                                type-table">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div id="display-generation-container">
@@ -119,19 +120,20 @@
                     </div>
                     <div class="address-table-container">
                         <h3><b>Address Table</b></h3>
-                        <table class="table table-striped
-                                            table-hover
-                                            table-responsive
-                                            address-table">
-                            <thead>
-                                <tr>
-                                    <th>Scope</th>
-                                    <th>ID</th>
-                                    <th>Address</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-wrapper">
+                            <table class="table table-striped
+                                                table-hover
+                                                address-table">
+                                <thead>
+                                    <tr>
+                                        <th>Scope</th>
+                                        <th>ID</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
