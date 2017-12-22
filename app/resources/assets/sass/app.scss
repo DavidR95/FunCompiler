@@ -90,6 +90,7 @@ body, html {
 //== CENTER ==//
 
 #display-specification {
+    height: 100%;
     .nav {
         margin-top: 20px;
         a {
@@ -102,6 +103,8 @@ body, html {
         }
     }
     .tab-content {
+        overflow: auto;
+        height: calc(100% - 64px);
         padding: 0 15px;
         p, h2, h3 {
             font-weight: bold;

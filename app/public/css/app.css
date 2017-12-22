@@ -8814,6 +8814,10 @@ html {
   float: right;
 }
 
+#display-specification {
+  height: 100%;
+}
+
 #display-specification .nav {
   margin-top: 20px;
 }
@@ -8829,6 +8833,8 @@ html {
 }
 
 #display-specification .tab-content {
+  overflow: auto;
+  height: calc(100% - 64px);
   padding: 0 15px;
 }
 
