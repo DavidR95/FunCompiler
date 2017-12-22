@@ -69,25 +69,25 @@
                 </ul>
                 <div class="tab-content">
                     <div id="overview" class="tab-pane fade in active">
-                        @include("partials/overview")
+                        @include("spec_partials/overview")
                     </div>
                     <div id="programs" class="tab-pane fade">
-                        @include("partials/programs")
+                        @include("spec_partials/programs")
                     </div>
                     <div id="declarations" class="tab-pane fade">
-                        @include("partials/declarations")
+                        @include("spec_partials/declarations")
                     </div>
                     <div id="commands" class="tab-pane fade">
-                        @include("partials/commands")
+                        @include("spec_partials/commands")
                     </div>
                     <div id="expressions" class="tab-pane fade">
-                        @include("partials/expressions")
+                        @include("spec_partials/expressions")
                     </div>
                     <div id="lexicon" class="tab-pane fade">
-                        @include("partials/lexicon")
+                        @include("spec_partials/lexicon")
                     </div>
                     <div id="predefined" class="tab-pane fade">
-                        @include("partials/predefined")
+                        @include("spec_partials/predefined")
                     </div>
                 </div>
             </div>
