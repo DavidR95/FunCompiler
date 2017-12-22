@@ -350,7 +350,7 @@ actual = expr?                                     – actual parameter
                         </p>
                     </div>
                     <div id="lexicon" class="tab-pane fade">
-                        <h2>Expressions</h2>
+                        <h2>Lexicon</h2>
                         <h3>Syntax</h3>
                         <div class="grammar-snippet">
 <pre>
@@ -383,7 +383,11 @@ letter = ‘A’ | ‘B’ | ‘C’ | ‘D’ | ‘E’ | ‘F’ | ‘G’ | �
                         </p>
                     </div>
                     <div id="predefined" class="tab-pane fade">
-                        <p>Predefined</p>
+                        <h2>Predefined</h2>
+                        <p>
+                            Fun has two predefined procedures and functions:
+                        </p>
+                        <div class="code-snippet"></div>
                     </div>
                 </div>
             </div>

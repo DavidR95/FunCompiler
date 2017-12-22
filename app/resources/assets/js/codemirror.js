@@ -71,12 +71,27 @@ var examples = {
 }
 
 // Below are readonly code snippets used within the specification
-CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
-  lineNumbers: true,
-  tabSize: 2,
-  lineWrapping: true,
-  mode:  "fun",
-  theme: "dracula",
-  readOnly: "nocursor",
-  value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
+var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode:  "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
+});
+
+var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode:  "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
+});
+
+$('.nav-tabs a').on('shown.bs.tab', function() {
+    overview_cm.refresh();
+    predefined_cm.refresh();
 });
