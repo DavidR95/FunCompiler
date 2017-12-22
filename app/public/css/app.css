@@ -8850,10 +8850,6 @@ html {
           box-shadow: 0px 0px 6px 1px #282a36;
 }
 
-#display-specification .tab-content .grammar-snippet {
-  font-style: italic;
-}
-
 #display-specification .tab-content .CodeMirror {
   height: 100%;
 }
