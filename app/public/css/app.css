@@ -8828,17 +8828,30 @@ html {
   border: 1px solid #121319;
 }
 
+#display-specification .tab-content {
+  padding: 0 15px;
+}
+
 #display-specification .tab-content p,
-#display-specification .tab-content h2 {
+#display-specification .tab-content h2,
+#display-specification .tab-content h3 {
   font-weight: bold;
 }
 
-#display-specification .tab-content .code-snippet {
+#display-specification .tab-content .code-snippet,
+#display-specification .tab-content .grammar-snippet {
   width: 90%;
   margin: 10px auto;
+}
+
+#display-specification .tab-content .code-snippet {
   border: 4px solid #121319;
   -webkit-box-shadow: 0px 0px 6px 1px #282a36;
           box-shadow: 0px 0px 6px 1px #282a36;
+}
+
+#display-specification .tab-content .grammar-snippet {
+  font-style: italic;
 }
 
 #display-specification .tab-content .CodeMirror {
