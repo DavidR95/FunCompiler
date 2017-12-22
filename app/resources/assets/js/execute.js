@@ -23,6 +23,7 @@ $("#execute-form").submit(function(e) {
     $.post(url, data, function(responseData) {
         $("#display-specification").hide();
         $("#display-program-tree").show();
+        $("#navbar .active").removeClass("active");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
