@@ -8831,6 +8831,18 @@ html {
   border: 1px solid #121319;
 }
 
+#display-specification .code-snippet {
+  width: 90%;
+  margin: 10px auto;
+  border: 4px solid #121319;
+  -webkit-box-shadow: 0px 0px 6px 1px #282a36;
+          box-shadow: 0px 0px 6px 1px #282a36;
+}
+
+#display-specification .CodeMirror {
+  height: 100%;
+}
+
 #display-program-tree {
   height: 100%;
   display: none;
