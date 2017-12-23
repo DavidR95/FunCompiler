@@ -45923,19 +45923,24 @@ var CodeTemplates = module.exports = {
  *
  * Submits the input program to the compiler API. Retrieves the response and if
  * successful, triggers the methods to build the AST.
- *
  * ========================================================================== */
 
+// Import Tree module
 var Tree = __webpack_require__(181);
 
+// Indicates which button was pressed, contextual analysis or code generation
 var executionType;
 
+// Event listener to trigger when either submit button is pressed
 $("button[type='submit']").click(function () {
+    // Contextual analysis or code generation
     executionType = $(this).val();
+    // Modify background-ground to show active
     $(this).siblings().css("background-color", "#333545");
     $(this).css("background-color", "#035a80");
 });
 
+// Event listener to trigger when form is submitted
 $("#execute-form").submit(function (e) {
     // Get the form that was submitted
     var $form = $(this);
