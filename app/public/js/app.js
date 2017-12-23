@@ -45793,20 +45793,7 @@ var CodeTemplates = __webpack_require__(474);
 var CodeAnimation = module.exports = {
     // Draw the AST gives the tree nodes
     drawTree: function drawTree(data) {
-        var dataMap = data.reduce(function (map, node) {
-            map[node.id] = node;
-            return map;
-        }, {});
-        var treeData = [];
-        data.forEach(function (node) {
-            var parent = dataMap[node.parent_id];
-            if (parent) {
-                (parent.children || (parent.children = [])).push(node);
-            } else {
-                treeData.push(node);
-            }
-        });
-
+        var treeData = mapData(data);
         var marginLeft = 10;
         var marginTop = 35;
         var width = 800 - marginLeft * 2;
@@ -45880,6 +45867,30 @@ $("#forward-button").on("click", function () {
 $("#reverse-button").on("click", function () {
     reverse();
 });
+
+// Modifies the array index to be the ID of the node
+function mapData(data) {
+    var dataMap = data.reduce(function (map, node) {
+        map[node.id] = node;
+        return map;
+    }, {});
+    var treeData = buildTree(data, dataMap);
+    return treeData;
+}
+
+// Converts the flat data structure into a parent-child tree
+function buildTree(data, dataMap) {
+    var treeData = [];
+    data.forEach(function (node) {
+        var parent = dataMap[node.parent_id];
+        if (parent) {
+            (parent.children || (parent.children = [])).push(node);
+        } else {
+            treeData.push(node);
+        }
+    });
+    return treeData;
+}
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
