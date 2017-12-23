@@ -45789,11 +45789,13 @@ var CodeTemplates = module.exports = {
 var d3 = __webpack_require__(183);
 // Import CodeTemplates module
 var CodeTemplates = __webpack_require__(474);
+// Import CodeHelpers module
+var CodeHelpers = __webpack_require__(490);
 
 var CodeAnimation = module.exports = {
     // Draw the AST gives the tree nodes
     drawTree: function drawTree(data) {
-        var treeData = mapData(data);
+        var treeData = CodeHelpers.mapData(data);
         var marginLeft = 10;
         var marginTop = 35;
         var width = 800 - marginLeft * 2;
@@ -45867,30 +45869,6 @@ $("#forward-button").on("click", function () {
 $("#reverse-button").on("click", function () {
     reverse();
 });
-
-// Modifies the array index to be the ID of the node
-function mapData(data) {
-    var dataMap = data.reduce(function (map, node) {
-        map[node.id] = node;
-        return map;
-    }, {});
-    var treeData = buildTree(data, dataMap);
-    return treeData;
-}
-
-// Converts the flat data structure into a parent-child tree
-function buildTree(data, dataMap) {
-    var treeData = [];
-    data.forEach(function (node) {
-        var parent = dataMap[node.parent_id];
-        if (parent) {
-            (parent.children || (parent.children = [])).push(node);
-        } else {
-            treeData.push(node);
-        }
-    });
-    return treeData;
-}
 
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
@@ -46006,6 +45984,43 @@ function hasAnimationFinished() {
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
 }
+
+/***/ }),
+/* 490 */
+/***/ (function(module, exports) {
+
+/* ==========================================================================
+ * codeHelpers.js
+ *
+ * Provides helper methods used to manipulate the response returned from the
+ * API to build a data structure in which D3 can form a tree.
+ * ========================================================================== */
+
+var CodeHelpers = module.exports = {
+    // Modifies the array index to be the ID of the node
+    mapData: function mapData(data) {
+        var dataMap = data.reduce(function (map, node) {
+            map[node.id] = node;
+            return map;
+        }, {});
+        var treeData = CodeHelpers.buildTree(data, dataMap);
+        return treeData;
+    },
+
+    // Converts a flat data structure into a parent-child tree
+    buildTree: function buildTree(data, dataMap) {
+        var treeData = [];
+        data.forEach(function (node) {
+            var parent = dataMap[node.parent_id];
+            if (parent) {
+                (parent.children || (parent.children = [])).push(node);
+            } else {
+                treeData.push(node);
+            }
+        });
+        return treeData;
+    }
+};
 
 /***/ })
 /******/ ]);
