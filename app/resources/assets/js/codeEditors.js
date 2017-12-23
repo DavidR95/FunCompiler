@@ -3,9 +3,6 @@
  *
  * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
  * the 'Fun' programming language.
- *
- * Stores an array of example programs which will be used to update the contents
- * of the code editor when selected.
  * ========================================================================== */
 
 // Import CodeMirror node module
@@ -20,14 +17,14 @@ var CodeSnippets = require('./codeSnippets.js')
 // Bind a 'click' event listener to all links with the class 'code-example'
 $(".code-example").on("click", function() {
     // Get the example name from the 'example' data-attribute and update
-    cm.setValue(CodeSnippets.getSnippet($(this).data("example")));
+    code_editor.setValue(CodeSnippets.getSnippet($(this).data("example")));
 });
 
 // Event listener to trigger when a specification tab is shown
 $('.nav-tabs a').on('shown.bs.tab', function() {
     // Refresh (reload) the specified CodeMirror objects
-    overview_cm.refresh();
-    predefined_cm.refresh();
+    overview_snippet.refresh();
+    predefined_snippet.refresh();
 });
 
 // Define a 'mode' for the Fun programming language, i.e., syntax highlighting
@@ -48,21 +45,23 @@ CodeMirror.defineSimpleMode("fun", {
 });
 
 // Create a CodeMirror object from a text area
-var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
-    lineNumbers: true,
-    tabSize: 2,
-    lineWrapping: true,
-    styleActiveLine: true,
-    mode: "fun",
-    theme: "dracula"
-});
+var code_editor = CodeMirror.fromTextArea(
+    document.getElementById("code-editor"), {
+        lineNumbers: true,
+        tabSize: 2,
+        lineWrapping: true,
+        styleActiveLine: true,
+        mode: "fun",
+        theme: "dracula"
+    }
+);
 
 // Set the default value of the code mirror to be the program below
-cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
+code_editor.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
 // Below are read-only code snippets used within the specification
-var overview_cm = CodeMirror(document.getElementById("overview")
-                  .getElementsByClassName("code-snippet")[0], {
+var overview_snippet = CodeMirror(document.getElementById("overview")
+                       .getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,
@@ -72,8 +71,8 @@ var overview_cm = CodeMirror(document.getElementById("overview")
     value: CodeSnippets.getSnippet("OVERVIEW")
 });
 
-var predefined_cm = CodeMirror(document.getElementById("predefined")
-                    .getElementsByClassName("code-snippet")[0], {
+var predefined_snippet = CodeMirror(document.getElementById("predefined")
+                         .getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,
