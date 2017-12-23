@@ -16,7 +16,7 @@ var CodeHelpers = require('./codeHelpers.js');
 var CodeAnimation = module.exports = {
     // Draw the AST gives the tree nodes
     drawTree: function(data) {
-        var treeData = CodeHelpers.mapData(data);
+        var treeData = CodeHelpers.buildTree(data);
         var marginLeft = 10;
         var marginTop = 35
         var width = 800 - (marginLeft * 2);

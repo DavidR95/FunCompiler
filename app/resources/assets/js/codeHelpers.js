@@ -6,18 +6,9 @@
  * ========================================================================== */
 
 var CodeHelpers = module.exports = {
-    // Modifies the array index to be the ID of the node
-    mapData: function(data) {
-        var dataMap = data.reduce(function(map, node) {
-            map[node.id] = node;
-            return map;
-        }, {});
-        var treeData = CodeHelpers.buildTree(data, dataMap);
-        return treeData;
-    },
-
     // Converts a flat data structure into a parent-child tree
-    buildTree: function(data, dataMap) {
+    buildTree: function(data) {
+        var dataMap = CodeHelpers.mapData(data);
         var treeData = [];
         data.forEach(function(node) {
             var parent = dataMap[node.parent_id];
@@ -28,5 +19,14 @@ var CodeHelpers = module.exports = {
             }
         });
         return treeData;
+    },
+    
+    // Modifies the array index to be the ID of the node
+    mapData: function(data) {
+        var dataMap = data.reduce(function(map, node) {
+            map[node.id] = node;
+            return map;
+        }, {});
+        return dataMap;
     }
 }

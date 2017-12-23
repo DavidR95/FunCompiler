@@ -45795,7 +45795,7 @@ var CodeHelpers = __webpack_require__(490);
 var CodeAnimation = module.exports = {
     // Draw the AST gives the tree nodes
     drawTree: function drawTree(data) {
-        var treeData = CodeHelpers.mapData(data);
+        var treeData = CodeHelpers.buildTree(data);
         var marginLeft = 10;
         var marginTop = 35;
         var width = 800 - marginLeft * 2;
@@ -45997,18 +45997,9 @@ function hasAnimationStarted() {
  * ========================================================================== */
 
 var CodeHelpers = module.exports = {
-    // Modifies the array index to be the ID of the node
-    mapData: function mapData(data) {
-        var dataMap = data.reduce(function (map, node) {
-            map[node.id] = node;
-            return map;
-        }, {});
-        var treeData = CodeHelpers.buildTree(data, dataMap);
-        return treeData;
-    },
-
     // Converts a flat data structure into a parent-child tree
-    buildTree: function buildTree(data, dataMap) {
+    buildTree: function buildTree(data) {
+        var dataMap = CodeHelpers.mapData(data);
         var treeData = [];
         data.forEach(function (node) {
             var parent = dataMap[node.parent_id];
@@ -46019,6 +46010,15 @@ var CodeHelpers = module.exports = {
             }
         });
         return treeData;
+    },
+
+    // Modifies the array index to be the ID of the node
+    mapData: function mapData(data) {
+        var dataMap = data.reduce(function (map, node) {
+            map[node.id] = node;
+            return map;
+        }, {});
+        return dataMap;
     }
 };
 
