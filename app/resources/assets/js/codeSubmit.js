@@ -6,7 +6,7 @@
  * ========================================================================== */
 
 // Import Tree module
-var Tree = require("./tree.js");
+var Tree = require("./codeAnimation.js");
 
 // Indicates which button was pressed, contextual analysis or code generation
 var executionType;
