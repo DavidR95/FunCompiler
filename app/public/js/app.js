@@ -45829,6 +45829,8 @@ var CodeAnimation = module.exports = {
             node.insert("rect", ":first-child").attr("x", bBox.x - 3).attr("y", bBox.y - 3).attr("height", bBox.height + 6).attr("width", bBox.width + 6);
         });
     },
+
+    // Stop any currently running animation and show the correct containers
     initialise: function initialise(executionType, executionNodeOrder) {
         pause();
         previousNode = null;
@@ -45845,6 +45847,8 @@ var CodeAnimation = module.exports = {
         }
         nodeOrder = executionNodeOrder;
     },
+
+    // 'Animate' the first node in the tree
     highlightFirstNode: function highlightFirstNode() {
         var node = nodeOrder[currentNodeIndex + 1];
         animateNode(node, true, 0);
@@ -45870,6 +45874,7 @@ $("#reverse-button").on("click", function () {
     reverse();
 });
 
+// Highlights a single node and displays any corresponding information
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations ul");
@@ -45934,6 +45939,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
     });
 }
 
+// Animates each node sequentially
 function animateTree() {
     for (var i = currentNodeIndex, j = 0; i < nodeOrder.length - 1; i++, j++) {
         var node = nodeOrder[i + 1];
@@ -45941,6 +45947,7 @@ function animateTree() {
     }
 }
 
+// Start playing the animation, restart if already at the end
 function play() {
     is_playing = true;
     enablePauseButton();
@@ -45948,12 +45955,14 @@ function play() {
     animateTree();
 }
 
+// Pause the animation, interrupt all current animations
 function pause() {
     is_playing = false;
     enablePlayButton();
     d3.selectAll("rect").interrupt();
 }
 
+// Move one node forward
 function forward() {
     if (is_playing) pause();
     if (!hasAnimationFinished()) {
@@ -45962,6 +45971,7 @@ function forward() {
     }
 }
 
+// Move one node backward
 function reverse() {
     if (is_playing) pause();
     if (hasAnimationStarted()) {
@@ -45970,20 +45980,24 @@ function reverse() {
     }
 }
 
+// Show the play button, hide the pause button
 function enablePlayButton() {
     $("#play-button").show();
     $("#pause-button").hide();
 }
 
+// Show the pause button, hide the play button
 function enablePauseButton() {
     $("#play-button").hide();
     $("#pause-button").show();
 }
 
+// Check if the animation has reached the last node
 function hasAnimationFinished() {
     return currentNodeIndex === nodeOrder.length - 1;
 }
 
+// Check if the animation has moved beyond the first node
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
 }
