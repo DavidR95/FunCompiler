@@ -5,6 +5,7 @@
  */
 try {
     window.$ = window.jQuery = require('jquery');
-
     require('bootstrap-sass');
+    require("./codemirror.js");
+    require("./execute.js");
 } catch (e) {}
