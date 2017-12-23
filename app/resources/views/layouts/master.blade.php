@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>FunCompiler</title>
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="css/hover.css" rel="stylesheet">
+        <link href="{{ asset('css/hover.css') }}" rel="stylesheet">
     </head>
     <body>
         @yield('content')

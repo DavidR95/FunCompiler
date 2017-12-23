@@ -49,7 +49,7 @@ body, html {
     }
 }
 
-//== LEFT ==/
+//== CODE EDITOR ==/
 
 #execute-form {
     height: 100%;
@@ -87,7 +87,7 @@ body, html {
     }
 }
 
-//== CENTER ==//
+//== SPECIFICATION ==//
 
 #display-specification {
     height: 100%;
@@ -122,6 +122,8 @@ body, html {
         }
     }
 }
+
+//== AST ==//
 
 #display-program-tree {
     height: 100%;
@@ -185,7 +187,7 @@ body, html {
     display: none;
 }
 
-//== RIGHT ==//
+//== DATA ==//
 
 .data-heading-container {
     height: 10%;
@@ -231,7 +233,8 @@ body, html {
     height: 45%;
 }
 
-.contextual-explanations, .generation-explanations, .code-template, .object-code {
+.contextual-explanations, .generation-explanations, .code-template,
+.object-code {
     overflow: hidden;
     ul {
         list-style-type: none;

@@ -38,10 +38,12 @@
     -webkit-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
 }
-.hvr-bounce-to-right:hover, .hvr-bounce-to-right:focus, .hvr-bounce-to-right:active {
+.hvr-bounce-to-right:hover, .hvr-bounce-to-right:focus,
+.hvr-bounce-to-right:active {
     color: white;
 }
-.hvr-bounce-to-right:hover:before, .hvr-bounce-to-right:focus:before, .hvr-bounce-to-right:active:before {
+.hvr-bounce-to-right:hover:before, .hvr-bounce-to-right:focus:before,
+.hvr-bounce-to-right:active:before {
     -webkit-transform: scaleX(1);
     transform: scaleX(1);
     -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
@@ -81,10 +83,12 @@
     -webkit-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
 }
-.hvr-bounce-to-left:hover, .hvr-bounce-to-left:focus, .hvr-bounce-to-left:active {
+.hvr-bounce-to-left:hover, .hvr-bounce-to-left:focus,
+.hvr-bounce-to-left:active {
     color: white;
 }
-.hvr-bounce-to-left:hover:before, .hvr-bounce-to-left:focus:before, .hvr-bounce-to-left:active:before {
+.hvr-bounce-to-left:hover:before, .hvr-bounce-to-left:focus:before,
+.hvr-bounce-to-left:active:before {
     -webkit-transform: scaleX(1);
     transform: scaleX(1);
     -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);

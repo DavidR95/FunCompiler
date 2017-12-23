@@ -1,31 +1,26 @@
+/* ==========================================================================
+ * codeAnimation.js
+ *
+ * Build and draw the AST using the D3 library.
+ *
+ * Define the logic used to traverse/animate the resulting AST.
+ * ========================================================================== */
+
+// Import the D3 node module
 var d3 = require('d3');
+// Import CodeTemplates module
+var CodeTemplates = require('./codeTemplates.js');
+// Import CodeHelpers module
+var CodeHelpers = require('./codeHelpers.js');
 
-var CodeTemplates = require('./codetemplates.js');
-
-var Tree = module.exports = {
+var CodeAnimation = module.exports = {
+    // Draw the AST gives the tree nodes
     drawTree: function(data) {
-        var dataMap = data.reduce(function(map, node) {
-            map[node.id] = node;
-            return map;
-        }, {});
-        var treeData = [];
-        data.forEach(function(node) {
-            var parent = dataMap[node.parent_id];
-            if (parent) {
-                (parent.children || (parent.children = [])).push(node);
-            } else {
-                treeData.push(node);
-            }
-        });
-
-        var margin = {
-            top: 35,
-            right: 10,
-            bottom: 35,
-            left: 10
-        };
-        var width = 800 - margin.left - margin.right;
-        var height = 650 - margin.top - margin.bottom;
+        var treeData = CodeHelpers.buildTree(data);
+        var marginLeft = 10;
+        var marginTop = 35
+        var width = 800 - (marginLeft * 2);
+        var height = 650 - (marginTop * 2);
         var treemap = d3.tree().size([width, height]);
         var nodes = d3.hierarchy(treeData[0]);
         nodes = treemap(nodes);
@@ -37,7 +32,9 @@ var Tree = module.exports = {
             .attr("preserveAspectRatio", "none")
             .attr("viewBox", "0 0 800 650")
         var g = svg.append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr(
+                "transform", "translate(" + marginLeft + "," + marginTop + ")"
+            );
         g.selectAll(".link")
             .data(nodes.descendants().slice(1)).enter().append("path")
             .attr("class", "link").attr("d", function(d) {
@@ -50,7 +47,9 @@ var Tree = module.exports = {
             .data(nodes.descendants())
             .enter().append("g")
             .attr("class", function(d) {
-                return "node" + (d.children ? " node--internal" : " node--leaf");
+                return "node" + (
+                    d.children ? " node--internal" : " node--leaf"
+                );
             }).attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             }).attr("id", function(d) {
@@ -81,6 +80,8 @@ var Tree = module.exports = {
                 .attr("width", bBox.width + 6);
         });
     },
+
+    // Stop any currently running animation and show the correct containers
     initialise: function(executionType, executionNodeOrder) {
         pause();
         previousNode = null;
@@ -97,6 +98,8 @@ var Tree = module.exports = {
         }
         nodeOrder = executionNodeOrder
     },
+
+    // 'Animate' the first node in the tree
     highlightFirstNode: function() {
         var node = nodeOrder[currentNodeIndex+1];
         animateNode(node, true, 0);
@@ -122,6 +125,7 @@ $("#reverse-button").on("click", function() {
     reverse();
 });
 
+// Highlights a single node and displays any corresponding information
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
         var explanationsText = $(".generation-explanations ul");
@@ -140,7 +144,10 @@ function animateNode(node, isPlayingForward, delayOffset) {
             $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
                 $(previousNode).css("fill", "#3e4153");
-                $(previousNode).next("text").css({"fill": "white", "font-weight": "normal"});
+                $(previousNode).next("text").css({
+                    "fill": "white",
+                    "font-weight": "normal"
+                });
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -175,7 +182,9 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 var codeTemplateInstructions = "";
                 var codeTemplate = CodeTemplates.getTemplate(nodeName);
                 $.each(codeTemplate, function(index, codeTemplateInstruction) {
-                    codeTemplateInstructions += "<li>> " + codeTemplateInstruction + "</li>";
+                    codeTemplateInstructions += "<li>> " +
+                                                codeTemplateInstruction +
+                                                "</li>";
                 })
                 codeTemplateText.html(codeTemplateInstructions);
             }
@@ -188,6 +197,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         });
 }
 
+// Animates each node sequentially
 function animateTree() {
     for (var i = currentNodeIndex, j = 0; i < nodeOrder.length-1; i++, j++) {
         var node = nodeOrder[i+1];
@@ -195,6 +205,7 @@ function animateTree() {
     }
 }
 
+// Start playing the animation, restart if already at the end
 function play() {
     is_playing = true;
     enablePauseButton();
@@ -203,12 +214,14 @@ function play() {
     animateTree();
 }
 
+// Pause the animation, interrupt all current animations
 function pause() {
     is_playing = false;
     enablePlayButton();
     d3.selectAll("rect").interrupt();
 }
 
+// Move one node forward
 function forward() {
     if (is_playing)
         pause();
@@ -218,6 +231,7 @@ function forward() {
     }
 }
 
+// Move one node backward
 function reverse() {
     if (is_playing)
         pause();
@@ -227,20 +241,24 @@ function reverse() {
     }
 }
 
+// Show the play button, hide the pause button
 function enablePlayButton() {
     $("#play-button").show();
     $("#pause-button").hide();
 }
 
+// Show the pause button, hide the play button
 function enablePauseButton() {
     $("#play-button").hide();
     $("#pause-button").show();
 }
 
+// Check if the animation has reached the last node
 function hasAnimationFinished() {
     return currentNodeIndex === nodeOrder.length-1;
 }
 
+// Check if the animation has moved beyond the first node
 function hasAnimationStarted() {
     return currentNodeIndex > 0;
 }

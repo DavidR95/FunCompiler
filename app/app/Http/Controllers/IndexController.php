@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 class IndexController extends Controller
 {
     /**
-     * Display the index page with no code display.
+     * Display the home page with no currently executed program, i.e., display
+     * the Fun specification.
      *
      * @return \Illuminate\View\View
      */
@@ -17,9 +18,13 @@ class IndexController extends Controller
     }
 
     /**
-     * Makes an API request to the Fun compiler and retrieves the JSON response.
+     * Makes an API request to the Fun compiler, passing the input program and
+     * the compilation type (contextual analysis or code generation) as
+     * parameters. Retrieves the JSON response and returns this along with
+     * a redirect URL (the home page) to the AJAX request that initially
+     * triggered this method.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
     public function execute()
     {
@@ -40,7 +45,8 @@ class IndexController extends Controller
         ]);
         // Convert the body of the response to an associative array
         $response = json_decode($res->getBody(), true);
-        // Render the index view, passing along the array
-        return response()->json(['redirect_url' => '/', 'response' => $response]);
+        // Render the index view, passing along the response array
+        return response()->json(['redirect_url' => '/',
+                                 'response' => $response]);
     }
 }
