@@ -1,5 +1,5 @@
 /* ==========================================================================
- * codemirror.js
+ * codeEditors.js
  *
  * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
  * the 'Fun' programming language.

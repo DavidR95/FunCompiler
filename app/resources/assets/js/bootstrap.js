@@ -1,11 +1,10 @@
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
 try {
+    // Require JQuery, globally available with '$' and 'jQuery'
     window.$ = window.jQuery = require('jquery');
+    // Require Bootstrap
     require('bootstrap-sass');
-    require("./codemirror.js");
+    // Require CodeEditors
+    require("./codeEditors.js");
+    // Require Execute
     require("./execute.js");
 } catch (e) {}

@@ -18987,16 +18987,15 @@ __webpack_require__(174);
 /* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
 try {
-  window.$ = window.jQuery = __webpack_require__(175);
-  __webpack_require__(176);
-  __webpack_require__(177);
-  __webpack_require__(180);
+    // Require JQuery, globally available with '$' and 'jQuery'
+    window.$ = window.jQuery = __webpack_require__(175);
+    // Require Bootstrap
+    __webpack_require__(176);
+    // Require CodeEditors
+    __webpack_require__(488);
+    // Require Execute
+    __webpack_require__(180);
 } catch (e) {}
 
 /***/ }),
@@ -31643,97 +31642,7 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* ==========================================================================
- * codemirror.js
- *
- * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
- * the 'Fun' programming language.
- *
- * Stores an array of example programs which will be used to update the contents
- * of the code editor when selected.
- * ========================================================================== */
-
-// Import CodeMirror node module
-var CodeMirror = __webpack_require__(48);
-
-// Import the CodeMirror 'simple-mode' addon
-__webpack_require__(178);
-// Import the CodeMirror 'active-line' addon
-__webpack_require__(179);
-
-// Define a 'mode' for the Fun programming language, i.e., syntax highlighting
-CodeMirror.defineSimpleMode("fun", {
-    start: [{ regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword" }, { regex: /true|false/, token: "atom" }, { regex: /int|bool/, token: "type" }, { regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i, token: "number" }, { regex: /#.*/, token: "comment" }, { regex: /[-+\/*=<>]+/, token: "operator" }, { regex: /[\:]/, indent: true }, { regex: /[\.]/, dedent: true }, { regex: /[a-z$][\w$]*/, token: "variable" }],
-    comment: []
-});
-
-// Create a CodeMirror object from a text area
-var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
-    lineNumbers: true,
-    tabSize: 2,
-    lineWrapping: true,
-    styleActiveLine: true,
-    mode: "fun",
-    theme: "dracula"
-});
-
-// Set the default value of the code mirror to be the program below
-cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
-
-// Returns an example program given the example program name
-function getExample(exampleName) {
-    return examples[exampleName];
-}
-
-// Bind a 'click' event listener to all links with the class 'code-example'
-$(".code-example").on("click", function () {
-    // Get the example name from the 'example' data-attribute and update
-    cm.setValue(getExample($(this).data("example")));
-});
-
-// A list of example Fun programs
-var examples = {
-    ASSIGN: "proc main():\n\tint g = 7\n\tg = g + 1\n\tg = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
-    FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
-    FUNCTION: "func int test(int n):\n\tint r = 10\n\tint s = 20\n\tint t = 30\n\twrite(s)\n\treturn r\n.\n\nproc main():\n\twrite(test(5))\n.",
-    IF: "proc main():\n\tint m = 7\n\tint n = 3\n\tif m < n:\n\t\tm = m + 1\n\t\twrite(m)\n\telse:\n\t\tn = n + 1\n\t\twrite(n)\n\t.\n.",
-    IO: "int p = read()\n\nproc main():\n\tint q = read()\n\twrite(p)\n\twrite(q + 2/5)\n.",
-    OCTAL: "proc writeoctal(int n):\n\tif n < 8:\n\t\twrite(n)\n\telse:\n\t\twriteoctal(n/8)\n\twrite(n-((n/8)*8))\n\t.\n.",
-    PROC: "int total = 0\n\nproc add(int inc):\n\ttotal = total + inc\n.\n\nproc main():\n\tint i = read()\n\twhile i > 0:\n\t\tadd(i)\n\t\ti = read()\n\t.\n\twrite(total)\n.",
-    SCOPE_CHECKING: "int y = x # Error\nbool x = true # Error\n\nproc main():\n\tint n = 0\n\tint x = 0\n\tint n = 1 #Error\n\tx = x + y #Error\n\tp() #Error\n.",
-    TYPE_CHECKING: "int n = true # Error\nbool c = 1\n\nfunc bool pos(int n):\n\treturn n # Error\n.\n\nproc main():\n\tint i = 3\n\tbool b = true\n\ti = i + 1\n\ti = b # Error\n\ti = b * 2 # Error\n\tb = i > 0\n\tif b: write(i) .\n\tif i: write(i) . # Error\n\tb = pos(true) # Error\n\twhile pos(7):\n\t\ti = i + 1\n\t.\n.",
-    WHILE: "proc main():\n\tint m = read()\n\tint n = 1\n\twhile n * n < m + 1:\n\t\twrite(n * n)\n\t\tn = n + 1\n\t.\n."
-
-    // Below are readonly code snippets used within the specification
-};var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
-    lineNumbers: true,
-    tabSize: 2,
-    lineWrapping: true,
-    mode: "fun",
-    theme: "dracula",
-    readOnly: "nocursor",
-    value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
-});
-
-var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
-    lineNumbers: true,
-    tabSize: 2,
-    lineWrapping: true,
-    mode: "fun",
-    theme: "dracula",
-    readOnly: "nocursor",
-    value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
-});
-
-$('.nav-tabs a').on('shown.bs.tab', function () {
-    overview_cm.refresh();
-    predefined_cm.refresh();
-});
-
-/***/ }),
+/* 177 */,
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45886,6 +45795,109 @@ var templates = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */,
+/* 488 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* ==========================================================================
+ * codeEditors.js
+ *
+ * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
+ * the 'Fun' programming language.
+ *
+ * Stores an array of example programs which will be used to update the contents
+ * of the code editor when selected.
+ * ========================================================================== */
+
+// Import CodeMirror node module
+var CodeMirror = __webpack_require__(48);
+
+// Import the CodeMirror 'simple-mode' addon
+__webpack_require__(178);
+// Import the CodeMirror 'active-line' addon
+__webpack_require__(179);
+
+// Define a 'mode' for the Fun programming language, i.e., syntax highlighting
+CodeMirror.defineSimpleMode("fun", {
+    start: [{ regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword" }, { regex: /true|false/, token: "atom" }, { regex: /int|bool/, token: "type" }, { regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i, token: "number" }, { regex: /#.*/, token: "comment" }, { regex: /[-+\/*=<>]+/, token: "operator" }, { regex: /[\:]/, indent: true }, { regex: /[\.]/, dedent: true }, { regex: /[a-z$][\w$]*/, token: "variable" }],
+    comment: []
+});
+
+// Create a CodeMirror object from a text area
+var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    styleActiveLine: true,
+    mode: "fun",
+    theme: "dracula"
+});
+
+// Set the default value of the code mirror to be the program below
+cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
+
+// Returns an example program given the example program name
+function getExample(exampleName) {
+    return examples[exampleName];
+}
+
+// Bind a 'click' event listener to all links with the class 'code-example'
+$(".code-example").on("click", function () {
+    // Get the example name from the 'example' data-attribute and update
+    cm.setValue(getExample($(this).data("example")));
+});
+
+// A list of example Fun programs
+var examples = {
+    ASSIGN: "proc main():\n\tint g = 7\n\tg = g + 1\n\tg = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
+    FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
+    FUNCTION: "func int test(int n):\n\tint r = 10\n\tint s = 20\n\tint t = 30\n\twrite(s)\n\treturn r\n.\n\nproc main():\n\twrite(test(5))\n.",
+    IF: "proc main():\n\tint m = 7\n\tint n = 3\n\tif m < n:\n\t\tm = m + 1\n\t\twrite(m)\n\telse:\n\t\tn = n + 1\n\t\twrite(n)\n\t.\n.",
+    IO: "int p = read()\n\nproc main():\n\tint q = read()\n\twrite(p)\n\twrite(q + 2/5)\n.",
+    OCTAL: "proc writeoctal(int n):\n\tif n < 8:\n\t\twrite(n)\n\telse:\n\t\twriteoctal(n/8)\n\twrite(n-((n/8)*8))\n\t.\n.",
+    PROC: "int total = 0\n\nproc add(int inc):\n\ttotal = total + inc\n.\n\nproc main():\n\tint i = read()\n\twhile i > 0:\n\t\tadd(i)\n\t\ti = read()\n\t.\n\twrite(total)\n.",
+    SCOPE_CHECKING: "int y = x # Error\nbool x = true # Error\n\nproc main():\n\tint n = 0\n\tint x = 0\n\tint n = 1 #Error\n\tx = x + y #Error\n\tp() #Error\n.",
+    TYPE_CHECKING: "int n = true # Error\nbool c = 1\n\nfunc bool pos(int n):\n\treturn n # Error\n.\n\nproc main():\n\tint i = 3\n\tbool b = true\n\ti = i + 1\n\ti = b # Error\n\ti = b * 2 # Error\n\tb = i > 0\n\tif b: write(i) .\n\tif i: write(i) . # Error\n\tb = pos(true) # Error\n\twhile pos(7):\n\t\ti = i + 1\n\t.\n.",
+    WHILE: "proc main():\n\tint m = read()\n\tint n = 1\n\twhile n * n < m + 1:\n\t\twrite(n * n)\n\t\tn = n + 1\n\t.\n."
+
+    // Below are readonly code snippets used within the specification
+};var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode: "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
+});
+
+var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode: "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
+});
+
+$('.nav-tabs a').on('shown.bs.tab', function () {
+    overview_cm.refresh();
+    predefined_cm.refresh();
+});
 
 /***/ })
 /******/ ]);
