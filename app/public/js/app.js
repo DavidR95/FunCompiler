@@ -45791,6 +45791,7 @@ var d3 = __webpack_require__(183);
 var CodeTemplates = __webpack_require__(474);
 
 var CodeAnimation = module.exports = {
+    // Draw the AST gives the tree nodes
     drawTree: function drawTree(data) {
         var dataMap = data.reduce(function (map, node) {
             map[node.id] = node;
@@ -45806,19 +45807,15 @@ var CodeAnimation = module.exports = {
             }
         });
 
-        var margin = {
-            top: 35,
-            right: 10,
-            bottom: 35,
-            left: 10
-        };
-        var width = 800 - margin.left - margin.right;
-        var height = 650 - margin.top - margin.bottom;
+        var marginLeft = 10;
+        var marginTop = 35;
+        var width = 800 - marginLeft * 2;
+        var height = 650 - marginTop * 2;
         var treemap = d3.tree().size([width, height]);
         var nodes = d3.hierarchy(treeData[0]);
         nodes = treemap(nodes);
         var svg = d3.select(".program-tree-container").html("").append("div").classed("svg-container", true).append("svg").attr("preserveAspectRatio", "none").attr("viewBox", "0 0 800 650");
-        var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var g = svg.append("g").attr("transform", "translate(" + marginLeft + "," + marginTop + ")");
         g.selectAll(".link").data(nodes.descendants().slice(1)).enter().append("path").attr("class", "link").attr("d", function (d) {
             return "M" + d.x + "," + d.y + "C" + d.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + (d.y + d.parent.y) / 2 + " " + d.parent.x + "," + d.parent.y;
         });
