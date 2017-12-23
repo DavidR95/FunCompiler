@@ -32104,8 +32104,9 @@ $("#execute-form").submit(function (e) {
     var url = "/" + executionType;
     // Serialise the form inputs, add csrf token
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
-    // Post to the controller
+    // Post to the controller and execute body upon success
     $.post(url, data, function (responseData) {
+        // Collect all response data
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
@@ -32113,23 +32114,33 @@ $("#execute-form").submit(function (e) {
         var contextualErrors = response.contextualErrors;
         var treeNodes = response.treeNodes;
         var objectCode = response.objectCode;
-        var output = response.output;
         var nodeOrder = response.nodeOrder;
+        // If there was syntax errors...
         if (numSyntaxErrors > 0) {
+            // Build an error message and insert into an alert
             var syntaxErrorMessage = "Number of syntax errors: " + numSyntaxErrors;
             $.each(syntaxErrors, function (index, syntaxError) {
                 syntaxErrorMessage += "\n" + syntaxError;
             });
             alert(syntaxErrorMessage);
+            // If the program was syntactically valid...
         } else {
+            // Hide the specification section
             $("#display-specification").hide();
+            // Display the AST section
             $("#display-program-tree").show();
+            // Remove the active class from the 'Home' button
             $("#navbar .active").removeClass("active");
+            // Display the correct containers depending on the execution type
             Tree.initialise(executionType, nodeOrder);
+            // Draw the AST
             Tree.drawTree(treeNodes);
+            // 'Animate' the first node in the tree
             Tree.highlightFirstNode();
         }
+        // If post request return a failure...
     }).fail(function (responseData) {
+        // Insert errors into an alert
         alert(responseData.responseJSON.errors.program);
     });
 });
