@@ -1,21 +1,21 @@
 /* ==========================================================================
- * codeExamples.js
+ * codeSnippets.js
  *
- * Defines a list of example Fun program which can be selected and auto-loaded
- * into the code editor.
+ * Defines a list of pre-defined Fun program which can be selected and
+ * auto-loaded into the code editor.
  *
- * Exposes a method to retrieve each example by name.
+ * Exposes a method to retrieve each snippet by name.
  * ========================================================================== */
 
-var CodeExamples = module.exports = {
-    // Retrieve a code example by name
-    getExample: function(exampleName) {
-        return examples[exampleName];
+var CodeSnippets = module.exports = {
+    // Retrieve a code snippet by name
+    getSnippet: function(snippetName) {
+        return snippets[snippetName];
     }
 }
 
-// Defines a list of example Fun programs
-var examples = {
+// Defines a list of pre-defined Fun programs
+var snippets = {
     ASSIGN:         "proc main():\n\tint g = 7\n\tg = g + 1\n\t" +
                     "g = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
 

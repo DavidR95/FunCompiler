@@ -45828,13 +45828,13 @@ var CodeMirror = __webpack_require__(48);
 __webpack_require__(178);
 // Import the CodeMirror 'active-line' addon
 __webpack_require__(179);
-// Import the CodeExamples module
-var CodeExamples = __webpack_require__(489);
+// Import the CodeSnippets module
+var CodeSnippets = __webpack_require__(490);
 
 // Bind a 'click' event listener to all links with the class 'code-example'
 $(".code-example").on("click", function () {
     // Get the example name from the 'example' data-attribute and update
-    cm.setValue(CodeExamples.getExample($(this).data("example")));
+    cm.setValue(CodeSnippets.getSnippet($(this).data("example")));
 });
 
 // Event listener to trigger when a specification tab is shown
@@ -45871,7 +45871,7 @@ var overview_cm = CodeMirror(document.getElementById("overview").getElementsByCl
     mode: "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: CodeExamples.getExample("OVERVIEW")
+    value: CodeSnippets.getSnippet("OVERVIEW")
 });
 
 var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
@@ -45881,30 +45881,31 @@ var predefined_cm = CodeMirror(document.getElementById("predefined").getElements
     mode: "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: CodeExamples.getExample("PREDEFINED")
+    value: CodeSnippets.getSnippet("PREDEFINED")
 });
 
 /***/ }),
-/* 489 */
+/* 489 */,
+/* 490 */
 /***/ (function(module, exports) {
 
 /* ==========================================================================
- * codeExamples.js
+ * codeSnippets.js
  *
- * Defines a list of example Fun program which can be selected and auto-loaded
- * into the code editor.
+ * Defines a list of pre-defined Fun program which can be selected and
+ * auto-loaded into the code editor.
  *
- * Exposes a method to retrieve each example by name.
+ * Exposes a method to retrieve each snippet by name.
  * ========================================================================== */
 
-var CodeExamples = module.exports = {
-                // Retrieve a code example by name
-                getExample: function getExample(exampleName) {
-                                return examples[exampleName];
+var CodeSnippets = module.exports = {
+                // Retrieve a code snippet by name
+                getSnippet: function getSnippet(snippetName) {
+                                return snippets[snippetName];
                 }
 
-                // Defines a list of example Fun programs
-};var examples = {
+                // Defines a list of pre-defined Fun programs
+};var snippets = {
                 ASSIGN: "proc main():\n\tint g = 7\n\tg = g + 1\n\t" + "g = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
 
                 FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\t" + "f = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",

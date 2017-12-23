@@ -14,13 +14,13 @@ var CodeMirror = require('codemirror');
 require('codemirror/addon/mode/simple.js');
 // Import the CodeMirror 'active-line' addon
 require('codemirror/addon/selection/active-line.js');
-// Import the CodeExamples module
-var CodeExamples = require('./codeExamples.js')
+// Import the CodeSnippets module
+var CodeSnippets = require('./codeSnippets.js')
 
 // Bind a 'click' event listener to all links with the class 'code-example'
 $(".code-example").on("click", function() {
     // Get the example name from the 'example' data-attribute and update
-    cm.setValue(CodeExamples.getExample($(this).data("example")));
+    cm.setValue(CodeSnippets.getSnippet($(this).data("example")));
 });
 
 // Event listener to trigger when a specification tab is shown
@@ -67,7 +67,7 @@ var overview_cm = CodeMirror(document.getElementById("overview").getElementsByCl
     mode:  "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: CodeExamples.getExample("OVERVIEW")
+    value: CodeSnippets.getSnippet("OVERVIEW")
 });
 
 var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
@@ -77,5 +77,5 @@ var predefined_cm = CodeMirror(document.getElementById("predefined").getElements
     mode:  "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: CodeExamples.getExample("PREDEFINED")
+    value: CodeSnippets.getSnippet("PREDEFINED")
 });
