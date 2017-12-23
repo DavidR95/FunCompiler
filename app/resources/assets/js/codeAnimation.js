@@ -32,7 +32,9 @@ var CodeAnimation = module.exports = {
             .attr("preserveAspectRatio", "none")
             .attr("viewBox", "0 0 800 650")
         var g = svg.append("g")
-            .attr("transform", "translate(" + marginLeft + "," + marginTop + ")");
+            .attr(
+                "transform", "translate(" + marginLeft + "," + marginTop + ")"
+            );
         g.selectAll(".link")
             .data(nodes.descendants().slice(1)).enter().append("path")
             .attr("class", "link").attr("d", function(d) {
@@ -45,7 +47,9 @@ var CodeAnimation = module.exports = {
             .data(nodes.descendants())
             .enter().append("g")
             .attr("class", function(d) {
-                return "node" + (d.children ? " node--internal" : " node--leaf");
+                return "node" + (
+                    d.children ? " node--internal" : " node--leaf"
+                );
             }).attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             }).attr("id", function(d) {
@@ -135,7 +139,10 @@ function animateNode(node, isPlayingForward, delayOffset) {
             $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
                 $(previousNode).css("fill", "#3e4153");
-                $(previousNode).next("text").css({"fill": "white", "font-weight": "normal"});
+                $(previousNode).next("text").css({
+                    "fill": "white",
+                    "font-weight": "normal"
+                });
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -170,7 +177,9 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 var codeTemplateInstructions = "";
                 var codeTemplate = CodeTemplates.getTemplate(nodeName);
                 $.each(codeTemplate, function(index, codeTemplateInstruction) {
-                    codeTemplateInstructions += "<li>> " + codeTemplateInstruction + "</li>";
+                    codeTemplateInstructions += "<li>> " +
+                                                codeTemplateInstruction +
+                                                "</li>";
                 })
                 codeTemplateText.html(codeTemplateInstructions);
             }

@@ -45886,7 +45886,10 @@ function animateNode(node, isPlayingForward, delayOffset) {
         $(this).next("text").css({ "font-weight": "900" });
         if (previousNode != null && previousNode !== this) {
             $(previousNode).css("fill", "#3e4153");
-            $(previousNode).next("text").css({ "fill": "white", "font-weight": "normal" });
+            $(previousNode).next("text").css({
+                "fill": "white",
+                "font-weight": "normal"
+            });
         }
 
         isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
