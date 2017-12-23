@@ -45886,13 +45886,23 @@ $('.nav-tabs a').on('shown.bs.tab', function () {
 /* 489 */
 /***/ (function(module, exports) {
 
+/* ==========================================================================
+ * codeExamples.js
+ *
+ * Defines a list of example Fun program which can be selected and auto-loaded
+ * into the code editor.
+ *
+ * Exposes a method to retrieve each example by name.
+ * ========================================================================== */
+
 var CodeExamples = module.exports = {
+    // Retrieve a code example by name
     getExample: function getExample(exampleName) {
         return examples[exampleName];
     }
-};
 
-var examples = {
+    // Defines a list of example Fun programs
+};var examples = {
     ASSIGN: "proc main():\n\tint g = 7\n\tg = g + 1\n\tg = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
     FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
     FUNCTION: "func int test(int n):\n\tint r = 10\n\tint s = 20\n\tint t = 30\n\twrite(s)\n\treturn r\n.\n\nproc main():\n\twrite(test(5))\n.",
