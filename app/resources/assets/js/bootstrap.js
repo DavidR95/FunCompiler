@@ -5,6 +5,6 @@ try {
     require('bootstrap-sass');
     // Import CodeEditors module
     require("./codeEditors.js");
-    // Import Execute module
-    require("./execute.js");
+    // Import CodeSubmit module
+    require("./codeSubmit.js");
 } catch (e) {}

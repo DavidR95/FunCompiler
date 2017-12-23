@@ -1,3 +1,11 @@
+/* ==========================================================================
+ * codeSubmit.js
+ *
+ * Submits the input program to the compiler API. Retrieves the response and if
+ * successful, triggers the methods to build the AST.
+ *
+ * ========================================================================== */
+
 var Tree = require("./tree.js");
 
 var executionType;
