@@ -233,7 +233,8 @@ body, html {
     height: 45%;
 }
 
-.contextual-explanations, .generation-explanations, .code-template, .object-code {
+.contextual-explanations, .generation-explanations, .code-template,
+.object-code {
     overflow: hidden;
     ul {
         list-style-type: none;
