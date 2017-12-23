@@ -36,7 +36,8 @@ CodeMirror.defineSimpleMode("fun", {
     {regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword"},
     {regex: /true|false/, token: "atom"},
     {regex: /int|bool/, token: "type"},
-    {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i, token: "number"},
+    {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+        token: "number"},
     {regex: /#.*/, token: "comment"},
     {regex: /[-+\/*=<>]+/, token: "operator"},
     {regex: /[\:]/, indent: true},
@@ -59,8 +60,9 @@ var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 // Set the default value of the code mirror to be the program below
 cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
-// Below are readonly code snippets used within the specification
-var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
+// Below are read-only code snippets used within the specification
+var overview_cm = CodeMirror(document.getElementById("overview")
+                  .getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,
@@ -70,7 +72,8 @@ var overview_cm = CodeMirror(document.getElementById("overview").getElementsByCl
     value: CodeSnippets.getSnippet("OVERVIEW")
 });
 
-var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
+var predefined_cm = CodeMirror(document.getElementById("predefined")
+                    .getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
     tabSize: 2,
     lineWrapping: true,

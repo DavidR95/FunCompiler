@@ -45846,7 +45846,8 @@ $('.nav-tabs a').on('shown.bs.tab', function () {
 
 // Define a 'mode' for the Fun programming language, i.e., syntax highlighting
 CodeMirror.defineSimpleMode("fun", {
-    start: [{ regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword" }, { regex: /true|false/, token: "atom" }, { regex: /int|bool/, token: "type" }, { regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i, token: "number" }, { regex: /#.*/, token: "comment" }, { regex: /[-+\/*=<>]+/, token: "operator" }, { regex: /[\:]/, indent: true }, { regex: /[\.]/, dedent: true }, { regex: /[a-z$][\w$]*/, token: "variable" }],
+    start: [{ regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword" }, { regex: /true|false/, token: "atom" }, { regex: /int|bool/, token: "type" }, { regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+        token: "number" }, { regex: /#.*/, token: "comment" }, { regex: /[-+\/*=<>]+/, token: "operator" }, { regex: /[\:]/, indent: true }, { regex: /[\.]/, dedent: true }, { regex: /[a-z$][\w$]*/, token: "variable" }],
     comment: []
 });
 
@@ -45863,7 +45864,7 @@ var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 // Set the default value of the code mirror to be the program below
 cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
-// Below are readonly code snippets used within the specification
+// Below are read-only code snippets used within the specification
 var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
     tabSize: 2,
