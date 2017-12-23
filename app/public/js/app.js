@@ -45777,8 +45777,17 @@ var CodeTemplates = module.exports = {
 /* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var d3 = __webpack_require__(183);
+/* ==========================================================================
+ * codeAnimation.js
+ *
+ * Build and draw the AST using the D3 library.
+ *
+ * Define the logic used to traverse/animate the resulting AST.
+ * ========================================================================== */
 
+// Import the D3 node module
+var d3 = __webpack_require__(183);
+// Import CodeTemplates module
 var CodeTemplates = __webpack_require__(474);
 
 var Tree = module.exports = {

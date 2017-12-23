@@ -1,5 +1,14 @@
-var d3 = require('d3');
+/* ==========================================================================
+ * codeAnimation.js
+ *
+ * Build and draw the AST using the D3 library.
+ *
+ * Define the logic used to traverse/animate the resulting AST.
+ * ========================================================================== */
 
+// Import the D3 node module
+var d3 = require('d3');
+// Import CodeTemplates module
 var CodeTemplates = require('./codeTemplates.js');
 
 var Tree = module.exports = {
