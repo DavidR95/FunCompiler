@@ -59,8 +59,8 @@ var code_editor = CodeMirror.fromTextArea(
     }
 );
 
-// Set the default value of the code mirror to be the program below
-code_editor.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
+// Set the default value of the code mirror
+code_editor.setValue(CodeSnippets.getSnippet("DEFAULT"));
 
 // Below are read-only code snippets used within the specification
 var overview_snippet = CodeMirror(document.getElementById("overview")

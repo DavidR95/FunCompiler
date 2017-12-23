@@ -19,6 +19,9 @@ var snippets = {
     ASSIGN:         "proc main():\n\tint g = 7\n\tg = g + 1\n\t" +
                     "g = 1 + 2 * g\n\tg = (1 + 2) * g\n\twrite(g)\n.",
 
+    DEFAULT:        "int n = 15\nproc main():\n\twhile n > 1:\n\t\t" +
+                    "n = n/2\n\t.\n.",
+
     FACTORIAL:      "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\t" +
                     "f = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
 
