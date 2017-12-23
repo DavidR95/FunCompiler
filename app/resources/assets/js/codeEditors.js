@@ -3,6 +3,9 @@
  *
  * Creates a 'CodeMirror' code editor and defines the syntax highlighting for
  * the 'Fun' programming language.
+ *
+ * Creates read-only code snippets to be used to display information within the
+ * specification section.
  * ========================================================================== */
 
 // Import CodeMirror node module
