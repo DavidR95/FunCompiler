@@ -11,7 +11,7 @@ var d3 = require('d3');
 // Import CodeTemplates module
 var CodeTemplates = require('./codeTemplates.js');
 
-var Tree = module.exports = {
+var CodeAnimation = module.exports = {
     drawTree: function(data) {
         var dataMap = data.reduce(function(map, node) {
             map[node.id] = node;

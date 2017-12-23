@@ -5,8 +5,8 @@
  * successful, triggers the methods to build the AST.
  * ========================================================================== */
 
-// Import Tree module
-var Tree = require("./codeAnimation.js");
+// Import Code Animation module
+var CodeAnimation = require("./codeAnimation.js");
 
 // Indicates which button was pressed, contextual analysis or code generation
 var executionType;
@@ -61,11 +61,11 @@ $("#execute-form").submit(function(e) {
             // Remove the active class from the 'Home' button
             $("#navbar .active").removeClass("active");
             // Display the correct containers depending on the execution type
-            Tree.initialise(executionType, nodeOrder);
+            CodeAnimation.initialise(executionType, nodeOrder);
             // Draw the AST
-            Tree.drawTree(treeNodes);
+            CodeAnimation.drawTree(treeNodes);
             // 'Animate' the first node in the tree
-            Tree.highlightFirstNode();
+            CodeAnimation.highlightFirstNode();
         }
     // If post request return a failure...
     }).fail(function(responseData) {

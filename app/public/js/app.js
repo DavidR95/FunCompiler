@@ -32077,8 +32077,8 @@ var CodeSnippets = module.exports = {
  * successful, triggers the methods to build the AST.
  * ========================================================================== */
 
-// Import Tree module
-var Tree = __webpack_require__(489);
+// Import Code Animation module
+var CodeAnimation = __webpack_require__(489);
 
 // Indicates which button was pressed, contextual analysis or code generation
 var executionType;
@@ -32132,11 +32132,11 @@ $("#execute-form").submit(function (e) {
             // Remove the active class from the 'Home' button
             $("#navbar .active").removeClass("active");
             // Display the correct containers depending on the execution type
-            Tree.initialise(executionType, nodeOrder);
+            CodeAnimation.initialise(executionType, nodeOrder);
             // Draw the AST
-            Tree.drawTree(treeNodes);
+            CodeAnimation.drawTree(treeNodes);
             // 'Animate' the first node in the tree
-            Tree.highlightFirstNode();
+            CodeAnimation.highlightFirstNode();
         }
         // If post request return a failure...
     }).fail(function (responseData) {
@@ -45790,7 +45790,7 @@ var d3 = __webpack_require__(183);
 // Import CodeTemplates module
 var CodeTemplates = __webpack_require__(474);
 
-var Tree = module.exports = {
+var CodeAnimation = module.exports = {
     drawTree: function drawTree(data) {
         var dataMap = data.reduce(function (map, node) {
             map[node.id] = node;
