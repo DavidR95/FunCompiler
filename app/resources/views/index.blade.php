@@ -20,16 +20,26 @@
                         Examples<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="code-example" data-example="ASSIGN" href="#">Assign</a></li>
-                        <li><a class="code-example" data-example="FACTORIAL" href="#">Factorial</a></li>
-                        <li><a class="code-example" data-example="FUNCTION" href="#">Function</a></li>
-                        <li><a class="code-example" data-example="IF" href="#">If</a></li>
-                        <li><a class="code-example" data-example="IO" href="#">IO</a></li>
-                        <li><a class="code-example" data-example="OCTAL" href="#">Octal</a></li>
-                        <li><a class="code-example" data-example="PROC" href="#">Procedure</a></li>
-                        <li><a class="code-example" data-example="SCOPE_CHECKING" href="#">Scope Checking</a></li>
-                        <li><a class="code-example" data-example="TYPE_CHECKING" href="#">Type Checking</a></li>
-                        <li><a class="code-example" data-example="WHILE" href="#">While</a></li>
+                        <li><a class="code-example" data-example="ASSIGN"
+                               href="#">Assign</a></li>
+                        <li><a class="code-example" data-example="FACTORIAL"
+                               href="#">Factorial</a></li>
+                        <li><a class="code-example" data-example="FUNCTION"
+                               href="#">Function</a></li>
+                        <li><a class="code-example" data-example="IF"
+                               href="#">If</a></li>
+                        <li><a class="code-example" data-example="IO"
+                               href="#">IO</a></li>
+                        <li><a class="code-example" data-example="OCTAL"
+                               href="#">Octal</a></li>
+                        <li><a class="code-example" data-example="PROC"
+                               href="#">Procedure</a></li>
+                        <li><a class="code-example" data-example="SCOPE_CHECKING"
+                               href="#">Scope Checking</a></li>
+                        <li><a class="code-example" data-example="TYPE_CHECKING"
+                               href="#">Type Checking</a></li>
+                        <li><a class="code-example" data-example="WHILE"
+                               href="#">While</a></li>
                     </ul>
                 </li>
             </ul>
@@ -42,7 +52,8 @@
                     <div class="form-group">
                         <textarea id="code-editor"
                                   name="program"
-                                  autofocus></textarea>
+                                  autofocus>
+                        </textarea>
                     </div>
                     <div class="form-submit">
                         <button id="ca-button"
@@ -62,13 +73,20 @@
             </div>
             <div id="display-specification" class="col-lg-9 col-container">
                 <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
-                    <li><a data-toggle="tab" href="#programs">Programs</a></li>
-                    <li><a data-toggle="tab" href="#declarations">Declarations</a></li>
-                    <li><a data-toggle="tab" href="#commands">Commands</a></li>
-                    <li><a data-toggle="tab" href="#expressions">Expressions</a></li>
-                    <li><a data-toggle="tab" href="#lexicon">Lexicon</a></li>
-                    <li><a data-toggle="tab" href="#predefined">Predefined</a></li>
+                    <li class="active"><a data-toggle="tab"
+                                          href="#overview">Overview</a></li>
+                    <li><a data-toggle="tab"
+                           href="#programs">Programs</a></li>
+                    <li><a data-toggle="tab"
+                           href="#declarations">Declarations</a></li>
+                    <li><a data-toggle="tab"
+                           href="#commands">Commands</a></li>
+                    <li><a data-toggle="tab"
+                           href="#expressions">Expressions</a></li>
+                    <li><a data-toggle="tab"
+                           href="#lexicon">Lexicon</a></li>
+                    <li><a data-toggle="tab"
+                           href="#predefined">Predefined</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="overview" class="tab-pane fade in active">
