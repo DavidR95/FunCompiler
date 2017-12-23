@@ -44,12 +44,12 @@ $("#execute-form").submit(function(e) {
         var output = response.output;
         var nodeOrder = response.nodeOrder;
         if (numSyntaxErrors > 0) {
-            $(".program-tree-container").append("Number of syntax errors: " + numSyntaxErrors + "<br>");
-            $(".program-tree-container").append("Syntax errors: <br>");
+            var syntaxErrorMessage = "Number of syntax errors: " +
+                                     numSyntaxErrors;
             $.each(syntaxErrors, function(index, syntaxError) {
-                $(".program-tree-container").append((index + 1) + ": " + syntaxError);
+                syntaxErrorMessage += ("\n" + syntaxError);
             });
-            $(".program-tree-container").append("<br>");
+            alert(syntaxErrorMessage);
         } else {
             $("#display-specification").hide();
             $("#display-program-tree").show();
