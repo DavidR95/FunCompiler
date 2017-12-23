@@ -38,6 +38,17 @@ var examples = {
                     "else:\n\t\twriteoctal(n/8)\n\t\t" +
                     "write(n-((n/8)*8))\n\t.\n.",
 
+    OVERVIEW:       "bool verbose = true\n\n" +
+                    "func int fac(int n): # Returns n\n\tint f = 1\n\t" +
+                    "while n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t" +
+                    "return f\n.\n\nproc main():\n\tint num = read()\n\t" +
+                    "while not (num == 0):\n\t\t" +
+                    "if verbose: write(num) .\n\t\twrite(fac(num))\n\t\t" +
+                    "num = read()\n\t.\n.",
+
+    PREDEFINED:     "func int read():\t\t# Inputs and returns an integer\n\t" +
+                    "...\nproc write(int n):\t\t# Outputs the integer n\n\t...",
+
     PROC:           "int total = 0\n\nproc add(int inc):\n\t" +
                     "total = total + inc\n.\n\n" +
                     "proc main():\n\tint i = read()\n\twhile i > 0:\n\t\t" +
@@ -54,7 +65,7 @@ var examples = {
                     "b = i > 0\n\tif b: write(i) .\n\t" +
                     "if i: write(i) . # Error\n\tb = pos(true) # Error\n\t" +
                     "while pos(7):\n\t\ti = i + 1\n\t.\n.",
-                    
+
     WHILE:          "proc main():\n\tint m = read()\n\tint n = 1\n\t" +
                     "while n * n < m + 1:\n\t\twrite(n * n)\n\t\t" +
                     "n = n + 1\n\t.\n."

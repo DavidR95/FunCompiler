@@ -45871,7 +45871,7 @@ var overview_cm = CodeMirror(document.getElementById("overview").getElementsByCl
     mode: "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
+    value: CodeExamples.getExample("OVERVIEW")
 });
 
 var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
@@ -45881,7 +45881,7 @@ var predefined_cm = CodeMirror(document.getElementById("predefined").getElements
     mode: "fun",
     theme: "dracula",
     readOnly: "nocursor",
-    value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
+    value: CodeExamples.getExample("PREDEFINED")
 });
 
 /***/ }),
@@ -45916,6 +45916,10 @@ var CodeExamples = module.exports = {
                 IO: "int p = read()\n\nproc main():\n\tint q = read()\n\t" + "write(p)\n\twrite(q + 2/5)\n.",
 
                 OCTAL: "proc writeoctal(int n):\n\tif n < 8:\n\t\twrite(n)\n\t" + "else:\n\t\twriteoctal(n/8)\n\t\t" + "write(n-((n/8)*8))\n\t.\n.",
+
+                OVERVIEW: "bool verbose = true\n\n" + "func int fac(int n): # Returns n\n\tint f = 1\n\t" + "while n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t" + "return f\n.\n\nproc main():\n\tint num = read()\n\t" + "while not (num == 0):\n\t\t" + "if verbose: write(num) .\n\t\twrite(fac(num))\n\t\t" + "num = read()\n\t.\n.",
+
+                PREDEFINED: "func int read():\t\t# Inputs and returns an integer\n\t" + "...\nproc write(int n):\t\t# Outputs the integer n\n\t...",
 
                 PROC: "int total = 0\n\nproc add(int inc):\n\t" + "total = total + inc\n.\n\n" + "proc main():\n\tint i = read()\n\twhile i > 0:\n\t\t" + "add(i)\n\t\ti = read()\n\t.\n\twrite(total)\n.",
 
