@@ -17,6 +17,19 @@ require('codemirror/addon/selection/active-line.js');
 // Import the CodeExamples module
 var CodeExamples = require('./codeExamples.js')
 
+// Bind a 'click' event listener to all links with the class 'code-example'
+$(".code-example").on("click", function() {
+    // Get the example name from the 'example' data-attribute and update
+    cm.setValue(CodeExamples.getExample($(this).data("example")));
+});
+
+// Event listener to trigger when a specification tab is shown
+$('.nav-tabs a').on('shown.bs.tab', function() {
+    // Refresh (reload) the specified CodeMirror objects
+    overview_cm.refresh();
+    predefined_cm.refresh();
+});
+
 // Define a 'mode' for the Fun programming language, i.e., syntax highlighting
 CodeMirror.defineSimpleMode("fun", {
   start: [
@@ -46,12 +59,6 @@ var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 // Set the default value of the code mirror to be the program below
 cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
 
-// Bind a 'click' event listener to all links with the class 'code-example'
-$(".code-example").on("click", function() {
-    // Get the example name from the 'example' data-attribute and update
-    cm.setValue(CodeExamples.getExample($(this).data("example")));
-});
-
 // Below are readonly code snippets used within the specification
 var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
     lineNumbers: true,
@@ -71,9 +78,4 @@ var predefined_cm = CodeMirror(document.getElementById("predefined").getElements
     theme: "dracula",
     readOnly: "nocursor",
     value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
-});
-
-$('.nav-tabs a').on('shown.bs.tab', function() {
-    overview_cm.refresh();
-    predefined_cm.refresh();
 });

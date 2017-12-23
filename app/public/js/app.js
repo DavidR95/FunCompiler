@@ -45831,6 +45831,19 @@ __webpack_require__(179);
 // Import the CodeExamples module
 var CodeExamples = __webpack_require__(489);
 
+// Bind a 'click' event listener to all links with the class 'code-example'
+$(".code-example").on("click", function () {
+    // Get the example name from the 'example' data-attribute and update
+    cm.setValue(CodeExamples.getExample($(this).data("example")));
+});
+
+// Event listener to trigger when a specification tab is shown
+$('.nav-tabs a').on('shown.bs.tab', function () {
+    // Refresh (reload) the specified CodeMirror objects
+    overview_cm.refresh();
+    predefined_cm.refresh();
+});
+
 // Define a 'mode' for the Fun programming language, i.e., syntax highlighting
 CodeMirror.defineSimpleMode("fun", {
     start: [{ regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword" }, { regex: /true|false/, token: "atom" }, { regex: /int|bool/, token: "type" }, { regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i, token: "number" }, { regex: /#.*/, token: "comment" }, { regex: /[-+\/*=<>]+/, token: "operator" }, { regex: /[\:]/, indent: true }, { regex: /[\.]/, dedent: true }, { regex: /[a-z$][\w$]*/, token: "variable" }],
@@ -45849,12 +45862,6 @@ var cm = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 
 // Set the default value of the code mirror to be the program below
 cm.setValue("int n = 15\nproc main():\n\twhile n > 1:\n\t\tn = n/2\n\t.\n.");
-
-// Bind a 'click' event listener to all links with the class 'code-example'
-$(".code-example").on("click", function () {
-    // Get the example name from the 'example' data-attribute and update
-    cm.setValue(CodeExamples.getExample($(this).data("example")));
-});
 
 // Below are readonly code snippets used within the specification
 var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
@@ -45875,11 +45882,6 @@ var predefined_cm = CodeMirror(document.getElementById("predefined").getElements
     theme: "dracula",
     readOnly: "nocursor",
     value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
-});
-
-$('.nav-tabs a').on('shown.bs.tab', function () {
-    overview_cm.refresh();
-    predefined_cm.refresh();
 });
 
 /***/ }),
