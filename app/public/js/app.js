@@ -18988,13 +18988,13 @@ __webpack_require__(174);
 /***/ (function(module, exports, __webpack_require__) {
 
 try {
-    // Require JQuery, globally available with '$' and 'jQuery'
+    // Import JQuery module, globally available with '$' and 'jQuery'
     window.$ = window.jQuery = __webpack_require__(175);
-    // Require Bootstrap
+    // Import Bootstrap module
     __webpack_require__(176);
-    // Require CodeEditors
+    // Import CodeEditors module
     __webpack_require__(488);
-    // Require Execute
+    // Import Execute module
     __webpack_require__(180);
 } catch (e) {}
 

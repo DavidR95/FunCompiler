@@ -1,10 +1,10 @@
 try {
-    // Require JQuery, globally available with '$' and 'jQuery'
+    // Import JQuery module, globally available with '$' and 'jQuery'
     window.$ = window.jQuery = require('jquery');
-    // Require Bootstrap
+    // Import Bootstrap module
     require('bootstrap-sass');
-    // Require CodeEditors
+    // Import CodeEditors module
     require("./codeEditors.js");
-    // Require Execute
+    // Import Execute module
     require("./execute.js");
 } catch (e) {}
