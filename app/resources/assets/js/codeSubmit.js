@@ -34,9 +34,6 @@ $("#execute-form").submit(function(e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function(responseData) {
-        $("#display-specification").hide();
-        $("#display-program-tree").show();
-        $("#navbar .active").removeClass("active");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
@@ -54,6 +51,9 @@ $("#execute-form").submit(function(e) {
             });
             $(".program-tree-container").append("<br>");
         } else {
+            $("#display-specification").hide();
+            $("#display-program-tree").show();
+            $("#navbar .active").removeClass("active");
             Tree.initialise(executionType, nodeOrder);
             Tree.drawTree(treeNodes);
             Tree.highlightFirstNode();
