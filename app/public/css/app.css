@@ -5469,7 +5469,7 @@ tbody.collapse.in {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: #035a80;
 }
 
 .nav > li.disabled > a {
@@ -5487,7 +5487,7 @@ tbody.collapse.in {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eeeeee;
+  background-color: #035a80;
   border-color: #3097D1;
 }
 
@@ -5525,8 +5525,8 @@ tbody.collapse.in {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
-  background-color: #fff;
+  color: white !important;
+  background-color: #035a80;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -5611,13 +5611,13 @@ tbody.collapse.in {
 .nav-tabs.nav-justified > .active > a:hover,
 .nav-tabs-justified > .active > a:focus,
 .nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #ddd;
+  border: 1px solid #121319;
 }
 
 @media (min-width: 768px) {
   .nav-tabs-justified > li > a,
   .nav-tabs.nav-justified > li > a {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #121319;
     border-radius: 4px 4px 0 0;
   }
 
@@ -5627,7 +5627,7 @@ tbody.collapse.in {
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #fff;
+    border-bottom-color: #121319;
   }
 }
 
@@ -8733,9 +8733,6 @@ button.close {
 
 body,
 html {
-  background: #C9D6FF;
-  background: -webkit-gradient(linear, left top, right top, from(#E2E2E2), to(#C9D6FF));
-  background: linear-gradient(to right, #E2E2E2, #C9D6FF);
   color: #282a36;
   height: 100%;
   min-height: 700px;
@@ -8757,7 +8754,7 @@ html {
   padding: 0;
 }
 
-.col-container:nth-child(2) {
+.col-container:nth-child(3) {
   padding-left: 30px;
 }
 
@@ -8815,6 +8812,52 @@ html {
 #execute-form .form-submit #cg-button {
   border-left: 2px solid #121319;
   float: right;
+}
+
+#display-specification {
+  height: 100%;
+}
+
+#display-specification .nav {
+  margin-top: 20px;
+}
+
+#display-specification .nav a {
+  font-weight: bold;
+  color: #121319;
+}
+
+#display-specification .nav a:hover {
+  color: white;
+  border: 1px solid #121319;
+}
+
+#display-specification .tab-content {
+  overflow: auto;
+  height: calc(100% - 64px);
+  padding: 0 15px;
+}
+
+#display-specification .tab-content p,
+#display-specification .tab-content h2,
+#display-specification .tab-content h3 {
+  font-weight: bold;
+}
+
+#display-specification .tab-content .code-snippet,
+#display-specification .tab-content .grammar-snippet {
+  width: 90%;
+  margin: 10px auto;
+}
+
+#display-specification .tab-content .code-snippet {
+  border: 4px solid #121319;
+  -webkit-box-shadow: 0px 0px 6px 1px #282a36;
+          box-shadow: 0px 0px 6px 1px #282a36;
+}
+
+#display-specification .tab-content .CodeMirror {
+  height: 100%;
 }
 
 #display-program-tree {

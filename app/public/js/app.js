@@ -31709,7 +31709,32 @@ var examples = {
     SCOPE_CHECKING: "int y = x # Error\nbool x = true # Error\n\nproc main():\n\tint n = 0\n\tint x = 0\n\tint n = 1 #Error\n\tx = x + y #Error\n\tp() #Error\n.",
     TYPE_CHECKING: "int n = true # Error\nbool c = 1\n\nfunc bool pos(int n):\n\treturn n # Error\n.\n\nproc main():\n\tint i = 3\n\tbool b = true\n\ti = i + 1\n\ti = b # Error\n\ti = b * 2 # Error\n\tb = i > 0\n\tif b: write(i) .\n\tif i: write(i) . # Error\n\tb = pos(true) # Error\n\twhile pos(7):\n\t\ti = i + 1\n\t.\n.",
     WHILE: "proc main():\n\tint m = read()\n\tint n = 1\n\twhile n * n < m + 1:\n\t\twrite(n * n)\n\t\tn = n + 1\n\t.\n."
-};
+
+    // Below are readonly code snippets used within the specification
+};var overview_cm = CodeMirror(document.getElementById("overview").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode: "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "bool verbose = true\n\nfunc int fac(int n): # Returns n\n\tint f = 1\n\twhile n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\treturn f\n.\n\nproc main():\n\tint num = read()\n\twhile not (num == 0):\n\t\tif verbose: write(num) .\n\t\twrite(fac(num))\n\t\tnum = read()\n\t.\n."
+});
+
+var predefined_cm = CodeMirror(document.getElementById("predefined").getElementsByClassName("code-snippet")[0], {
+    lineNumbers: true,
+    tabSize: 2,
+    lineWrapping: true,
+    mode: "fun",
+    theme: "dracula",
+    readOnly: "nocursor",
+    value: "func int read():\t\t# Inputs and returns an integer\n\t...\nproc write(int n):\t\t# Outputs the integer n\n\t..."
+});
+
+$('.nav-tabs a').on('shown.bs.tab', function () {
+    overview_cm.refresh();
+    predefined_cm.refresh();
+});
 
 /***/ }),
 /* 178 */
@@ -32038,7 +32063,9 @@ $("#execute-form").submit(function (e) {
     var data = $form.serialize() + "&_token=" + AUTH_TOKEN;
     // Post to the controller
     $.post(url, data, function (responseData) {
+        $("#display-specification").hide();
         $("#display-program-tree").show();
+        $("#navbar .active").removeClass("active");
         var response = responseData.response;
         var numSyntaxErrors = response.numSyntaxErrors;
         var syntaxErrors = response.syntaxErrors;
