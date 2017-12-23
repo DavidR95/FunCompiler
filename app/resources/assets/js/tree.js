@@ -1,6 +1,6 @@
 var d3 = require('d3');
 
-var CodeTemplates = require('./codetemplates.js');
+var CodeTemplates = require('./codeTemplates.js');
 
 var Tree = module.exports = {
     drawTree: function(data) {
