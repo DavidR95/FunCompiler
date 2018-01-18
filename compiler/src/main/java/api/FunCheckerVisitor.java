@@ -364,8 +364,11 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		define(ctx.ID().getText(), t1, ctx);
 		addNode(ctx, "Walk expr");
 	    Type t2 = visit(ctx.expr());
-		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
-	    checkType(t1, t2, ctx);
+		// Unsure whether this is the best overall course of action
+		if (!(t2 instanceof Type.Error)) {
+			addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
+		    checkType(t1, t2, ctx);
+		}
 	    return null;
 	}
 
