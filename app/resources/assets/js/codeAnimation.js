@@ -140,6 +140,7 @@ function highlightCurrentRectangle(currentNode, bBox) {
         .style("y", bBox.y - 10)
         .style("width", bBox.width + 20)
         .style("height", bBox.height + 20);
+    currentNode.raise();
 }
 
 // Decrease the previous rectangle back to its previous size and colour

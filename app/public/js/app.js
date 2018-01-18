@@ -32254,6 +32254,7 @@ function increaseFontSize(transition) {
 // Increase the rectangle size based on the increased text size
 function highlightCurrentRectangle(currentNode, bBox) {
     currentNode.select("rect").style("fill", "#035a80").style("x", bBox.x - 10).style("y", bBox.y - 10).style("width", bBox.width + 20).style("height", bBox.height + 20);
+    currentNode.raise();
 }
 
 // Decrease the previous rectangle back to its previous size and colour
