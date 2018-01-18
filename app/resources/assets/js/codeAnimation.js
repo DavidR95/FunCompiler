@@ -125,6 +125,35 @@ $("#reverse-button").on("click", function() {
     reverse();
 });
 
+// Increases the size and boldness of the current node text
+function increaseFontSize(transition) {
+    transition
+        .style("font-weight", "900")
+        .style("font-size", "1em");
+}
+
+// Increase the rectangle size based on the increased text size
+function highlightCurrentRectangle(currentNode, bBox) {
+    currentNode.select("rect")
+        .style("fill", "#035a80")
+        .style("x", bBox.x - 10)
+        .style("y", bBox.y - 10)
+        .style("width", bBox.width + 20)
+        .style("height", bBox.height + 20);
+    currentNode.raise();
+}
+
+// Decrease the previous rectangle back to its previous size and colour
+function unhighlightCurrentRectangle(previousNode, bBox) {
+    $(previousNode).prev("rect").css({
+        "fill": "#3e4153",
+        "x": bBox.x - 3,
+        "y": bBox.y - 3,
+        "width": bBox.width + 6,
+        "height": bBox.height + 6
+    });
+}
+
 // Highlights a single node and displays any corresponding information
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
@@ -138,16 +167,17 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableBody = $(".type-table tbody");
         var tableWrapper = $(".type-table").parent();
     }
-    d3.select("#node-" + node.id).select("rect").transition()
-        .duration(0).delay(delayOffset * 1000).style("fill", "#035a80")
+    var currentNode = d3.select("#node-" + node.id);
+    currentNode.select("text").transition().duration(0)
+        .delay(delayOffset * 1000).call(increaseFontSize)
         .on("start", function() {
-            $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
-                $(previousNode).css("fill", "#3e4153");
-                $(previousNode).next("text").css({
-                    "fill": "white",
-                    "font-weight": "normal"
+                $(previousNode).css({
+                    "font-weight": "normal",
+                    "font-size": "0.75em"
                 });
+                var bBox = d3.select(previousNode).node().getBBox();
+                unhighlightCurrentRectangle(previousNode, bBox);
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -189,6 +219,8 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 codeTemplateText.html(codeTemplateInstructions);
             }
         }).on("end", function() {
+            var bBox = d3.select(this).node().getBBox();
+            highlightCurrentRectangle(currentNode, bBox);
             previousNode = this;
             if (hasAnimationFinished() && is_playing) {
                 is_playing = false;
@@ -218,7 +250,7 @@ function play() {
 function pause() {
     is_playing = false;
     enablePlayButton();
-    d3.selectAll("rect").interrupt();
+    d3.selectAll("text").interrupt();
 }
 
 // Move one node forward
