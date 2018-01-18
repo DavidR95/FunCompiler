@@ -32123,7 +32123,15 @@ $("#execute-form").submit(function (e) {
                 syntaxErrorMessage += "\n" + syntaxError;
             });
             alert(syntaxErrorMessage);
-            // If the program was syntactically valid...
+            // If the program has contextual errors and the user is trying to do cg...
+        } else if (executionType === "cg" && numContextualErrors > 0) {
+            // Build an error message and insert into an alert
+            var contextualErrorMessage = "Number of contextual errors: " + numContextualErrors;
+            $.each(contextualErrors, function (index, contextualError) {
+                contextualErrorMessage += "\n" + contextualError;
+            });
+            alert(contextualErrorMessage);
+            // Otherwise...
         } else {
             // Hide the specification section
             $("#display-specification").hide();
