@@ -172,7 +172,9 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			ctx = operatorCtx;
 		else
 			ctx = construct;
-		if (typeActual.equiv(typeExpected)) {
+		if (typeActual instanceof Type.Error) {
+			addNode(ctx, "Type Error: type is undefined, should be " + typeExpected);
+		} else if (typeActual.equiv(typeExpected)) {
 			addNode(ctx, "Success, type is " + typeActual);
 		} else {
 			addNode(ctx, "Type Error: type is " + typeActual + ", should be " + typeExpected);
@@ -364,11 +366,8 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		define(ctx.ID().getText(), t1, ctx);
 		addNode(ctx, "Walk expr");
 	    Type t2 = visit(ctx.expr());
-		// Unsure whether this is the best overall course of action
-		if (!(t2 instanceof Type.Error)) {
-			addNode(ctx, "Check expression has type " + t1);
-		    checkType(t1, t2, ctx);
-		}
+		addNode(ctx, "Check expression has type " + t1);
+	    checkType(t1, t2, ctx);
 	    return null;
 	}
 
