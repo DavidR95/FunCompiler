@@ -173,7 +173,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		else
 			ctx = construct;
 		if (typeActual.equiv(typeExpected)) {
-			addNode(ctx, "Success, both types are " + typeActual);
+			addNode(ctx, "Success, type is " + typeActual);
 		} else {
 			addNode(ctx, "Type Error: type is " + typeActual + ", should be " + typeExpected);
 			reportError("type is " + typeActual+ ", should be " + typeExpected,
