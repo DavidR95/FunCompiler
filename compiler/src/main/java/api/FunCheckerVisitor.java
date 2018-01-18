@@ -323,7 +323,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    visit(ctx.seq_com());
 		addNode(ctx, "Walk return expression");
 	    Type returntype = visit(ctx.expr());
-		addNode(ctx, "Check return expression has type " + returntype);
+		addNode(ctx, "Check return expression has type " + t1);
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -366,7 +366,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    Type t2 = visit(ctx.expr());
 		// Unsure whether this is the best overall course of action
 		if (!(t2 instanceof Type.Error)) {
-			addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
+			addNode(ctx, "Check expression has type " + t1);
 		    checkType(t1, t2, ctx);
 		}
 	    return null;

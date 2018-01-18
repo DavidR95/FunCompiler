@@ -59,11 +59,11 @@ var snippets = {
                     "proc main():\n\tint i = read()\n\twhile i > 0:\n\t\t" +
                     "add(i)\n\t\ti = read()\n\t.\n\twrite(total)\n.",
 
-    SCOPE_CHECKING: "int y = x # Error\nbool x = true # Error\n\n" +
-                    "proc main():\n\tint n = 0\n\tint x = 0\n\t" +
-                    "int n = 1 #Error\n\tx = x + y #Error\n\tp() #Error\n.",
+    SCOPE_CHECKING: "int y = x # Error\nbool x = true\n\n" +
+                    "proc main():\n\tint n = 0\n\t" +
+                    "int n = 1 #Error\n\tx = x + y # Error\n\tp() # Error\n.",
 
-    TYPE_CHECKING:  "int n = true # Error\nbool c = 1\n\n" +
+    TYPE_CHECKING:  "int n = true # Error\nbool c = 1 # Error\n\n" +
                     "func bool pos(int n):\n\treturn n # Error\n.\n\n" +
                     "proc main():\n\tint i = 3\n\tbool b = true\n\t" +
                     "i = i + 1\n\ti = b # Error\n\ti = b * 2 # Error\n\t" +
