@@ -401,7 +401,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    Type tvar = retrieve(ctx.ID().getText(), ctx);
 		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t);
+		addNode(ctx, "Check expression has type " + tvar);
 	    checkType(tvar, t, ctx);
 	    return null;
 	}
