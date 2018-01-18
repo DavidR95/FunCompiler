@@ -126,14 +126,28 @@ $("#reverse-button").on("click", function() {
 });
 
 // Increases the size and changes the colour of the 'current' node
-function highlightCurrentNode(transition, node) {
-    var bBox = node.select("text").node().getBBox();
+function highlightCurrentNode(transition) {
     transition
-        .style("fill", "#035a80")
-        .style("width", bBox.width + 20)
-        .style("height", bBox.height + 20)
-        .style("x", bBox.x - 10)
-        .style("y", bBox.y - 10);
+        .style("font-weight", "900")
+        .style("font-size", "1em");
+}
+
+function changeMe(rect, bBox) {
+    rect.style("fill", "#035a80")
+    .style("width", bBox.width + 20)
+    .style("height", bBox.height + 20)
+    .style("x", bBox.x - 10)
+    .style("y", bBox.y - 10);
+}
+
+function changeMe2(rect, bBox) {
+    rect.css({
+        "fill": "#3e4153",
+        "x": bBox.x - 3,
+        "y": bBox.y - 3,
+        "width": bBox.width + 6,
+        "height": bBox.height + 6
+    });
 }
 
 // Highlights a single node and displays any corresponding information
@@ -150,16 +164,16 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableWrapper = $(".type-table").parent();
     }
     var current_node = d3.select("#node-" + node.id);
-    current_node.select("rect").transition().duration(0)
-        .delay(delayOffset * 1000).call(highlightCurrentNode, current_node)
+    current_node.select("text").transition().duration(0)
+        .delay(delayOffset * 1000).call(highlightCurrentNode)
         .on("start", function() {
-            $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
-                $(previousNode).css("fill", "#3e4153");
-                $(previousNode).next("text").css({
-                    "fill": "white",
-                    "font-weight": "normal"
+                $(previousNode).css({
+                    "font-weight": "normal",
+                    "font-size": "0.75em"
                 });
+                var bBox = d3.select(previousNode).node().getBBox();
+                changeMe2($(previousNode).prev("rect"), bBox);
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -201,6 +215,8 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 codeTemplateText.html(codeTemplateInstructions);
             }
         }).on("end", function() {
+            var bBox = d3.select(this).node().getBBox();
+            changeMe(current_node.select("rect"), bBox);
             previousNode = this;
             if (hasAnimationFinished() && is_playing) {
                 is_playing = false;
