@@ -134,7 +134,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private Type retrieve (String id, ParserRuleContext occ) {
 		Type type = typeTable.get(id);
 		if (type == null) {
-			addNode(occ, "Scope Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
+			addNode(occ, "Scope Error: attempted to lookup '" + id + "', however, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
