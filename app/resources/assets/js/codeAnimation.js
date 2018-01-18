@@ -163,8 +163,8 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableBody = $(".type-table tbody");
         var tableWrapper = $(".type-table").parent();
     }
-    var current_node = d3.select("#node-" + node.id);
-    current_node.select("text").transition().duration(0)
+    var currentNode = d3.select("#node-" + node.id);
+    currentNode.select("text").transition().duration(0)
         .delay(delayOffset * 1000).call(highlightCurrentNode)
         .on("start", function() {
             if (previousNode != null && previousNode !== this) {
@@ -216,7 +216,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
             }
         }).on("end", function() {
             var bBox = d3.select(this).node().getBBox();
-            changeMe(current_node.select("rect"), bBox);
+            changeMe(currentNode.select("rect"), bBox);
             previousNode = this;
             if (hasAnimationFinished() && is_playing) {
                 is_playing = false;
