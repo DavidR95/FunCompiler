@@ -32247,7 +32247,8 @@ $("#reverse-button").on("click", function () {
 });
 
 // Increases the size and changes the colour of the 'current' node
-function highlightCurrentNode(transition, bBox) {
+function highlightCurrentNode(transition, node) {
+    var bBox = node.select("text").node().getBBox();
     transition.style("fill", "#035a80").style("width", bBox.width + 20).style("height", bBox.height + 20).style("x", bBox.x - 10).style("y", bBox.y - 10);
 }
 
@@ -32265,8 +32266,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableWrapper = $(".type-table").parent();
     }
     var current_node = d3.select("#node-" + node.id);
-    var bBox = current_node.select("text").node().getBBox();
-    current_node.select("rect").transition().duration(0).delay(delayOffset * 1000).call(highlightCurrentNode, bBox).on("start", function () {
+    current_node.select("rect").transition().duration(0).delay(delayOffset * 1000).call(highlightCurrentNode, current_node).on("start", function () {
         $(this).next("text").css({ "font-weight": "900" });
         if (previousNode != null && previousNode !== this) {
             $(previousNode).css("fill", "#3e4153");
