@@ -32043,7 +32043,7 @@ var CodeSnippets = module.exports = {
 
                 DEFAULT: "int n = 15\nproc main():\n\twhile n > 1:\n\t\t" + "n = n/2\n\t.\n.",
 
-                FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\t" + "f = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.",
+                FACTORIAL: "func int fac(int n):\n\tint f = 1\n\twhile n > 1:\n\t\t" + "f = f * n\n\t\tn = n - 1\n\t.\n\treturn f\n.\n\n" + "proc main():\n\twrite(fac(10))\n.",
 
                 FUNCTION: "func int test(int n):\n\tint r = 10\n\tint s = 20\n\t" + "int t = 30\n\twrite(s)\n\treturn r\n.\n\n" + "proc main():\n\twrite(test(5))\n.",
 
@@ -32051,7 +32051,7 @@ var CodeSnippets = module.exports = {
 
                 IO: "int p = read()\n\nproc main():\n\tint q = read()\n\t" + "write(p)\n\twrite(q + 2/5)\n.",
 
-                OCTAL: "proc writeoctal(int n):\n\tif n < 8:\n\t\twrite(n)\n\t" + "else:\n\t\twriteoctal(n/8)\n\t\t" + "write(n-((n/8)*8))\n\t.\n.",
+                OCTAL: "proc writeoctal(int n):\n\tif n < 8:\n\t\twrite(n)\n\t" + "else:\n\t\twriteoctal(n/8)\n\t\t" + "write(n-((n/8)*8))\n\t.\n.\n\nproc main():\n\t" + "writeoctal(8)\n.",
 
                 OVERVIEW: "bool verbose = true\n\n" + "func int fac(int n): # Returns n\n\tint f = 1\n\t" + "while n > 1:\n\t\tf = f * n\n\t\tn = n - 1\n\t" + "return f\n.\n\nproc main():\n\tint num = read()\n\t" + "while not (num == 0):\n\t\t" + "if verbose: write(num) .\n\t\twrite(fac(num))\n\t\t" + "num = read()\n\t.\n.",
 
