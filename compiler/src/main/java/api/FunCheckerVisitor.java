@@ -134,7 +134,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	private Type retrieve (String id, ParserRuleContext occ) {
 		Type type = typeTable.get(id);
 		if (type == null) {
-			addNode(occ, "Scope Error: attempted to lookup '" + id + ", however, " + id + " is undeclared");
+			addNode(occ, "Scope Error: attempted to lookup '" + id + "', however, " + id + " is undeclared");
 			reportError(id + " is undeclared", occ);
 			return Type.ERROR;
 		} else
@@ -172,8 +172,10 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 			ctx = operatorCtx;
 		else
 			ctx = construct;
-		if (typeActual.equiv(typeExpected)) {
-			addNode(ctx, "Success, both types are " + typeActual);
+		if (typeActual instanceof Type.Error) {
+			addNode(ctx, "Type Error: type is undefined, should be " + typeExpected);
+		} else if (typeActual.equiv(typeExpected)) {
+			addNode(ctx, "Success, type is " + typeActual);
 		} else {
 			addNode(ctx, "Type Error: type is " + typeActual + ", should be " + typeExpected);
 			reportError("type is " + typeActual+ ", should be " + typeExpected,
@@ -323,7 +325,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    visit(ctx.seq_com());
 		addNode(ctx, "Walk return expression");
 	    Type returntype = visit(ctx.expr());
-		addNode(ctx, "Check return expression has type " + returntype);
+		addNode(ctx, "Check return expression has type " + t1);
 	    checkType(t1, returntype, ctx);
 	    typeTable.exitLocalScope();
 		addNode(ctx, "Exit local scope");
@@ -364,7 +366,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 		define(ctx.ID().getText(), t1, ctx);
 		addNode(ctx, "Walk expr");
 	    Type t2 = visit(ctx.expr());
-		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t2);
+		addNode(ctx, "Check expression has type " + t1);
 	    checkType(t1, t2, ctx);
 	    return null;
 	}
@@ -401,7 +403,7 @@ public class FunCheckerVisitor extends AbstractParseTreeVisitor<Type> implements
 	    Type tvar = retrieve(ctx.ID().getText(), ctx);
 		addNode(ctx, "Walk expr");
 	    Type t = visit(ctx.expr());
-		addNode(ctx, "Check '" + ctx.ID().getText() + "' has type " + t);
+		addNode(ctx, "Check expression has type " + tvar);
 	    checkType(tvar, t, ctx);
 	    return null;
 	}
