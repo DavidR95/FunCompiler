@@ -125,6 +125,13 @@ $("#reverse-button").on("click", function() {
     reverse();
 });
 
+function highlightCurrentNode(transition) {
+    transition
+        .style("fill", "#035a80")
+        .style("width", 50)
+        .style("height", 50);
+}
+
 // Highlights a single node and displays any corresponding information
 function animateNode(node, isPlayingForward, delayOffset) {
     if (showGenerationAnimation) {
@@ -139,7 +146,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
         var tableWrapper = $(".type-table").parent();
     }
     d3.select("#node-" + node.id).select("rect").transition()
-        .duration(0).delay(delayOffset * 1000).style("fill", "#035a80")
+        .duration(0).delay(delayOffset * 1000).call(highlightCurrentNode)
         .on("start", function() {
             $(this).next("text").css({"font-weight": "900"});
             if (previousNode != null && previousNode !== this) {
