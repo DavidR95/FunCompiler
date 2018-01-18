@@ -133,8 +133,8 @@ function increaseFontSize(transition) {
 }
 
 // Increase the rectangle size based on the increased text size
-function highlightCurrentRectangle(rect, bBox) {
-    rect
+function highlightCurrentRectangle(currentNode, bBox) {
+    currentNode.select("rect")
         .style("fill", "#035a80")
         .style("x", bBox.x - 10)
         .style("y", bBox.y - 10)
@@ -142,8 +142,9 @@ function highlightCurrentRectangle(rect, bBox) {
         .style("height", bBox.height + 20);
 }
 
-function unhighlightCurrentRectangle(rect, bBox) {
-    rect.css({
+// Decrease the previous rectangle back to its previous size and colour
+function unhighlightCurrentRectangle(previousNode, bBox) {
+    $(previousNode).prev("rect").css({
         "fill": "#3e4153",
         "x": bBox.x - 3,
         "y": bBox.y - 3,
@@ -175,7 +176,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
                     "font-size": "0.75em"
                 });
                 var bBox = d3.select(previousNode).node().getBBox();
-                unhighlightCurrentRectangle($(previousNode).prev("rect"), bBox);
+                unhighlightCurrentRectangle(previousNode, bBox);
             }
 
             isPlayingForward ? currentNodeIndex++ : currentNodeIndex--;
@@ -218,7 +219,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
             }
         }).on("end", function() {
             var bBox = d3.select(this).node().getBBox();
-            highlightCurrentRectangle(currentNode.select("rect"), bBox);
+            highlightCurrentRectangle(currentNode, bBox);
             previousNode = this;
             if (hasAnimationFinished() && is_playing) {
                 is_playing = false;
