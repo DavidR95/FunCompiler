@@ -125,19 +125,17 @@ $("#reverse-button").on("click", function() {
     reverse();
 });
 
-// Increases the size and changes the colour of the 'current' node
-function highlightCurrentNode(transition) {
+// Increases the size and boldness of the current node text
+function increaseFontSize(transition) {
     transition
         .style("font-weight", "900")
         .style("font-size", "1em");
 }
 
 function changeMe(rect, bBox) {
-    rect.style("fill", "#035a80")
-    .style("width", bBox.width + 20)
-    .style("height", bBox.height + 20)
-    .style("x", bBox.x - 10)
-    .style("y", bBox.y - 10);
+    rect.style("x", bBox.x - 10).style("y", bBox.y - 10)
+        .style("width", bBox.width + 20).style("height", bBox.height + 20)
+        .style("fill", "#035a80");
 }
 
 function changeMe2(rect, bBox) {
@@ -165,7 +163,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
     }
     var currentNode = d3.select("#node-" + node.id);
     currentNode.select("text").transition().duration(0)
-        .delay(delayOffset * 1000).call(highlightCurrentNode)
+        .delay(delayOffset * 1000).call(increaseFontSize)
         .on("start", function() {
             if (previousNode != null && previousNode !== this) {
                 $(previousNode).css({
@@ -246,7 +244,7 @@ function play() {
 function pause() {
     is_playing = false;
     enablePlayButton();
-    d3.selectAll("rect").interrupt();
+    d3.selectAll("text").interrupt();
 }
 
 // Move one node forward
