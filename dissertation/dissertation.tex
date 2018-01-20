@@ -29,20 +29,33 @@
 \section{Motivation}
 With increasing technological advances and furthering levels of software abstraction, some may consider compilation to be a slightly esoteric subject. In that, the specific knowledge acquired can be directly applied only to a small number of highly specialized industries. Yet, remaining at the cornerstone of a Computer Science curriculum at many schools and universities is the art of compiler construction, behavior and optimization.
 
-Niklaus Wirth, the creator of the Pascal programming language and renowned lecturer of compiler design, stated that `` knowledge about system surfaces alone is insufficient in computer science; what is needed is an understanding of contents'' and ``[compilers] constitute the bridge between software and hardware''. Wirth's view is one that I share, in that, the most successful computer scientists must have more than a superficial understanding of which components to use in which situations, they must understand how and why components interact and behave the way they do, as this is the best and only way of making deeply informed technological decisions.
+Niklaus Wirth, the creator of the Pascal programming language and renowned lecturer of compiler design, stated that ``\textit{knowledge about system surfaces alone is insufficient in computer science; what is needed is an understanding of contents}'' and ``\textit{[compilers] constitute the bridge between software and hardware}''. Wirth's view is one that I share, in that, the most successful computer scientists must have more than a superficial understanding of which components to use in which situations, they must understand how and why components interact and behave the way they do, as this is the best and only way of making deeply informed technological decisions.
 
-Compilation is the process of translating `high-level' code into `low-level' code. Typically, this means converting source code written in a programming language, such as C, Java or Haskell, into a lower language, . 
+Compilation can often be a tricky field to teach. Most compilation procedures require the construction of auxiliary data structures, commonly trees, which must be traversed in a specific manner in order to both validate the source code and create some useful output, usually an executable program. In order to illustrate this concept to students, the educator is typically restricted to creating a ``slideshow'', using an application such as Microsoft Powerpoint, in which each slide shows a distinct step of the traversal. Creating a slideshow to demonstrate these concepts is not only an onerous task on behalf of the educator, but it is more importantly restricted to showing strictly pre-determined examples. 
 
-\section{First Section in Chapter}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog \cite{DIMACS}.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
+\section{Compilation}
+\subsection{Overview}
+The term ``high-level'' language is used to refer to a programming language that provides significant levels of abstraction. These languages often allow the programmer to hide or automate several aspects of a computer system, such as memory management or garbage collection. Whilst these languages are much easier to use than their low-level counterparts, it is usually not possible to execute source code written in a high-level language directly on a computer. Examples of high-level languages are Java, C++ and Haskell.
+
+Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Despite the fact that these languages are much more difficult to use directly, and in some cases are not in a human-readable format, source code written in a low-level language can usually be executed directly on a computer. Examples of low-level languages are assembly language, object code and machine code.
+
+Compilation is the process of translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: syntactic analysis, contextual analysis and code generation.
+
+\subsection{Syntactic Analysis}
+During syntactic analysis the source program is parsed to check whether it is ``well-formed'', in accordance to the language's syntax. Syntactic analysis can itself be broken down into two further phases: lexing and parsing. A lexer takes a source program as input, and breaks it down into a stream of ``tokens'', this stream is then passed to the parser which converts the token stream into an abstract syntax tree (AST) using some parsing algorithm. The parsing algorithm [used throughout] is recursive-descent parsing. If any errors are encountered during syntactic analysis, the compilation process is halted.
+
+\subsection{Contextual Analysis}
+Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyzer. The contextual analyzer will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down into two further phases: scope checking and type checking. Scope checking ensures that every variable used in the program has been declared. Type checking ensures that every operation has operands of the expected type. If any errors are encountered during contextual analysis, the compilation process is halted.
+
+\subsection{Code Generation}
+Upon successful completion of contextual analysis, the code generator translates the parsed program into a lower level language, such as assembly language or object code. Code generation can be broken down into two further phases (in the case of stack-based VMs): address allocation and code selection. Address allocation decides the representation and address of each variable in the source program. Code selection selects and generates the object code. Upon successful completion of this phase, we should have an executable program.
+
+\section{Background}
+\subsection{ANTLR}
+ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation (which is similar to EBNF notation), ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyzer and a code generator. 
+
+\subsection{The Fun Programming Language}
+Included in Niklaus Wirth's 1975 book ``Algorithms + Data Structures = Programs'', was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 Computer Science course, ``Programming Languages'', at Glasgow University.
 
 \subsection{A subsection}
 The quick brown fox jumped over the lazy dog.
