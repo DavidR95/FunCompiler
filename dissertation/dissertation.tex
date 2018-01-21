@@ -29,19 +29,28 @@
 \section{Motivation}
 With increasing technological advances and furthering levels of software abstraction, some may consider compilation to be a slightly esoteric subject; in that, the specific knowledge acquired can be directly applied only in a small number of highly specialized industries. Yet, remaining as a foundation of a computer science curriculum at many schools and universities is the art of compiler construction, behaviour and optimization.
 
-Niklaus Wirth, the creator of the Pascal programming language and renowned lecturer of compiler design states, ``\textit{knowledge about system surfaces alone is insufficient in computer science; what is needed is an understanding of contents}'' and that, ``\textit{[compilers] constitute the bridge between software and hardware}''. Wirth's view is one that I share, in the respect that the most successful computer scientists must have more than a superficial understanding of which approaches to follow in a given situation; they must understand how various components interact and why they behave the way they do, as this is the only way of making deeply informed technological decisions.
+Niklaus Wirth, the creator of the Pascal programming language and renowned lecturer of compiler design states, ``\textit{knowledge about system surfaces alone is insufficient in computer science; what is needed is an understanding of contents}''. Wirth's view is one that I share, in the respect that the most successful computer scientists must have more than a superficial understanding of which approaches to follow in a given situation; they must understand how various components interact and why they behave the way they do, as this is the only way of making deeply informed technological decisions.
 
-Compilation can often be a tricky field to teach effectively. Most compilation procedures require the construction of auxiliary data structures, commonly trees, which must be traversed in a specific manner in order to both validate the source code and create some useful output, usually an executable program. In order to illustrate this concept to students, the educator is typically restricted to creating a ``slideshow'', using an application such as Microsoft Powerpoint, in which each slide shows a distinct step of the traversal. Creating a slideshow to demonstrate these concepts is not only an onerous task on behalf of the educator, but it is more importantly restricted to showing strictly pre-determined examples. 
+Compilation can often be a tricky field to teach effectively. Most compilation procedures require the construction of auxiliary data structures, commonly trees, which must be traversed in a specific manner in order to both validate the source code and create some useful output, usually an executable program. In order to illustrate this concept to students, the educator is typically restricted to creating a ``slideshow'', using an application such as Microsoft Powerpoint, in which each slide shows a distinct step of the traversal. Creating a slideshow to demonstrate these concepts is not only an onerous task on behalf of the educator, but is more importantly restricted to showing strictly pre-determined examples. 
 
 \section{Background}
 \subsection{ANTLR}
-ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation (similar to EBNF notation), ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and a code generator. Please refer to appendix A for a brief outline of compilation and its constituent features, including contextual analysis and code generation.
+ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation (similar to EBNF notation), ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and code generator. Please refer to appendix A for a brief outline of compilation and its constituent features, including contextual analysis and code generation.
 
 \subsection{The Fun Programming Language}
-Included in Niklaus Wirth's 1975 book ``Algorithms + Data Structures = Programs'', was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, ``Programming Languages'', at Glasgow University.
+Included in Niklaus Wirth's 1975 book ``Algorithms + Data Structures = Programs'', is a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, ``Programming Languages'', at Glasgow University.
 
 \section{Aims}
-Hello.
+The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. The application should:
+\begin{itemize}
+\item Allow a user to input and submit any syntactically valid program written in the Fun language.
+\item Visualise the contextual analysis phase of a program's compilation. 
+\item Visualise the code generation phase of a program's compilation.
+\item Display any relevant details during the compilation, including: address/type tables, code templates, object code and explanatory messages.
+\item Allow the visualisation to be ``played'' continuously or step-wise, backwards and forwards.
+\end{itemize}
+
+This application will act as a teaching tool, equally useful to educators and students alike. Students are free to use the tool outside of school/university hours in order to further their own learning. Since any arbitrary Fun program can be compiled, the restriction to educators of showing only pre-determined examples is removed. Additionally, the level of automated analysis attainable from the application is considerably greater than anything currently possible by present techniques. It will hopefully provide a better means for those looking to learn but also remove some of the struggle taken on by educators in teaching the topic.
 
 %%%%%%%%%%%%%%%%
 %              %
@@ -61,7 +70,7 @@ Compilation is the process of automatically translating high-level code into low
 \item Contextual Analysis
 \item Code Generation
 \end{enumerate}
-Note that is any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
+Note that if any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
 
 \subsection{Syntactic Analysis}
 During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can itself be broken down into two further phases:
