@@ -36,10 +36,33 @@ Compilation can often be a tricky field to teach effectively. Most compilation p
 
 \section{Background}
 \subsection{ANTLR}
-ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation (similar to EBNF notation), ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and code generator. Please refer to appendix A for a brief outline of compilation and its constituent features, including contextual analysis and code generation.
+ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation, ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and code generator. Please refer to appendix A for a brief outline of compilation and its constituent features, including contextual analysis and code generation.
 
 \subsection{The Fun Programming Language}
-Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
+Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
+
+\subsection{Existing Products}
+Interestingly, compiler visualisation is a considerably novel area of research and development. Very few existing tools provide any illustration of the various components of the compilation process and essentially no tools exist that provide any analysis or step-by-step explanation of the process.
+
+ANTLR does provide a tool for visualising the parse tree (or concrete syntax tree) generated from an input program, as seen in figure \ref{fig:ANTLR-parse-tree}, which represents  the parse tree of a small program written in Fun. A parse tree contains an exact representation of the input, retaining all information, including white-space and brackets. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores tokens such as white-space, brackets and other redundant details which are derivable from the structure of the tree. An illustration of what an AST might look like for the same program is shown in figure \ref{fig:ANTLR-syntax-tree}. Unfortunately, ANTLR currently provides no out of the box support to view trees in this way.
+
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[height=5cm,width=\linewidth]{images/2-2a.png}
+		\caption{Parse Tree/Concrete Syntax Tree}
+		\label{fig:ANTLR-parse-tree}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[height=5cm,width=\linewidth]{images/2-2b.png}
+		\caption{Abstract Syntax Tree}
+		\label{fig:ANTLR-syntax-tree}
+	\end{subfigure}
+	\caption{The ANTLR generated parse tree and the theoretical AST of the same Fun program}\label{fig:parse-abstract-tree}	
+\end{figure}
+
+Whilst this tool may serve to provide a preliminary understanding of how ANTLR forms a parse tree, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which serve only to obfuscate the diagram. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge.
+
+Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it reveal any details of the internal workings of each node.
 
 \section{Aims}
 The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in the form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. The application should:
@@ -60,29 +83,6 @@ The rest of this report is organised as follows. Chapter 2 looks at requirements
 \section{Methodology} 
 After establishing that a product is worthwhile to build in the first place, most requirement elicitation approaches involve a repetitive cycle of expanding or reducing an initially small list of desiderata. After an initial interview with Simon Gay, the current lecturer of the {\it Programming Languages} course and proposer of this project, it was clear that whilst the project was inherently complex, the set of functional requirements was simple, well-defined and unlikely to change significantly in the future. For this reason, it was determined that extensive requirement gathering techniques, such as questionnaires or focus groups, were ultimately unnecessary; and all additional requirements were to be established through further interviews with Simon Gay.
 
-\section{Existing Products}
-Interestingly, compiler visualisation is a considerably novel area of research and development. Very few existing tools provide any illustration of the compilation process and essentially no tools exist that provide the level of analysis and step-by-step explanation of the process which this application aims to do. 
-
-\begin{figure}[h]
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[height=5cm,width=\linewidth]{images/2-2a.png}
-		\caption{Parse Tree/Concrete Syntax Tree}
-		\label{fig:ANTLR-parse-tree}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[height=5cm,width=\linewidth]{images/2-2b.png}
-		\caption{Abstract Syntax Tree}
-		\label{fig:ANTLR-syntax-tree}
-	\end{subfigure}
-	\caption{The ANTLR generated parse tree and the theoretical AST of the same Fun program}\label{fig:parse-abstract-tree}	
-\end{figure}
-
-ANTLR does provide a tool for visualising the parse tree (or concrete syntax tree) generated by a grammar from an input file, as seen in figure \ref{fig:ANTLR-parse-tree}. A parse tree contains an exact representation of the input, retaining all information, including white-space and brackets. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores tokens such as white-space, brackets and other redundant details which are derivable from the structure of the tree. An illustration of what an AST might look like for the same program is shown in figure \ref{fig:ANTLR-syntax-tree}. Unfortunately, ANTLR currently provides no out of the box support to build trees in this way.
-
-Whilst this tool may serve to provide a preliminary understanding of how ANTLR forms a parse tree, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons - which in most cases add nothing to the understanding of the tree. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge.
-
-Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it give an explanation of what is happening internally at each node. 
-
 \section{User Stories}
 User stories are short and simple descriptions of a potential feature, told from the perspective of a potential user. User stories typically follow the template of:\\\\
 \textit{As a \textbf{user type}, I want to \textbf{achieve some goal}, so that \textbf{justification.}}
@@ -97,6 +97,61 @@ User stories are a core component of the agile software development approach. Th
 \item As a user, I want to be able to play different sections of the compilation animation independently (i.e., contextual analysis or code generation), so that I can focus my learning on specific areas. 
 \item As a user, I want to be able to replay an animation, so that I can review any details I missed/misunderstood.
 \item As a user, I want to be able to step through the animation at my own pace, so I can easier understand what is happening during the animation.
+\end{itemize}
+
+\section{Functional Requirements}
+After conducting several interviews with Simon Gay and analysing the above user stories, a formal list of functional requirements was created. Functional requirements are intended to capture a specific function of a system. The \textit {MoSCoW method} was used as a prioritisation technique for the following requirements. This method is another commonly used aspect of agile development, and involves partitioning requirements into four categories: \textit{Must have}, \textit{Should have}, \textit{Could have} or \textit{Would have}.
+\subsection{Must Have}
+\begin{itemize}
+\item Allow users to view the AST for pre-defined Fun programs.
+\begin{itemize}
+\item At the very least, users should be able to choose from a small list of pre-written Fun programs and view the corresponding AST.
+\end{itemize}
+\end{itemize}
+\subsection{Should Have}
+\begin{itemize}
+\item Allow users to view a simple continuous animation that demonstrates how the AST would be traversed during contextual analysis and code generation.
+\begin{itemize}
+\item The animation cannot be paused, reversed, or moved through step by step.
+\end{itemize}
+\item At the end of the animation, display some basic results of the compilation, including object code and address/type tables.
+\begin{itemize}
+\item These details would only be published at the end of the animation, not during.
+\end{itemize}
+\item Display information that explains how the Fun language works.
+\begin{itemize}
+\item This would involve effectively embedding the Fun specification somewhere within the application.
+\end{itemize}
+\end{itemize}
+\subsection{Could Have}
+\begin{itemize}
+\item Allow users more control over the animation, including pausing, reversing, and step-wise movements - backwards and forwards.
+\item Allow users to input any arbitrary Fun program and view the corresponding animation.
+\begin{itemize}
+\item The user is no longer restricted to using pre-defined example programs.
+\end{itemize}
+\item Display results of the animation as they occur during the compilation.
+\begin{itemize}
+\item For example, populate the type table as each variable is declared during the animation.
+\end{itemize}
+\item Display more in-depth analytical and informational details during the animation.
+\begin{itemize}
+\item This includes code templates and explanatory messages of the internal workings of each node as it is visited.
+\end{itemize}
+\end{itemize}
+\subsection{Would Have}
+\begin{itemize}
+\item Execute and display the results of the generated object code.
+\end{itemize}
+
+\section{Non-functional Requirements}
+In contrast to functional requirements that detail specific behaviours or a system, non-functional requirements measure an overall properties of a system. Non-functional requirements often consider areas such as security, usability and extensibility; overall utilities of a system.
+
+\begin{itemize}
+\item The application must work on all modern browsers.
+\item The application must be able to interact efficiently with a Java-based application (the Fun compiler).
+\item The application must be responsive, at least to a tablet level.
+\item The application must ensure no malicious code can be executed.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%
