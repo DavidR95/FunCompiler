@@ -38,14 +38,69 @@ In order to explain these concepts to students, an educator will typically try t
 
 Whilst using a slideshow is currently the only practical way to demonstrate these concepts, it has two main drawbacks. Firstly, to create animations in this way is an arduous task for the educator, realistically meaning that the animation must remain short. Secondly, and more importantly, the educator is restricted to showing only pre-determined examples. Since there is effectively an infinite number of ways the compilation process may occur depending on the input, pre-determined examples are almost guaranteed to omit certain details, making it difficult for students to achieve a generalised understanding.
 
-\section{Background}
-\subsection{ANTLR}
+\section{Aims}
+The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in the form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. The application should:
+\begin{itemize}
+\item Allow a user to input and submit any syntactically valid program written in the Fun language.
+\item Visualise the contextual analysis phase of a program's compilation. 
+\item Visualise the code generation phase of a program's compilation.
+\item Display any relevant details during the compilation, including: address/type tables, code templates, object code and explanatory messages.
+\item Allow the visualisation to be ``played'' continuously or step-wise, backwards and forwards.
+\end{itemize}
+
+This application will act as a teaching tool, equally useful to educators and students alike. Students are free to use the tool outside of school/university hours in order to further their own learning. Since any arbitrary Fun program can be compiled, the restriction to educators of showing only pre-determined examples is removed. Additionally, the level of automated analysis attainable from the application is considerably greater than anything currently possible by present techniques. It will hopefully provide a better means for those looking to learn but also remove some of the struggle taken on by educators in teaching the topic.
+
+\section{Outline}
+The rest of this report is organised as follows. Chapter 2 looks at requirements gathering and elicitation. Chapter 3 discusses how the requirements were used to build an initial design of the system. Chapter 4 covers in detail the implementation of the application.
+
+\chapter{Compilation}
+The term ``high-level'' language is used to refer to a programming language that provides significant levels of abstraction. These languages often allow the programmer to hide or automate several aspects of a computer system, such as memory management or garbage collection. Whilst these languages are much easier to use than their low-level counterparts, it is usually not possible to execute source code written in a high-level language directly on a computer. Examples of high-level languages are Java, C++ and Haskell.
+
+Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Source code written in a low-level language can usually be executed directly on a computer; however, the increased complexity means it is often extremely difficult or near impossible for a human to develop software in a low-level language. Examples of low-level languages are assembly language, object code and machine code.
+
+Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
+\begin{enumerate}
+\item Syntactic Analysis 
+\item Contextual Analysis
+\item Code Generation
+\end{enumerate}
+Note that if any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
+
+\section{Syntactic Analysis}
+During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can itself be broken down into two further phases:
+\begin{enumerate}
+\item Lexing
+\item Parsing
+\end{enumerate}
+
+A lexer is given a source program as input, which it breaks down into a stream of tokens. This stream is then passed to the parser which converts the token stream into an abstract syntax tree (AST) using a parsing algorithm. The parsing algorithm which is considered throughout this paper is recursive-descent parsing.
+
+\section{Contextual Analysis}
+Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyser. The contextual analyser will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down into two phases:
+\begin{enumerate}
+\item Scope Checking
+\item Type Checking
+\end{enumerate}
+
+Scope checking ensures that every variable used in the program has been previously declared. Type checking ensures that every operation has operands of the expected type.
+
+\section{Code Generation}
+Upon successful completion of contextual analysis, the code generator translates the parsed program into a lower level language, such as assembly language or object code. Code generation can be broken down into two phases:
+\begin{enumerate}
+\item Address Allocation
+\item Code Selection
+\end{enumerate}
+
+Address allocation decides the representation and address of each variable in the source program. Code selection selects and generates the object code. Upon successful completion of this final phase, the compiler will have often produced an executable program.
+
+\chapter{Background}
+\section{ANTLR}
 ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation, ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and code generator. Please refer to appendix A for a brief outline of compilation and its constituent features, including contextual analysis and code generation.
 
-\subsection{The Fun Programming Language}
+\section{The Fun Programming Language}
 Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
 
-\subsection{Existing Products}
+\section{Existing Products}
 Interestingly, compiler visualisation is a considerably novel area of research and development. Very few existing tools provide any illustration of the various components of the compilation process and essentially no tools exist that provide any analysis or step-by-step explanation of the process.
 
 ANTLR does provide a tool for visualising the parse tree (or concrete syntax tree) generated from an input program, as seen in figure \ref{fig:ANTLR-parse-tree}, which represents  the parse tree of a small program written in Fun. A parse tree contains an exact representation of the input, retaining all information, including white-space and brackets. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores tokens such as white-space, brackets and other redundant details which are derivable from the structure of the tree. An illustration of what an AST might look like for the same program is shown in figure \ref{fig:ANTLR-syntax-tree}. Unfortunately, ANTLR currently provides no out of the box support to view trees in this way.
@@ -67,21 +122,6 @@ ANTLR does provide a tool for visualising the parse tree (or concrete syntax tre
 Whilst this tool may serve to provide a preliminary understanding of how ANTLR forms a parse tree, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which serve only to obfuscate the diagram. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge.
 
 Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it reveal any details of the internal workings of each node.
-
-\section{Aims}
-The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in the form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. The application should:
-\begin{itemize}
-\item Allow a user to input and submit any syntactically valid program written in the Fun language.
-\item Visualise the contextual analysis phase of a program's compilation. 
-\item Visualise the code generation phase of a program's compilation.
-\item Display any relevant details during the compilation, including: address/type tables, code templates, object code and explanatory messages.
-\item Allow the visualisation to be ``played'' continuously or step-wise, backwards and forwards.
-\end{itemize}
-
-This application will act as a teaching tool, equally useful to educators and students alike. Students are free to use the tool outside of school/university hours in order to further their own learning. Since any arbitrary Fun program can be compiled, the restriction to educators of showing only pre-determined examples is removed. Additionally, the level of automated analysis attainable from the application is considerably greater than anything currently possible by present techniques. It will hopefully provide a better means for those looking to learn but also remove some of the struggle taken on by educators in teaching the topic.
-
-\section{Outline}
-The rest of this report is organised as follows. Chapter 2 looks at requirements gathering and elicitation. Chapter 3 discusses how the requirements were used to build an initial design of the system. Chapter 4 covers in detail the implementation of the application.
 
 \chapter{Requirements}
 \section{Methodology} 
@@ -164,46 +204,7 @@ In contrast to functional requirements that detail specific behaviours or a syst
 %              %
 %%%%%%%%%%%%%%%%
 \begin{appendices}
-\chapter{Compilation}
-\subsection{Overview}
-The term ``high-level'' language is used to refer to a programming language that provides significant levels of abstraction. These languages often allow the programmer to hide or automate several aspects of a computer system, such as memory management or garbage collection. Whilst these languages are much easier to use than their low-level counterparts, it is usually not possible to execute source code written in a high-level language directly on a computer. Examples of high-level languages are Java, C++ and Haskell.
 
-Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Source code written in a low-level language can usually be executed directly on a computer; however, the increased complexity means it is often extremely difficult or near impossible for a human to develop software in a low-level language. Examples of low-level languages are assembly language, object code and machine code.
-
-Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
-\begin{enumerate}
-\item Syntactic Analysis 
-\item Contextual Analysis
-\item Code Generation
-\end{enumerate}
-Note that if any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
-
-\subsection{Syntactic Analysis}
-During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can itself be broken down into two further phases:
-\begin{enumerate}
-\item Lexing
-\item Parsing
-\end{enumerate}
-
-A lexer is given a source program as input, which it breaks down into a stream of tokens. This stream is then passed to the parser which converts the token stream into an abstract syntax tree (AST) using a parsing algorithm. The parsing algorithm which is considered throughout this paper is recursive-descent parsing.
-
-\subsection{Contextual Analysis}
-Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyser. The contextual analyser will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down into two phases:
-\begin{enumerate}
-\item Scope Checking
-\item Type Checking
-\end{enumerate}
-
-Scope checking ensures that every variable used in the program has been previously declared. Type checking ensures that every operation has operands of the expected type.
-
-\subsection{Code Generation}
-Upon successful completion of contextual analysis, the code generator translates the parsed program into a lower level language, such as assembly language or object code. Code generation can be broken down into two phases:
-\begin{enumerate}
-\item Address Allocation
-\item Code Selection
-\end{enumerate}
-
-Address allocation decides the representation and address of each variable in the source program. Code selection selects and generates the object code. Upon successful completion of this final phase, the compiler will have often produced an executable program.
 \end{appendices}
 
 %%%%%%%%%%%%%%%%%%%%
