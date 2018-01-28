@@ -27,7 +27,7 @@
 
 \chapter{Introduction}
 \pagenumbering{arabic}
-With increasing technological advances and furthering levels of software abstraction, some may consider compilation to be a slightly esoteric subject. In that, broad knowledge of compilation theory is unnecessary in a modern environment and required only in a small number of highly specialised industries. Yet, remaining as a cornerstone of a computer science curriculum at many schools and universities is the art of compiler construction, behaviour and optimisation.
+With increasing technological advances and furthering levels of software abstraction, some may consider compilation to be a slightly esoteric subject; in that, broad knowledge of compilation theory is unnecessary in a modern environment and required only in a small number of highly specialised industries. Yet, remaining as a cornerstone of a computer science curriculum at many schools and universities is the art of compiler construction, behaviour and optimisation.
 
 Niklaus Wirth, the creator of the \textit{Pascal} programming language and renowned lecturer of compiler design states, ``\textit{knowledge about system surfaces alone is insufficient in computer science; what is needed is an understanding of contents}''. Wirth's view is one that I share, in the respect that the most successful computer scientists must have more than a superficial understanding of which approaches to follow in a given situation. They must understand how various components interact and why they behave the way they do, as this is the only way of making deeply informed technological decisions.
 
@@ -51,12 +51,12 @@ The aim of this project is to provide a web application in which users will be a
 This application will act as a teaching tool, equally useful to educators and students alike. Students are free to use the tool outside of school/university hours in order to further their own learning. Since any arbitrary Fun program can be compiled, the restriction to educators of showing only pre-determined examples is removed. Additionally, the level of automated analysis attainable from the application is considerably greater than anything currently possible by present techniques. It will hopefully provide a better means for those looking to learn but also remove some of the struggle taken on by educators in teaching the topic.
 
 \section{Outline}
-The rest of this report is organised as follows. Chapter 2 looks at requirements gathering and elicitation. Chapter 3 discusses how the requirements were used to build an initial design of the system. Chapter 4 covers in detail the implementation of the application.
+The rest of this report is organised as follows. Chapter 2 takes a general look at compilation and its constituent phases. Chapter 3 discusses related work in the area and considers relevant tools. Chapter 4 looks at requirements gathering and elicitation. Chapter 5 discusses how the requirements were used to build an initial design of the system. Chapter 6 covers in detail the implementation of the application.
 
 \chapter{Compilation}
 The term ``high-level'' language is used to refer to a programming language that provides significant levels of abstraction. These languages often allow the programmer to hide or automate several aspects of a computer system, such as memory management or garbage collection. Whilst these languages are much easier to use than their low-level counterparts, it is usually not possible to execute source code written in a high-level language directly on a computer. Examples of high-level languages are Java, C++ and Haskell.
 
-Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Source code written in a low-level language can usually be executed directly on a computer; however, the increased complexity means it is often extremely difficult or near impossible for a human to develop software in a low-level language. Examples of low-level languages are assembly language, object code and machine code.
+Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Source code written in a low-level language can usually be executed directly on a computer; however, the increased complexity means it is often infeasible for a human to develop software in a low-level language. Examples of low-level languages are assembly language, object code and machine code.
 
 Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
 \begin{enumerate}
@@ -67,13 +67,13 @@ Compilation is the process of automatically translating high-level code into low
 Note that if any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
 
 \section{Syntactic Analysis}
-During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can itself be broken down into two further phases:
+During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can be broken down into two further phases:
 \begin{enumerate}
 \item Lexing
 \item Parsing
 \end{enumerate}
 
-A lexer is given a source program as input, which it breaks down into a stream of tokens. This stream is then passed to the parser which converts the token stream into an abstract syntax tree (AST) using a parsing algorithm. The parsing algorithm which is considered throughout this paper is recursive-descent parsing.
+Lexing is the process of breaking down an input program into a stream of tokens. Parsing converts this stream into an AST using a parsing algorithm. The parsing algorithm which is considered throughout this paper is recursive-descent parsing.
 
 \section{Contextual Analysis}
 Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyser. The contextual analyser will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down into two phases:
