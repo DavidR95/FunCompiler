@@ -39,8 +39,8 @@ In order to explain these concepts to students, an educator will typically try t
 
 Whilst using a slideshow is currently the only practical way to demonstrate these concepts, it has two main drawbacks. Firstly, to create animations in this way is an arduous task for the educator, realistically meaning that the animation must remain short. Secondly, and more importantly, the educator is restricted to showing only pre-determined examples. Since there is effectively an infinite number of ways the compilation process may occur depending on the input, pre-determined examples are almost guaranteed to omit certain details, making it difficult for students to achieve a generalised understanding.
 
-\section{Aims}
-The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in the form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. Chapters 2 introduces these concepts in considerably more detail. The application should:
+\section{Aim}
+The aim of this project is to provide a web application in which users will be able to visualise the contextual analysis and code generation phases of the Fun compiler. The visualisation will be in the form of a representation of an abstract syntax tree (AST). The mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. Chapter 2 introduces these concepts in considerably more detail. The application should:
 \begin{itemize}
 \item Allow a user to input and submit any syntactically valid program written in the Fun language.
 \item Visualise the contextual analysis phase of a program's compilation. 
@@ -55,32 +55,28 @@ This application will act as a teaching tool, equally useful to educators and st
 The rest of this report is organised as follows. Chapter 2 takes a general look at compilation and its constituent phases. Chapter 3 discusses related work in the area and considers relevant tools. Chapter 4 looks at requirements gathering and elicitation. Chapter 5 discusses how the requirements were used to build an initial design of the system. Chapter 6 covers in detail the implementation of the application.
 
 \chapter{Background}
-This chapter aims to briefly introduce the reader to the main tools and concepts used throughout this paper. This includes a small overview of abstract syntax trees, the various phases of compilation, the Fun programming language and the tool ANTLR.
+This chapter aims to briefly introduce the reader to the main tools and concepts used throughout this paper. This includes a small overview of syntax trees, the various phases of compilation, the Fun programming language and the tool ANTLR.
 
 \section{Syntax Trees}
-Given a source program, syntax trees are simply a hierarchical representation of this input. There are two main types of syntax trees that are typically considered, concrete syntax trees (often called parse trees) and abstract syntax trees (ASTs). A parse tree contains an exact representation of the input, retaining all information, including white-space and brackets. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores words and characters such as white-space, brackets and other redundant details which are derivable from the shape of the tree. 
+A syntax tree is simply a hierarchical representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the concrete syntax tree (often called a parse tree) and the abstract syntax tree (AST). A parse tree contains an exact representation of the input, retaining all information, including white-space, brackets, etc. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores words and characters such as white-space, brackets and other redundant details which are derivable from the shape of the tree. 
 
-During compilation, the compiler will traverse either type of tree, depending on the language implementation. The compiler visits each node in the tree in a ``depth-first'' (or similar) traversal. These traversals constitute the contextual analysis and code generation phases of a compiler, which validate the input and produce the output of the compilation. 
+During compilation, the compiler will traverse one or sometimes both types of tree, depending on the language implementation. The compiler usually visits each node in the tree in a ``depth-first'' manner, perhaps with some small variations. These traversals constitute the contextual analysis and code generation phases of a compiler, which validate certain aspects of the input and produce the output of the compilation. 
 
-From an visual point of view, ASTs are considerably easier to read and understand. Any information that is lost from the parse tree to the AST is purely semantic and has no bearing on the true evaluation of the tree. Given this, we naturally use an AST when attempting to demonstrate syntax trees to students. See chapter 4 for an good instance of the diff. Beyond visualisation, it's worth noting that there can  also be large computational advantages of using an AST as an intermediate form during compilation as they are usually much easier to manipulate; however, the Fun language does not happen to take advantage of this. 
+From an visual point of view, ASTs are considerably easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is purely semantic and does not effect how the tree is evaluated. Consequently, when attempting to demonstrate the data structures built during compilation to students, it is much more productive to show an AST, as opposed to a parse tree. See chapter 3 for an illustrative example that displays the visual benefits of ASTs over parse trees. Beyond visualisation, it's worth noting that there can  also be large computational advantages of using an AST within the compiler's implementation as they are usually much easier to manipulate and require less memory; however, the compiler of the Fun language does not happen to take advantage of this. 
 
-\section{Compilation}
-The term ``high-level'' language is used to refer to a programming language that provides significant levels of abstraction. These languages often allow the programmer to hide or automate several aspects of a computer system, such as memory management or garbage collection. Whilst these languages are much easier to use than their low-level counterparts, it is usually not possible to execute source code written in a high-level language directly on a computer. Examples of high-level languages are Java, C++ and Haskell.
-
-Conversely, a ``low-level'' language provides little to no abstraction. Statements written in a low-level language often map very closely to processor instructions. Source code written in a low-level language can usually be executed directly on a computer; however, the increased complexity means it is often infeasible for a human to develop software in a low-level language. Examples of low-level languages are assembly language, object code and machine code.
-
+\section{Compilation Phases}
 Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
 \begin{enumerate}[label=\alph*)]
 \item \textit {Syntactic Analysis}
 \item \textit {Contextual Analysis}
 \item \textit {Code Generation}
 \end{enumerate}
-Note that if any one of these phases happens to encounter an error during its execution, the entire compilation process is halted before proceeding to the next phase.
+If either syntactic analysis or contextual analysis encounters an error (as specified by the language) during its execution, that particular phase completes, the remainder of the compilation process is halted and the errors are reported to the programmer. See figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
 
 \subsection{Syntactic Analysis}
 During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can be broken down into \textit{lexing} and \textit{parsing}.
 
-Lexing is the process of breaking down an input program into a stream of tokens. Parsing converts this stream into an \textit{abstract syntax tree} (AST) using a parsing algorithm. The parsing algorithm which is considered throughout this paper is recursive-descent parsing.
+Lexing is the process of breaking down an input program into a stream of tokens. Parsing converts this stream into an AST using a parsing algorithm. The parsing algorithm used in the Fun compiler is recursive-descent parsing.
 
 \subsection{Contextual Analysis}
 Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyser. The contextual analyser will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down \textit{scope checking} and \textit{type checking}.
@@ -92,18 +88,25 @@ Upon successful completion of contextual analysis, the code generator translates
 
 Address allocation decides the representation and address of each variable in the source program. Code selection selects and generates the object code. Upon successful completion of this final phase, the compiler will have often produced an executable program.
 
-\section{The Fun Programming Language}
-Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language built using \textit {ANTLR}, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
+\begin{figure}[h]
+\centering
+\includegraphics[height=2.5cm,width=13cm]{images/3-2a.png}
+\caption{Compilation Pipeline}
+\label{fig:compilation-pipeline}	
+\end{figure}
 
-\section{ANTLR}
-ANTLR (Another Tool For Language Recognition) is a popular compiler generation tool. Given a grammar written in ANTLR notation, ANTLR can automatically generate a lexer and a recursive-descent parser. ANTLR also generates a visitor interface, which is the foundation for implementing a contextual analyser and code generator.
+\section{The Fun Programming Language}
+Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language built using ANTLR, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
+
+The Fun compiler will be used to visualise compilation within the web application. Whilst Fun may differ significantly to other programming languages, particularly in its complexity; it is not the case that the concepts illustrated are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts can be explained in an easily understandable format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
 \chapter{Related Work}
+This chapter considers existing products in the area of compiler visualisation and discusses research done in the field of visualising computing algorithms in general, beyond just compilation.
+
 \section{Existing Products}
 Interestingly, compiler visualisation is a considerably novel area of research and development. Very few existing tools provide any illustration of the various components of the compilation process and essentially no tools exist that provide any analysis or step-by-step explanation of the process.
 
-ANTLR does provide a tool for visualising the parse tree (or concrete syntax tree) generated from an input program, as seen in figure \ref{fig:ANTLR-parse-tree}, which represents  the parse tree of a small program written in Fun. A parse tree contains an exact representation of the input, retaining all information, including white-space and brackets. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores tokens such as white-space, brackets and other redundant details which are derivable from the structure of the tree. An illustration of what an AST might look like for the same program is shown in figure \ref{fig:ANTLR-syntax-tree}. Unfortunately, ANTLR currently provides no out of the box support to view trees in this way.
-
+ANTLR, the compiler generation software used to build the Fun language, does provide a tool for visualising the parse tree generated from an input program, as seen in figure \ref{fig:ANTLR-parse-tree}, which represents  the parse tree of a small program written in Fun. As previously discussed, a parse tree is much harder to interpret than its AST counterpart, a potential version of which is illustrated in figure \ref{fig:ANTLR-syntax-tree}; unfortunately, ANTLR currently provides not out of the box support to build trees in this way. Whilst this tool may serve to provide a preliminary understanding of how a parse tree may be formed for a particular program, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which serve only to obfuscate the diagram. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge. Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it reveal any details of the internal workings of each node.
 \begin{figure}[h]
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[height=5cm,width=\linewidth]{images/2-2a.png}
@@ -117,10 +120,6 @@ ANTLR does provide a tool for visualising the parse tree (or concrete syntax tre
 	\end{subfigure}
 	\caption{The ANTLR generated parse tree and the theoretical AST of the same Fun program}\label{fig:parse-abstract-tree}	
 \end{figure}
-
-Whilst this tool may serve to provide a preliminary understanding of how ANTLR forms a parse tree, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which serve only to obfuscate the diagram. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge.
-
-Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it reveal any details of the internal workings of each node.
 
 \chapter{Requirements}
 \section{Methodology} 
