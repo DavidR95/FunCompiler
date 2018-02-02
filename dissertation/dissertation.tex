@@ -9,7 +9,7 @@
 \usepackage{enumitem}
 
 \begin{document}
-\title{Visualisation of the Contextual Analysis and Code Generation Phases of a Compiler}
+\title{Animation of the Contextual Analysis and Code Generation Phases of a Compiler}
 \author{David Robertson}
 \date{January 1, 2000}
 \maketitle
@@ -101,19 +101,45 @@ Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Progra
 The Fun compiler will be used to visualise compilation within the web application. Whilst Fun may differ significantly to other programming languages, particularly in its complexity; it is not the case that the concepts illustrated are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts can be explained in an easily understandable format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
 \chapter{Related Work}
-Whilst compiler visualisation is a considerably novel area of research and development, attempts to visualise various computing algorithms date as far back as the 1980s. The vast majority of work in this field focuses on animating sorting algorithms, such as quick sort and merge sort. Understandably, many would consider compilation to be a much more involved process than a typical sorting algorithm; however, compilation is simply just an algorithm, or a sequence of algorithms. Consequently, we believe that the lessons learnt and guidelines imparted in regards to effective algorithm animation apply the same to this project.
+Whilst compiler animation is a considerably novel area of research and development, attempts to visualise computing algorithms date as far back as the 1980s. The vast majority of work in this field focuses on animating sorting algorithms, such as quick sort and merge sort. Understandably, many would consider compilation to be a much more involved process than a typical sorting algorithm; however, compilation is simply just an algorithm, or a sequence of algorithms. Consequently, it would seem logical to assume that lessons learnt during the development of any algorithm animation software should apply equally to area of compiler animation. 
 
-This chapter considers existing products in the area of compiler visualisation and discusses research done in the field of visualising computing algorithms in general, beyond just compilation.
-
-\section{History}
+The remainder of this chapter explores existing products in algorithm animation and considers research done which attempts the evaluate the effectiveness of algorithm animation from an educational perspective. 
 
 \section{Effectiveness of Algorithm Animation}
-Despite the fact that compiler visualisation is a considerably novel area of research and development, attempts to visualise computing algorithms for educational purposes started long ago.  including work from Bentley and Kernighan. 
+One of the earliest algorithm animation systems was developed by Bentley and Kernighan in 1987, which enabled programmers to annotate sections of an algorithm which were later processed by an interpreter to create still pictures that aimed to trace the execution of a program. In the first line of the user manual for this system Bentley and Kernighan affirmatively state: ``Dynamic displays are better than static displays for giving insight into the behaviour of dynamic systems.''. The belief of Bentley and Kernighan is one that the majority of us would intuitively believe; however, at this stage algorithm animation was certainly still in its infancy and there was no empirical evidence to support this intuition. 
 
-The outcome of studies which aim to measure the effectiveness of animating algorithms as a learning aide have been disappointing over the years. Whilst students have certainly found benefits in observing these animations compared to static materials, such as textbooks, the result has not been as significant as we might intuitively believe. 
+It wasn't until approximately six years later in 1993 when Stasko, Badre and Lewis considered whether or not algorithm animations assisted learning as much as we might think. After a study which involved attempting to teach students the concept of a ``pairing heap'', one group using textual descriptions of the algorithm, the others using an animation. Stasko repeated a similar experiment in 1999 with Byrne and Catrambone which focused more on the benefits of animations over static visualisations. The results of both these studies were disappointing, they found that whilst students in the animation group did perform better than their textual or static counterparts, the improvement was not statistically significant. Not only was there little improvement, they even found that the students in the animation group didn't perform particularly well in general terms, not just compared to the other groups within the study. 
+
+As computer graphic capabilities have improved significant since the 1990s, other more recent studies have all shown the same results. The general consensus being that whilst animations do provide a small benefit, it is certainly not as large as our intuition would have us believe. However, that is not to say that algorithm animations are without use. Stasko, Badre and Lewis suggest that algorithm animations are not particular effective for students looking to learn a concept for the first time, but is likely to be much more useful when students are looking to refine their understanding of a particular notion. The idea being that students should perhaps learn concepts for the first time using conventional methods, then transition to using animations when looking to clarify and solidify their understanding of certain aspects.
+
+Stasko, Badre and Lewis also revealed a list of guidelines they believe to be effective advice when building algorithm animations, some of which are summarised below:
+\begin{itemize}
+\item The animation should be augmented with textual descriptions to explain what is happening at each stage.
+\item The animation should include rewind-replay capabilities to allow users to review important operations.
+\item Students should be able to build the animation themselves, instead of choosing from pre-defined examples.
+\end{itemize}
+The guidelines above suggest that algorithm animations need firstly, the have accompanying details of each step of the animation and secondly, to be highly interactive. In order the engage the student in ``active learning'' over ``passive learning'', they should be able to have intricate control over the playback of the animation and should also be able to modify how the animation is built.
 
 \section{Existing Products}
-Interestingly, compiler visualisation is a considerably novel area of research and development. Very few existing tools provide any illustration of the various components of the compilation process and essentially no tools exist that provide any analysis or step-by-step explanation of the process.
+Very few existing tools provide any illustration of the various components of the compilation process and essentially no tools exist that provide any analysis or step-by-step explanation of the process. There are however, an abundance of web applications that animate sorting algorithms. 
+
+One of the most popular and well implemented is visualgo.net. Visualgo provides an interface for animating various sorting algorithms, including bubble sort, selection sort, etc. As you can see in figure , Visualgo implements many of the guidelines we previously listed. It provides impressive playback controls, the ability the choose the input of the algorithm and display in-depth descriptions of the current process, in both plain English and pseudo-code. 
+
+Moving slightly away from pure sorting algorithms, the University of San Francisco have a small web application which animation Dijkstra's algorithm, as seen in figure . Dijkstra's algoritm is an arguably more complicated process, involving the need to visualise tables and graphs; however, we see at the expense of this the application has lost several usability aspects compared to visualgo. It is no longer possible to define your input or pause/rewind the animation. Additionally, whilst some very primitive details are displayed next to the table at each stage, they are far from informative. 
+
+\section{Discussion}
+Despite studies showing that algorithm animation is not as effective as we might have initially believed, it would seem that the circumstances that lead to poor performance are unlikely the effect this web application. The studies found that algorithm animation was less effective in novice students; however, it's very unlikely that students using this web application will be learning about this concept for the first time. The vast majority of users will be students of the Programming Languages course at Glasgow University, in which they will be taught the concepts initially in the usual way, and then directed to the app for further use. Ideally students would be using the web application to refine their knowledge, as opposed to establishing it for the first time.
+
+Considering the guidelines and how they apply to this web application, it appears that we must:
+\begin{itemize}
+\item Provide a textual explanation of what the compiler is doing internally when it visits each node.
+\item Include rewind-replay abilities that allow the compilation to be restarted, or played step-wise, backwards or forwards.
+\item Ensure users can input their own Fun code.
+\end{itemize}
+
+After analysing the some of the current products available from Visualgo and the University of San Francisco, it seems there is a trade-off. The University of San Francisco loses much of the additional information Visualgo provides in order to animate a more complex algorithm. This web application aims to provide many if not all of the same usability functions Visualgo provides, whilst implementing an algorithm considerably more complex than either a sorting algorithm or Dijkstra's algorithm. 
+
+\section{shit}
 
 ANTLR, the compiler generation software used to build the Fun language, does provide a tool for visualising the parse tree generated from an input program, as seen in figure \ref{fig:ANTLR-parse-tree}, which represents  the parse tree of a small program written in Fun. As previously discussed, a parse tree is much harder to interpret than its AST counterpart, a potential version of which is illustrated in figure \ref{fig:ANTLR-syntax-tree}; unfortunately, ANTLR currently provides not out of the box support to build trees in this way. Whilst this tool may serve to provide a preliminary understanding of how a parse tree may be formed for a particular program, we can immediately observe how large and difficult to read figure \ref{fig:ANTLR-parse-tree} is, in comparison to figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which serve only to obfuscate the diagram. The tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge. Most of all, this tool provides nothing more than a simple diagram, it gives no indication of how this tree would be traversed during compilation, nor does it reveal any details of the internal workings of each node.
 \begin{figure}[h]
