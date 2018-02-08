@@ -61,7 +61,7 @@ Despite the animation of compilers being a considerably novel area of research a
 The remainder of this chapter considers research done which attempts to evaluate the effectiveness of algorithm animation from an educational perspective. We then explore and critique some modern examples of web-based algorithm animation tools. Finally, we discuss how we might use the results of prior evaluations along with our analysis of existing products to influence our design of a compiler animator.
 
 \section{Effectiveness of Algorithm Animation}
-One of the earliest algorithm animation systems was developed by Bentley and Kernighan in 1987\cite{BentleyKernighan}. The system enabled users to annotate sections of an algorithm which were later processed by an interpreter to create a sequence of still pictures, an example of which is shown in Figure \ref{fig:bentley-kernighan}. In the very first line of the system's user manual Bentley and Kernighan confidently state: ``\textit{Dynamic displays are better than static displays for giving insight into the behaviour of dynamic systems}''. This belief of Bentley and Kernighan is one that many of us would intuitively believe. The intuition being that when attempting to understand any multi-step process, an animation which displays each step of that process is more effective than a single static diagram, or a section of explanatory text. However, it is important to consider whether this belief has statistical backing or whether it is simply an assumption. Certainly, in 1987 algorithm animation itself was still in its infancy and no studies had been carried out that provided the empirical evidence to support this intuition. 
+One of the earliest algorithm animation systems was developed by Bentley and Kernighan in 1987\cite{BentleyKernighan}. The system enabled users to annotate sections of an algorithm which were later processed by an interpreter to create a sequence of still pictures, an example of which is shown in Figure \ref{fig:bentley-kernighan}. In the very first line of the system's user manual Bentley and Kernighan confidently state, ``\textit{Dynamic displays are better than static displays for giving insight into the behaviour of dynamic systems}''. This belief of Bentley and Kernighan is one that many of us would intuitively believe. The intuition being that when attempting to understand any multi-step process, an animation which displays each step of that process is more effective than a single static diagram, or a section of explanatory text. However, it is important to consider whether this belief has statistical backing or whether it is simply an assumption. Certainly, in 1987 algorithm animation itself was still in its infancy and no studies had been carried out that provided the empirical evidence to support this intuition. 
 
 \begin{figure}[h]
 \centering
@@ -111,7 +111,7 @@ Despite studies showing that algorithm animation is not as effective as we might
 
 When considering the previous guidelines proposed by Stasko, Badre and Lewis and how they might affect our application, it appears the system should:
 \begin{itemize}
-\item Provide supplementary textual explanations that rationalise and justify the logic of compiler as it visits each node in the AST.
+\item Provide supplementary textual explanations that rationalise and justify the logic of the compiler as it visits each node in the AST.
 \item Include rewind-replay functionality that allows the compilation animation to be restarted, or played step-wise, backwards and forwards.
 \item Ensure users can create the animation themselves by allowing any arbitrary Fun program as input to the compiler.
 \end{itemize}
@@ -253,6 +253,18 @@ In contrast to functional requirements that detail specific behaviours or a syst
 \item The application must be responsive, at least to a tablet level.
 \item The application must ensure no malicious code can be executed.
 \end{itemize}
+
+\chapter{Design}
+Placeholder.
+
+\section{Overview}
+Ultimately, use of the FunCompiler requires only two main user actions. One is inputting a Fun program, the other is controlling the playback of the resulting compiler animation. The rest of the application is dedicated to displaying visualisations, animations and analytical information. Given the concise functionality of the FunCompiler, it was deemed unnecessary to provide a large number of individual web-pages. Additionally, due to the nature of the application and the inherent link between the input, the animation, and the analytics; it would seem almost necessary that these details are available within the same view. 
+
+probs need a bit here to say i therefore put everything in one view.
+
+Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
+
+\section{Application Interface}
 
 %%%%%%%%%%%%%%%%
 %              %
