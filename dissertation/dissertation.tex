@@ -254,14 +254,17 @@ In contrast to functional requirements that detail specific behaviours or a syst
 \item The application must ensure no malicious code can be executed.
 \end{itemize}
 
+% Put overview here maybe just to conclude what the user can do on the site
+
 \chapter{Design}
 Placeholder.
 
-\section{Overview}
-Ultimately, use of the FunCompiler requires only two main user actions. One is inputting a Fun program, the other is controlling the playback of the resulting compiler animation. The rest of the application is dedicated to displaying visualisations, animations and analytical information. Given the concise functionality of the FunCompiler, it was deemed unnecessary to provide a large number of individual web-pages. Additionally, due to the nature of the application and the inherent link between the input, the animation, and the analytics; it would seem almost necessary that these details are available within the same view. 
+\section{Design Strategy}
+Ultimately, use of the FunCompiler requires only two main user actions. One is inputting a Fun program, the other is controlling the playback of the resulting animation. The rest of the application is dedicated to presenting the user with visualisations of the generated ASTs, animating the traversals of these ASTs, and augmenting each step of the animations with analytical information.
 
-probs need a bit here to say i therefore put everything in one view.
+Given the educational nature of the FunCompiler, it is important that when a user, for example, generates an AST, that they can simultaneously view the input that formed that AST. Similarly, it is clear that when users are looking at the analytical information displayed by the animation, that they can also see the corresponding AST and the particular step of the animation. Due to this inherent link between the input, the animation, and the analytics; it was immediately decided that the presiding design philosophy when constructing the user interface would be to ensure that these three components were displayed within the same view.
 
+%Put in implementation maybe
 Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
 
 \section{Application Interface}
