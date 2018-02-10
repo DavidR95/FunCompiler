@@ -66,7 +66,7 @@ The rest of this report is organised as follows. Chapter 2...
 \chapter{Background \& Related Work}
 Despite the animation of compilers being a considerably novel area of research and development, attempts to visualise computing algorithms date as far back as the 1980s \cite{BentleyKernighan}. The vast majority of work in the field up to now has been focused on the animation of complex, yet small and well-defined algorithms, most notably sorting algorithms or tree traversals.
 
-Indeed, compilation is certainly not small nor particularly well-defined (in that the behaviour of the compiler can vary significantly depending on the implementation); however, many aspects of typical algorithm animations (such as tree traversals) can be found in abundance within a potential compiler animation. Ultimately, compilation itself is just an algorithm,  and consequently it would seem logical to assume that any lessons learnt during the development and evaluation of existing algorithm animation software should be equally applicable to the area of compiler animation. 
+Indeed, compilation is certainly not small nor particularly well-defined (in that the behaviour of the compiler can vary significantly depending on the implementation); however, many aspects of typical algorithm animations (such as tree traversals) can be found in abundance within a potential compiler animation. Ultimately, compilation itself is just an algorithm,  and it would seem logical to assume that any lessons learnt during the development and evaluation of existing algorithm animation software should be equally applicable to the area of compiler animation. 
 
 The remainder of this chapter considers research done which attempts to evaluate the effectiveness of algorithm animation from an educational perspective. We then explore and critique some modern examples of web-based algorithm animation tools. Finally, we discuss how we might use the results of prior evaluations along with our analysis of existing products to influence our design of a compiler animator.
 
@@ -93,7 +93,7 @@ Stasko, Badre and Lewis also reveal a list of guidelines they believe to be effe
 These guidelines suggest that algorithm animations require accompanying messages that explain the logic of the algorithm at each step. Also, the animation should be interactive in order to engage students in ``active learning'' over ``passive learning''. This interactivity would include intricate controls over the playback of the animation and the ability to modify the input of the algorithm.
 
 \section{Existing Products}
-Currently, very few existing tools provide even static illustrations of compilation components (such as syntax trees) and virtually no products exist that create animations of the compilation process. There are however, an abundance of web applications that animate more straightforward algorithms, such as sorting or searching algorithms. 
+Currently, very few existing tools provide even static illustrations of compilation components (such as syntax trees) and virtually no tools exist that create animations of the compilation process as a whole. There are however, an abundance of web applications that animate more straightforward algorithms, such as sorting or searching algorithms. 
 
 One of the most popular and well implemented is VisuAlgo \cite{visualgo}. VisuAlgo provides an interface for animating various sorting algorithms, including bubble sort, selection sort, etc. As shown in Figure \ref{fig:visualgo}, Visualgo implements many of the guidelines we previously listed. It provides impressive playback controls, the ability to choose the input of the algorithm and displays in-depth descriptions of the current step in the algorithm, in both plain English and pseudo-code. 
 
@@ -128,9 +128,9 @@ When considering the previous guidelines proposed by Stasko, Badre and Lewis and
 \item Ensure users can create the animation themselves by allowing them to modify the input to the algorithm.
 \end{itemize}
 
-After analysing some examples of current products that are available in the area of algorithm animation, such as VisuAlgo and the University of San Francisco's Dijkstra's algorithm animator, it seems there is a trade-off between complexity and usability. In order to animate a considerably more complex algorithm, the University of San Francisco sacrifices much of the visual support and playback control that Visualgo is able to provide in order to animate a more convoluted algorithm. 
+After analysing some examples of current products that are available in the area of algorithm animation, such as VisuAlgo and the University of San Francisco's Dijkstra's algorithm animator, it seems there is a trade-off between complexity and usability. In order to animate a considerably more complex algorithm, the University of San Francisco sacrifices much of the visual support and playback control that VisuAlgo is able to provide. 
 
-However, a tool based on compiler animation would need to include both aspects of complexity and usability. The tool would implement an algorithm that is certainly more complex and volatile than even Dijkstra's algorithm, but in order to be educationally effective, also needs to provide the display of highly input-dependent analytics and implement the usability and interactivity features such as playback control that are embedded within the guidelines of previous studies.
+However, a tool based on compiler animation would need to include both aspects of complexity and usability. The tool would implement an algorithm that is certainly more complex and volatile than even Dijkstra's algorithm, but in order to be educationally effective, also needs to provide the display of highly input-dependent analytics and implement the usability and interactivity features such as playback control that are embedded within the guidelines of the previous studies.
 
 \chapter{The Fun Programming Language \& Compilation Theory}
 This chapter aims to briefly introduce the reader to the main tools and concepts used throughout this paper. This includes a small overview of the Fun programming language, syntax trees and the various phases of compilation.
@@ -180,7 +180,7 @@ If either syntactic analysis or contextual analysis encounters an error (as spec
 \subsection{Syntactic Analysis}
 During syntactic analysis the source program is inspected to verify whether it is well-formed in accordance to the language's syntax. Syntactic analysis can be broken down into \textit{lexing} and \textit{parsing}.
 
-Lexing is the process of breaking down an input program into a stream of tokens. Parsing converts this stream into an AST using a parsing algorithm. The parsing algorithm used in the Fun compiler is recursive-descent parsing.
+Lexing is the process of breaking down an input program into a stream of tokens. Parsing converts this stream into an AST using a parsing algorithm.
 
 \subsection{Contextual Analysis}
 Upon successful completion of syntactic analysis, the AST is traversed or ``walked'' by the contextual analyser. The contextual analyser will check whether the program represented by the AST conforms to the source language's scope and type rules. Contextual analysis can be broken down into \textit{scope checking} and \textit{type checking}.
@@ -225,7 +225,7 @@ After conducting the interviews and the background research, a set of user stori
 \end{table}
 
 \section{Functional Requirements}
-After creating user stories and using any previous research, a formal list of functional requirements were created. Functional requirements are intended to capture a specific function of a system:
+After creating user stories and using any previous research, a formal list of functional requirements was created. Functional requirements are intended to capture a specific function of a system:
 
 \begin{table}[]
 \centering
@@ -268,11 +268,11 @@ In contrast to functional requirements that detail specific behaviours or a syst
 \end{table}
 
 \section{Analysis}
-In overview, a typical workflow for the FunCompiler might look as follows. Firstly, the user arrives at the website and should be able to view the specification of Fun language before needing to use the animator. Then, the user can type a Fun program into some kind of code editor and select to animate either contextual analysis or code generation. At this point, if there were any syntactic or contextual errors, they would be reported to the user using the semantics as defined above.
+In overview, a typical workflow for the FunCompiler might look as follows. Firstly, the user arrives at the website and should be able to view the specification of Fun language before needing to use the animator. Then, the user can type a Fun program into some kind of code editor and choose to animate either contextual analysis or code generation. At this point, if there were any syntactic or contextual errors, they would be reported to the user using the semantics as defined above.
 
 After selecting one of the two phases, the AST that represents the input program is displayed on screen along with playback buttons (play, pause, forwards, backwards). As the animation progresses, node within the AST are highlighted to symbolise the current progress of the compiler. As each node is highlighted, detailed information as described above is simultaneously displayed elsewhere on screen. The user is of course free to pause the animation to review the current information displayed, or rewind to review. At any point the user may modify the current input Fun program and select either the same or a different compilation phase, which will halt any current animations.
 
-This potential workflow of the FunCompiler is enough to meet all functional requirements. The non-functional requirements cover issues that are strictly more technical, and the solutions to which will be discussed during the system design and the physical implementation.
+This potential workflow of the FunCompiler is enough to meet all functional requirements. The non-functional requirements cover issues that are strictly more technical, the solutions to which will be discussed during the system design and the physical implementation.
 
 \chapter{Design}
 Placeholder.
