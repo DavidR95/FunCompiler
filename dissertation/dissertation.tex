@@ -220,8 +220,7 @@ After conducting the interviews and the background research, a set of user stori
 \textbf{6} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to see textual descriptions that explain what \\ the compiler is doing at each stage of the animation, so that I can \\ better understand the logic of the compiler.\end{tabular} \\\\
 \textbf{7} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to see any supplementary information or feedback \\ (including address/type tables, code templates and generated \\ object code), so that I get all the information available in order to help \\ further my understanding.\end{tabular} \\\\
 \textbf{8} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to replay an animation, so that I can review \\ any details I missed/misunderstood.\end{tabular} \\\\
-\textbf{9} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to step through the animation at my own \\ pace, so I can more easily understand what is happening during the animation.\end{tabular} \\\\ 
-\textbf{10} & \begin{tabular}[c]{@{}l@{}}As a user, I want the option to select a pre-defined Fun program from a list \\ of examples, so that I can better understand the  possible types of Fun program.\end{tabular} \\ \bottomrule \\
+\textbf{9} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to step through the animation at my own \\ pace, so I can more easily understand what is happening during the animation.\end{tabular} \\ \bottomrule \\
 \end{tabular}
 \end{table}
 
@@ -248,8 +247,7 @@ After creating user stories and using any previous research, a formal list of fu
 \textbf{13} & \begin{tabular}[c]{@{}l@{}}During code generation, display the emitted object code in its current state during\\ the compilation.\end{tabular} \\\\
 \textbf{14} & \begin{tabular}[c]{@{}l@{}}If a user inputs a syntactically invalid Fun program, prevent the animation and\\ report the errors to the user.\end{tabular} \\\\
 \textbf{15} & \begin{tabular}[c]{@{}l@{}}If a user inputs a contextually invalid Fun program, allow animation of the\\ contextual analysis phase but disallow animation of the code generation \\ phase and report the errors to the user.\end{tabular} \\\\
-\textbf{16} & \begin{tabular}[c]{@{}l@{}}Make the full specification of the Fun language available within the web\\ application.\end{tabular} \\\\
-\textbf{17} & \begin{tabular}[c]{@{}l@{}}Allow users to select an example Fun program from a list, which will be \\ automatically inserted into the input area.\end{tabular} \\ \bottomrule
+\textbf{16} & \begin{tabular}[c]{@{}l@{}}Make the full specification of the Fun language available within the web\\ application.\end{tabular} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -277,42 +275,90 @@ After selecting one of the two phases, the AST that represents the input program
 This potential workflow of the FunCompiler is enough to meet all functional requirements. The non-functional requirements cover issues that are strictly more technical, the solutions to which will be discussed during the system design and the physical implementation.
 
 \chapter{Design}
-This chapter covers the aesthetic design process of the FunCompiler. We start by discussing the main design goals we wish to achieve. Then, we illustrate and describe the individual components of the interface. Following this, we give a more complete design and use a ``storyboard'' to demonstrate the workflow of the website. Finally, we discuss how we might design the application to be responsive on smaller screens.
-
-\section{Design Strategy}
-To recap, the FunCompiler allows the input of a Fun program, then generates an animation (equipped with playback controls) and finally augments this animation with supplementary analytical information pertaining to the compilation being animated. We can group these aspects into three sections: the input, the animation and the analytics. 
-
-Given the educational nature of the FunCompiler, it is important that students are able to cross-reference between these three sections in order to evaluate the relationships between them. For example, when an AST is displayed during an animation, the student clearly needs to retain access to the corresponding input program in order to reason about the structure of the AST. 
-
-Due to this inherent link between the input, the animation, and the analytics; it was determined that the core design philosophy of the FunCompiler's user interface would be to ensure that each of these components is displayed simultaneously within the same view (web-page).
+This chapter covers the aesthetic design process of the FunCompiler. We develop simple low-fidelity wireframe designs of the individual components of the user interface and consider how these different components might satisfy our functional requirements. We then look at a more complete design of the user interface and use ``storyboards'' in an attempt to illustrate an extended version of the workflow we saw in Section 4.5. Finally, in order to make the website compatible across different screen sizes, we consider a responsive design of the application.
 
 %Put in implementation maybe
 %Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
 
-\section{Interface Components}
-This section 
+\section{User Interface}
+This section analyses the functional requirements of the FunCompiler and develops a list of potential interface components. Each component includes a wireframe design and an explanation of its purpose. We also consider how each component may realise one or many of the functional requirements (FRs).
 
-Given everything discussed so far, we can attempt to create a list of the individual components that will likely be required within the user interface of the final application:
-\begin{itemize}
-\item A section to display the fun specification.
-\item A code editor.
-\item Buttons to select contextual analysis or code generation.
-\item A section to display the animation.
-\item A set of playback controls.
-\item A section to display explanatory messages during the animation.
-\item A section to display type/address tables.
-\item A section to display code templates (code generation only).
-\item A section to display object code (code generation only).
-\item A navigation bar.
-\end{itemize}
+\subsection{Fun Specification}
+Since most users of the FunCompiler will be students enrolled in the Programming Languages course at Glasgow University, they will likely already have access to the full specification of the Fun language. However, embedding the Fun specification within the web application is valuable for two reasons. One, it is simply a matter of convenience, students will be able to find all the resources they need in one place. Two, inclusion of the specification helps not preclude the possibility that users could be non-students, as they would not have access to the specification otherwise. 
 
-\subsection{The Fun Specification}
 \begin{figure}[h]
 \centering
-\includegraphics[height=7cm,width=11cm]{images/specification-wireframe.png}
-\caption{Wireframe }
-\label{fig:bentley-kernighan}	
+\includegraphics[height=6.5cm,width=10cm]{images/specification-wireframe.png}
+\caption{Fun Specification Wireframe}
+\label{fig:fun-specification-wireframe}	
 \end{figure}
+
+As seen in Figure \ref{fig:fun-specification-wireframe}, the specification consists of seven sections. Tabs along the top allow the user to navigate between each section. Each section contains varying amounts of information to explain each concept (FR \textbf{16}).
+
+\pagebreak
+\subsection{Code Editor}
+The code editor will be the area where the user inputs a Fun program. Ideally, the code editor should follow some semantics of standard programmatic text editors, including syntax highlighting and auto-indentation. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[height=8cm,width=3cm]{images/code-editor-wireframe.png}
+\caption{Code Editor Wireframe}
+\label{fig:code-editor-wireframe}	
+\end{figure}
+
+Figure \ref{fig:code-editor-wireframe} shows the code editor with some example code inserted (FR \textbf{1}). Also notice that we have attached ``Contextual Analysis'' and ``Code Generation'' buttons to the bottom of the code editor. These buttons will allow the user to submit the input text and animate the respective phase (FR \textbf{2}).
+
+\subsection{AST}
+As previously stated, the animation will be performed over an AST. The AST will be displayed in a conventional tree format, where the animator will highlight each node in the AST, corresponding to the progress of the compiler.
+
+\begin{figure}[h]
+\centering
+\includegraphics[height=6.5cm,width=10cm]{images/animation-active-wireframe.png}
+\caption{AST Wireframe}
+\label{fig:animation-active-wireframe}	
+\end{figure}
+
+Figure \ref{fig:animation-active-wireframe} shows the structure of an AST for the Fun program used in the previous code editor wireframe. The highlighted ``PROG'' node symbolises the traversal of the compiler (FR \textbf{3, 5}).
+
+\subsection{Playback Controls}
+Users require access to controls that play, pause and move through the animation step-wise, backwards or forwards. 
+
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[]{images/playback-play-wireframe.png}
+		\caption{Play}
+		\label{fig:playback-play-wireframe}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[]{images/playback-pause-wireframe.png}
+		\caption{Pause}
+		\label{fig:playback-pause-wireframe}
+	\end{subfigure}
+	\caption{Playback Controls Wireframe}\label{fig:playback-wireframe}	
+\end{figure}
+
+Figure \ref{fig:playback-wireframe} shows two sets of playback controls (FR \textbf{4}). Intuitively, when the play button is pressed, it should be replaced with the pause button and vice versa. If the user pressed the play button, the animator will highlight the next node in the sequence at a regular time intervals (for example, every second) (FR \textbf{6}). If the user presses the pause button, the currently highlighted node should remain highlighted (FR \textbf{7}). If the user presses the forwards/backwards buttons, this will highlight the next/previous node in the sequence, one node per button press (FR \textbf{8, 9}). If the animation is currently playing when a forwards or backwards button is pressed, it should be implicitly paused.
+
+\subsection{Analytics}
+As the animation progresses, analytical information relevant to the current stage of the traversal should be displayed. The information displayed differs slightly depending on whether the user is animating contextual analysis or code generation.  
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[]{images/analytics-ca-wireframe.png}
+		\caption{Contextual Analysis}
+		\label{fig:analytics-ca-wireframe}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[]{images/analytics-cg-wireframe.png}
+		\caption{Code Generation}
+		\label{fig:analytics-cg-wireframe}
+	\end{subfigure}
+	\caption{Analytics Wireframe}\label{fig:analytics-wireframe}	
+\end{figure}
+
 
 
 %%%%%%%%%%%%%%%%
