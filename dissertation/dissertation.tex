@@ -220,7 +220,8 @@ After conducting the interviews and the background research, a set of user stori
 \textbf{6} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to see textual descriptions that explain what \\ the compiler is doing at each stage of the animation, so that I can \\ better understand the logic of the compiler.\end{tabular} \\\\
 \textbf{7} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to see any supplementary information or feedback \\ (including address/type tables, code templates and generated \\ object code), so that I get all the information available in order to help \\ further my understanding.\end{tabular} \\\\
 \textbf{8} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to replay an animation, so that I can review \\ any details I missed/misunderstood.\end{tabular} \\\\
-\textbf{9} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to step through the animation at my own \\ pace, so I can more easily understand what is happening during the animation.\end{tabular} \\ \bottomrule \\
+\textbf{9} & \begin{tabular}[c]{@{}l@{}}As a user, I want to be able to step through the animation at my own \\ pace, so I can more easily understand what is happening during the animation.\end{tabular} \\\\ 
+\textbf{10} & \begin{tabular}[c]{@{}l@{}}As a user, I want the option to select a pre-defined Fun program from a list \\ of examples, so that I can better understand the  possible types of Fun program.\end{tabular} \\ \bottomrule \\
 \end{tabular}
 \end{table}
 
@@ -247,7 +248,8 @@ After creating user stories and using any previous research, a formal list of fu
 \textbf{13} & \begin{tabular}[c]{@{}l@{}}During code generation, display the emitted object code in its current state during\\ the compilation.\end{tabular} \\\\
 \textbf{14} & \begin{tabular}[c]{@{}l@{}}If a user inputs a syntactically invalid Fun program, prevent the animation and\\ report the errors to the user.\end{tabular} \\\\
 \textbf{15} & \begin{tabular}[c]{@{}l@{}}If a user inputs a contextually invalid Fun program, allow animation of the\\ contextual analysis phase but disallow animation of the code generation \\ phase and report the errors to the user.\end{tabular} \\\\
-\textbf{16} & \begin{tabular}[c]{@{}l@{}}Make the full specification of the Fun language available within the web\\ application.\end{tabular} \\ \bottomrule
+\textbf{16} & \begin{tabular}[c]{@{}l@{}}Make the full specification of the Fun language available within the web\\ application.\end{tabular} \\\\
+\textbf{17} & \begin{tabular}[c]{@{}l@{}}Allow users to select an example Fun program from a list, which will be \\ automatically inserted into the input area.\end{tabular} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -275,17 +277,43 @@ After selecting one of the two phases, the AST that represents the input program
 This potential workflow of the FunCompiler is enough to meet all functional requirements. The non-functional requirements cover issues that are strictly more technical, the solutions to which will be discussed during the system design and the physical implementation.
 
 \chapter{Design}
-Placeholder.
+This chapter covers the aesthetic design process of the FunCompiler. We start by discussing the main design goals we wish to achieve. Then, we illustrate and describe the individual components of the interface. Following this, we give a more complete design and use a ``storyboard'' to demonstrate the workflow of the website. Finally, we discuss how we might design the application to be responsive on smaller screens.
 
 \section{Design Strategy}
-Ultimately, use of the FunCompiler requires only two main user actions. One is inputting a Fun program, the other is controlling the playback of the resulting animation. The rest of the application is dedicated to presenting the user with visualisations of the generated ASTs, animating the traversals of these ASTs, and augmenting each step of the animations with analytical information.
+To recap, the FunCompiler allows the input of a Fun program, then generates an animation (equipped with playback controls) and finally augments this animation with supplementary analytical information pertaining to the compilation being animated. We can group these aspects into three sections: the input, the animation and the analytics. 
 
-Given the educational nature of the FunCompiler, it is important that when a user, for example, generates an AST, that they can simultaneously view the input that formed that AST. Similarly, it is clear that when users are looking at the analytical information displayed by the animation, that they can also see the corresponding AST and the particular step of the animation. Due to this inherent link between the input, the animation, and the analytics; it was immediately decided that the presiding design philosophy when constructing the user interface would be to ensure that these three components were displayed within the same view.
+Given the educational nature of the FunCompiler, it is important that students are able to cross-reference between these three sections in order to evaluate the relationships between them. For example, when an AST is displayed during an animation, the student clearly needs to retain access to the corresponding input program in order to reason about the structure of the AST. 
+
+Due to this inherent link between the input, the animation, and the analytics; it was determined that the core design philosophy of the FunCompiler's user interface would be to ensure that each of these components is displayed simultaneously within the same view (web-page).
 
 %Put in implementation maybe
-Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
+%Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
 
-\section{Application Interface}
+\section{Interface Components}
+This section 
+
+Given everything discussed so far, we can attempt to create a list of the individual components that will likely be required within the user interface of the final application:
+\begin{itemize}
+\item A section to display the fun specification.
+\item A code editor.
+\item Buttons to select contextual analysis or code generation.
+\item A section to display the animation.
+\item A set of playback controls.
+\item A section to display explanatory messages during the animation.
+\item A section to display type/address tables.
+\item A section to display code templates (code generation only).
+\item A section to display object code (code generation only).
+\item A navigation bar.
+\end{itemize}
+
+\subsection{The Fun Specification}
+\begin{figure}[h]
+\centering
+\includegraphics[height=7cm,width=11cm]{images/specification-wireframe.png}
+\caption{Wireframe }
+\label{fig:bentley-kernighan}	
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%
 %              %
