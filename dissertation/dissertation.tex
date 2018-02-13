@@ -47,15 +47,16 @@ Whilst using a slideshow is currently the only practical way to demonstrate thes
 \section{Aims}
 This project aims to alleviate or solve many of the issues currently faced in attempts to create effective visualisations of various compilation concepts. The project will provide a web application in which users will be able to animate the \textit{\textbf{contextual analysis}} and \textit{\textbf{code generation}} phases of the \textit{\textbf{Fun}} compiler. The animation will incorporate a representation of an \textit{\textbf{abstract syntax tree}} (AST). 
 
-Fun is a simple educational programming language. The compiler we will use within the web application will be the Fun compiler. An AST is a data structure that represents the hierarchical structure of an input program. Contextual analysis and code generation are simply two different stages of compilation which aim to verify certain parts of the input program and construct an output program. The behaviour of these stages is expressed by traversals over an AST. Chapter 3 introduces these concepts in considerably more detail.
+Contextual analysis and code generation are two different stages of compilation which aim to validate certain aspects of the compiler's input and construct some appropriate output. The behaviour of these stages is expressed by traversals over an AST. An AST is a data structure that represents the hierarchical syntactic structure of a section of code. Fun is a simple, educational programming language equipped with a compiler. Chapter 3 introduces all of these concepts in considerably more detail. 
 
-Within the application, the mechanics of each phase will be illustrated by ``jumps'' over the AST, demonstrating the traversal that is internally taking place within the compiler. The application should:
+The application will allows users to supply programs written in the Fun language as input to the Fun compiler. The application will then animate the contextual analysis or code generation phase of the compiler. The mechanics of each phase will be illustrated by ``jumps'' over the input program's AST, demonstrating the traversal that is internally taking place within the compiler. In general, the application should:
 \begin{itemize}
-\item Allow a user to input and submit any syntactically valid program written in the Fun language.
+\item Allow a user to input any syntactically valid program written in the Fun language.
 \item Visualise the contextual analysis phase of a program's compilation. 
 \item Visualise the code generation phase of a program's compilation.
-\item Display any relevant details during the compilation, including: address/type tables, code templates, object code and explanatory messages.
-\item Allow the animation to be played, paused and moved step-wise, backwards and forwards.
+\item Augment the animation with explanatory messages that provide insight into the logic of the compiler.
+\item Augment the animation with any relevant auxiliary data structures.
+\item Allow the animation to be played, paused or stepped through (backwards and forwards).
 \end{itemize}
 
 This application will act as a teaching tool, equally useful to educators and students alike. Students are free to use the tool outside of school/university hours in order to further their own learning. Additionally, since any arbitrary Fun program can be compiled, the restriction to educators of showing only pre-determined examples is removed. Finally, the level of automated analysis attainable from the application is considerably greater than anything currently possible by present techniques. It will hopefully provide a better means for those looking to learn but also remove some of the struggle taken on by educators in teaching the topic.
