@@ -40,7 +40,7 @@ Compilation theory is a foundational notion of computer science, upon which a la
 \section{Motivation}
 Compilation can often be a challenging field to teach effectively. Many components of compilation involve the generation and traversal of complex, abstract data structures. Abstract, conceptual notions such as these are notoriously difficult for students to understand. We desire to find a solution which provides concrete representations of these abstract ideas.
 
-In response to this problem, a common approach employed by educators is to attempt to visualise the data structures and the traversals over them. The educator usually does this by creating some sort of “slideshow”, using an application such as Microsoft PowerPoint. The slides contain a pictorial representation of the data structure in question, and each slide demonstrates a distinct step of the traversal over that data structure. For example, an educator seeking to teach students about a depth-first traversal over a binary tree might do something similar to Figure \ref{fig:slideshow}. In Figure \ref{fig:slideshow} we see that each consecutive slide illustrates the next step of the traversal by highlighting the corresponding node.
+In response to this problem, a common approach employed by educators is to attempt to visualise the data structures and the traversals over them. The educator usually does this by creating some sort of “slideshow”, using an application such as Microsoft PowerPoint. The slides contain a pictorial representation of the data structure in question, and each slide demonstrates a distinct step of the traversal over that data structure. For example, an educator seeking to teach students about a depth-first traversal over a binary tree might design their slideshow similarly to Figure \ref{fig:slideshow}. In Figure \ref{fig:slideshow} we see that each consecutive slide illustrates the next step of the traversal by highlighting the corresponding node.
 
 \begin{figure}
 \centering
@@ -151,25 +151,28 @@ The Fun programming language has a \textit{\textbf{flat block structure}}. A fla
 Whilst Fun may differ significantly to other programming languages, particularly in its complexity, it is not the case that the concepts illustrated are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts can be explained in an easily understandable format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
 \section{Syntax Trees}
-A syntax tree is simply a hierarchical representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the concrete syntax tree (often called a parse tree) and the abstract syntax tree (AST). A parse tree contains an exact representation of the input, retaining all information, including white-space, brackets, etc. Conversely, an abstract syntax tree is a smaller, more concise representation of the parse tree. An AST usually ignores words and characters such as white-space, brackets and other redundant details which are derivable from the shape of the tree. 
+During compilation, a source program is parsed into a \textit{\textbf{syntax tree}}. A syntax tree is a hierarchical syntactic representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the \textit{\textbf{parse tree}} (sometimes called a concrete syntax tree) and the abstract syntax tree (AST). Translating a source program into a syntax tree means the compiler can more easily reason about the underlying structure and grammatical nature of the program, which enables later stages of compilation.
 
-During compilation, the compiler will traverse one or sometimes both types of tree, depending on the language implementation. The compiler usually visits each node in the tree in a ``depth-first'' manner, perhaps with some small variations. These traversals constitute the contextual analysis and code generation phases of a compiler, which validate certain aspects of the input and produce the output of the compilation. 
-
-From a visual point of view, ASTs are considerably easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is purely semantic and does not affect how the tree is evaluated. Consequently, when attempting to demonstrate the data structures built during compilation to students, it is much more productive to show an AST, as opposed to a parse tree. Figure \ref{fig:parse-abstract-tree} illustrates the visual differences between a parse tree and an AST of the same hypothetical Fun program. We can immediately observe how large and difficult to read Figure \ref{fig:ANTLR-parse-tree} is, in comparison to Figure \ref{fig:ANTLR-syntax-tree}. There are many unnecessary tokens, such as EOFs, brackets and colons which obfuscate the diagram. The parse tree also contains many paths consisting of multiple unary branch nodes, which could easily be collapsed into a single edge. Beyond visualisation, it's worth noting that there can  also be large computational advantages of using an AST within the compiler's implementation as they are usually much easier to manipulate and require less memory; however, the compiler of the Fun language does not happen to take advantage of this. 
+A parse tree retains all information about a program, including the information that may appear to be unnecessary, such as white-space and parentheses. Conversely, an abstract syntax tree is a smaller, more concise adaptation of the parse tree. An AST usually ignores redundant details which are derivable from the shape of the tree. Figure \ref{fig:parse-abstract-tree} demonstrates the visual differences between a parse tree and an AST of the same hypothetical program written in the Fun language. 
 
 \begin{figure}[h]
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[height=5.5cm,width=\linewidth]{images/2-2a.png}
-		\caption{Parse Tree/Concrete Syntax Tree}
+		\caption{Parse tree}
 		\label{fig:ANTLR-parse-tree}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[height=5.5cm,width=\linewidth]{images/2-2b.png}
-		\caption{Abstract Syntax Tree}
+		\caption{Abstract syntax tree}
 		\label{fig:ANTLR-syntax-tree}
 	\end{subfigure}
-	\caption{The ANTLR generated parse tree and the theoretical AST of the same Fun program}\label{fig:parse-abstract-tree}	
+	\caption{Parse tree and AST of the same hypothetical Fun program}\label{fig:parse-abstract-tree}	
 \end{figure}
+
+At the initial stages of compilation, the compiler will attempt to translate the input program into either a parse tree or an AST. The generated tree is then traversed during contextual analysis and code generation, which is described in detail in Section 3.3. How the compiler chooses to visit each node in the tree during the traversal is language-dependent, but the semantics are typically very similar to that of a depth-first traversal. 
+
+Since ASTs are usually much smaller and less crowded than their parse tree counterparts, they are often far easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is usually semantic and does not affect how the syntax tree would be evaluated. Consequently, when trying to illustrate syntax tree concepts to students from an educational perspective, we generally prefer to create visualisations for ASTs over parse trees.
+
 
 \section{Compilation Phases}
 Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
