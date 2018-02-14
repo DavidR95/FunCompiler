@@ -151,7 +151,7 @@ The Fun programming language has a \textit{\textbf{flat block structure}}. A fla
 Whilst Fun may differ significantly to other programming languages, particularly in its complexity, it is not the case that the concepts illustrated are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts can be explained in an easily understandable format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
 \section{Syntax Trees}
-During compilation, a source program is parsed into a \textit{\textbf{syntax tree}}. A syntax tree is a hierarchical syntactic representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the \textit{\textbf{parse tree}} (sometimes called a concrete syntax tree) and the abstract syntax tree (AST). Translating a source program into a syntax tree means the compiler can more easily reason about the underlying structure and grammatical nature of the program, which enables later stages of compilation.
+During compilation, a source program is parsed into a \textit{\textbf{syntax tree}}. A syntax tree is a hierarchical syntactic representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the \textit{\textbf{parse tree}} (sometimes called a concrete syntax tree) and the abstract syntax tree (AST). Translating a source program into a syntax tree means the compiler can more easily reason about the underlying structure and grammatical nature of the program, which enables the later stages of compilation.
 
 A parse tree retains all information about a program, including the information that may appear to be unnecessary, such as white-space and parentheses. Conversely, an abstract syntax tree is a smaller, more concise adaptation of the parse tree. An AST usually ignores redundant details which are derivable from the shape of the tree. Figure \ref{fig:parse-abstract-tree} demonstrates the visual differences between a parse tree and an AST of the same hypothetical program written in the Fun language. 
 
@@ -171,21 +171,21 @@ A parse tree retains all information about a program, including the information 
 
 At the initial stages of compilation, the compiler will attempt to translate the input program into either a parse tree or an AST. The generated tree is then traversed during contextual analysis and code generation, which is described in detail in Section 3.3. How the compiler chooses to visit each node in the tree during the traversal is language-dependent, but the semantics are typically very similar to that of a depth-first traversal. 
 
-Since ASTs are usually much smaller and less crowded than their parse tree counterparts, they are often far easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is usually semantic and does not affect how the syntax tree would be evaluated. Consequently, when trying to illustrate syntax tree concepts to students from an educational perspective, we generally prefer to create visualisations for ASTs over parse trees.
+Since ASTs are usually much smaller and less crowded than their parse tree counterparts, they are often far easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is usually semantic and does not affect how the syntax tree would be evaluated. Consequently, when trying to illustrate syntax tree concepts to students from an educational perspective, we generally prefer to use visualisations of ASTs over parse trees.
 
 
 \section{Compilation Phases}
-Compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
+In general, compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
 \begin{enumerate}[label=\alph*)]
 \item \textit {Syntactic Analysis}
 \item \textit {Contextual Analysis}
 \item \textit {Code Generation}
 \end{enumerate}
-If either syntactic analysis or contextual analysis encounters an error (as specified by the language) during its execution, that particular phase completes, the remainder of the compilation process is halted and the errors are reported to the programmer. See Figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
+If either syntactic or contextual analysis encounters an error (as determined by the language's specification) during its execution, the phase completes, but the remainder of the compilation process is halted and the errors are reported to the programmer. Note that the following descriptions assume the compiler is employing an AST representation of a syntax tree. See Figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
 
 \begin{figure}
 \centering
-\includegraphics[height=2.5cm,width=13cm]{images/3-2a.png}
+\includegraphics[scale=0.5]{images/3-2a.png}
 \caption{Compilation Pipeline}
 \label{fig:compilation-pipeline}	
 \end{figure}
@@ -197,7 +197,7 @@ Lexing is the process of breaking down an input program into a stream of \textit
 
 \begin{figure}[h]
 \centering
-\includegraphics[height=2.5cm,width=14cm]{images/token_stream.png}
+\includegraphics[scale=0.5]{images/token_stream.png}
 \caption{Lexing of Fun code into a token stream}
 \label{fig:token-stream}	
 \end{figure}
@@ -205,11 +205,11 @@ Lexing is the process of breaking down an input program into a stream of \textit
 A parser converts a token stream into an AST using some parsing algorithm. The Fun compiler uses \textit{\textbf{recursive-descent}} parsing. Recursive-descent parsing involves ``consuming'' the token stream from left to right. At each token, the parser checks whether the next sequence of tokens are of the correct type, as determined by the language's syntax. The parser carries out this check for every token in the stream. If any checks fail, a syntax error is reported to the programmer. If all tokens are consumed successfully, the parser outputs an AST representing the parsed program.
 
 \subsection{Contextual Analysis}
-Upon successful completion of syntactic analysis, the generated AST is traversed  by a contextual analyser. A contextual analyser checks whether the source program represented by the AST conforms to the source language's scope and type rules. Contextual analysis utilises an auxiliary data structure called a \textit{\textbf{type table}} in order to help carry out these checks. Each row of the type table contains three fields of information about a declared variable: its scope (which as discussed in Section 3.1 can be local or global), its identifier and its type. Figure \ref{fig:type-table} demonstrates a small example. The identifier ``x'' is used twice to declare an integer in both global and local scope and the identifier ``main'' is used to declare a function which takes no parameters and returns no value. Contextual analysis can be broken down into \textit{\textbf{scope checking}} and \textit{\textbf{type checking}}.
+Upon successful completion of syntactic analysis, the generated AST is traversed  by a contextual analyser. A contextual analyser checks whether the source program represented by the AST conforms to the source language's scope and type rules. Contextual analysis utilises an auxiliary data structure called a \textit{\textbf{type table}} in order to help carry out these checks. Each row of the type table contains three fields of information about a declared variable: its scope (which as discussed in Section 3.1 can be local or global), its identifier and its type. Figure \ref{fig:type-table} demonstrates a small example. The table reveals that the corresponding program has two integer variables with the identifier ``x'' (globally and locally defined) and a global procedure with the identifier ``main'' which takes no parameters and returns no value. Contextual analysis can be broken down into \textit{\textbf{scope checking}} and \textit{\textbf{type checking}}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[height=4cm,width=10cm]{images/type-table.png}
+\includegraphics[scale=0.5]{images/type-table.png}
 \caption{Type Table}
 \label{fig:type-table}	
 \end{figure}
@@ -232,6 +232,8 @@ Scope checking ensures that every variable used in the program has been previous
 	\caption{AST snippets demonstrating the declaration and usage of a variable ``x''}\label{fig:variable-decl-use}	
 \end{figure}
 
+% Need to fix ``...'' stuff and probably better explain these AST snippets
+
 Type checking ensures that every operation has operands of the expected type. The rules the contextual analyser uses to determine if an operation has the ``correct'' operands vary from construct to construct. For example, referring back to Figure \ref{fig:variable-use}, we see the usage of a variable. In this case, we are assigning the value of some expression, represented by ``...'', to the variable ``x''. When the contextual analyser encounters this construct during the traversal, it will retrieve the type of ``x'' from the type table, then traverse the expression to determine its type. The contextual analyser will then check that the type of the expression is the same as the type of ``x''. For example, if we assume that ``x'' is an integer, ``x = 5 + 10'' would be a valid assignment, whereas ``x = `hello world''' would result in a type error.
 % Maybe put examples of what expr could be and fix quotes.
 % Probably need to sort out usage of variable vs identifier (is a func a variable??)
@@ -241,7 +243,7 @@ Upon successful completion of contextual analysis, the generated AST is traverse
 
 \begin{figure}[h]
 \centering
-\includegraphics[height=4cm,width=10cm]{images/address-table.png}
+\includegraphics[scale=0.5]{images/address-table.png}
 \caption{Address Table}
 \label{fig:address-table}	
 \end{figure}
