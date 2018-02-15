@@ -9,6 +9,7 @@
 \usepackage{enumitem}
 \usepackage{url}
 \usepackage{booktabs}
+\usepackage{alltt}
 
 
 \begin{document}
@@ -141,12 +142,33 @@ After analysing some examples of current products that are available in the area
 However, a tool based on compiler animation would need to include both aspects of complexity and usability. The tool would implement an algorithm that is certainly more complex and volatile than even Dijkstra's algorithm, but in order to be educationally effective, it also needs to provide the display of highly input-dependent analytics and implement the usability and interactivity features such as playback control that are embedded within the guidelines of the previous studies.
 
 \chapter{The Fun Programming Language \& Compilation Theory}
-This chapter aims to briefly introduce the reader to the main tools and concepts used throughout this paper. This includes a small overview of the Fun programming language, syntax trees and the various phases of compilation.
+This chapter aims to briefly introduce the reader to the main tools and concepts used throughout this paper. We begin with an small overview of the Fun programming language and its capabilities. Then we consider at how and why compilers parse source code into syntax trees and why some representations of a syntax might be more beneficial than others. After that, we take an in-depth look at the three main phases of compilation. Finally, we discuss the use of code templates as a theoretical tool for assisting compiler developers in generating the object code or assembly language for various constructs within a programming language.
 
 \section{The Fun Programming Language}
 Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language built using ANTLR \cite{antlr}, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to illustrate various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
 
-The Fun programming language has a \textit{\textbf{flat block structure}}. A flat block structure means that variables can have either a local or a global scope, and that the same identifier may be used to declare a local and a global variable. [Add more here...].
+Fun has variables, procedures and functions. Variables can have a declared type of \texttt{int} or \texttt{bool} only. All variables must be initialised with an expression of the same type upon declaration. Procedures have type \texttt{T $\rightarrow$ void} and functions have type \texttt{T $\rightarrow$ T'}. T represents the type of an optional parameter. Procedures return no value (hence \texttt{$\rightarrow$ void}) and functions must return a value of the type T' (hence \texttt{$\rightarrow$ T'}). Fun has one predefined function and one predefined procedure. \texttt{read()} is a function that returns user input as an integer. \texttt{write(\textbf{int} n)} is a procedure writes the value of \texttt{n} to standard output. Below is an example Fun program which utilises variables, functions and procedures to calculate and write the factorial of user submitted input:
+\begin{alltt}
+\textbf{bool} verbose = true
+
+\textbf{func int} fac (\textbf{int} n):    
+    \textbf{int} f = 1   
+    \textbf{while} n > 1:    
+        f = f*n   
+        n = n-1  .   
+    \textbf{return} f  
+.  
+
+\textbf{proc} main ():  
+    \textbf{int} num = read()   
+    \textbf{while not} (num == 0):    
+        \textbf{if} verbose: write(num) .    
+        write(fac(num))    
+        num = read() .  
+.
+ \end{alltt}
+ 
+The Fun programming language has a \textit{\textbf{flat block structure}}. A flat block structure means that variables may reside in either a local or a global scope, and that the same identifier may be declared locally and globally. Since functions and procedures cannot be defined within other functions and procedures, they are always global. A variable that is declared as a parameter of a function/procedure or declared within a function/procedure is considered local. Variables declared outside of any function/procedure are considered global. In the example above, we note that \texttt{verbose} is a global boolean variable, whereas \texttt{n} and \texttt{f} are integer variables local to the function \texttt{fac}. When allocating addresses to variables in the Fun language, we consider that all variables have a size of 1.
 
 Whilst Fun may differ significantly to other programming languages, particularly in its complexity, it is not the case that the concepts illustrated are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts can be explained in an easily understandable format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
@@ -183,7 +205,7 @@ In general, compilation is the process of automatically translating high-level c
 \end{enumerate}
 If either syntactic or contextual analysis encounters an error (as determined by the language's specification) during its execution, the phase completes, but the remainder of the compilation process is halted and the errors are reported to the programmer. Note that the following descriptions assume the compiler is employing an AST representation of a syntax tree. See Figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{images/3-2a.png}
 \caption{Compilation Pipeline}
@@ -276,8 +298,6 @@ The code template for a PLUS construct might look something like Figure \ref{fig
 \caption{Code template for a PLUS construct}
 \label{fig:plus-template}	
 \end{figure}
-
-
 
 \chapter{Requirements}
 This chapter initially discusses the methods via which the requirements of this project, which we will henceforth refer to as the \textit{FunCompiler}, were collected and established. The remainder of the chapter lists the FunCompiler's user stories, functional requirements and non-functional requirements.
