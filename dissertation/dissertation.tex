@@ -214,7 +214,7 @@ Upon successful completion of syntactic analysis, the generated AST is traversed
 \label{fig:type-table}	
 \end{figure}
 
-Scope checking ensures that every variable used in the program has been previously declared. If the contextual analyser encounters the \textit{declaration} of an identifier as it is traversing over the AST, it inserts the identifier along with its scope and type into the type table. If the contextual analyser finds that there is already an entry in the table with the same scope and identifier, then a scope error is reported to the programmer. Similarly, if the contextual analyser encounters the \textit{usage} of an identifier during the traversal, it checks that the identifier is already in the type table (i.e., has been previously declared). If the identifier cannot be found in the type table, then a scope error is reported to the programmer. Figure \ref{fig:variable-decl-use} shows snippets of an AST which illustrate the declaration and usage (assignment) of the same variable. Assuming global scope, in Figure \ref{fig:variable-decl} we would insert an entry with identifier ``x'', type ``INT'' and scope ``global'' into the type table. In Figure \ref{fig:variable-use}, we would lookup ``x'' in the type table to ensure it has been previously declared.
+Scope checking ensures that every variable used in the program has been previously declared. If the contextual analyser encounters the \textit{declaration} of an identifier as it is traversing over the AST, it inserts the identifier along with its scope and type into the type table. If the contextual analyser finds that there is already an entry in the table with the same scope and identifier, then a scope error is reported to the programmer. Similarly, if the contextual analyser encounters the \textit{usage} of an identifier during the traversal, it checks that the identifier is already in the type table (i.e., has been previously declared). If the identifier cannot be found in the type table, then a scope error is reported to the programmer. Figure \ref{fig:variable-decl-use} shows snippets of an AST which illustrate the declaration and usage (assignment) of the same variable ``x''. Assuming global scope, in Figure \ref{fig:variable-decl} we would insert an entry with identifier ``x'', type ``INT'' and scope ``global'' into the type table. In Figure \ref{fig:variable-use}, we would lookup ``x'' in the type table to ensure it has been previously declared.
 
 \begin{figure}[h]
 	\centering
@@ -239,7 +239,7 @@ Type checking ensures that every operation has operands of the expected type. Th
 % Probably need to sort out usage of variable vs identifier (is a func a variable??)
 
 \subsection{Code Generation}
-Upon successful completion of contextual analysis, the generated AST is traversed by a code generator. A code generator translates the source program into a lower level language, such as assembly language or object code. Code generation utilises an auxiliary data structure called an \textit{\textbf{address table}}. Each entry in the address table contains three fields of information about a declared variable: its scope, its identifier and its address. Figure \ref{fig:address-table} demonstrates an example similar to Figure \ref{fig:type-table}. The identifier ``x'' has been allocated an address of 0 in the address space allocated to global variables and an address of 2 in the address space allocated to local variables. The identifier ``main'' has been allocated an address of 7 in the address space allocated to object code instructions. Code generation can be broken down into \textit{\textbf{address allocation}} and \textit{\textbf{code selection}}.
+Upon successful completion of contextual analysis, the generated AST is traversed by a code generator. A code generator translates the source program into a lower level language, such as assembly language or object code. Code generation utilises an auxiliary data structure called an \textit{\textbf{address table}}. Each entry in the address table contains three fields of information about a declared variable: its scope, its identifier and its address. Figure \ref{fig:address-table} demonstrates an example similar to Figure \ref{fig:type-table}. The table reveals how each identifier has been allocated an address in the address space belonging to either local or global variables. Code generation can be broken down into \textit{\textbf{address allocation}} and \textit{\textbf{code selection}}.
 
 \begin{figure}[h]
 \centering
@@ -252,9 +252,32 @@ Upon successful completion of contextual analysis, the generated AST is traverse
 % Address allocation bit probably needs more detail but not sure what. Could talk about how addresses are allocated??
 % Say like for each construct code generator emits object code, developer must plan what object code will be selected by using code template (this is for code selection).
 
-Address allocation decides the representation and address of each variable in the source program. If the code generator encounters a variable declaration as it is traversing over the AST, it determines a suitable address for that identifier and inserts both values along with the corresponding scope into the address table. 
+Address allocation decides the representation and address of each variable in the source program. If the code generator encounters a variable declaration as it is traversing over the AST, it determines a suitable address and inserts that value along with the corresponding identifier and scope into the address table. Determining ``suitable'' addresses is simple in Fun because all variables are of size 1. This means the compiler can simply allocate consecutive addresses to each variable as it is encountered.
 
-Code selection selects and generates the object code. Upon successful completion of this final phase, the compiler will have often produced an executable program.
+Code selection selects and generates the object code. The developer of the compiler must plan what object code should be selected for each construct encountered within the AST. The developer does this by devising a \textit{\textbf{code template}} for each construct in the language, which will be covered in detail in the next section. Upon successful completion of this final phase, the compiler will have often produced an executable program.
+
+\section{Code Templates}
+During code generation, the developer of the compiler needs to plan how each construct within the AST should be translated into object code. This can be done using a code template. A code template is often just a high level list of instructions that for each construct, determine how any constituent expressions or commands should be executed, along with specifically stating which assembly language instructions should be emitted.
+
+For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates the addition of two expressions. In this case, ``expr1'' and ``expr2'' are sub-expressions of ``PLUS''. Consider the case where ``expr1'' is a variable, say ``x''. Naturally, the compiler would need to emit the object code which loads the value of ``x'' into memory before emitting the object code that adds the two expressions together. In fact, this is true for a values including constants, not just variables. Therefore, the code template for the ``PLUS'' construct should state that ``expr1'' and ``expr2'' should be evaluated before we emit any object code to add the expressions together.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{images/plus.png}
+\caption{AST snippet illustrating the addition of two expressions}
+\label{fig:plus}	
+\end{figure}
+
+The code template for a PLUS construct might look something like Figure \ref{fig:plus-template}. The figure shows that when arriving at a PLUS, we should execute the code that emits the object code for ``expr1'', then the same for ``expr2'' and finally emit the object code instruction ADD, as shown in blue.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{images/plus-template.png}
+\caption{Code template for a PLUS construct}
+\label{fig:plus-template}	
+\end{figure}
+
+
 
 \chapter{Requirements}
 This chapter initially discusses the methods via which the requirements of this project, which we will henceforth refer to as the \textit{FunCompiler}, were collected and established. The remainder of the chapter lists the FunCompiler's user stories, functional requirements and non-functional requirements.
