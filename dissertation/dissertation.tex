@@ -173,9 +173,9 @@ The Fun programming language has a \textit{\textbf{flat block structure}}. A fla
 Whilst Fun may differ significantly to other programming languages, particularly in its complexity, it is not the case that the notions it aims to represent are exclusive to the Fun language or the Fun compiler. Fun is sufficiently generic that the core concepts of compiler theory can be delivered in a simple, comprehensible format (due to the simplicity of the language), which then facilitates learners in applying the same logic to more complex constructs in other languages.
 
 \section{Syntax Trees}
-During compilation, a source program is parsed into a \textit{\textbf{syntax tree}}. A syntax tree is a hierarchical syntactic representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the \textit{\textbf{parse tree}} (sometimes called a concrete syntax tree) and the abstract syntax tree (AST). Translating a source program into a syntax tree means the compiler can more easily reason about the underlying structure and grammatical nature of the program, which enables the later stages of compilation.
+During compilation, a source program is parsed into a \textit{\textbf{syntax tree}}. A syntax tree is a hierarchical syntactic representation of a source program; with global statements towards the root, and more deeply nested statements towards the leaves. We typically consider two types of syntax tree: the \textit{\textbf{parse tree}} (sometimes called a concrete syntax tree) and the abstract syntax tree (AST). Translating a source program into a syntax tree means the compiler can more easily reason about the underlying structure and grammatical nature of the program, which is necessary for certain stages of compilation.
 
-A parse tree retains all information about a program, including the information that may appear to be unnecessary, such as white-space and parentheses. Conversely, an abstract syntax tree is a smaller, more concise adaptation of the parse tree. An AST usually ignores redundant details which are derivable from the shape of the tree. Figure \ref{fig:parse-abstract-tree} demonstrates the visual differences between a parse tree and an AST of the same hypothetical program written in the Fun language. 
+A parse tree retains all information about a program, including the information that may appear to be unnecessary, such as white-space and parentheses. Conversely, an AST is a smaller, more concise adaptation of the parse tree. An AST usually ignores redundant details which are derivable from the shape of the tree. Figure \ref{fig:parse-abstract-tree} demonstrates the visual differences between a parse tree and an AST of the same hypothetical Fun program. 
 
 \begin{figure}[h]
 	\begin{subfigure}[b]{0.5\textwidth}
@@ -215,19 +215,19 @@ If either syntactic or contextual analysis encounters an error (as determined by
 \subsection{Syntactic Analysis}
 Syntactic analysis takes a source program as input and upon success, produces an AST. The purpose of syntactic analysis is to verify whether the source program is well-formed in accordance to the source language's syntax rules. Syntactic analysis can be broken down into \textit{\textbf{lexing}} and \textit{\textbf{parsing}}.
 
-Lexing is the process of breaking down an input program into a stream of \textit{\textbf{tokens}}. A token is simply a single element of the input program. For example, a token could be an individual identifier, operator or keyword. How the compiler chooses to define tokens is dependent upon the implementation of the language. The token stream is then passed as input to the parser. Figure \ref{fig:token-stream} shows how a small excerpt of Fun code may be decomposed into a token stream.
+Lexing is the process of breaking down an input program into a stream of \textit{\textbf{tokens}}. A token is simply a single element of the input program. For example, a token could be an individual identifier, operator or keyword. How the compiler chooses to define tokens is dependent upon the implementation of the language. The token stream is then passed as input to the parser. Figure \ref{fig:token-stream} shows how a small excerpt of code may be decomposed into a token stream.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{images/token_stream.png}
-\caption{Lexing of Fun code into a token stream}
+\caption{Lexing of source code into a token stream}
 \label{fig:token-stream}	
 \end{figure}
 
 A parser converts a token stream into an AST using some parsing algorithm. The Fun compiler uses \textit{\textbf{recursive-descent}} parsing. Recursive-descent parsing involves ``consuming'' the token stream from left to right. At each token, the parser checks whether the next sequence of tokens are of the correct type, as determined by the language's syntax. The parser carries out this check for every token in the stream. If any checks fail, a syntax error is reported to the programmer. If all tokens are consumed successfully, the parser outputs an AST representing the parsed program.
 
 \subsection{Contextual Analysis}
-Upon successful completion of syntactic analysis, the generated AST is traversed  by a contextual analyser. A contextual analyser checks whether the source program represented by the AST conforms to the source language's scope and type rules. Contextual analysis utilises an auxiliary data structure called a \textit{\textbf{type table}} in order to help carry out these checks. Each row of the type table contains three fields of information about a declared variable: its scope (which as discussed in Section 3.1 can be local or global), its identifier and its type. Figure \ref{fig:type-table} demonstrates a small example. The table reveals that the corresponding program has two integer variables with the identifier ``x'' (globally and locally defined) and a global procedure with the identifier ``main'' which takes no parameters and returns no value. Contextual analysis can be broken down into \textit{\textbf{scope checking}} and \textit{\textbf{type checking}}.
+Upon successful completion of syntactic analysis, the generated AST is traversed  by a contextual analyser. A contextual analyser checks whether the source program represented by the AST conforms to the source language's scope and type rules. Contextual analysis utilises an auxiliary data structure called a \textit{\textbf{type table}} in order to help carry out these checks. Each row of the type table contains three fields of information about a declared variable: its scope (which as discussed in Section 3.1 can be local or global), its identifier and its type. Figure \ref{fig:type-table} demonstrates a small example. The table reveals that the corresponding program contains two integer variables with the identifier \texttt{x} (globally and locally defined) and a global procedure with the identifier \texttt{main} which takes no parameters and returns no value. Contextual analysis can be broken down into \textit{\textbf{scope checking}} and \textit{\textbf{type checking}}.
 
 \begin{figure}[h]
 \centering
@@ -236,32 +236,28 @@ Upon successful completion of syntactic analysis, the generated AST is traversed
 \label{fig:type-table}	
 \end{figure}
 
-Scope checking ensures that every variable used in the program has been previously declared. If the contextual analyser encounters the \textit{declaration} of an identifier as it is traversing over the AST, it inserts the identifier along with its scope and type into the type table. If the contextual analyser finds that there is already an entry in the table with the same scope and identifier, then a scope error is reported to the programmer. Similarly, if the contextual analyser encounters the \textit{usage} of an identifier during the traversal, it checks that the identifier is already in the type table (i.e., has been previously declared). If the identifier cannot be found in the type table, then a scope error is reported to the programmer. Figure \ref{fig:variable-decl-use} shows snippets of an AST which illustrate the declaration and usage (assignment) of the same variable ``x''. Assuming global scope, in Figure \ref{fig:variable-decl} we would insert an entry with identifier ``x'', type ``INT'' and scope ``global'' into the type table. In Figure \ref{fig:variable-use}, we would lookup ``x'' in the type table to ensure it has been previously declared.
+Scope checking ensures that every variable used in the program has been previously declared. If the contextual analyser encounters the \textit{declaration} of an identifier as it is traversing over the AST, it inserts the identifier along with its scope and type into the type table. If the contextual analyser finds that there is already an entry in the table with the same scope and identifier, then a scope error is reported to the programmer. Similarly, if the contextual analyser encounters the \textit{usage} of an identifier during the traversal, it checks that the identifier is already in the type table (i.e., has been previously declared). If the identifier cannot be found in the type table, then a scope error is reported to the programmer. Figure \ref{fig:variable-decl-use} shows two snippets of an AST that illustrate the declaration and usage (assignment) of a variable \texttt{n}. The variable \textit{declaration} construct in Figure \ref{fig:variable-decl} would lead the compiler to insert a row into the type table with values: \texttt{[global, n, INT]}. The variable \textit{assignment} construct in Figure \ref{fig:variable-use} would lead the compiler to lookup entries in the type table with identifier \texttt{n} to ensure the variable has been previously declared before attempting to assign a new value to it.
 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[height=2.5cm,width=\linewidth]{images/variable-decl.png}
+		\includegraphics[scale=0.65]{images/variable-decl.png}
 		\caption{Variable declaration}
 		\label{fig:variable-decl}
 	\end{subfigure}
 	~
 	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[height=2.5cm,width=\linewidth]{images/variable-use.png}
+		\includegraphics[scale=0.65]{images/variable-use.png}
 		\caption{Variable usage}
 		\label{fig:variable-use}
 	\end{subfigure}
-	\caption{AST snippets demonstrating the declaration and usage of a variable ``x''}\label{fig:variable-decl-use}	
+	\caption{AST snippets demonstrating the declaration and usage of a variable \texttt{n}}\label{fig:variable-decl-use}	
 \end{figure}
 
-% Need to fix ``...'' stuff and probably better explain these AST snippets
-
-Type checking ensures that every operation has operands of the expected type. The rules the contextual analyser uses to determine if an operation has the ``correct'' operands vary from construct to construct. For example, referring back to Figure \ref{fig:variable-use}, we see the usage of a variable. In this case, we are assigning the value of some expression, represented by ``...'', to the variable ``x''. When the contextual analyser encounters this construct during the traversal, it will retrieve the type of ``x'' from the type table, then traverse the expression to determine its type. The contextual analyser will then check that the type of the expression is the same as the type of ``x''. For example, if we assume that ``x'' is an integer, ``x = 5 + 10'' would be a valid assignment, whereas ``x = `hello world''' would result in a type error.
-% Maybe put examples of what expr could be and fix quotes.
-% Probably need to sort out usage of variable vs identifier (is a func a variable??)
+Type checking ensures that every operation in the program has operands of the expected type. The rules the contextual analyser uses to determine if an operation has the ``correct'' operands vary from construct to construct. For example, referring back to Figure \ref{fig:variable-use}, we see the construct for variable assignment. In this case, we are assigning the value of some expression, represented by \texttt{expr}, to the variable \texttt{n}. When the contextual analyser encounters this construct during the traversal, it will retrieve the type of \texttt{n} from the type table, then traverse the expression to determine its type. The contextual analyser will then check that the type of the expression is the same as the type of \texttt{n}. For example, given that \texttt{n} was defined as an integer, \texttt{x = 5 + 10} would be a valid assignment, whereas \texttt{x = false} would result in a type error.
 
 \subsection{Code Generation}
-Upon successful completion of contextual analysis, the generated AST is traversed by a code generator. A code generator translates the source program into a lower level language, such as assembly language or object code. Code generation utilises an auxiliary data structure called an \textit{\textbf{address table}}. Each entry in the address table contains three fields of information about a declared variable: its scope, its identifier and its address. Figure \ref{fig:address-table} demonstrates an example similar to Figure \ref{fig:type-table}. The table reveals how each identifier has been allocated an address in the address space belonging to either local or global variables. Code generation can be broken down into \textit{\textbf{address allocation}} and \textit{\textbf{code selection}}.
+Upon successful completion of contextual analysis, the generated AST is traversed by a code generator. A code generator translates the source program into a lower level language, such as assembly language or object code. Code generation utilises an auxiliary data structure called an \textit{\textbf{address table}}. Each entry in the address table contains three fields of information about a declared variable: its scope, its identifier and its address. Figure \ref{fig:address-table} demonstrates a small example. The table reveals how each identifier has been allocated an address in the address space belonging to either local or global variables. Code generation can be broken down into \textit{\textbf{address allocation}} and \textit{\textbf{code selection}}.
 
 \begin{figure}[h]
 \centering
@@ -270,18 +266,14 @@ Upon successful completion of contextual analysis, the generated AST is traverse
 \label{fig:address-table}	
 \end{figure}
 
-% Need to better explain code addresses.
-% Address allocation bit probably needs more detail but not sure what. Could talk about how addresses are allocated??
-% Say like for each construct code generator emits object code, developer must plan what object code will be selected by using code template (this is for code selection).
+Address allocation decides the representation and address of each variable in the source program. If the code generator encounters a variable declaration as it is traversing over the AST, it determines a suitable address and inserts that value along with the corresponding identifier and scope into the address table. In the case of Fun, since all variables have a size of 1, the compiler can simply allocate incrementally consecutive addresses to each variable as it is encountered.
 
-Address allocation decides the representation and address of each variable in the source program. If the code generator encounters a variable declaration as it is traversing over the AST, it determines a suitable address and inserts that value along with the corresponding identifier and scope into the address table. Determining ``suitable'' addresses is simple in Fun because all variables are of size 1. This means the compiler can simply allocate consecutive addresses to each variable as it is encountered.
-
-Code selection selects and generates the object code. The developer of the compiler must plan what object code should be selected for each construct encountered within the AST. The developer does this by devising a \textit{\textbf{code template}} for each construct in the language, which will be covered in detail in the next section. Upon successful completion of this final phase, the compiler will have often produced an executable program.
+Code selection selects and generates the object code. The developer of the compiler must plan what object code should be selected for each construct encountered within the AST. The developer does this by devising a \textit{\textbf{code template}} for each construct in the language, which will be discussed in the next section.
 
 \section{Code Templates}
-During code generation, the developer of the compiler needs to plan how each construct within the AST should be translated into object code. This can be done using a code template. A code template is often just a high level list of instructions that for each construct, determine how any constituent expressions or commands should be executed, along with specifically stating which assembly language instructions should be emitted.
+When developing a compiler, it is important to consider how each construct in the underlying language should be translated into object code. A code template provides a means of creating a theoretical model for each construct that specifies how the corresponding object code should be selected. Each template is often just a list of instructions (written in the plain English) that defines how any constituent expressions/commands of the construct should themselves be considered for translation. The template also establishes specifically which assembly language instructions to emit.
 
-For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates the addition of two expressions. In this case, ``expr1'' and ``expr2'' are sub-expressions of ``PLUS''. Consider the case where ``expr1'' is a variable, say ``x''. Naturally, the compiler would need to emit the object code which loads the value of ``x'' into memory before emitting the object code that adds the two expressions together. In fact, this is true for a values including constants, not just variables. Therefore, the code template for the ``PLUS'' construct should state that ``expr1'' and ``expr2'' should be evaluated before we emit any object code to add the expressions together.
+For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates the addition of two expressions, where \texttt{expr1} and \texttt{expr2} are sub-expressions of the \texttt{PLUS} construct. Consider the case where \texttt{expr1} is a variable, say \texttt{x}. In order to ensure the value of \texttt{x} is available in memory when the addition occurs, the compiler needs to emit the object code which loads the value of \texttt{x} into memory before emitting the addition object code. Naturally, the same logic applies to \texttt{expr2}, regardless of whether or not it is in the form of a variable or just a constant. Therefore, the code template for the \texttt{PLUS} construct should state that \texttt{expr1} and \texttt{expr2} should be evaluated before we emit any object code to add the expressions together.
 
 \begin{figure}[h]
 \centering
@@ -290,7 +282,9 @@ For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates th
 \label{fig:plus}	
 \end{figure}
 
-The code template for a PLUS construct might look something like Figure \ref{fig:plus-template}. The figure shows that when arriving at a PLUS, we should execute the code that emits the object code for ``expr1'', then the same for ``expr2'' and finally emit the object code instruction ADD, as shown in blue.
+Figure \ref{fig:plus-template} illustrates a code template for the \texttt{PLUS} construct. Considering each instruction sequentially, it stipulates that firstly we should generate the object code for \texttt{expr1}, then \texttt{expr2}. Only after both these values have been loaded into memory can we emit the \texttt{ADD} object code instruction. 
+% Think should probably put this image and the last in the same picture.
+% Talk about how it is the case that sometimes we need to generate the object code for constituent statements before emitting the object code for the statement itself.
 
 \begin{figure}[h]
 \centering
