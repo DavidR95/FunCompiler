@@ -268,7 +268,7 @@ Upon successful completion of contextual analysis, the generated AST is traverse
 
 Address allocation decides the representation and address of each variable in the source program. If the code generator encounters a variable declaration as it is traversing over the AST, it determines a suitable address and inserts that value along with the corresponding identifier and scope into the address table. In the case of Fun, since all variables have a size of 1, the compiler can simply allocate incrementally consecutive addresses to each variable as it is encountered.
 
-Code selection selects and generates the object code. The developer of the compiler must plan what object code should be selected for each construct encountered within the AST. The developer does this by devising a \textit{\textbf{code template}} for each construct in the language, which will be discussed in the next section.
+Code selection selects and generates the object code. The developer of the compiler should plan which object code is selected for each construct encountered within the AST. The developer does this by devising a \textit{\textbf{code template}} for each construct in the language, which will be discussed in the next section.
 
 \section{Code Templates}
 When developing a compiler, it is important to consider how each construct in the underlying language should be translated into object code. A code template provides a means of creating a theoretical model for each construct that specifies how the corresponding object code should be selected. Each template is often just a list of instructions (written in the plain English) that defines how any constituent expressions/commands of the construct should themselves be considered for translation. The template also establishes specifically which assembly language instructions to emit.
@@ -276,22 +276,22 @@ When developing a compiler, it is important to consider how each construct in th
 For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates the addition of two expressions, where \texttt{expr1} and \texttt{expr2} are sub-expressions of the \texttt{PLUS} construct. Consider the case where \texttt{expr1} is a variable, say \texttt{x}. In order to ensure the value of \texttt{x} is available in memory when the addition occurs, the compiler needs to emit the object code which loads the value of \texttt{x} into memory before emitting the addition object code. Naturally, the same logic applies to \texttt{expr2}, regardless of whether or not it is in the form of a variable or just a constant. Therefore, the code template for the \texttt{PLUS} construct should state that \texttt{expr1} and \texttt{expr2} should be evaluated before we emit any object code to add the expressions together.
 
 \begin{figure}[h]
-\centering
-\includegraphics[scale=0.7]{images/plus.png}
-\caption{AST snippet illustrating the addition of two expressions}
-\label{fig:plus}	
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.65]{images/plus.png}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.65]{images/plus-template.png}
+	\end{subfigure}
+	\caption{AST snippet and code template of a \texttt{PLUS} construct}\label{fig:plus}	
 \end{figure}
 
-Figure \ref{fig:plus-template} illustrates a code template for the \texttt{PLUS} construct. Considering each instruction sequentially, it stipulates that firstly we should generate the object code for \texttt{expr1}, then \texttt{expr2}. Only after both these values have been loaded into memory can we emit the \texttt{ADD} object code instruction. 
-% Think should probably put this image and the last in the same picture.
-% Talk about how it is the case that sometimes we need to generate the object code for constituent statements before emitting the object code for the statement itself.
+Figure \ref{fig:plus} also illustrates a code template for the \texttt{PLUS} construct. Considering each instruction sequentially, it stipulates that firstly we should generate the object code for \texttt{expr1}, then \texttt{expr2}. Only after both these values have been loaded into memory can we emit the \texttt{ADD} object code instruction. 
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.7]{images/plus-template.png}
-\caption{Code template for a PLUS construct}
-\label{fig:plus-template}	
-\end{figure}
+It is often the case that the compiler needs to translate the constituent statements of a construct into object code before emitting any object code for the construct itself. In general, how each construct should be translated into object code is not always immediately clear just from the structure of the AST. Code templates assist in solving this matter as they provide a way to exemplify how each construct in the source language should be translated into object code. 
+
+% Whole section basically needs rewriting
 
 \chapter{Requirements}
 This chapter initially discusses the methods via which the requirements of this project, which we will henceforth refer to as the \textit{FunCompiler}, were collected and established. The remainder of the chapter lists the FunCompiler's user stories, functional requirements and non-functional requirements.
