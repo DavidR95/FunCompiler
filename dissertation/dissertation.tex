@@ -39,14 +39,14 @@ When questioned on the necessity of teaching compilation, Niklaus Wirth, the cre
 Compilation theory is a foundational notion of computer science, upon which a larger syllabus can be developed. To students, the benefits of learning about compilation are perhaps not in its direct application, but in its ability to act as the stepping stone that facilitates a more comprehensive grasp of other concepts; concepts which themselves are grounded in compilation theory.  
 
 \section{Motivation}
-Compilation can often be a challenging field to teach effectively. Many components of compilation involve the generation and traversal of complex, abstract data structures. Abstract, conceptual notions such as these are notoriously difficult for students to understand. We desire to find a solution which provides concrete representations of these abstract ideas.
+Compilation can often be a challenging field to teach effectively. Many components of compilation involve the generation and traversal of complex, abstract data structures. Abstract, conceptual notions such as these are notoriously difficult both for students to understand and for educators to demonstrate. We desire to find a solution to this problem by creating techniques that provide concrete representations of abstract ideas.
 
-In response to this problem, a common approach employed by educators is to attempt to visualise the data structures and the traversals over them. The educator usually does this by creating some sort of “slideshow”, using an application such as Microsoft PowerPoint. The slides contain a pictorial representation of the data structure in question, and each slide demonstrates a distinct step of the traversal over that data structure. For example, an educator seeking to teach students about a depth-first traversal over a binary tree might design their slideshow similarly to Figure \ref{fig:slideshow}. In Figure \ref{fig:slideshow} we see that each consecutive slide illustrates the next step of the traversal by highlighting the corresponding node.
+In response to this issue, a common approach employed by educators is to attempt to visualise the data structures and the traversals over them. The educator usually does this by creating some sort of ``slideshow'', using an application such as Microsoft PowerPoint. The slides contain a pictorial representation of the data structure in question, and each slide demonstrates a distinct step of the traversal over that data structure. For example, an educator seeking to teach students about a depth-first traversal over a binary tree might design their slideshow similarly to Figure \ref{fig:slideshow}. In Figure \ref{fig:slideshow} we see that each consecutive slide illustrates the next step of the traversal by highlighting the corresponding node.
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{images/slideshow.png}
-\caption{Example sequence of slides demonstrating a depth-first traversal over a tree}
+\caption{A sequence of slides demonstrating a depth-first traversal over a binary tree}
 \label{fig:slideshow}	
 \end{figure}
 
@@ -57,7 +57,7 @@ This project aims to alleviate or solve many of the issues currently faced in at
 
 Contextual analysis and code generation are two different stages of compilation which aim to validate certain aspects of the compiler's input and construct some appropriate output. The behaviour of these stages is expressed by traversals over an AST. An AST is a tree-based data structure that represents the hierarchical syntactic structure of a section of code. Fun is a simple, educational programming language equipped with a compiler. Chapter 3 introduces all of these concepts in considerably more detail. 
 
-The application will allow users to supply programs written in the Fun language as input to the Fun compiler. The user can then choose to animate either the contextual analysis or code generation phase of the compiler. In order to demonstrate how the compiler traverses the AST during these phases, nodes within the tree will be highlighted consecutively corresponding to the progression of the traversal, similar to the method displayed in Figure \ref{fig:slideshow}. In general, the application should:
+The application will allow users to supply programs written in the Fun language as input to the Fun compiler. The user can then choose to animate either the contextual analysis or code generation phase of the resulting compilation. In order to demonstrate how the compiler traverses the AST during these phases, nodes within the tree will be highlighted consecutively corresponding to the progression of the traversal, similar to the method displayed in Figure \ref{fig:slideshow}. In general, the application should:
 \begin{itemize}
 \item Allow a user to input any syntactically valid program written in the Fun language.
 \item Animate the contextual analysis phase of a program's compilation. 
@@ -80,7 +80,7 @@ Indeed, compilation is certainly not small nor particularly well-defined (in tha
 The remainder of this chapter considers research done which attempts to evaluate the effectiveness of algorithm animation from an educational perspective. We then explore and critique some modern examples of web-based algorithm animation tools. Finally, we discuss how we might use the results of prior evaluations along with our analysis of existing products to influence our design of a compiler animator.
 
 \section{Effectiveness of Algorithm Animation}
-One of the earliest algorithm animation systems was developed by Bentley and Kernighan in 1987 \cite{BentleyKernighan}. The system enabled users to annotate sections of an algorithm which were later processed by an interpreter to create a sequence of still pictures; an example of which is shown in Figure \ref{fig:bentley-kernighan}. In the very first line of the system's user manual Bentley and Kernighan confidently state, ``\textit{Dynamic displays are better than static displays for giving insight into the behaviour of dynamic systems}''. This belief of Bentley and Kernighan is one that many of us would intuitively believe. The intuition being that when attempting to understand any multi-step process, an animation which displays each step of that process is more effective than a single static diagram, or a section of explanatory text. However, it is important to consider whether this belief has statistical backing or whether it is simply an assumption. Certainly, in 1987 algorithm animation itself was still in its infancy and no studies had been carried out that provided the empirical evidence to support this intuition. 
+One of the earliest algorithm animation systems was developed by Bentley and Kernighan in 1987 \cite{BentleyKernighan}. The system enabled users to annotate sections of an algorithm which were later processed by an interpreter to create a sequence of still pictures; an example of which is shown in Figure \ref{fig:bentley-kernighan}. In the very first line of the system's user manual Bentley and Kernighan confidently state, ``\textit{Dynamic displays are better than static displays for giving insight into the behaviour of dynamic systems}''. This belief of Bentley and Kernighan is one that many of us would intuitively believe. The intuition being that when attempting to understand any multi-step process, an animation which displays each step of that process is more effective than a single static diagram, or a paragraph of explanatory text. However, it is important to consider whether this belief has statistical backing or whether it is simply an assumption. Certainly, in 1987 algorithm animation itself was still in its infancy and no studies had been carried out that provided the empirical evidence to support this intuition. 
 
 \begin{figure}
 \centering
@@ -89,9 +89,9 @@ One of the earliest algorithm animation systems was developed by Bentley and Ker
 \label{fig:bentley-kernighan}	
 \end{figure}
 
-Six years later in 1993 Stasko, Badre and Lewis were amongst the first to consider whether algorithm animations assisted learning as much as we might think \cite{StaskoBadreLewis}. Stasko, Badre and Lewis carried out a study which involved attempting to teach students the concept of a ``pairing heap'', with one group using textual descriptions of the algorithm, the others using an animation. Stasko then repeated a similar experiment in 1999 with Byrne and Catrambone in which one group used an animation and the others used static visualisations (such as diagrams from a textbook), instead of textual descriptions like in the previous experiment \cite{StaskoByrneCatrambone}. In both studies the researchers found the results to be disappointing. They found that whilst students in the animation group did perform moderately better than their textual or diagrammatic counterparts, the improvement was not statistically significant.
+Six years later in 1993 Stasko, Badre and Lewis were amongst the first to consider whether algorithm animations assisted learning as much as we might think \cite{StaskoBadreLewis}. Stasko, Badre and Lewis carried out a study which involved attempting to teach two separate groups of students the concept of a ``pairing heap'', with one group using textual descriptions of the algorithm and the other using an animation of the algorithm. Stasko then repeated a similar experiment in 1999 with Byrne and Catrambone. Again, one group used an animation but this time the other group used static diagrams (such as figures from a textbook), instead of textual descriptions like in the previous experiment \cite{StaskoByrneCatrambone}. In both studies the researchers found the results to be disappointing. They found that whilst students in the animation group did perform moderately better than their textual or diagrammatic counterparts, the improvement was not statistically significant.
 
-Despite computer graphic capabilities improving significantly since the 1990s, other more recent studies have all shown the same results. The general consensus being that whilst animations do provide a small benefit, it is certainly not as large as our intuition would lead us to believe. However, that is not to say that algorithm animations are without use. Stasko, Badre and Lewis suggest that algorithm animations are not particularly effective when students are trying to learn a concept for the first time, but is likely to be much more suitable when students are looking to refine their understanding of a particular notion. The theory is that students should ideally learn the primitive concepts of the algorithm using conventional methods initially, then transition to using animations when looking to clarify and solidify their understanding of certain aspects.
+Despite computer graphic capabilities improving significantly since the 1990s, other more recent studies have shown similar results. The general consensus being that whilst animations do provide a small educational benefit, it is certainly not as large as our intuition would lead us to believe. However, that is not to say that algorithm animations are without use. Stasko, Badre and Lewis suggest that algorithm animations are not particularly effective when students are trying to learn a concept for the first time, but are likely to be much more suitable when students are looking to refine their understanding of a particular notion. The theory is that students should ideally learn the primitive concepts of the algorithm using conventional methods initially, then transition to using animations when looking to clarify and solidify their understanding of certain aspects.
 
 Stasko, Badre and Lewis also reveal a list of guidelines they believe to be effective advice when building algorithm animations, some of which are summarised below:
 \begin{itemize}
@@ -104,7 +104,7 @@ These guidelines suggest that algorithm animations require accompanying messages
 \section{Existing Products}
 Currently, very few existing tools provide even static illustrations of compilation components (such as syntax trees) and virtually no tools exist that create animations of the compilation process as a whole. There are however, an abundance of web applications that animate more straightforward algorithms, such as sorting or searching algorithms. 
 
-One of the most popular and well implemented is VisuAlgo \cite{visualgo}. VisuAlgo provides an interface for animating various sorting algorithms, including bubble sort, selection sort, etc. As shown in Figure \ref{fig:visualgo}, Visualgo implements many of the guidelines we previously listed. It provides impressive playback controls, the ability to choose the input of the algorithm and displays in-depth descriptions of the current step in the algorithm, in both plain English and pseudo-code. 
+One of the most popular and well implemented is VisuAlgo \cite{visualgo}. VisuAlgo provides an interface for animating various sorting algorithms, including bubble sort, selection sort, etc. As shown in Figure \ref{fig:visualgo}, VisuAlgo implements many of the guidelines we previously listed. It provides impressive playback controls, the ability to choose the input of the algorithm and displays in-depth descriptions of the algorithm's current progress in both plain English and pseudo-code. 
 
 \begin{figure}
 	\centering
@@ -123,12 +123,12 @@ One of the most popular and well implemented is VisuAlgo \cite{visualgo}. VisuAl
 \end{figure}
 
 
-Moving away from pure sorting algorithms, the University of San Francisco developed a small web application which animates Dijkstra's algorithm \cite{dijkstra}, as shown in Figure \ref{fig:dijkstra}. Dijkstra's algorithm is arguably more complicated than many sorting algorithms, involving the need to visualise tables and graphs. However, we see that at the expense of this complexity, the application has sacrificed several usability aspects in comparison to VisuAlgo. You cannot define your own input and you cannot pause or rewind the animation. Additionally, whilst some very primitive details are displayed next to the table at each stage, they are far from informative explanations. 
+Departing from pure sorting algorithms, the University of San Francisco developed a small web application which animates Dijkstra's algorithm \cite{dijkstra}, as shown in Figure \ref{fig:dijkstra}. Dijkstra's algorithm is arguably more complicated than most sorting algorithms, involving the need to visualise tables and graphs. However, we see that at the expense of this complexity, the application has sacrificed several usability aspects in comparison to VisuAlgo. You cannot define your own input and you cannot pause or rewind the animation. Additionally, whilst some very primitive details are displayed next to the table at each stage, they are far from informative explanations. 
 
 \section{Discussion}
 Despite studies showing that algorithm animation is not as effective as we might have initially believed, it would seem that the surprisingly poor performance is due to specific circumstances which could be alleviated if the environment in which an algorithm animation tool was targeted for use was selected more carefully. 
 
-The studies found that algorithm animation was less effective in novice students who were learning the algorithms for the first time, yet could be an effective tool for students who are looking to revise particular concepts. Consequently, any future algorithm animation tool should likely act as a secondary learning resource. Ideally, students should have been taught the concepts using conventional methods to begin with, then the educator can distribute the application to students who can utilise this as a means to refine and clarify understanding.
+The studies found that algorithm animation was less effective when applied to novice students who were learning the algorithms for the first time, yet could be an effective tool for students who are looking to revise particular concepts. Consequently, any future algorithm animation tool should likely act as a secondary learning resource. Ideally, students should have been taught the concepts using conventional methods to begin with, then the educator can distribute the application to students who can utilise this as a means to refine and clarify understanding.
 
 When considering the previous guidelines proposed by Stasko, Badre and Lewis and how they might affect algorithm animation software, it appears a potential system should:
 \begin{itemize}
@@ -137,12 +137,13 @@ When considering the previous guidelines proposed by Stasko, Badre and Lewis and
 \item Ensure users can create the animation themselves by allowing them to modify the input to the algorithm.
 \end{itemize}
 
+% Feel I should remove these last 2 paragraphs but unsure how else to discuss existing products.
 After analysing some examples of current products that are available in the area of algorithm animation, such as VisuAlgo and the University of San Francisco's Dijkstra's algorithm animator, it seems there is a trade-off between complexity and usability. In order to animate a considerably more complex algorithm, the University of San Francisco sacrifices much of the visual support and playback control that VisuAlgo is able to provide. 
 
 However, a tool based on compiler animation would need to include both aspects of complexity and usability. The tool would implement an algorithm that is certainly more complex and volatile than even Dijkstra's algorithm, but in order to be educationally effective, it also needs to provide the display of highly input-dependent analytics and implement the usability and interactivity features such as playback control that are embedded within the guidelines of the previous studies.
 
 \chapter{The Fun Programming Language \& Compilation Theory}
-This chapter aims to introduce the reader to the main tools and concepts used throughout this paper. Firstly, we begin with an small overview of the Fun programming language and its main features. Secondly, we consider how and why compilers parse source code into syntax trees and why some representations of a syntax tree might be more beneficial than others. Thirdly, we take an in-depth look at the three phases of compilation, the latter two of which form the animation basis of this project. Finally, we discuss the use of code templates as a theoretical tool for assisting compiler developers in deciding which object code or assembly language to generate for various constructs within a programming language.
+This chapter aims to introduce the reader to the main tools and concepts used throughout this dissertation. Firstly, we begin with an small overview of the Fun programming language and its main features. Secondly, we consider how and why compilers parse source code into syntax trees and why some representations of a syntax tree might be more beneficial than others. Thirdly, we take an in-depth look at the three phases of compilation, the latter two of which form the animation basis of this project. Finally, we discuss the use of code templates as a theoretical tool for assisting compiler developers in deciding which object code or assembly language to generate for various constructs within a programming language.
 
 \section{The Fun Programming Language}
 Included in Niklaus Wirth's 1975 book {\it Algorithms + Data Structures = Programs}, was a language written entirely in Pascal named ``PL/0''. PL/0 was intended as a small educational programming language, used to teach the concepts of compiler construction. The language contains very primitive constructs and limited operations. Similarly to PL/0, ``Fun'' is a simple imperative language built using ANTLR \cite{antlr}, developed at Glasgow University by David Watt and later extended by Simon Gay. Its purpose is to exhibit various general aspects of programming languages, including the construction of an elementary compiler. The language is provided as a supplementary aid during the delivery of the level 3 computer science course, {\it Programming Languages}, at Glasgow University.
@@ -195,7 +196,6 @@ At the initial stages of compilation, the compiler will attempt to translate the
 
 Since ASTs are usually much smaller and less crowded than their parse tree counterparts, they are often far easier to read and understand. Any information that is lost from the conversion of a parse tree to an AST is usually semantic and does not affect how the syntax tree would be evaluated. Consequently, when trying to illustrate syntax tree concepts to students from an educational perspective, we generally prefer to use visualisations of ASTs over parse trees.
 
-
 \section{Compilation Phases}
 In general, compilation is the process of automatically translating high-level code into low-level code. The most common case is to convert a program whose source code is written in some programming language, into an executable program. This compilation process can usually be decomposed into three distinct phases: 
 \begin{enumerate}[label=\alph*)]
@@ -203,7 +203,7 @@ In general, compilation is the process of automatically translating high-level c
 \item \textit {Contextual Analysis}
 \item \textit {Code Generation}
 \end{enumerate}
-If either syntactic or contextual analysis encounters an error (as determined by the language's specification) during its execution, the phase completes, but the remainder of the compilation process is halted and the errors are reported to the programmer. Note that the following descriptions assume the compiler is employing an AST representation of a syntax tree. See Figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
+If either syntactic or contextual analysis encounters an error (as determined by the language's specification) during its execution, the phase completes, but the remainder of the compilation process is halted and the errors are reported to the programmer. Note that the following subsections assume the compiler is employing an AST representation of a syntax tree. See Figure \ref{fig:compilation-pipeline} for a diagram of a typical compilation pipeline.
 
 \begin{figure}[h]
 \centering
@@ -290,8 +290,6 @@ For example, in Figure \ref{fig:plus} we see an AST snippet that demonstrates th
 Figure \ref{fig:plus} also illustrates a code template for the \texttt{PLUS} construct. Considering each instruction sequentially, it stipulates that firstly we should generate the object code for \texttt{expr1}, then \texttt{expr2}. Only after both these values have been loaded into memory can we emit the \texttt{ADD} object code instruction. 
 
 It is often the case that the compiler needs to translate the constituent statements of a construct into object code before emitting any object code for the construct itself. In general, how each construct should be translated into object code is not always immediately clear just from the structure of the AST. Code templates assist in solving this matter as they provide a way to exemplify how each construct in the source language should be translated into object code. 
-
-% Whole section basically needs rewriting
 
 \chapter{Requirements}
 This chapter initially discusses the methods via which the requirements of this project, which we will henceforth refer to as the \textit{FunCompiler}, were collected and established. The remainder of the chapter lists the FunCompiler's user stories, functional requirements and non-functional requirements.
@@ -382,7 +380,7 @@ This chapter covers the aesthetic design process of the FunCompiler. We develop 
 After analysing the project's functional requirements, we develop and build a series of interface component designs. Each component consists of a wireframe design and considers how the component may satisfy one or more of the functional requirements (FRs).
 
 \subsection{Code Editor}
-The code editor will be the text-area in which users are able to enter code written in the Fun language (FR \textbf{1}). The code editor should be pre-populated with some example code when a user first arrives at the FunCompiler. Ideally, the code editor should also follow some of the semantics of standard programmatic text editors, including syntax highlighting and auto-indention. Notice that in Figure \ref{fig:code-editor-wireframe} two buttons for ``Contextual Analysis'' and ``Code Generation'' have been attached to the bottom of the code editor. These buttons will trigger the transmission of the input code to the compiler and thus initiate the corresponding animation (FR \textbf{2}).
+The code editor will be the text-area in which users are able to enter code written in the Fun language (FR \textbf{1}). Ideally, the code editor should follow some of the semantics of standard programmatic text editors, including syntax highlighting and auto-indention. Notice that in Figure \ref{fig:code-editor-wireframe} two buttons for ``Contextual Analysis'' and ``Code Generation'' have been attached to the bottom of the code editor. These buttons will trigger the transmission of the input code to the compiler and thus initiate the corresponding animation (FR \textbf{2}).
 
 \begin{figure}[h]
 \centering
@@ -392,17 +390,35 @@ The code editor will be the text-area in which users are able to enter code writ
 \end{figure}
 
 \subsection{AST}
-The AST of the input program is the foundation of the animation. The AST will be display in a conventional hierarchical tree format where the animator will highlight each node consecutively, corresponding the progress of the compiler (FR \textbf{3, 5}). The highlighted \texttt{PROG} node in Figure \ref{fig:animation-active-wireframe} symbolises the current status of the compiler's traversal. 
+The AST of the input program is the foundation of the animation. The AST will be displayed in a conventional hierarchical tree format where the animator will highlight each node consecutively, corresponding to the progress of the compiler (FR \textbf{3, 5}). For example, along with showing the general structure of the AST for a Fun program, Figures \ref{fig:anim-step-1} to \ref{fig:anim-step-3} demonstrate how the application might animate the AST. At each ``step'' of the animation, the next node in the traversal is highlighted, whilst the previous node is returned to its original state.
 
 \begin{figure}[h]
-\centering
-\includegraphics[scale=0.6]{images/animation-active-wireframe.png}
-\caption{AST wireframe}
-\label{fig:animation-active-wireframe}	
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\linewidth]{images/animation-active-wireframe.png}
+		\caption{Step 1 of animation}
+		\label{fig:anim-step-1}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\linewidth]{images/animation-active-wireframe2.png}
+		\caption{Step 2 of animation}
+		\label{fig:anim-step-2}
+	\end{subfigure}	
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\linewidth]{images/animation-active-wireframe3.png}
+		\caption{Step 3 of animation}
+		\label{fig:anim-step-3}
+	\end{subfigure}	
+	\caption{AST wireframes}
+	\label{fig:animation-active-wireframe}	
 \end{figure}
 
 \subsection{Supplementary Information}
-We have stated how as the compiler traverses the tree, we would like the application to augment the animation with any extra details that may aid the watcher's understanding. For both compilation phases, this involves a list of descriptions per node in the AST that explain the behaviour of the compiler (FR \textbf{10}) along with the display of the type or address table containing the identifiers encountered at the current point of animation (FR \textbf{11}). The code generation phase also needs to display two other features: the code template (FR \textbf{12}) for each construct and the currently generated object code (FR \textbf{13}). Figure \ref{fig:supp-info-ca} illustrates the type of supplementary information that would be display during contextual analysis, including the current or future logic of the compiler along with the type table. Figure \ref{fig:supp-info-cg} illustrates the same for code generation (swapping the type table for an address table), along with the display of code templates and object code. 
+As the compiler traverses the tree, the application should augment the animation with any extra details that may aid the watcher's understanding. For each node highlighted during the animation, the FunCompiler should display an explanatory message that justifies the current action or predicts the next action of the compiler (FR \textbf{10}). For every distinct node, the explanatory message should be appended to any pre-existing messages that have been displayed, meaning that at each node the full message history is available.
+
+Additionally, during contextual analysis the FunCompiler should display the compiler's type table. The type table should be populated and de-populated in sync with the encounter of identifiers during the animation. Conversely, during code generation the FunCompiler should replace the type table with an address table  (FR \textbf{11}) and display two extra features: the code template (FR \textbf{12}) for each construct and the currently generated object code (FR \textbf{13}). All of the above elements can be noted in Figure \ref{fig:supp-info-wireframe}.
 
 \begin{figure}[h]
 	\centering
@@ -446,9 +462,13 @@ Users require the ability to play, pause and step through (backwards and forward
 \label{fig:fun-specification-wireframe}	
 \end{figure}
 
+\pagebreak
 \section{Full Design}
-In this section we combine the individual components we have developed to create full-size designs for the FunCompiler. We use these full-size designs to act as a ``storyboard'', which is a means a demonstrating a potential workflow through the website. 
+With all necessary components designed, we consider how to combine each of these to create a set of full-sized designs. The main design element is that the code editor, the animation and the supplementary information are all available within the same view. This is important for two reasons. Firstly, from an educational perspective, there is a strong inherent link between these three components. For example, when users generate an AST, it is often necessary to cross-reference between the AST and input code that caused its creation, therefore the code editor with the preserved code must remain in view during the animation. Secondly, from a usability aspect, as an animation is running, a user should be able to modify the input code and generate a new animation without having the navigate to a different page.
 
+Additionally, we must ensure we reserve sufficient space to embed the Fun specification. We achieve the above by splitting the FunCompiler into three separate pages: the landing page (containing the Fun specification, the contextual analysis animation page and the code generation animation page. We also insert a small navigation bar which includes a link to return to the landing page.
+
+\subsection{Landing Page}
 Figure \ref{fig:full1} demonstrates the landing page of the FunCompiler. Here we see that the user has access to the code editor (with example code pre-inserted) along with access to the full specification of the Fun language. A user can optionally enter a Fun program of their own creation then choose to animate either contextual analysis or code generation by clicking one of the buttons below the code editor. Every page within the FunCompiler has access to the navigation bar seen at the top of the diagram, clicking the ``FunCompiler'' text within this bar will return the user to the landing page.
 
  \begin{figure}[h]
@@ -458,7 +478,8 @@ Figure \ref{fig:full1} demonstrates the landing page of the FunCompiler. Here we
 \label{fig:full1}	
 \end{figure}
 
-If the user chooses contextual analysis, they are shown the page illustrated in Figure \ref{fig:full2}. This page displays the AST for the input program, playback controls for the animation, a section to list messages explaining the compiler's logic and the type table. From here the user still has access to the code editor and is free to input a new program and re-select contextual analysis or select code generation. 
+\subsection{Contextual Analysis Animation Page}
+If the user chooses contextual analysis, they are shown the page illustrated in Figure \ref{fig:full2}. This page displays the AST for the input program, playback controls for the animation, a section to list messages explaining the compiler's logic and the type table. From here the user still has access to the code editor and is free to modify the input program and generate a new animation. 
 
  \begin{figure}[h]
 \centering
@@ -467,7 +488,8 @@ If the user chooses contextual analysis, they are shown the page illustrated in 
 \label{fig:full2}	
 \end{figure}
 
-If the user chooses to animate code generation from either of the previous two pages, they are shown page illustrated in Figure \ref{fig:full3}. This page displays very similar details to the contextual analysis page, except the type table is swapped for an address table and sections to display code templates and object code have been inserted.
+\subsection{Code Generation Animation Page}
+If the user chooses to animate code generation, they are shown page illustrated in Figure \ref{fig:full3}. This page displays very similar details to the contextual analysis page, except the type table is swapped for an address table and sections to display code templates and object code have been inserted.
 
  \begin{figure}[h]
 \centering
