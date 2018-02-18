@@ -374,10 +374,10 @@ After selecting one of the two phases, the AST that represents the input program
 This potential workflow of the FunCompiler is enough to meet all functional requirements. The non-functional requirements cover issues that are strictly more technical, the solutions to which will be discussed during the system design and the physical implementation.
 
 \chapter{Design}
-This chapter covers the aesthetic design process of the FunCompiler. We develop simple low-fidelity wireframe designs of the individual components of the user interface and consider how each of these different components might satisfy our functional requirements. We then look at a more complete design of the user interface and use ``storyboards'' in an attempt to illustrate an extended version of the workflow we saw in Section 4.5. Finally, in order to make the website compatible across different screen sizes, we consider a responsive design of the application.
+This chapter covers the aesthetic design process of the FunCompiler. We develop simple low-fidelity wireframe designs of the individual components of the user interface and consider how each of these different components might satisfy our functional requirements. We then look at a more complete design of the user interface and observe how a user might transition from page to page. %Finally, in order to make the website compatible across different screen sizes, we consider a responsive design of the application.
 
 \section{Application Interface}
-After analysing the project's functional requirements, we develop and build a series of interface component designs. Each component consists of a wireframe design and considers how the component may satisfy one or more of the functional requirements (FRs).
+To act as the first step in realising the project's functional requirements, we develop a series of quick and primitive low-fidelity wireframe designs, each representing an individual component of the user interface. Detailed below are a set of five interface components which when combined satisfy the majority of the application's functional requirements. Each component consists of a wireframe design and considers how the component may meet one or more of the functional requirements (FRs).
 
 \subsection{Code Editor}
 The code editor will be the text-area in which users are able to enter code written in the Fun language (FR \textbf{1}). Ideally, the code editor should follow some of the semantics of standard programmatic text editors, including syntax highlighting and auto-indention. Notice that in Figure \ref{fig:code-editor-wireframe} two buttons for ``Contextual Analysis'' and ``Code Generation'' have been attached to the bottom of the code editor. These buttons will trigger the transmission of the input code to the compiler and thus initiate the corresponding animation (FR \textbf{2}).
@@ -415,26 +415,23 @@ The AST of the input program is the foundation of the animation. The AST will be
 	\label{fig:animation-active-wireframe}	
 \end{figure}
 
-\subsection{Supplementary Information}
-As the compiler traverses the tree, the application should augment the animation with any extra details that may aid the watcher's understanding. For each node highlighted during the animation, the FunCompiler should display an explanatory message that justifies the current action or predicts the next action of the compiler (FR \textbf{10}). For every distinct node, the explanatory message should be appended to any pre-existing messages that have been displayed, meaning that at each node the full message history is available.
-
-Additionally, during contextual analysis the FunCompiler should display the compiler's type table. The type table should be populated and de-populated in sync with the encounter of identifiers during the animation. Conversely, during code generation the FunCompiler should replace the type table with an address table  (FR \textbf{11}) and display two extra features: the code template (FR \textbf{12}) for each construct and the currently generated object code (FR \textbf{13}). All of the above elements can be noted in Figure \ref{fig:supp-info-wireframe}.
+\subsection{Augmentations}
+As the compiler traverses the tree, the application should augment the animation with any supplementary information that may aid the watcher's understanding, including explanatory messages, type/address tables, code templates and object code. We henceforth collectively refer to each of these factors as ``augmentations''. Figure \ref{fig:analytics-ca-wireframe} illustrates the augmentations required for contextual analysis, including a type table and a section to display explanatory messages (FR \textbf{10, 11}). Figure \ref{fig:analytics-cg-wireframe} illustrates similar augmentations for code generation, with the type table replaced by an address table and two added sections to display code templates and object code (FR \textbf{12, 13}).
 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.7]{images/analytics-ca-wireframe.png}
-		\caption{Supplementary information for contextual analysis}
-		\label{fig:supp-info-ca}
+		\includegraphics[scale=0.6]{images/analytics-ca-wireframe.png}
+		\caption{Contextual analysis augmentations}
+		\label{fig:analytics-ca-wireframe}
 	\end{subfigure}
 	~
 	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.7]{images/analytics-cg-wireframe.png}
-		\caption{Supplementary information for code generation}
-		\label{fig:supp-info-cg}
-	\end{subfigure}	
-	\caption{Supplementary information wireframes}
-	\label{fig:supp-info-wireframe}	
+		\includegraphics[scale=0.6]{images/analytics-cg-wireframe.png}
+		\caption{Code generation \\ augmentations}
+		\label{fig:analytics-cg-wireframe}
+	\end{subfigure}
+	\caption{Augmentations wireframe}\label{fig:augmentations-wireframe}	
 \end{figure}
 
 \subsection{Playback Controls}
@@ -464,12 +461,12 @@ Users require the ability to play, pause and step through (backwards and forward
 
 \pagebreak
 \section{Full Design}
-With all necessary components designed, we consider how to combine each of these to create a set of full-sized designs. The main design element is that the code editor, the animation and the supplementary information are all available within the same view. This is important for two reasons. Firstly, from an educational perspective, there is a strong inherent link between these three components. For example, when users generate an AST, it is often necessary to cross-reference between the AST and input code that caused its creation, therefore the code editor with the preserved code must remain in view during the animation. Secondly, from a usability aspect, as an animation is running, a user should be able to modify the input code and generate a new animation without having the navigate to a different page.
+With all necessary components designed, we consider how to combine each of these to create a set of full-sized designs. The presiding design philosophy is that the code editor, the animation and the augmentations are all available within the same view. This is important for two reasons. Firstly, from an educational perspective, there is a naturally inherent link between these three components. For example, when users generate an AST, it is often necessary to cross-reference between the AST and input code that caused its creation, therefore the code editor with the preserved code must remain in view during the animation. Secondly, from a usability aspect, as an animation is running, a user should be able to modify the input code and generate a new animation without having the navigate to a different page.
 
-Additionally, we must ensure we reserve sufficient space to embed the Fun specification. We achieve the above by splitting the FunCompiler into three separate pages: the landing page (containing the Fun specification, the contextual analysis animation page and the code generation animation page. We also insert a small navigation bar which includes a link to return to the landing page.
+Additionally, we must ensure we reserve sufficient space to embed the Fun specification. We achieve the above by splitting the FunCompiler into three separate pages: the landing page (containing the Fun specification), the contextual analysis animation page and the code generation animation page. We also insert a small navigation bar which includes a link to return to the landing page.
 
 \subsection{Landing Page}
-Figure \ref{fig:full1} demonstrates the landing page of the FunCompiler. Here we see that the user has access to the code editor (with example code pre-inserted) along with access to the full specification of the Fun language. A user can optionally enter a Fun program of their own creation then choose to animate either contextual analysis or code generation by clicking one of the buttons below the code editor. Every page within the FunCompiler has access to the navigation bar seen at the top of the diagram, clicking the ``FunCompiler'' text within this bar will return the user to the landing page.
+Figure \ref{fig:full1} demonstrates the landing page of the FunCompiler. Here we see that the user has access to the code editor along with access to the full specification of the Fun language. A user can enter a Fun program of their own creation then choose to animate either contextual analysis or code generation by clicking one of the buttons below the code editor. Every page within the FunCompiler has access to the navigation bar seen at the top of the diagram, clicking the ``FunCompiler'' text within this bar will return the user to the landing page.
 
  \begin{figure}[h]
 \centering
