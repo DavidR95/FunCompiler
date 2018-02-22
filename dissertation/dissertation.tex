@@ -542,12 +542,25 @@ Conveniently, the FunCompiler does not require that users create accounts and in
 \label{fig:funinfra1}	
 \end{figure}
 
-\section{Infrastructure Components}
+\section{Infrastructure Technologies}
 
-\subsection{Website Framework}
+\subsection{Laravel}
 Despite having no database, the website does require some back-end functionality, including routing and delivering API requests and handling the responses. This back-end functionality is implemented using Laravel. Laravel is an open-source PHP framework intended for the rapid development of web-applications. Like the majority of back-end frameworks, Laravel follows a standard model-view-controller (MVC) architectural pattern. 
 
 One might argue that given the limited amount of back-end functionality required, a relatively large scale framework such as Laravel is unnecessary. Whilst it's certainly true that a minimalistic framework (such as Express) may be more semantically appropriate, any performance difference between the two frameworks under these circumstances is likely to be very negligible. Given that the developer of this project has extensive experience with using Laravel, it was decided it would more effective to choose a familiar framework and create prototypes very quickly than it would be to choose a foreign framework for what are mostly pedantic reasons. However, if the FunCompiler was to grow to include a significant degree more functionality in the future, switching the a different website framework may be a worthwhile investment.    
+
+\subsection{ANTLR}
+The grammar of a language is a standardised way of representing the syntax of a language. Given a grammar as input, ANTLR is a tool which can automate the generation of particular compiler components, such as a lexer and a recursive-descent parser. ANTLR also provides a visitor interface which facilitates traversals over the syntax tree created by the parser, allowing the developer to implement a contextual analyser and code generator. The compiler of the Fun language is implemented in ANTLR and although ANTLR supports many languages, is written in Java. 
+
+\subsection{Spark}
+As previously stated, we intend to expose the compiler as an API so we can return the results of the compilation back to the website. For convenience, we desire to use a Java-based framework to avoid compatibility issues. We do this using Spark (not to be confused with Apache Spark) which is a Java micro-framework ideal for creating APIs with minimal boilerplate. 
+
+Since we realistically only need to create one endpoint, we seek to use a framework with minimal overhead. Spark has extremely concise, functional-esque syntax which can be used to expose APIs with very small amounts of code.
+
+\subsection{Maven}
+Naturally, we desire to combine the compiler and API for the compiler into a single package. We do this using a build tool called Maven. Maven is project build manager typically used for Java applications. 
+
+\subsection{Docker}
 
 
 %Put in implementation mayb
