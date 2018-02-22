@@ -15,3 +15,5 @@ RUN docker-php-ext-install zip
 RUN docker-php-ext-enable xdebug
 # Use the 'composer.json' file to download any PHP dependencies (including Laravel)
 RUN composer install
+RUN cp .env.example .env
+RUN php artisan key:generate
