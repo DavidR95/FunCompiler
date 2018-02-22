@@ -5,10 +5,4 @@ services:
 
 script:
   - docker-compose -f docker-compose.production.yml up -d
-  - docker exec FunApp sh -c "mkdir -p storage/framework"
-  - docker exec FunApp sh -c "mkdir storage/framework/cache"
-  - docker exec FunApp sh -c "mkdir storage/framework/sessions"
-  - docker exec FunApp sh -c "mkdir storage/framework/views"
-  - docker exec FunApp sh -c "cp .env.example .env"
-  - docker exec FunApp sh -c "php artisan key:generate"
   - docker exec FunApp sh -c "vendor/bin/phpunit --coverage-text"
