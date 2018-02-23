@@ -552,12 +552,13 @@ With the FunCompiler split into its constituent components, we discuss the vario
 
 \subsection{Web-application Technologies}
 \subsubsection{Laravel}
-A helpful facet of the FunCompiler is that the system requires no persistent storage, meaning we don't need to include a database. Despite lacking a database, the website does require some server side (or back-end) functionality, namely delivering API requests and handling the responses. This functionality is implemented using Laravel. Laravel is an open-source PHP framework intended for the rapid development of web-applications. Like the majority of back-end frameworks, Laravel follows a standard model-view-controller (MVC) architectural pattern. 
+A helpful facet of the FunCompiler is that the system requires no persistent storage, meaning we don't need to include a database. Despite lacking a database, the web-application does require some server side (or back-end) functionality, namely delivering API requests and handling the responses. This functionality is implemented using Laravel. Laravel is an open-source PHP framework intended for the rapid development of web-applications. Like the majority of back-end frameworks, Laravel follows a standard model-view-controller (MVC) architectural pattern. 
 
 One might argue that given the limited amount of server side processing required, a relatively large scale framework such as Laravel is unnecessary. Whilst it's certainly true that a minimalistic framework (such as Express) may be more semantically appropriate, any performance difference between the two frameworks under these circumstances is likely to be very negligible. Given that the developer of this project has extensive experience with using Laravel, it was decided it would more effective to choose a familiar framework and create prototypes very quickly than it would be to choose a foreign framework for what are mostly pedantic reasons. However, if the FunCompiler was to grow to include a significant degree more functionality in the future, switching the a different website framework may be a worthwhile investment.    
-\subsubsection{HTML, CSS \& Javascript}
-In regards to the client side (or front-end) functionality, a significant amount of Node.js and vanilla Javascript is used (along with HTML and CSS). The web-application does make use of many third-party Javascript libraries in order to implement a robust code editor and build syntax trees, however, these will be discussed in Chapter 7.
-%why do we use what we use??
+
+\subsubsection{Composer}
+Composer is the quintessential dependency manager for PHP applications. Within our project we can declare all the dependencies our application requires, including API libraries and Laravel itself. Composer can either automatically install the latest versions of these libraries, or be locked into installing a specified version, appropriate for production-ready applications.
+
 \subsection{Compiler Technologies}
 \subsubsection{ANTLR}
 The compiler for the Fun language is a pre-existing piece of software built using Java and ANTLR. Given a grammar (which is a method of defining the syntax of a language) as input, ANTLR is a tool which can automate the generation of certain compiler components, such as a lexer and a recursive-descent parser. ANTLR also provides a visitor interface which facilitates traversals over the syntax tree created by the parser, allowing the developer to implement a contextual analyser and code generator. 
@@ -568,10 +569,10 @@ As previously stated, we need the web-application to be able to communicate with
 
 As the API only requires a single (and relatively simple) endpoint, it makes sense to pick a technology that will allow us to expose an API with as little overhead as possible, the only restriction being that it must be Java-based in order to encapsulate the compiler. Given these parameters, we choose Spark (not to be confused with Apache Spark) which is a Java micro-framework ideal for creating APIs with minimal boilerplate. Spark has extremely concise syntax, similar to that of functional languages, which can be used to expose APIs with very small amounts of code.
 \subsubsection{Maven}
-%Make less shit
+%Make less shit Say similar to composer it pulls deps but it also builds...
 Now that we have our Java-based compiler contained within our Java-based API, we require a build tool to automatically package these components into a single JAR file. Maven is the definitive standard in terms of the project management of Java applications. Maven has built in dependencies for both Spark and ANTLR, making it the obvious choice for build tool we use.
 \subsection{Docker}
-Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We do a nice abstraction in terms of Maven which is building the compiler components for us, however, in order to develop or deploy this system the host machine would require many bits of software. This includes: PHP (and associated PHP package manager Composer), Apache, Laravel, Java and Maven. Obviously, this is quite a few things to download and would be a pain to develop across multiple machines and would make the deployment process complicated.
+Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We consider that if we were to attempt to develop the FunCompiler on a different machine, or perhaps deploy the FunCompiler, the host would be required to install several pieces of software. This includes PHP, Composer, Apache, Laravel, Java and Maven. Clearly, this is both quite a burdensome request and indicative that the code-base is not particularly easy to transport.
 
 \begin{figure}[h]
 \centering
@@ -580,11 +581,20 @@ Given the technologies previously listed, our current system infrastructure look
 \label{fig:maveninfra}	
 \end{figure}
 
-Similar to how we abstracted to compiler build using Maven, we now attempt to abstract the full build, including the web-application and the compiler using Docker. Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Before using a container we must define an image. Within the image we can state exactly what dependencies we require from the operating system to specific applications. The image is effectively a template of the environment we wish to run and when we run an image, we get a container (a container can be thought of as an instance of an image). 
+Similarly to how we used Maven to retrieve all the dependencies of the compiler and package it into a single component, we desire a tool which can retrieve the dependencies for the entire project and automatically execute a build. Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Before using a container we must define an image. Within the image we can state exactly what dependencies we require from the operating system to specific applications. The image is effectively a template of the environment we wish to run and when we run an image, we get a container (a container can be thought of as an instance of an image), as illustrated in Figure \ref{fig:docker1}. 
 
-We define an image for the web-application which contains a basic installation of ubuntu with PHP and Apache pre-installed. When we run the container, we install any other dependencies we require (such as Laravel) and start up the Laravel server. The image for the compiler again contains a basic installation of ubuntu with OpenJDK pre-installed. When we run the container, we install any other dependencies we require (such as Maven) and start up the Spark server. We use docker-compose to create a single script which builds and links both of these containers simultaneously.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{images/docker1.png}
+\caption{Creating a docker container from an image}
+\label{fig:docker1}	
+\end{figure}
 
-With Docker implemented, we present the final system architecture of the FunCompiler, as demonstrated in Figure \ref{fig:finalinfra}.
+Whilst we won't delve into specifics, the FunCompiler creates two images: one for the web-application, or for the compiler. When these images are run (and thus converted into containers), they automatically retrieve all the dependencies they each need and execute any necessary builds. We then utilise Docker Compose, which is a tool for running multi-container applications. We define a short script which informs Docker Compose to build both containers if necessary, specifies the ports over which they will communicate and finally starts up both the Laravel server (in order to boot up the web-application) and the Spark server (in order to boot up the compiler). Upon execution of this script, the entire application will be running and available. 
+
+There are a litany of advantages to use Docker but the take home point is that if another developer (or perhaps the system admin of the server deploying the application) was to obtain the source code for the FunCompiler, aslong as they had Docker installed, could build and run the FunCompiler with one command, without any of the application's dependencies installed locally. It is perhaps valuable to consider Docker container's as miniature virtual machines.
+
+With Docker implemented, we present the final system architecture of the FunCompiler, as demonstrated in Figure \ref{fig:finalinfra}. We see that both the web-application and the compiler are represented as containers and are both operating and communicating within a Docker environment.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{images/finalinfra.png}
