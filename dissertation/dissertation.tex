@@ -505,11 +505,17 @@ The above component designs successfully covered all but two of the 16 functiona
 \end{figure}
 
 \chapter{System Architecture}
-This chapter analyses the system architecture of the FunCompiler. That is, we build a model that specifies the structure and organisation of the system, alongside defining the communication patterns between distinct components within the infrastructure. We begin by discussing the differences between a monolithic and a micro-service architecture in regards to web-applications. We then consider which of these architectures the FunCompiler is to incorporate and how the components of the system will be arranged to fit that model. Finally, we use a bottom-up approach to describe the specific technologies that will be used within the FunCompiler, starting with bottom-level development frameworks up to top-level build tools and packaging systems.
-\section{Monolithic vs. Micro-service Architecture}
-Traditionally, websites have been built as large, monolithic applications, where each unique service within the website (e.g., authentication, routing, API exposure) is encapsulated under one application, as illustrated in Figure \ref{fig:mono}. Whilst a monolithic architecture may be an appropriate choice for many applications, if the system has a diverse range of services (of which each may have contrasting implementation logic), it often leads to each service being tightly coupled, unscalable and restricted in terms of programming language or development framework. 
+In this chapter we define the system architecture of the FunCompiler. That is, we extract individual system-level components and build a model to specify the organisation/structure of these components and the patterns of communication between them.
 
-The emerging trend is to extract each of these services out of the main application and allow them to behave as stand-alone components, referred to as micro-services. Figure \ref{fig:micro} demonstrates how a user interacts with the web-application, which in turn communicates with the individual micro-services that have been separated into their own components. Employing a micro-service architecture decouples the services, handles scalability issues more gracefully and allows a greater diversity in programming language and framework selection.
+First, we discuss the differences between a monolithic and a micro-service architecture in regards to web-applications. Second, we consider which of these architectures is most applicable to the FunCompiler and how the components of the system will be arranged to fit that model. Finally, from a bottom-up approach we describe the specific technologies that will be used within the FunCompiler, starting with application-level development frameworks and finishing with build tools and packaging systems.
+
+\section{Monolithic vs. Micro-service Architecture}
+Traditionally, websites have been built as large, monolithic applications, where each unique service within the website (e.g., authentication, routing, API exposure) is encapsulated under one application, as illustrated in Figure \ref{fig:mono}. Whilst a monolithic architecture may be an appropriate choice for many basic applications, if the system has a diverse range of service implementations, issues are likely to occur.
+
+For example, consider the scenario of a monolithic online shop. Suppose the vast majority of the website's business logic is written in Python but the authentication service is written in PHP. To force the PHP service to operate within a Python environment not only blatantly violates the basic principles of a separation of concerns, but likely leads to inefficient/insecure methods of communication (e.g., writing to files) and an unscalable, tightly coupled code-base. To solve the issue in this scenario we would need to translate the authentication service from PHP to Python, however, this may be undesirable or simply infeasible.
+
+The emerging trend is to extract each of these services out of the main application and allow them to behave as stand-alone components, referred to as micro-services. Figure \ref{fig:micro} demonstrates how a user interacts with the web-application, which in turn communicates with the individual micro-services that have been separated into their own components. Employing a micro-service architecture decouples the services, handles scalability issues with greater ease and allows diversity in programming language or web-framework selection.
+
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.3\textwidth}
@@ -526,19 +532,19 @@ The emerging trend is to extract each of these services out of the main applicat
 	\caption{Monolithic vs. micro-service architecture}\label{fig:mono-micro}	
 \end{figure}
 \section{FunCompiler Architecture}
-As discussed in Chapter 3, the compiler of the Fun language is a pre-existing piece of software built with Java and ANTLR. In order to incorporate the compiler with a web-application we have three choices:
+As discussed in Chapter 3, the compiler of the Fun language is a pre-existing piece of software built with Java and ANTLR. In order to incorporate the compiler within a web-application we have three choices:
 \begin{enumerate}[label=\alph*)]
 \item Translate the compiler into the same language used to implement the web-application. 
-\item Implement the web-application using a Java-based framework.
-\item Partition the FunCompiler into two distinct units: the web-application and the compiler, employing a micro-service architecture.
+\item Implement the web-application using a Java-based web-framework.
+\item Employ a micro-service architecture, partitioning the FunCompiler into two distinct units: the web-application and the compiler.
 \end{enumerate}
-Although all choices do essentially produce the same result, choice a) leads to a significant time investment that may produce a weaker implementation of the compiler, and choice b) compels us to make a framework selection based on a fragile justification which results in compounding the issues of tight coupling. Choice c) is the most rational optional which provides a sound separation of concerns, meaning the compiler does not need to be translated, nor are there any limitations on the choice of programming language or framework when implementing the web-application.
+Although all choices do essentially produce the same result, choice a) leads to a significant time investment that may produce a weaker implementation of the compiler, and choice b) compels us to make a framework selection based on a weak justification. Opting for choice c) means that the compiler does not need to be translated, nor are there any limitiations on the choice of web-framework when developing the web-application. Incidentally, even if the compiler and the web-application were natively developed in the same language, choice c) is the only option that provides a sound separation of concerns.
 
-Following this, we henceforth consider the FunCompiler as two separate components: the web-application and the compiler. The web-application is the user-facing component, serving the web-pages and displaying the animation. The compiler behaves as a micro-service which takes a program as input, compiles it, and outputs the result of the compilation (the contents of this result we will discuss more in section ). 
+Following this, we decompose the FunCompiler into two separate components: the web-application and the compiler. The web-application is the user-facing system, serving the web-pages and displaying the animations. The compiler behaves as a micro-service which receives a Fun program as input, and outputs the result of the program's compilation. (the contents of this result we will discuss more in section ). 
 
-Of course, the web-application must be able to send user submitted Fun programs to the compiler. Likewise, the compiler must be able to return the result of the compilation to the web-application. Therefore, the two components require some method of communication. We do this by exposing the compiler as an API. The API under these circumstances is very simple and requires only one endpoint. 
+Of course, the web-application must be able to send user-written Fun programs to the compiler. Likewise, the compiler must be able to return the result of the compilation to the web-application. Therefore, the two components require some method of communication. We do this by exposing the compiler as an API. The API under these circumstances is very simple and requires only one endpoint. 
 
-When a user enters a program on the web-application and clicks to animate either contextual analysis or code generation, the web-application makes an API request to the compiler, sending the input program.  When the API receives this request, it passes the program as input to the compiler, executes the compilation and returns the output. The response is then received by web-application and used to build the corresponding animation. Figure \ref{fig:funinfra0} illustrates this flow of information.
+When a user enters a program within the web-application and chooses to animate either contextual analysis or code generation, the web-application makes an API request to the compiler, sending the input program. When the API receives this request, it passes the program as input to the compiler, executes the compilation and sends a response containing the output back to the web-application. The web-application uses the contents of this response to build the corresponding animation. Figure \ref{fig:funinfra0} illustrates this flow of information.
 
  \begin{figure}[h]
 \centering
@@ -548,31 +554,39 @@ When a user enters a program on the web-application and clicks to animate either
 \end{figure}
 
 \section{Infrastructure Technologies}
-With the FunCompiler split into its constituent components, we discuss the various system-level technologies and tools that shall be used to build and physically implement the system. First, we consider the tools used to develop the web-application, second, the tools used to develop the compiler and finally we discuss how we create an abstraction of the entire system and package it as a single portable instance.
+With the FunCompiler split into its constituent components, we discuss the various system-level technologies and tools that will be used to implement, build and run the application. We start by examining the application-level technologies used by the web-application and the compiler individually, then we consider how to create an abstraction of the system as a whole and package it as a single, portable instance.
 
 \subsection{Web-application Technologies}
 \subsubsection{Laravel}
-A helpful facet of the FunCompiler is that the system requires no persistent storage, meaning we don't need to include a database. Despite lacking a database, the web-application does require some server side (or back-end) functionality, namely delivering API requests and handling the responses. This functionality is implemented using Laravel. Laravel is an open-source PHP framework intended for the rapid development of web-applications. Like the majority of back-end frameworks, Laravel follows a standard model-view-controller (MVC) architectural pattern. 
+A convenient simplification of the FunCompiler is that the system requires no persistent storage, meaning our system architecture need not include a database. Even without a database, the web-application is required to perform a small amount of server-side (or back-end) work, namely delivering API requests and handling the corresponding responses. We implement this functionality using Laravel. Laravel is an open-source PHP framework intended for the rapid development of web-applications. Like the majority of web-frameworks, Laravel follows a standard model-view-controller (MVC) architectural pattern. 
 
-One might argue that given the limited amount of server side processing required, a relatively large scale framework such as Laravel is unnecessary. Whilst it's certainly true that a minimalistic framework (such as Express) may be more semantically appropriate, any performance difference between the two frameworks under these circumstances is likely to be very negligible. Given that the developer of this project has extensive experience with using Laravel, it was decided it would more effective to choose a familiar framework and create prototypes very quickly than it would be to choose a foreign framework for what are mostly pedantic reasons. However, if the FunCompiler was to grow to include a significant degree more functionality in the future, switching the a different website framework may be a worthwhile investment.    
+One might argue that given the limited amount of server-side processing required, a relatively large scale framework such as Laravel is excessive. However, under these circumstances the liklihood of observing anything other than a negligible performance difference between frameworks is extremely low, and whilst it's true that a minimalistic framework (i.e., a Node framework such as Express) could achieve the same functionality, we opt for Laravel due to the extensive experience the developer of this project has with the framework. 
+
+Using Laravel from the beginning also provides some sense of "future-proofing", if the application were required to implement considerably more complex server-side functionality in the future, we already have a framework in place that is capable of handling this, something that may not be possible with a minimalistic framework. 
 
 \subsubsection{Composer}
-Composer is the quintessential dependency manager for PHP applications. Within our project we can declare all the dependencies our application requires, including API libraries and Laravel itself. Composer can either automatically install the latest versions of these libraries, or be locked into installing a specified version, appropriate for production-ready applications.
+Within our PHP application were are likely to require several dependencies, including API libraries and Laravel itself. To manage and install these dependencies we use Composer, which is the quuntessential dependency manager for PHP applications.
+
+Composer utilises two important files: composer.json and composer.lock. Within composer.json we can define all the PHP dependencies we require along with the specific versions of those dependencies. By executing composer install, Composer will download and install all the dependencies within compose.json and generate composer.lock, which specifies the version of each dependency installed. After composer.lock has been generated, future invocations of composer install will only download the version specified in composer.lock. 
+
+This versioning system is practical because it means that all developers of a project will install the same dependency versions when executing composer install, assuming composer.lock is committed to version control. If we wish to update the dependencies to more recent versions, we invoke composer update, which updates composer.lock accordingly. 
 
 \subsection{Compiler Technologies}
 \subsubsection{ANTLR}
-The compiler for the Fun language is a pre-existing piece of software built using Java and ANTLR. Given a grammar (which is a method of defining the syntax of a language) as input, ANTLR is a tool which can automate the generation of certain compiler components, such as a lexer and a recursive-descent parser. ANTLR also provides a visitor interface which facilitates traversals over the syntax tree created by the parser, allowing the developer to implement a contextual analyser and code generator. 
+As we know, the compiler for the Fun language is built using ANTLR. ANTLR is a tool which, when given a grammar (which is a file defining the syntax of language), can automatically generate certain components of a standard compiler, such as a lexer and a recursive-descent parser. ANTLR also implements a visitor interface which provides the foundation for executing traversals over the parser-generated syntax tree, allowing the developer to implement a contextual analyser and code generator. 
 
-Of course, for the purposes of this project we will be required to make significant alterations to the code base of the compiler in order to build what is effectively a large set of metadata about the compilation. This metadata will be transferred back to the web-application and will be required to contain the information necessary to construct a representation of the AST, allow an animation over this AST, and display and correctly sync all augmentations of the animation. 
 \subsubsection{Spark}
-As previously stated, we need the web-application to be able to communicate with the compiler. We do this by encapsulating the compiler within an API. The API will contain a single endpoint which will be able to receive user submitted input programs from the web-application, which it passes to the compiler, it then receives the output from the compiler and passes this as a response back to the web-application.
+On its own, the compiler obviously has no way of communicating with the web-application. We form a channel of communication between the two by encapsulating the compiler within an API. The API requires only a single endpoint. The endpoint receives a user submitted input program from the web-application, passes it as input to the compiler, then receives the output from the compiler and finally passes this as a response back to the web-application.
 
-As the API only requires a single (and relatively simple) endpoint, it makes sense to pick a technology that will allow us to expose an API with as little overhead as possible, the only restriction being that it must be Java-based in order to encapsulate the compiler. Given these parameters, we choose Spark (not to be confused with Apache Spark) which is a Java micro-framework ideal for creating APIs with minimal boilerplate. Spark has extremely concise syntax, similar to that of functional languages, which can be used to expose APIs with very small amounts of code.
+Since the API contains only a single (and relatively simple) endpoint, we look to choose a framework that will allow us to expose an API with as a little overhead as possible, with the only restriction being that it must be Java-based in order to be compatible with the compiler. Given these parameters, we choose a Java micro-framework ideal for creating APIs with minimal boilerplate called Spark (not to be confused with Apache Spark). Spark requires minimal setup and has extremely concise syntax, similar to that of functional languages, meaning we can create an API with extremely small amounts of code.
+
 \subsubsection{Maven}
-%Make less shit Say similar to composer it pulls deps but it also builds...
-Now that we have our Java-based compiler contained within our Java-based API, we require a build tool to automatically package these components into a single JAR file. Maven is the definitive standard in terms of the project management of Java applications. Maven has built in dependencies for both Spark and ANTLR, making it the obvious choice for build tool we use.
+Maven is the definitive standard in regards to automated build tools for Java projects. To configure a Maven project the developer uses a Project Object Model to define firstly how the software should be built, and secondly the dependencies it requires. This configuration is stored in a file called pom.xml. Conveniently, Maven has built-in dependencies for both Spark and ANTLR. 
+
+With the Project Object Model defined, we can simply invoke (in a fashion not too disimiliar to Compoer) mvn package to compile all the Java source files and package the deliverable code into a single JAR file. By executing this JAR file we are booting up the Spark server, which enables the compiler to accept API requests.
+
 \subsection{Docker}
-Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We consider that if we were to attempt to develop the FunCompiler on a different machine, or perhaps deploy the FunCompiler, the host would be required to install several pieces of software. This includes PHP, Composer, Apache, Laravel, Java and Maven. Clearly, this is both quite a burdensome request and indicative that the code-base is not particularly easy to transport.
+Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We consider that if we were to attempt to develop the FunCompiler on a different computer, or perhaps deploy the FunCompiler on a server, the host machine would be required to install an abundance of dependencies. 
 
 \begin{figure}[h]
 \centering
@@ -581,7 +595,9 @@ Given the technologies previously listed, our current system infrastructure look
 \label{fig:maveninfra}	
 \end{figure}
 
-Similarly to how we used Maven to retrieve all the dependencies of the compiler and package it into a single component, we desire a tool which can retrieve the dependencies for the entire project and automatically execute a build. Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Before using a container we must define an image. Within the image we can state exactly what dependencies we require from the operating system to specific applications. The image is effectively a template of the environment we wish to run and when we run an image, we get a container (a container can be thought of as an instance of an image), as illustrated in Figure \ref{fig:docker1}. 
+Similarly to how we used Maven to automate the build process (and dependency installation) of the compiler, we desire to find a technology which will allow us to automate the build process of the entire project. We do this using an emerging tool called Docker. 
+
+Docker is designed to make it easier to create, deploy, and run applications by using containers. A container can be thought of as a miniture, GUI-less virtual machine. Before we can create a container, we must define an image. An image is a template of the environment we wish to run and when we run an image, we get a container, as illustrated in Figure \ref{fig:docker1}.
 
 \begin{figure}[h]
 \centering
@@ -590,9 +606,14 @@ Similarly to how we used Maven to retrieve all the dependencies of the compiler 
 \label{fig:docker1}	
 \end{figure}
 
-Whilst we won't delve into specifics, the FunCompiler creates two images: one for the web-application, or for the compiler. When these images are run (and thus converted into containers), they automatically retrieve all the dependencies they each need and execute any necessary builds. We then utilise Docker Compose, which is a tool for running multi-container applications. We define a short script which informs Docker Compose to build both containers if necessary, specifies the ports over which they will communicate and finally starts up both the Laravel server (in order to boot up the web-application) and the Spark server (in order to boot up the compiler). Upon execution of this script, the entire application will be running and available. 
+We use a Dockerfile to automatically build images. Within the Dockerfile we express all the commands a user would have to call via the command line if they were to create the image manually, this includes anything from installation of an operating system to setting the permissions of a file. When we run the Dockerfile representing an image, all the commands contained within are executed automatically and a live container running the environment we specified is created.
 
-There are a litany of advantages to use Docker but the take home point is that if another developer (or perhaps the system admin of the server deploying the application) was to obtain the source code for the FunCompiler, aslong as they had Docker installed, could build and run the FunCompiler with one command, without any of the application's dependencies installed locally. It is perhaps valuable to consider Docker container's as miniature virtual machines.
+Whilst we won't delve into specifics, the FunCompiler consists of two images: one for the web-application, one for the compiler. When the containers are created, they automatically retrieve all the dependencies they each need and execute any necessary builds. 
+
+% I think up from here is decent, below deffo needs a bit of work but the content is decent
+We then utilise a tool for running multi-container applications called Docker-compose. Using a file called docker-compose.yml, we can create many services. For each service, we specify which container to run, any ports we should expose to enable communication and any commands that should be executed once the container is running. In our case, we have two services, one running the web-application image, the other running the compiler image. The commands we specify are the commands necessary in order to boot up both the Laravel server and the Spark server. Invoking docker-compose up will execute this script, run both containers and start the servers, meaning the entire application is running and available
+
+There are a litany of advantages to using Docker but the take home point is that if another developer (or perhaps the system admin of the server deploying the application) was to obtain the source code for the FunCompiler, aslong as they had Docker installed, they could install every dependency, execute all builds and boot the FunCompiler with the execution of a single command.
 
 With Docker implemented, we present the final system architecture of the FunCompiler, as demonstrated in Figure \ref{fig:finalinfra}. We see that both the web-application and the compiler are represented as containers and are both operating and communicating within a Docker environment.
 \begin{figure}[h]
@@ -616,6 +637,8 @@ With Docker implemented, we present the final system architecture of the FunComp
 
 %\subsection{Fun Specification}
 %Since most users of the FunCompiler will be students enrolled in the Programming Languages course at Glasgow University, they will likely already have access to the full specification of the Fun language. However, embedding the Fun specification within the web application is valuable for two reasons. One, it is simply a matter of convenience, students will be able to find all the resources they need in one place. Two, inclusion of the specification helps not preclude the possibility that users could be non-students, as they would not have access to the specification otherwise. 
+
+%For the purposes of this project we will be required to make significant alterations to the code base of the compiler. Included in the response that the compiler API returns to the web-application will be what is effectively a large set of metadata about the compilation. This metadata will be required to contain sufficient enough information that the web-application can construct a representation of the AST, allow animations over the AST, and display correctly timed augmentations alongside the animation.
 
 %%%%%%%%%%%%%%%%
 %              %
