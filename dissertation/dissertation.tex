@@ -581,12 +581,12 @@ On its own, the compiler obviously has no way of communicating with the web-appl
 Since the API contains only a single (and relatively simple) endpoint, we look to choose a framework that will allow us to expose an API with as a little overhead as possible, with the only restriction being that it must be Java-based in order to be compatible with the compiler. Given these parameters, we choose a Java micro-framework ideal for creating APIs with minimal boilerplate called Spark (not to be confused with Apache Spark). Spark requires minimal setup and has extremely concise syntax, similar to that of functional languages, meaning we can create an API with extremely small amounts of code.
 
 \subsubsection{Maven}
-Maven is the definitive standard in regards to automated build tools for Java projects. To configure a Maven project the developer uses a Project Object Model to define firstly how the software should be built, and secondly the dependencies it requires. This configuration is stored in a file called pom.xml. Conveniently, Maven has built-in dependencies for both Spark and ANTLR. 
+Maven is the definitive standard in regards to automated build tools for Java projects. To configure a Maven project the developer uses a Project Object Model to define firstly how the software should be built, and secondly the dependencies it requires. This configuration is stored in an XML file named pom.xml. Conveniently, Maven has built-in dependencies for both Spark and ANTLR. 
 
 With the Project Object Model defined, we can simply invoke (in a fashion not too disimiliar to Compoer) mvn package to compile all the Java source files and package the deliverable code into a single JAR file. By executing this JAR file we are booting up the Spark server, which enables the compiler to accept API requests.
 
 \subsection{Docker}
-Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We consider that if we were to attempt to develop the FunCompiler on a different computer, or perhaps deploy the FunCompiler on a server, the host machine would be required to install an abundance of dependencies. 
+Given the technologies previously listed, our current system infrastructure looks like Figure \ref{fig:maveninfra}. We consider that if we were to attempt to develop the FunCompiler on a different computer, or perhaps deploy the FunCompiler on a server, the host machine would be required to install an abundance of dependencies and manually execute multiple builds. 
 
 \begin{figure}[h]
 \centering
@@ -595,9 +595,9 @@ Given the technologies previously listed, our current system infrastructure look
 \label{fig:maveninfra}	
 \end{figure}
 
-Similarly to how we used Maven to automate the build process (and dependency installation) of the compiler, we desire to find a technology which will allow us to automate the build process of the entire project. We do this using an emerging tool called Docker. 
+Similarly to how we used Maven to automate the build process (and dependency installation) of the compiler, we desire to find a technology that will allow us to automate the build process of the entire project. We do this using a tool ever increasing in popularity known as Docker. 
 
-Docker is designed to make it easier to create, deploy, and run applications by using containers. A container can be thought of as a miniture, GUI-less virtual machine. Before we can create a container, we must define an image. An image is a template of the environment we wish to run and when we run an image, we get a container, as illustrated in Figure \ref{fig:docker1}.
+Docker is designed to make it easier to create, deploy, and run applications by using containers. A container can be thought of as a miniture, high-speed virtual machine. Before we can create a container, we must define an image. An image is a template of the environment we wish to run. When we run an image, we are presented with a container, as illustrated in Figure \ref{fig:docker1}.
 
 \begin{figure}[h]
 \centering
@@ -606,14 +606,13 @@ Docker is designed to make it easier to create, deploy, and run applications by 
 \label{fig:docker1}	
 \end{figure}
 
-We use a Dockerfile to automatically build images. Within the Dockerfile we express all the commands a user would have to call via the command line if they were to create the image manually, this includes anything from installation of an operating system to setting the permissions of a file. When we run the Dockerfile representing an image, all the commands contained within are executed automatically and a live container running the environment we specified is created.
+We use a Dockerfile to automatically build images. A Dockerfile is a text document within which we express all the commands a user would have to call via the command line if they were to create the image manually, this includes anything from the installation of an operating system to setting the permissions of a file. When we instruct Docker to build an image from the Dockerfile, all the commands contained within are executed automatically and a live container running the environment we specified is created.
 
-Whilst we won't delve into specifics, the FunCompiler consists of two images: one for the web-application, one for the compiler. When the containers are created, they automatically retrieve all the dependencies they each need and execute any necessary builds. 
+Whilst we won't delve into specifics, the FunCompiler contains two Dockerfiles which are used to build two images: one for the web-application, one for the compiler. The contents of these Dockerfiles can be found in Appendix \ref{sec:Dockeriles}. When the images are run and thus the containers created, they automatically retrieve dependencies and execute any necessary builds.
 
-% I think up from here is decent, below deffo needs a bit of work but the content is decent
-We then utilise a tool for running multi-container applications called Docker-compose. Using a file called docker-compose.yml, we can create many services. For each service, we specify which container to run, any ports we should expose to enable communication and any commands that should be executed once the container is running. In our case, we have two services, one running the web-application image, the other running the compiler image. The commands we specify are the commands necessary in order to boot up both the Laravel server and the Spark server. Invoking docker-compose up will execute this script, run both containers and start the servers, meaning the entire application is running and available
+We then utilise a tool for running multi-container applications called Docker-compose. Within a YAML file called docker-compose.yml we can define several services (refer to \ref{sec:Dockerfiles} for the contents of this file). For each service, we specify which Dockerfile to build, the ports to expose in order to enable communication, and a command that should be executed once the container is running. In our case, we have two services, one building the web-application image, the other building the compiler image. The command we specify for each container is the command necessary to start both the Laravel server and the Spark server. By invoking docker-compose up, we execute the contents of docker-compose.yml, which creates both containers and starts the servers within each one, meaning the application is now running and available.
 
-There are a litany of advantages to using Docker but the take home point is that if another developer (or perhaps the system admin of the server deploying the application) was to obtain the source code for the FunCompiler, aslong as they had Docker installed, they could install every dependency, execute all builds and boot the FunCompiler with the execution of a single command.
+There are a litany of advantages to using Docker but the take home point is that if another developer (or perhaps the system admin of the server deploying the application) was to obtain the source code of the FunCompiler, aslong as they had Docker installed, they could install every dependency, execute all builds and start up the entire FunCompiler application with the execution of a single command.
 
 With Docker implemented, we present the final system architecture of the FunCompiler, as demonstrated in Figure \ref{fig:finalinfra}. We see that both the web-application and the compiler are represented as containers and are both operating and communicating within a Docker environment.
 \begin{figure}[h]
@@ -646,6 +645,81 @@ With Docker implemented, we present the final system architecture of the FunComp
 %              %
 %%%%%%%%%%%%%%%%
 \begin{appendices}
+\chapter{Dockerfiles}
+\label{sec:Dockerfiles}
+\begin{verbatim}
+# Use a PHP7.0 image that is packaged with the Apache web server
+FROM php:7.0-apache
+# Download composer and install composer.phar in /usr/local/bin
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Create the 'app' directory and set to be the working directory of the container
+WORKDIR /app
+# Copy all files in current directory to the working directory of the container
+COPY . /app
+# Update packages and install composer and PHP dependencies.
+RUN apt-get update -yqq
+RUN apt-get install git zlib1g-dev -yqq
+RUN pecl install xdebug
+# Compile PHP, include these extensions.
+RUN docker-php-ext-install zip
+RUN docker-php-ext-enable xdebug
+# Use the 'composer.json' file to download any PHP dependencies (including Laravel)
+RUN composer install
+RUN cp .env.example .env
+RUN php artisan key:generate
+\end{verbatim}
+
+\begin{verbatim}
+# Use an OpenJDK8 image to run and compile Java files
+FROM openjdk:8
+# Install Maven in the container
+RUN apt-get update
+RUN apt-get install -y maven
+# Create the 'compiler' directory and set to be the working directory of the container
+WORKDIR /compiler
+# Add 'pom.xml' to the container
+ADD pom.xml /compiler/pom.xml
+# Download maven dependencies (e.g., Antlr and Spark)
+RUN ["mvn", "dependency:resolve"]
+RUN ["mvn", "verify"]
+# Add the source directory
+ADD src /compiler/src
+# Compile and package into a fat jar
+RUN ["mvn", "package"]
+\end{verbatim}
+
+\begin{verbatim}
+# Version of the docker-compose file format
+version: '3'
+
+# Individual components of the overall product (the web app and the compiler api)
+services:
+    compiler:
+        # Name the resulting container
+        container_name: FunCompiler
+        # Configuration options applied at build time (i.e., location of Dockerfile)
+        build: ./compiler
+        # Launch the Spark web server (the compiler API)
+        command: java -jar target/api-jar-with-dependencies.jar
+        # Expose port 8001 on the host and 4567 on the container
+        ports:
+            - 8001:4567
+
+    app:
+        # Name the resulting container
+        container_name: FunApp
+        # Configuration options applied at build time (i.e., location of Dockerfile)
+        build: ./app
+        # Launch the Laravel server (the web app)
+        command: php artisan serve --host=0.0.0.0 --port=8000
+        # Expose port 8000 on the host and port 8000 on the container
+        ports:
+            - 8000:8000
+        # Starts services in dependency order, i.e., compiler before app
+        depends_on:
+            - compiler
+
+\end{verbatim}
 
 \end{appendices}
 
