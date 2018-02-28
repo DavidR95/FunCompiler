@@ -689,9 +689,14 @@ Within this example we can see that we have three different types of node, a \te
 \end{figure}
 
 \subsubsection{nodeOrder}
+Like \texttt{treeNodes}, \texttt{nodeOrder} again contains an array of JSON objects representing nodes within the AST. However, the order of the nodes in \texttt{nodeOrder} correspond to the order in which they were visited during compilation, and thus the order they should be visited during the animation. Each node corresponds to exactly one node in the AST and the same node may appear multiple times. Along with dictating the order of the animation, each node with \texttt{nodeOrder} also contains all the augmentations that should be displayed with that node, this includes explanatory messages, type/address table information, code templates and object code.
+
+For example, consider the following array:
+\begin{verbatim}
+
+\end{verbatim}
 
 
-The second array, reffered to as \texttt{nodeOrder}, again contains a list of JSON elements representing nodes within the AST. Each node has an ID which is identical to the ID of a node in the \texttt{treeNodes} array, to indicate which node we are representing(??). The order of these nodes within the array actually corresponds to the order in which the animation should occur over the AST. With each node we also store all the current augmentations at that moment in time during the compilation. 
 
 %I Honestly reckon I can get away with just explaining the FunResponse and the contents of the fields - without going into inordindate details about the AST or CA or CG. This way I can go into more detail here about the specific contents of each field, and who cares about how they were actually gotten.
 
