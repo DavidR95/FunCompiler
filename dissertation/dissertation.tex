@@ -628,10 +628,66 @@ With Docker implemented, we present the final system architecture of the FunComp
 \end{figure}
 
 \chapter{Implementation}
-\section{Compiler}
+In this chapter we give a high-level overview of the FunCompiler's implementation. As in Chapter 6, we decompose the FunCompiler down into two separate components: the web-application and the compiler. 
+
+Firstly, compiler. Secondly, web. Finally, tests
+
+\section{Compiler Modifications}
+In this section we discuss how we make modifications to the original compiler in order to build a large data structure that contains an abundance of information pertaining to the compilation of a particular program. This information can range from the number of syntactic errors detected during compilation, to a hierarchical representation of the program's AST. We also discuss how we expose an API on top of the original compiler in order to facilitate communicate between itself and the web-application.
+
 \subsection{FunResponse}
-\subsubsection{Contents of FunResponse}
-\subsubsection{AST Visitor}
+Recalling that the compiler is implemented in Java, we create a class named \texttt{FunResponse} which will be responsible for storing all the information regarding a program's compilation. For each program, we instantiate a new object of the \texttt{FunResponse} class at the beginning of the compilation, and return that object at the compilation's termination. In order to store all the information the web-application requires to effectively build an animation, the class contains six fields as follows:
+\begin{itemize}
+\item \texttt{int numSyntaxErrors}: stores the number of syntax errors encountered during the program's compilation.
+\item \texttt{int numContextualErrors}: stores the number of contextual errors encountered during the program's compilation.
+\item \texttt{List<String> syntaxErrors}: stores a list of the actual syntax error messages, including line and character number.
+\item \texttt{List<String> contextualErrors}: stores a list of the actual contextual error messages, including line and character number.
+\item \texttt{JsonArray treeNodes}: stores a list of JSON objects each representing a node within program's AST.
+\item \texttt{JsonArray nodeOrder}: stores an ordered list of JSON objects each representing an AST node along with any augmentations associated with that node.
+\end{itemize}
+
+As the program's compilation proceeds, these fields are set/updated using appropriate setter methods as the relevant information becomes known. Below we will examine how each of these fields is populated.
+
+\subsubsection{treeNodes}
+Within the \texttt{treeNodes} field we store a flat, hierarchical representation of the program's AST. That is, we have an array of JSON objects, each representing a distinct node within the AST. Each node is consists of four items of information:
+\begin{itemize}
+\item An ID, uniquely representing the node.
+\item A parent ID, representing the parent of this node.
+\item A node name, representing the type of the node (e.g, VAR, ID, PROC, etc.)
+\item A node value, the text to be visually displayed within the web-applications' AST (in most cases, this is the same as the node name).
+\end{itemize}
+
+For example, examine the following snippet of JSON objects:
+\begin{alltt}
+{
+    "id": 306481855,
+    "nodeName": "DIV",
+    "nodeValue": "DIV",
+    "parentId": 1670278882
+},
+{
+    "id": 254315796,
+    "nodeName": "ID",
+    "nodeValue": "n",
+    "parent_id": 306481855
+},
+{
+    "id": 532745069,
+    "nodeName": "NUM",
+    "nodeValue": "2",
+    "parentId": 306481855
+}
+\end{alltt}
+This example demonstrates three different nodes. By looking at the "ID" of the \texttt{DIV} object and the "parentId" of the \texttt{ID} and \texttt{NUM} object, we can clearly determine that \texttt{n} and \texttt{2} are children of the \texttt{DIV} node. We can then use this knowledge to build an AST, as represented in Figure -. The web-application will ultimately follow a similar process in order to build the AST within the user interface.
+
+\subsubsection{nodeOrder}
+
+
+The second array, reffered to as \texttt{nodeOrder}, again contains a list of JSON elements representing nodes within the AST. Each node has an ID which is identical to the ID of a node in the \texttt{treeNodes} array, to indicate which node we are representing(??). The order of these nodes within the array actually corresponds to the order in which the animation should occur over the AST. With each node we also store all the current augmentations at that moment in time during the compilation. 
+
+%I Honestly reckon I can get away with just explaining the FunResponse and the contents of the fields - without going into inordindate details about the AST or CA or CG. This way I can go into more detail here about the specific contents of each field, and who cares about how they were actually gotten.
+
+\subsection{AST Visitor}
 \subsubsection{CA + CG}
 \subsection{API}
 \section{Web-application}
