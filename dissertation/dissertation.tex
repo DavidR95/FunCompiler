@@ -628,37 +628,38 @@ With Docker implemented, we present the final system architecture of the FunComp
 \end{figure}
 
 \chapter{Implementation}
-In this chapter we give a high-level overview of the FunCompiler's implementation. As in Chapter 6, we decompose the FunCompiler down into two separate components: the web-application and the compiler. 
+In this chapter we give a high-level overview of the FunCompiler's implementation. As in Chapter 6, we decompose the FunCompiler into two separate components: the web-application and the compiler. 
 
 Firstly, compiler. Secondly, web. Finally, tests
 
-\section{Compiler Modifications}
-In this section we discuss how we make modifications to the original compiler in order to build a large data structure that contains an abundance of information pertaining to the compilation of a particular program. This information can range from the number of syntactic errors detected during compilation, to a hierarchical representation of the program's AST. We also discuss how we expose an API on top of the original compiler in order to facilitate communicate between itself and the web-application.
+\section{Compiler Implementation}
+In this section we describe the steps required to convert the original, rudimentary compiler into the micro-service as described in Chapter 6. In order to accomplish this, two fundamental changes are necessary. Firstly, as a program is being compiled, the compiler must build a large amount of structured data pertaining to the compilation of the program. This information must be detailed enough that when it is sent as a response back to the web-application, the web-application can parse the contents and be able to build the corresponding animation alongside displaying correctly timed augmentations (we may also need to report errors in the case of invalid input programs). Secondly, we must expose the compiler as an API in order to enable communication between itself and the web-application.
 
-\subsection{FunResponse}
-Recalling that the compiler is implemented in Java, we create a class named \texttt{FunResponse} which will be responsible for storing all the information regarding a program's compilation. For each program, we instantiate a new object of the \texttt{FunResponse} class at the beginning of the compilation, and return that object at the compilation's termination. In order to store all the information the web-application requires to effectively build an animation, the class contains six fields as follows:
+\subsection{Compiler Output}
+In order to build a data set containing various details relevant to the compilation of a program, we create a class (recall the compiler is developed in Java) named \textsf{FunResponse}. For each program that we intend to compile, we instantiate a new object of this class, which is returned upon successful completion of the compilation. It is within the instance variables of this class that we store the information regarding a program's compilation.
+
+Considering all the information that the web-application will require in order to carry out its intended function, we determine that the \textsf{FunResponse} class will be required to contain the following six instance variables:
 \begin{itemize}
-\item \texttt{int numSyntaxErrors}: stores the number of syntax errors encountered during the program's compilation.
-\item \texttt{int numContextualErrors}: stores the number of contextual errors encountered during the program's compilation.
-\item \texttt{List<String> syntaxErrors}: stores a list of the actual syntax error messages, including line and character number.
-\item \texttt{List<String> contextualErrors}: stores a list of the actual contextual error messages, including line and character number.
-\item \texttt{JsonArray treeNodes}: stores a list of JSON objects each representing a node within program's AST.
-\item \texttt{JsonArray nodeOrder}: stores an ordered list of JSON objects each representing an AST node along with any augmentations associated with that node.
+\item \texttt{int numSyntaxErrors}: the number of syntax errors encountered during the program's compilation.
+\item \texttt{int numContextualErrors}: the number of contextual errors encountered during the program's compilation.
+\item \texttt{List<String> syntaxErrors}: a list of the actual syntax error messages, including line and character number.
+\item \texttt{List<String> contextualErrors}: a list of the actual contextual error messages, including line and character number.
+\item \texttt{JsonArray treeNodes}: an array of nodes representing the program's AST.
+\item \texttt{JsonArray nodeOrder}: an ordered array of nodes representing the order in which the animation should occur over the nodes in the AST. Each node also contains any augmentations associated with that node.
 \end{itemize}
 
-As the program's compilation proceeds, these fields are set/updated using appropriate setter methods as the relevant information becomes known. Below we will examine how each of these fields is populated.
+As the compilation of a program proceeds, these variables are set/updated using the appropriate setter methods as the corresponding information becomes known. Assuming that the input program is without errors, it is only the last two variables, \texttt{treeNodes} and \texttt{nodeOrder}, that are of particular interest, as they form the foundation for building an animation of the compilation process.
 
 \subsubsection{treeNodes}
-Within the \texttt{treeNodes} field we store a flat, hierarchical representation of the program's AST. That is, we have an array of JSON objects, each representing a distinct node within the AST. Each node is consists of four items of information:
+The \texttt{treeNodes} variable consists of an array of JSON objects. each object represents a distinct node within a program's AST and contains four fields of information:
 \begin{itemize}
 \item An ID, uniquely representing the node.
 \item A parent ID, representing the parent of this node.
 \item A node name, representing the type of the node (e.g, VAR, ID, PROC, etc.)
 \item A node value, the text to be visually displayed within the web-applications' AST (in most cases, this is the same as the node name).
 \end{itemize}
-
-For example, examine the following snippet of JSON objects:
-\begin{alltt}
+This array forms a flat, hierarchical representation of an AST. For example, consider the following array of JSON objects:
+\begin{verbatim}
 {
     "id": 306481855,
     "nodeName": "DIV",
@@ -677,8 +678,15 @@ For example, examine the following snippet of JSON objects:
     "nodeValue": "2",
     "parentId": 306481855
 }
-\end{alltt}
-This example demonstrates three different nodes. By looking at the "ID" of the \texttt{DIV} object and the "parentId" of the \texttt{ID} and \texttt{NUM} object, we can clearly determine that \texttt{n} and \texttt{2} are children of the \texttt{DIV} node. We can then use this knowledge to build an AST, as represented in Figure -. The web-application will ultimately follow a similar process in order to build the AST within the user interface.
+\end{verbatim}
+Within this example we can see that we have three different types of node, a \texttt{DIV}, an \texttt{ID} and a \texttt{NUM}. By examining the ``id'' of the \texttt{DIV} node and the ``parentId'' of the \texttt{ID} and \texttt{NUM} nodes, it is clear to see that \texttt{ID} and \texttt{NUM} are children of \texttt{DIV}. Therefore, we can use this knowledge to build the AST that is represented by this array, as illustrated in Figure \ref{fig:treeNodes}. The web-application will apply the same logic in order to take a much larger array of nodes and display the AST within the user interface.
+
+ \begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{images/treeNodes.png}
+\caption{The AST represented by the above node array}
+\label{fig:treeNodes}	
+\end{figure}
 
 \subsubsection{nodeOrder}
 
