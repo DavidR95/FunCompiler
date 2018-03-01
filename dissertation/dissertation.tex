@@ -768,20 +768,15 @@ We see also that we have fields for "explanations" and "table". These fields rep
 
 One might question why we opt to use two different node arrays to represent the AST and the corresponding animation instead of combining two concepts within one array. It is important to consider that a single node within the AST may be visited (and therefore highlighted) multiple times during the animation, furthermore, the augmentations for the same node are almost certainly guaranteed to be different each time it is highlighted. This is why we require separate arrays, one array contains simply the structure of the AST, where there are no nodes with duplicate "id"s, whereas the second array must be able to contain several duplicates of the same node, each with its own list of augmentations corresponding to a particular visit.
 
-why 1 array
-history, essential for playback
+This means that within the \texttt{nodeOrder} array we have a complete history of the program's compilation. For every individual time that a node is visited, we effectively have a "snapshot" of the explanatory messages, type/address table and the object code at that exact moment in time. This means we can almost trivially implement the advanced playback features we discussed in Chapter 5. Since the animator can freely traverse forwards or backwards through the \texttt{nodeOrder} array whilst still maintaining all the information it requires, we can easily implement the features that are necessary to allow the animation to be played continuously, restarted, or stepped through, backwards and forwards.
 
-Like \texttt{treeNodes}, \texttt{nodeOrder} again contains an array of JSON objects representing nodes within the AST. However, the order of the nodes in \texttt{nodeOrder} correspond to the order in which they were visited during compilation, and thus the order they should be visited during the animation. Each node corresponds to exactly one node in the AST and the same node may appear multiple times. Along with dictating the order of the animation, each node with \texttt{nodeOrder} also contains all the augmentations that should be displayed with that node, this includes explanatory messages, type/address table information, code templates and object code. The type of augmentations that are stored within nodes are dependent upon the compiler type parameter we discussed in Section 7.1.1, for example, code templates and object are not included if the compilation type is contextual analysis. 
-
-
-
-%I Honestly reckon I can get away with just explaining the FunResponse and the contents of the fields - without going into inordindate details about the AST or CA or CG. This way I can go into more detail here about the specific contents of each field, and who cares about how they were actually gotten.
 \section{Web-application}
 \subsection{Animation}
 \subsection{...}
 \section{Testing?}
   
 %Maybe say REST API but idk what that means atm.
+%Haven't really explaining that code template augs are got through other means.
 
 %Put in implementation mayb
 %Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
