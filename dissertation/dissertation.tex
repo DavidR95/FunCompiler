@@ -12,10 +12,26 @@
 \usepackage{alltt}
 \usepackage{wrapfig}
 \usepackage{listings}
-\lstset{
-basicstyle=\small\ttfamily,
-columns=flexible,
-breaklines=true
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
 }
 
 \begin{document}
@@ -585,6 +601,7 @@ This versioning system is practical because it means that all developers of a pr
 The Fun language and the associated compiler were built using ANTLR, which is a tool that when given a grammar (a file defining the syntax of language), can automatically generate certain components of a standard compiler, such as a lexer and a recursive-descent parser. ANTLR also implements a visitor interface which provides the foundation for executing traversals over the parser-generated syntax tree, allowing the developer to implement a contextual analyser and code generator. 
 
 \subsubsection{Spark}
+\label{sec:spark}
 Alone, the compiler has no way of interacting with the web-application. To enable this, we form a channel of communication between the two by encapsulating the compiler within an API which contains a single endpoint. The endpoint receives a user submitted input program from the web-application, passes the program as input to the compiler, receives the output of the compilation and then passes this as a response back to the web-application.
 
 Since the API requires only a single (and relatively simple) endpoint, we look to choose a framework that will allow us to expose an API with as little overhead as possible. The only limitation being that the framework must be Java-based in order to be compatible with the compiler. Consequently, we select a Java micro-framework ideal for creating APIs with minimal boilerplate called Spark (not to be confused with Apache Spark). Spark requires minimal setup and has extremely concise syntax, similar to that of functional languages, meaning we can create an API with very few lines of code (of which we will see in Section 7.?).
@@ -633,32 +650,55 @@ In this chapter we give a high-level overview of the FunCompiler's implementatio
 Firstly, compiler. Secondly, web. Finally, tests
 
 \section{Compiler Implementation}
-In this section we describe the steps required to convert the original, rudimentary compiler into the micro-service as described in Chapter 6. In order to accomplish this, two fundamental changes are necessary. Firstly, as a program is being compiled, the compiler must build a large amount of structured data pertaining to the compilation of the program. This information must be detailed enough that when it is sent as a response back to the web-application, the web-application can parse the contents and be able to build the corresponding animation alongside displaying correctly timed augmentations (we may also need to report errors in the case of invalid input programs). Secondly, we must expose the compiler as an API in order to enable communication between itself and the web-application.
+In this section we discuss how we convert the original, stand-alone compiler into the micro-service as described in Chapter 6.  In order to accomplish this, two fundamental changes are necessary. Firstly, we must expose the compiler as an API in order to enable communication between itself and the web-application. Secondly, we must modify the implementation of the compiler to return a large amount of structured data pertaining to the compilation of a particular program. This information must be detailed enough that when sent as a response to the web-application, the web-application is equipped with enough data to build the animation of the compilation process.
 
-\subsection{Compiler Output}
-In order to build a data set containing various details relevant to the compilation of a program, we create a class (recall the compiler is developed in Java) named \textsf{FunResponse}. For each program that we intend to compile, we instantiate a new object of this class, which is returned upon successful completion of the compilation. It is within the instance variables of this class that we store the information regarding a program's compilation.
+\subsection{API}
+Recall from Section \ref{sec:spark} that we intend to utilise a Java micro-framework known as Spark to encapsulate the compiler and create a compact API with a single endpoint. More specifically, the endpoint will be configured to accept HTTP POST requests. When the web-application desires to compile a Fun program as submitted by the user, it must make a POST request to the API  containing two query parameters: a program and a type. The value of program is simply the plain text version of the Fun program. The value of type corresponds to the button that was pressed as seen in Figure \ref{fig:code-editor-wireframe}, i.e., either contextual analysis or code generation. The following code snippet contains the complete implementation of this endpoint (the snippet also serves to support our previous claim that Spark allows us to create APIs in very few lines of code):
+\begin{lstlisting}
+post("/", (req, res) -> {
+	res.type("application/json");
+	String program = req.queryParams("program");
+ 	String type = req.queryParams("type");
+	InputStream programInputStream = new ByteArrayInputStream(program.getBytes());
+	return FunRun.execute(programInputStream, type);
+}, gson::toJson);
+\end{lstlisting} 
 
-Considering all the information that the web-application will require in order to carry out its intended function, we determine that the \textsf{FunResponse} class will be required to contain the following six instance variables:
-\begin{itemize}
-\item \texttt{int numSyntaxErrors}: the number of syntax errors encountered during the program's compilation.
-\item \texttt{int numContextualErrors}: the number of contextual errors encountered during the program's compilation.
-\item \texttt{List<String> syntaxErrors}: a list of the actual syntax error messages, including line and character number.
-\item \texttt{List<String> contextualErrors}: a list of the actual contextual error messages, including line and character number.
-\item \texttt{JsonArray treeNodes}: an array of nodes representing the program's AST.
-\item \texttt{JsonArray nodeOrder}: an ordered array of nodes representing the order in which the animation should occur over the nodes in the AST. Each node also contains any augmentations associated with that node.
-\end{itemize}
+To clarify the exact functionality of this endpoint, we describe the purpose and effect of each line within the above code snippet:
+\begin{description}
+\item Line 1: We utilise Java 8 lambda expressions to define a POST route at the url ``/''. Within this expression we also declare the callback variables req and res, where req holds the contents of the request, and res will hold the contents of the response
+\item Line 2: In order to provide structure to the data returned to the web-application, we state that the format of the response should be JSON.
+\item Lines 3 and 4: Contained within the query parameters of the request is (as previously mentioned) the plain text of the input Fun program and selected compilation type. We extract these values from the parameters and store them in \texttt{String} variables.
+\item Line 5: We now convert the input program, currently stored as a \texttt{String}, into an \texttt{InputStream}, which is the standard data type for input to ANTLR-based compilers.
+\item Line 6: It is the \texttt{execute()} method defined within the FunRun module that is responsible for actually compiling the program. As arguments we supply the \texttt{InputStream} along with the compilation type. The return value of the \texttt{execute()} method is an object of the FunResponse class, which contains information collected during the compilation of the program. The data stored within this object is ultimately what the web-application uses to build the animation. The contents of the FunResponse class will be discussed in detail within the next section.
+\item Line 7: In order to return a JSON response from the API as specified in line 2, we use a Java library named GSON which permits the conversion of Java objects (and the data contained within) to JSON objects.
+\end{description}
 
-As the compilation of a program proceeds, these variables are set/updated using the appropriate setter methods as the corresponding information becomes known. Assuming that the input program is without errors, it is only the last two variables, \texttt{treeNodes} and \texttt{nodeOrder}, that are of particular interest, as they form the foundation for building an animation of the compilation process.
+\subsection{The FunResponse Object}
+In order to build a data set containing various details relevant to the compilation of a program, we create a class named FunResponse. For each program that we intend to compile, we instantiate a new object of this class, which is returned upon completion of the compilation. It is within the instance variables of this class that we store the information regarding a program's compilation. The following code snippet shows the six instance variables (with access modifiers removed) that are declared within the FunResponse class:
+\begin{lstlisting}
+int numSyntaxErrors;
+int numContextualErrors;
+List<String> syntaxErrors;
+List<String> contextualErrors;
+JsonArray treeNodes;
+JsonArray nodeOrder;
+\end{lstlisting}
 
-\subsubsection{treeNodes}
-The \texttt{treeNodes} variable consists of an array of JSON objects. each object represents a distinct node within a program's AST and contains four fields of information:
+In the interest of brevity, we won't go into the details of how the values of these variables are derived or collected, however, we will consider the contents of each variable. In particular, we consider how to interpret the value of the variables \texttt{treeNodes} and \texttt{nodeOrder}, which store a representation of the AST alongside defining the order in which the animation should occur over the AST.
+
+\subsubsection{Syntax \& Contextual Errors}
+Lines 1 and 2 in the above code snippet simply collect the number of syntactic/contextual errors the compiler detects within the input program, whereas lines 3 and 4 collect a list of the actual error messages, including line and character number. In the case that there is no errors within the input program, these variables will remain empty, however, if errors are present the web-application can retrieve these values from the API response and report them to the user.
+
+\subsubsection{AST Representation}
+Within the \texttt{treeNodes} variable we store an array of nodes representing the input program's AST. Each node is represented by a JSON object that contains four fields of information:
 \begin{itemize}
 \item An ID, uniquely representing the node.
 \item A parent ID, representing the parent of this node.
 \item A node name, representing the type of the node (e.g, VAR, ID, PROC, etc.)
 \item A node value, the text to be visually displayed within the web-applications' AST (in most cases, this is the same as the node name).
 \end{itemize}
-This array forms a flat, hierarchical representation of an AST. For example, consider the following array of JSON objects:
+This array of nodes form a flat, hierarchical representation of an AST. For example, consider the following array of JSON objects:
 \begin{verbatim}
 {
     "id": 306481855,
@@ -688,15 +728,8 @@ Within this example we can see that we have three different types of node, a \te
 \label{fig:treeNodes}	
 \end{figure}
 
-\subsubsection{nodeOrder}
+\subsubsection{Animation Order \& Augmentations}
 Like \texttt{treeNodes}, \texttt{nodeOrder} again contains an array of JSON objects representing nodes within the AST. However, the order of the nodes in \texttt{nodeOrder} correspond to the order in which they were visited during compilation, and thus the order they should be visited during the animation. Each node corresponds to exactly one node in the AST and the same node may appear multiple times. Along with dictating the order of the animation, each node with \texttt{nodeOrder} also contains all the augmentations that should be displayed with that node, this includes explanatory messages, type/address table information, code templates and object code.
-
-For example, consider the following array:
-\begin{verbatim}
-
-\end{verbatim}
-
-
 
 %I Honestly reckon I can get away with just explaining the FunResponse and the contents of the fields - without going into inordindate details about the AST or CA or CG. This way I can go into more detail here about the specific contents of each field, and who cares about how they were actually gotten.
 
@@ -707,6 +740,8 @@ For example, consider the following array:
 \subsection{Animation}
 \subsection{...}
 \section{Testing?}
+
+%Maybe say REST API but idk what that means atm.
 
 %Put in implementation mayb
 %Consequently, it was decided that the FunCompiler would follow the principles of single-page applications (SPAs). SPAs aim to significantly reduce the number of page refreshes websites undergo when the user requests new information or desires to see a different view (i.e., clicks a button). Treating the FunCompiler as an SPA would mean that when users, for example, submit a Fun program, the application will dynamically load the animation into view, without requiring a page refresh. The advantage of SPAs is that for small websites, you can create a much faster workflow which appears seamless. SPAs do have downsides, usually in terms of forcing too much processing on the client when websites grow large, and search engine optimisation. Fortunately, the FunCompiler suffers from neither of these problems.
