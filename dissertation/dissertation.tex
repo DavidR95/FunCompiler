@@ -699,7 +699,7 @@ Within the \texttt{treeNodes} variable we store an array of nodes representing t
 \item A node value, the text to be visually displayed within the web-applications' AST (in most cases, this is the same as the node name).
 \end{itemize}
 This array of nodes form a flat, hierarchical representation of an AST. For example, consider the following array of JSON objects:
-\begin{verbatim}
+\begin{lstlisting}
 {
     "id": 306481855,
     "nodeName": "DIV",
@@ -710,7 +710,7 @@ This array of nodes form a flat, hierarchical representation of an AST. For exam
     "id": 254315796,
     "nodeName": "ID",
     "nodeValue": "n",
-    "parent_id": 306481855
+    "parentId": 306481855
 },
 {
     "id": 532745069,
@@ -718,7 +718,7 @@ This array of nodes form a flat, hierarchical representation of an AST. For exam
     "nodeValue": "2",
     "parentId": 306481855
 }
-\end{verbatim}
+\end{lstlisting}
 Within this example we can see that we have three different types of node, a \texttt{DIV}, an \texttt{ID} and a \texttt{NUM}. By examining the ``id'' of the \texttt{DIV} node and the ``parentId'' of the \texttt{ID} and \texttt{NUM} nodes, it is clear to see that \texttt{ID} and \texttt{NUM} are children of \texttt{DIV}. Therefore, we can use this knowledge to build the AST that is represented by this array, as illustrated in Figure \ref{fig:treeNodes}. The web-application will apply the same logic in order to take a much larger array of nodes and display the AST within the user interface.
 
  \begin{figure}[h]
@@ -729,18 +729,43 @@ Within this example we can see that we have three different types of node, a \te
 \end{figure}
 
 \subsubsection{Animation Order \& Augmentations}
-Like \texttt{treeNodes}, \texttt{nodeOrder} again contains an array of JSON objects representing nodes within the AST. However, the order of the nodes in \texttt{nodeOrder} correspond to the order in which they were visited during compilation, and thus the order they should be visited during the animation. Each node corresponds to exactly one node in the AST and the same node may appear multiple times. Along with dictating the order of the animation, each node with \texttt{nodeOrder} also contains all the augmentations that should be displayed with that node, this includes explanatory messages, type/address table information, code templates and object code.
+Like \texttt{treeNodes}, \texttt{nodeOrder} again contains an array of JSON objects representing nodes within the AST. However, the order of the nodes in \texttt{nodeOrder} correspond to the order in which they were visited during compilation, and thus the order they should be visited during the animation. Each node corresponds to exactly one node in the AST and the same node may appear multiple times. Along with dictating the order of the animation, each node with \texttt{nodeOrder} also contains all the augmentations that should be displayed with that node, this includes explanatory messages, type/address table information, code templates and object code. The type of augmentations that are stored within nodes are dependent upon the compiler type parameter we discussed in Section 7.1.1, for example, code templates and object are not included if the compilation type is contextual analysis. 
+
+\begin{lstlisting}
+"id": 2010337291,
+"explanations": [
+	"Walk expr1"
+],
+"table": [
+	{
+		"scope": "global",
+		"id": "read",
+		"type_address": "void -> int"
+	},
+	{
+		"scope": "global",
+		"id": "write",
+		"type_address": "int -> void"
+	},
+	{
+		"scope": "global",
+		"id": "n",
+		"type_address": "int"
+	},
+	{
+		"scope": "local",
+		"id": "main",
+		"type_address": "void -> void"
+	}
+]
+ \end{lstlisting}
 
 %I Honestly reckon I can get away with just explaining the FunResponse and the contents of the fields - without going into inordindate details about the AST or CA or CG. This way I can go into more detail here about the specific contents of each field, and who cares about how they were actually gotten.
-
-\subsection{AST Visitor}
-\subsubsection{CA + CG}
-\subsection{API}
 \section{Web-application}
 \subsection{Animation}
 \subsection{...}
 \section{Testing?}
-
+  
 %Maybe say REST API but idk what that means atm.
 
 %Put in implementation mayb
