@@ -810,7 +810,10 @@ We also see that we have fields for "explanations" and "table". These fields rep
 Within the \texttt{nodeOrder} array we have effectively stored a complete history of the program's compilation. That is, for each individual time a node is visited, we have retained a ``snapshot'' of any relevant information at that exact moment in time (e.g., explanatory messages, type table, etc.). Since the animator can freely traverse forwards or backwards through the \texttt{nodeOrder} array whilst maintaining all the correct information, we can almost trivially implement the playing, restarting and reversing of an animation as discussed in Chapter 5.
 
 \section{Web-application Implementation}
-In this section we discuss 
+In this section we discuss how we create the web-application component of the compiler, that is, how we physically implement the aesthetic design that we developed in Chapter 5. Alongside using the standard web technologies of HTML, CSS and Javascript, the FunCompiler also uses Bootstrap, jQuery, NodeJS and several third-party Javascript libraries to create the front-end of the FunCompiler.
+
+\subsection{Code Editor Implementation}
+To create the code editor we use a Javascript library known as CodeMirror which allows the embedding of a versatile text editor within a web-application. The text editor has support for standard programmatic features such as bracket matching, auto-indentation, syntax highlighting and much more. Infact, CodeMirror allows us to create a custom lexer meaning we can define our own syntax highlighting for the Fun language. The configuration for this lexer can be found in Appendix ?. Figure \ref{fig:?} illustrates the implementation of the code editor.
 
 \subsection{}
 \subsection{...}
