@@ -154,20 +154,20 @@ One of the most popular and well implemented is VisuAlgo \cite{visualgo}. VisuAl
 
 \begin{figure}
 	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[height=4cm,width=\linewidth]{images/visualgo.png}
+	\begin{subfigure}[b]{.5\textwidth}
+	 	\centering
+		\includegraphics[width=.95\linewidth]{images/visualgo.png}
 		\caption{VisuAlgo}
 		\label{fig:visualgo}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[height=4cm,width=\linewidth]{images/dijkstra.png}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+	  	\centering
+		\includegraphics[width=.95\linewidth]{images/dijkstra.png}
 		\caption{The University of San Francisco}
 		\label{fig:dijkstra}
 	\end{subfigure}
 	\caption{Animations of different algorithms from different applications}\label{fig:visualgo-dijkstra}	
 \end{figure}
-
 
 Departing from pure sorting algorithms, the University of San Francisco developed a small web application which animates Dijkstra's algorithm \cite{dijkstra}, as shown in Figure \ref{fig:dijkstra}. Dijkstra's algorithm is arguably more complicated than most sorting algorithms, involving the need to visualise tables and graphs. However, we see that at the expense of this complexity, the application has sacrificed several usability aspects in comparison to VisuAlgo. You cannot define your own input and you cannot pause or rewind the animation. Additionally, whilst some very primitive details are displayed next to the table at each stage, they are far from informative explanations. 
 
@@ -227,13 +227,16 @@ During compilation, a source program is parsed into a \textit{\textbf{syntax tre
 A parse tree retains all information about a program, including the information that may appear to be unnecessary, such as white-space and parentheses. Conversely, an AST is a smaller, more concise adaptation of the parse tree. An AST usually ignores redundant details which are derivable from the shape of the tree. Figure \ref{fig:parse-abstract-tree} demonstrates the visual differences between a parse tree and an AST of the same hypothetical Fun program. 
 
 \begin{figure}[h]
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[height=5.5cm,width=\linewidth]{images/2-2a.png}
+	\centering
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/2-2a.png}
 		\caption{Parse tree}
 		\label{fig:ANTLR-parse-tree}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[height=5.5cm,width=\linewidth]{images/2-2b.png}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+	 	\centering
+		\includegraphics[width=.95\linewidth]{images/2-2b.png}
 		\caption{Abstract syntax tree}
 		\label{fig:ANTLR-syntax-tree}
 	\end{subfigure}
@@ -288,14 +291,15 @@ Scope checking ensures that every variable used in the program has been previous
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.65]{images/variable-decl.png}
+	\begin{subfigure}[b]{.5\textwidth}
+	 	\centering
+		\includegraphics[width=.65\linewidth]{images/variable-decl.png}
 		\caption{Variable declaration}
 		\label{fig:variable-decl}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.65]{images/variable-use.png}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+	  	\centering
+		\includegraphics[width=.65\linewidth]{images/variable-use.png}
 		\caption{Variable usage}
 		\label{fig:variable-use}
 	\end{subfigure}
@@ -442,19 +446,20 @@ The AST of the input program is the foundation of the animation. The AST will be
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{images/animation-active-wireframe.png}
 		\caption{Step 1 of animation}
 		\label{fig:anim-step-1}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{images/animation-active-wireframe2.png}
 		\caption{Step 2 of animation}
 		\label{fig:anim-step-2}
-	\end{subfigure}	
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{images/animation-active-wireframe3.png}
 		\caption{Step 3 of animation}
 		\label{fig:anim-step-3}
@@ -468,15 +473,16 @@ As the compiler traverses the tree, the application should augment the animation
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.6]{images/analytics-ca-wireframe.png}
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.4\linewidth]{images/analytics-ca-wireframe.png}
 		\caption{Contextual analysis augmentations}
 		\label{fig:analytics-ca-wireframe}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.6]{images/analytics-cg-wireframe.png}
-		\caption{Code generation \\ augmentations}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.4\linewidth]{images/analytics-cg-wireframe.png}
+		\caption{Code generation augmentations}
 		\label{fig:analytics-cg-wireframe}
 	\end{subfigure}
 	\caption{Augmentations wireframe}\label{fig:augmentations-wireframe}	
@@ -487,12 +493,13 @@ Users require the ability to play, pause and step through (backwards and forward
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[]{images/playback-play-wireframe.png}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[]{images/playback-pause-wireframe.png}
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.5\linewidth]{images/playback-play-wireframe.png}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.5\linewidth]{images/playback-pause-wireframe.png}
 	\end{subfigure}
 	\caption{Playback controls wireframe}\label{fig:playback-wireframe}	
 \end{figure}
@@ -566,14 +573,15 @@ The emerging trend is to extract each of these services out of the main applicat
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.35]{images/mono.png}
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.6\linewidth]{images/mono.png}
 		\caption{Monolithic architecture}
 		\label{fig:mono}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.35]{images/micro.png}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.6\linewidth]{images/micro.png}
 		\caption{Micro-service architecture}
 		\label{fig:micro}
 	\end{subfigure}
@@ -815,20 +823,22 @@ In this section we discuss how we create the web-application component of the co
 \subsection{Fun Specification}
 To embed the Fun specifcation within the web-application we utilise Bootstrap's Nav-tabs class to create list of tabs that allow the user to navigate through each section of the specification, as illustrated in Figure \ref{fig:implspec}.
 
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.35]{images/implspec1.png}
-		\caption{Monolithic architecture}
-		\label{fig:mono}
-	\end{subfigure}
-	~
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.35]{images/implspec2.png}
-		\caption{Micro-service architecture}
-		\label{fig:micro}
-	\end{subfigure}
-	\caption{Monolithic vs. micro-service architecture}\label{fig:implspec}	
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/implspec1.png}
+  \caption{A subfigure}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/implspec2.png}
+  \caption{A subfigure}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{A figure with two subfigures}
+\label{fig:test}
 \end{figure}
 
 \subsection{Code Editor Implementation}
