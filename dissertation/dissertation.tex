@@ -812,6 +812,25 @@ Within the \texttt{nodeOrder} array we have effectively stored a complete histor
 \section{Web-application Implementation}
 In this section we discuss how we create the web-application component of the compiler, that is, how we physically implement the aesthetic design that we developed in Chapter 5. Alongside using the standard web technologies of HTML, CSS and Javascript, the FunCompiler also uses Bootstrap, jQuery, NodeJS and several third-party Javascript libraries to create the front-end of the FunCompiler.
 
+\subsection{Fun Specification}
+To embed the Fun specifcation within the web-application we utilise Bootstrap's Nav-tabs class to create list of tabs that allow the user to navigate through each section of the specification, as illustrated in Figure \ref{fig:implspec}.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.35]{images/implspec1.png}
+		\caption{Monolithic architecture}
+		\label{fig:mono}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.35]{images/implspec2.png}
+		\caption{Micro-service architecture}
+		\label{fig:micro}
+	\end{subfigure}
+	\caption{Monolithic vs. micro-service architecture}\label{fig:implspec}	
+\end{figure}
+
 \subsection{Code Editor Implementation}
 To create the code editor we use a Javascript library known as CodeMirror which allows the embedding of a versatile text editor within a web-application. The text editor has support for standard programmatic features such as bracket matching, auto-indentation, syntax highlighting and much more. Infact, CodeMirror allows us to create a custom lexer meaning we can define our own syntax highlighting for the Fun language. The configuration for this lexer can be found in Appendix ?. Figure \ref{fig:?} illustrates the implementation of the code editor.
 
