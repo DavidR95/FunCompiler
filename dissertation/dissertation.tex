@@ -22,6 +22,9 @@
 \definecolor{background}{HTML}{EEEEEE}
 \definecolor{delim}{RGB}{20,105,176}
 \colorlet{numb}{magenta!60!black}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 
 \lstdefinelanguage{myjava}{
   frame=tb,
@@ -818,35 +821,135 @@ We also see that we have fields for "explanations" and "table". These fields rep
 Within the \texttt{nodeOrder} array we have effectively stored a complete history of the program's compilation. That is, for each individual time a node is visited, we have retained a ``snapshot'' of any relevant information at that exact moment in time (e.g., explanatory messages, type table, etc.). Since the animator can freely traverse forwards or backwards through the \texttt{nodeOrder} array whilst maintaining all the correct information, we can almost trivially implement the playing, restarting and reversing of an animation as discussed in Chapter 5.
 
 \section{Web-application Implementation}
-In this section we discuss how we create the web-application component of the compiler, that is, how we physically implement the aesthetic design that we developed in Chapter 5. Alongside using the standard web technologies of HTML, CSS and Javascript, the FunCompiler also uses Bootstrap, jQuery, NodeJS and several third-party Javascript libraries to create the front-end of the FunCompiler.
-
-\subsection{Fun Specification}
-To embed the Fun specifcation within the web-application we utilise Bootstrap's Nav-tabs class to create list of tabs that allow the user to navigate through each section of the specification, as illustrated in Figure \ref{fig:implspec}.
-
-\begin{figure}
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/implspec1.png}
-  \caption{A subfigure}
-  \label{fig:sub1}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/implspec2.png}
-  \caption{A subfigure}
-  \label{fig:sub2}
-\end{subfigure}
-\caption{A figure with two subfigures}
-\label{fig:test}
-\end{figure}
+In this section we examine the physical implementation of the interface designs we created in Chapter 5. For each component in the interface we detail its purpose and functionality along with any interesting technologies or libraries that were used to assist in its develop. Also note that, although not discussed specifically, the front-end implementation of this project does make extensive use of HTML, CSS, Bootstrap, vanilla Javascript, jQuery and NodeJS. 
 
 \subsection{Code Editor Implementation}
-To create the code editor we use a Javascript library known as CodeMirror which allows the embedding of a versatile text editor within a web-application. The text editor has support for standard programmatic features such as bracket matching, auto-indentation, syntax highlighting and much more. Infact, CodeMirror allows us to create a custom lexer meaning we can define our own syntax highlighting for the Fun language. The configuration for this lexer can be found in Appendix ?. Figure \ref{fig:?} illustrates the implementation of the code editor.
+Firstly, we consider how to implement the code editor as designed in Section 5.1.1. Within this section we remarked how, ideally, the code editor should follow some of the semantics of standard programmatic text editors. To produce these semantics, we use a Javascript library known as CodeMirror which allows the embedding of a versatile text editor within a web application. CodeMirror provides support for bracket matching, auto-indentation, syntax highlighting for over 100 predefined languages and much more.
 
-\subsection{}
-\subsection{...}
-\section{Testing?}
+Unsurprisingly, the Fun language is not included as one of the predefined languages that is provided built-in syntax highlighting, however, CodeMirror does allow the developer to define a custom lexer for non-standard languages. We create a simple lexer for Fun in which we state some of the language's syntactic details such as keywords, types and identifiers. The source code for this lexer is provided in Appendix \ref{sec:custom-lexer}. 
+
+The implementation of the code editor is provided in Figure \ref{fig:implcode}. We can see how syntax highlighting has been provided for the various different syntactic structures along with line numbers, line highlighting, and whilst not visible from the diagram, auto-indentation. Below the input code two buttons have been inserted, one for contextual analysis and the other for code generation. Pressing one of these buttons triggers the web-application to send an API request to compiler. The program currently entered in the code editor and the button pressed form the values of the query parameters \texttt{program} and \texttt{type} as discussed in Section 7.1.1.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{images/implcode.png}
+\caption{Implementation of the code editor}
+\label{fig:implcode}	
+\end{figure}
+
+\subsection{AST Implementation}
+In Section 5.1.2 we discussed how we require the web-application to display an AST in the conventional hierarchical tree format, alongside highlighting nodes consecutively in order to create an animation. We accomplish this using another Javascript library named D3, which is a popular tool for data visualisation. 
+
+After pressing one of the buttons in Figure \ref{fig:implcode} and delivering an API request to the compiler, we can use the information contained within the returned response to build the AST. In the same way that we interpreted Listing \ref{listing:treeNodes} to build Figure \ref{fig:treeNodes}, we can use D3 to parse the \texttt{treeNodes} array contained within the API response to build a data structure containing a hierarchical data structure representing the AST. With this data structure created, D3 can automatically generate an SVG representation of the AST. In Figure \ref{fig:implast} we illustrate a series of different ASTs generated from different Fun programs using D3. We see how regardless of the number of the nodes within the AST, D3 can intuitively shrink or condense the layout of the tree to create the most comprehensible visualisation possible.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implast.PNG}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implast2.PNG}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implast3.PNG}
+	\end{subfigure}	
+	\caption{D3 generated ASTs from three different Fun programs}
+	\label{fig:implast}	
+\end{figure}
+
+We can also see in \ref{fig:implast} how the \texttt{PROG} node of each AST has been expanded and coloured blue, this is how we will highlight each node within the AST during the animation. To implement the animation in the correct order recall we simply need to iterate through th \texttt{nodeOrder} array, also contained within the API response. When we use D3 to build the SVG of the AST, we associate with each node in the AST its ID as specified in the \texttt{treeNodes} array. This means when attempting to determine which node in the AST to highlight next, we can look at the next ID specified in \texttt{nodeOrder} and highlight the node in the SVG with that ID. Figure \ref{fig:implanim} illustrates how the animation of the AST will look as we highlight nodes consecutively.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implast.PNG}
+		\caption{Step 1 of animation}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implanim1.PNG}
+		\caption{Step 2 of animation}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/implanim2.PNG}
+		\caption{Step 3 of animation}
+	\end{subfigure}	
+	\caption{The first three steps of a Fun program's animation}
+	\label{fig:implanim}	
+\end{figure}
+
+\subsection{Augmentations Implementation}
+In Section 5.1.3 we created designs for the augmentations that would accompany each step of the animation. During each step of the animation and as each node is highlighted, the web-application retrieves a list of augmentations from the \texttt{nodeOrder} array, creates visual representations, and displays them alongside the animation. We see the implementation of the augmentations for both contextual analysis and code generation in Figure \ref{fig:implaugs}.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.6\linewidth]{images/implaugs1.PNG}
+		\caption{Contextual analysis augmentations}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.6\linewidth]{images/implaugs2.PNG}
+		\caption{Code generation augmentations}
+	\end{subfigure}
+	\caption{Implementation of the augmentations}
+	\label{fig:implaugs}	
+\end{figure}
+
+In addition to displaying the corresponding augmentations for each type of animation, we have also included the name of each node being animated along with highlighting the line in the explanatory messages section that describes the current action of the compiler.
+
+\subsection{Playback Controls Implementation}
+To implement the playback controls designed in Section 5.1.4 we simply embed playback Bootstrap "glyphicons" above the AST, as illustrated in Figure \ref{fig:implplayback}. Note that we have also included the title of the current compilation phase being animated.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{images/implplayback.PNG}
+\caption{Implementation of the code editor}
+\label{fig:implplayback}	
+\end{figure}
+
+\subsection{Fun Specification Implementation}
+The final interface component we are required to implement is the Fun specification as designed in Section 5.1.5. This implementation of this is demonstrated in Figure \ref{fig:implspec} which demonstrates how we can navigate through each tab and view different sections of the specification.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/implspec1.PNG}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.5\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/implspec2.PNG}
+	\end{subfigure}
+	\caption{Implementation of the Fun specification}
+	\label{fig:implspec}	
+\end{figure}
+
+\subsection{Complete Implementation}
+Finally, we can combine each of these interface implementations to create complete designs. Figure \ref{fig:implfull} illustrates the full view of the landing page, the contextual analysis animation page and the code generation animation page. Note that we have added a "home" button within the navigation menu to return to the landing page along with a drop-down menu of "examples". These examples contain sample Fun programs that when clicked, automatically fill the code editor.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/implfull1.PNG}
+		\caption{Landing page}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/implfull2.PNG}
+		\caption{Contextual analysis animation page}
+	\end{subfigure}%
+	\begin{subfigure}[b]{.33\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{images/implfull3.PNG}
+		\caption{Code generation animation page}
+	\end{subfigure}	
+	\caption{The complete implementation of each of the FunCompiler}
+	\label{fig:implfull}	
+\end{figure}
+
+\section{Testing}
+The FunCompiler contains a fairly extensive test suite that mainly uses PHPUnit to test that the compiler API returns the correct information. The FunCompiler is also configured to use Continuous Integration via Travis. Each time a change a made to the FunCompiler and pushed to version control, the test suite is run through Travis. 
 
 \chapter{Evaluation}
 \chapter{Conclusion}
@@ -1055,6 +1158,27 @@ services:
         # Starts services in dependency order, i.e., compiler before app
         depends_on:
             - compiler
+\end{lstlisting}
+
+\chapter{Change Me}
+\section{CodeMirror Custom Lexer}
+\label{sec:custom-lexer}
+\begin{lstlisting}[]
+CodeMirror.defineSimpleMode("fun", {
+  start: [
+    {regex: /(?:func|proc|return|if|while|else|not)\b/, token: "keyword"},
+    {regex: /true|false/, token: "atom"},
+    {regex: /int|bool/, token: "type"},
+    {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+        token: "number"},
+    {regex: /#.*/, token: "comment"},
+    {regex: /[-+\/*=<>]+/, token: "operator"},
+    {regex: /[\:]/, indent: true},
+    {regex: /[\.]/, dedent: true},
+    {regex: /[a-z$][\w$]*/, token: "variable"},
+  ],
+  comment: []
+});
 \end{lstlisting}
 
 \end{appendices}
