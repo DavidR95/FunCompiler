@@ -682,13 +682,13 @@ With Docker implemented, we present the final system architecture of the FunComp
 \chapter{Implementation}
 In this chapter we give a high-level overview of the FunCompiler's implementation. As in Chapter 6, we decompose the FunCompiler into two separate components: the web-application and the compiler. 
 
-Firstly, compiler. Secondly, web. Finally, tests
+Firstly, we consider the changes that must be made to the initial compiler implementation to create a system that can be used to create animations of either the contextual analysis or code generation phase of a particular program's compilation.
 
 \section{Compiler Implementation}
-In this section we discuss how we convert the original, stand-alone compiler into the micro-service as described in Chapter 6.  In order to accomplish this, two fundamental changes are necessary. Firstly, we must expose the compiler as an API in order to enable communication between itself and the web-application. Secondly, we must modify the implementation of the compiler to return a large amount of structured data pertaining to the compilation of a particular program. It is this data that the web-application will receive and use to build an animation of either contextual analysis or code generation.
+In this section we discuss how we convert the original, stand-alone compiler into the micro-service as described in Chapter 6.2.  In order to accomplish this, two fundamental changes are necessary. Firstly, we must build an API on top of the compiler in order to enable communication between itself and the web-application. Secondly, we must modify the implementation of the compiler to return a large amount of structured data pertaining to the compilation of a particular program. With these two modifications in place, third-parties (such as the FunCompiler's web-application) are able to send API requests containing a Fun program to the compiler and in response receive an organised set of information that can be manipulated to build animations of the compilation process.
 
 \subsection{API Implementation}
-Recall from Section \ref{sec:spark} that we intend to utilise a Java micro-framework known as Spark to encapsulate the compiler and create a compact API with a single endpoint. More specifically, the endpoint will be configured to accept HTTP POST requests. If the web-application desires to compile a Fun program, it must make a POST request to the API containing the following two query parameters: \texttt{program} and \texttt{type}. The value of \texttt{program} is simply the plain text of the input program. The value of \texttt{type} determines whether we wish to animate contextual analysis or code generation, in other words, the value of \texttt{type} corresponds to which of the buttons was pressed below the code editor in Figure \ref{fig:code-editor-wireframe}. Listing \ref{listing:API} contains the implementation of the endpoint in its entirety.
+Recall from Section \ref{sec:spark} that we intend to utilise a Java micro-framework known as Spark to encapsulate the compiler and create a compact API with a single endpoint. More specifically, the endpoint will be configured to accept HTTP POST requests. If a third-party desires to compile a Fun program, it must make a POST request to the API containing the following two query parameters: \texttt{program} and \texttt{type}. The value of \texttt{program} is simply the plain text of the input program. The value of \texttt{type} determines whether the compiler assembles information relevant to contextual analysis or code generation. Listing \ref{listing:API} contains the implementation of this endpoint in its entirety.
 \begin{lstlisting}[language=myjava, caption=API implementation, label=listing:API]
 post("/", (req, res) -> {
 	res.type("application/json");
@@ -699,10 +699,10 @@ post("/", (req, res) -> {
 }, gson::toJson);
 \end{lstlisting} 
 
-We see in the above listing how we utilise Java 8 lambda expressions to define a POST route at the url ``/''. Within the body of the route we extract the values of the request's query parameters (\texttt{program} and \texttt{type}, as previously discussed) and later pass them to the \texttt{execute()} method defined within the FunRun module. \texttt{execute()} is the driver method in regards to the compilation of a program, and the return value of this method is an object of the FunResponse class, of which each instance contains data collected pertaining to the compilation of an individual program. Finally, we utilise a Java library named GSON to convert the contents of the FunResponse object into a set of JSON data, which is stored in the endpoint's response and then delivered back to the calling entity.
+We see in the above listing how we utilise Java 8 lambda expressions to define a POST route at the url ``/''. Within the body of the route we extract the values of the request's query parameters (\texttt{program} and \texttt{type}, as previously discussed) and later pass them to the \texttt{execute()} method defined within the FunRun module. \texttt{execute()} is the driver method in regards to the compilation of a program, and the return value of this method is an object of the FunResponse class, of which each instance contains data collected during the compilation of a program. Finally, we utilise a Java library named GSON to convert the contents of the FunResponse object into a set of JSON data, which is stored in the endpoint's response and then delivered back to the third-party who made the original request.
 
 \subsection{Compiler Output \& The FunResponse Class}
-As discussed, we are required to modify the compiler's implementation to enable the collection of various details relevant to the compilation of a program, these details will be sent to the web-application and used to build an animation of the compilation process. To accomplish this, we use a class named FunResponse. For each program that we receive from the web-application, we instantiate a new object of this class. This object is populated as the compilation proceeds, and is returned upon completion of the compilation. The information that we desire to collect is stored within the instance variables of this object, the declarations of which are given in Listing \ref{listing:instancevars} (with access modifiers removed).
+To collect information relevant to the compilation of a program, we use a class named FunResponse. For each API request (and thus program to be compiled) the compiler receives, a new object of this class is instantiated. Each object is populated as the compilation proceeds, and is returned upon completion of the compilation. The information that we desire to collect is stored within the instance variables of this object, the declarations of which are given in Listing \ref{listing:instancevars} (with access modifiers removed).
 \begin{lstlisting}[language=myjava, caption=FunResponse instance variables, label=listing:instancevars]
 int numSyntaxErrors;
 int numContextualErrors;
@@ -712,15 +712,15 @@ JsonArray treeNodes;
 JsonArray nodeOrder;
 \end{lstlisting}
 
-In the interest of brevity we will not go into details of how or where the value of these variables is derived, however, we will analyse the contents of the variables and consider how they can be utilised by the web-application to build an animation. 
+In the interest of brevity, the details of the visitor/listener implementations used to derive the values of these variables is not discussed, however, we will analyse the typical contents of each variable and consider how the data contained within can be interpreted to build visualisations/animations.
 
 \subsubsection{Syntax \& Contextual Errors}
 The first four instance variables of Listing \ref{listing:instancevars} on lines 1-4 simply serve to store any syntactic/contextual errors that the compiler detects within the input program. Lines 1 and 2 collect the number of errors, whereas lines 3 and 4 collect a list of the actual error messages, including line and character numbers.
 
-It should be noted that the contents of these variables have no bearing on the form or behaviour of the animation, their purpose is to provide a means of allowing the web-application to report errors to the user in the event that the input program was invalid, and thus the animation not possible. In the case that the program contains no errors, these variables will remain empty and unused.
+It should be noted that the contents of these variables do not assist in forming an animation, their purpose is to provide a means of allowing a third-party to recognise errors in the event that the supplied input program was invalid. In the case that the program contains no errors, these variables will remain empty and unused.
 
 \subsubsection{AST Representation}
-The fifth instance variable, \texttt{treeNodes}, is used to store a textual representation of the AST which when delivered to the web-application, can be used to create and display a visual representation within the user interface. The data stored within this variable is an array of JSON objects (forming a \texttt{JsonArray} data type), where each object corresponds to a distinct node within the program's AST. Each object contains four fields of information used to describe the node it represents:
+The fifth instance variable, \texttt{treeNodes}, is used to store a textual representation of the AST which can be interpreted to create and display a visual representation. The data stored within this variable is an array of JSON objects (forming a \texttt{JsonArray} data type), where each object corresponds to a distinct node within the program's AST. Each object contains four fields of information used to describe the node it represents:
 \begin{itemize}
 \item An ID, uniquely identifying the node.
 \item A parent ID, identifying the node's parent.
@@ -728,8 +728,8 @@ The fifth instance variable, \texttt{treeNodes}, is used to store a textual repr
 \item A node value, identifying the text that is to be associated with the node when visually displayed within the AST (in many cases, this is the same as the node name).
 \end{itemize}
 
-By examining the ID and parent ID of each node, it is possible to take a \textit{flat} representation of the AST, as we have in \texttt{treeNodes}, and interpret it as a \textit{hierarchical} representation. For example, consider Listing \ref{listing:treeNodes} which contains an extract of three nodes from a typical \texttt{treeNodes} array.
-\begin{lstlisting}[language=json, caption=Extract from the \texttt{treeNodes} array, label=listing:treeNodes]
+By examining the ID and parent ID of each node, it is possible to take a \textit{flat} representation of the AST, like in \texttt{treeNodes}, and interpret it as a \textit{hierarchical} representation. For example, consider Listing \ref{listing:treeNodes} which contains an extract of three nodes from a typical \texttt{treeNodes} array.
+\begin{lstlisting}[language=json, caption=Extract from a \texttt{treeNodes} array, label=listing:treeNodes]
 {
 	"id": 306481855,
 	"nodeName": "DIV",
@@ -749,17 +749,17 @@ By examining the ID and parent ID of each node, it is possible to take a \textit
 	"parentId": 306481855
 }
 \end{lstlisting}
-Within this example we can see that we have three different types of node, a \texttt{DIV}, an \texttt{ID} and a \texttt{NUM}. By examining the ID of the \texttt{DIV} node and the parent ID of the \texttt{ID} and \texttt{NUM} nodes, it is possible to ascertain that \texttt{ID} and \texttt{NUM} are child nodes of \texttt{DIV}. By applying this knowledge, we can perceive the hierarchical relationships between the nodes of the AST through inspect of the flat array. As an illustration of this theory, in Figure \ref{fig:treeNodes} we present the visual representation of the AST as derived from the above node array.
+Within this example there are three different types of node: \texttt{DIV}, \texttt{ID} and \texttt{NUM}. By examining the ID of the \texttt{DIV} node and the parent ID of the \texttt{ID} and \texttt{NUM} nodes, it is clear that \texttt{ID} and \texttt{NUM} are child nodes of \texttt{DIV}. By applying this knowledge, we can create a visual representation of the AST as derived from the above \texttt{treeNodes} array, as illustrated in Figure \ref{fig:treeNodes}. We see that through inspection of the flat array returned from the API, third-parties can perceive the hierarchical relationships between the nodes of the AST, allowing the creation of visualisations.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{images/treeNodes.png}
-\caption{The visual representation of an AST as derived from the previous node array}
+\caption{The visual representation of an AST as derived from Listing \ref{listing:treeNodes}}
 \label{fig:treeNodes}	
 \end{figure}
 
 \subsubsection{Animation Order \& Augmentations}
-Now that we have a means of building a visual representation of the AST via the \texttt{treeNodes} array, we still need some way of informing the web-application as to how the AST should be animated, i.e., in which order each node should be highlighted. Also, each time a node is highlighted, we need to provide a set of data which can be parsed to build and display the relevant augmentations, as discussed in Chapter 5. We do this through the use of a final instance variable, \texttt{nodeOrder}. Similarly to \texttt{treeNodes}, \texttt{nodeOrder} contains an array of JSON objects. For example, consider Listing \ref{listing:nodeOrder} which contains an extract of three JSON objects from the \texttt{nodeOrder} array:
-\begin{lstlisting}[language=json,caption=Extract from the \texttt{nodeOrder} array,label=listing:nodeOrder]
+After establishing a means of building a visual representation of the AST via the \texttt{treeNodes} array, information is still required that provides instruction in regards to specifically how the AST should be animated, i.e., in which order each node should be highlighted. Also, each time a node is highlighted, we need to provide a set of data which can be parsed to build the relevant augmentations as discussed in Chapter 5. We do this through the use of a final instance variable, \texttt{nodeOrder}. Similarly to \texttt{treeNodes}, \texttt{nodeOrder} contains an array of JSON objects. For example, consider Listing \ref{listing:nodeOrder} which contains an extract of three JSON objects from the \texttt{nodeOrder} array.
+\begin{lstlisting}[language=json,caption=Extract from a \texttt{nodeOrder} array,label=listing:nodeOrder]
 {
 	"id": 306481855,
 	"explanations": [
@@ -810,7 +810,7 @@ The important thing to recognise is that each object within the \texttt{nodeOrde
 \label{fig:animOrder}	
 \end{figure}
 
-We also see that we have fields for "explanations" and "table". These fields represent some of the augmentations that were discussed in Chapter 5. When the node in the AST represented by the ID field is highlighted, the animator simultaneously uses the value of these fields to display the appropriate augmentations alongside the animation. The sort of augmentations that are supplied to the \texttt{nodeOrder} array are dependent upon the value of the query parameter \texttt{type}, as discussed in Section 7.1.1. Figure \ref{fig:animAugs} extends the animation shown in Figure \ref{fig:animOrder} by inserting the ``explanations'' augmentation as specified in Listing \ref{listing:nodeOrder}.
+We also see that we have fields for "explanations" and "table". These fields represent some of the augmentations that were discussed in Chapter 5. For each JSON object in \texttt{nodeOrder}, when the node represented by the ID field is highlighted during the animation, the value of fields such as "explanations" specify the type and value of the augmentations that should be associated with that particular step of the animation. Figure \ref{fig:animAugs} demonstrates this concept by extending the animation shown in Figure \ref{fig:animOrder} by inserting the ``explanations'' augmentation as specified in Listing \ref{listing:nodeOrder}. Note that the sort of augmentations that are supplied to the \texttt{nodeOrder} array are dependent upon the value of the query parameter \texttt{type}, as discussed in Section 7.1.1.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.65]{images/animAugs.png}
@@ -818,7 +818,7 @@ We also see that we have fields for "explanations" and "table". These fields rep
 \label{fig:animAugs}	
 \end{figure}
 
-Within the \texttt{nodeOrder} array we have effectively stored a complete history of the program's compilation. That is, for each individual time a node is visited, we have retained a ``snapshot'' of any relevant information at that exact moment in time (e.g., explanatory messages, type table, etc.). Since the animator can freely traverse forwards or backwards through the \texttt{nodeOrder} array whilst maintaining all the correct information, we can almost trivially implement the playing, restarting and reversing of an animation as discussed in Chapter 5.
+Within the \texttt{nodeOrder} array we have effectively stored a complete history of the program's compilation. That is, for each individual time a node is visited, we have retained a ``snapshot'' of any relevant information at that exact moment in time (e.g., explanatory messages, type table, etc.). This is extremely useful because, for example, we specified in Chapter 5 that the web-application is required to implement the playing, restarting and reversing of an animation. Since the animator can freely traverse forwards or backwards through the \texttt{nodeOrder} array whilst maintaining all the correct information, we can almost trivially implement these advanced playback controls.
 
 \section{Web-application Implementation}
 In this section we examine the physical implementation of the interface designs we created in Chapter 5. For each component in the interface we detail its purpose and functionality along with any interesting technologies or libraries that were used to assist in its develop. Also note that, although not discussed specifically, the front-end implementation of this project does make extensive use of HTML, CSS, Bootstrap, vanilla Javascript, jQuery and NodeJS. 
