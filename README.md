@@ -9,7 +9,7 @@ The goal of this project is to create an application that provides concrete, vis
 To get started with the app, navigate to the top-level directory (containing docker-compose.yml) and simply run:
 
 ```
-$ docker-compose -f docker-compose.production.yml up
+$ docker-compose -f docker-compose.production.yml up --build
 ```
 
 You should now be able to find the web app at [localhost:8000](http://localhost:8000).
