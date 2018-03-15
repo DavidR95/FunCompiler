@@ -32320,6 +32320,7 @@ function animateNode(node, isPlayingForward, delayOffset) {
                 objectCodeInstructions += "<li>" + objectCode + "</li>";
             });
             objectCodeText.html(objectCodeInstructions);
+            objectCodeText.scrollTop(objectCodeText.prop("scrollHeight"));
             var codeTemplateInstructions = "";
             var codeTemplate = CodeTemplates.getTemplate(nodeName);
             $.each(codeTemplate, function (index, codeTemplateInstruction) {
