@@ -136,22 +136,21 @@ function increaseFontSize(transition) {
 function highlightCurrentRectangle(currentNode, bBox) {
     currentNode.select("rect")
         .style("fill", "#035a80")
-        .style("x", bBox.x - 10)
-        .style("y", bBox.y - 10)
-        .style("width", bBox.width + 20)
-        .style("height", bBox.height + 20);
+        .attr("x", bBox.x - 10)
+        .attr("y", bBox.y - 10)
+        .attr("width", bBox.width + 20)
+        .attr("height", bBox.height + 20)
     currentNode.raise();
 }
 
 // Decrease the previous rectangle back to its previous size and colour
 function unhighlightCurrentRectangle(previousNode, bBox) {
-    $(previousNode).prev("rect").css({
-        "fill": "#3e4153",
-        "x": bBox.x - 3,
-        "y": bBox.y - 3,
-        "width": bBox.width + 6,
-        "height": bBox.height + 6
-    });
+    $(previousNode).prev("rect")
+        .css("fill", "#3e4153")
+        .attr("x", bBox.x - 3)
+        .attr("y", bBox.y - 3)
+        .attr("width", bBox.width + 6)
+        .attr("height", bBox.height + 6)
 }
 
 // Highlights a single node and displays any corresponding information
