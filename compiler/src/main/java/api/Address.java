@@ -6,6 +6,8 @@ package api;
 //
 // Developed June 2012 by David Watt (University of Glasgow).
 //
+// Extended September 2017 - March 2018 by David Robertson.
+//
 //////////////////////////////////////////////////////////////
 
 public class Address {

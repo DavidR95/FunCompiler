@@ -4,7 +4,9 @@ package api;
 //
 // A visitor to build an AST over the parse tree.
 //
-// Builds a JSON array to be eventually stored in the FunResponse
+// Builds a JSON array to be eventually stored in the FunResponse.
+//
+// Developed September 2017 - March 2018 by David Robertson.
 //
 //////////////////////////////////////////////////////////////
 
@@ -21,10 +23,8 @@ import com.google.gson.JsonObject;
 public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements FunVisitor<Void> {
 
     private Parser parser;
-
     // Stores the AST as flat JSON data
     private JsonArray treeNodes = new JsonArray();
-
     // Stores a stack of parent node ids
     private Stack<Integer> parentNodes = new Stack<Integer>();
 
@@ -36,6 +36,12 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         return treeNodes;
     }
 
+    /**
+    * Overloaded version of the createJSONObject method, which creates a JSON
+    * object with the same nodeName and nodeValue.
+    * @param ctx the parse tree
+    * @param nodeName the name of the node
+    */
     private void createJsonObject(Object ctx, String nodeName) {
         createJsonObject(ctx, nodeName, nodeName);
     }
@@ -47,7 +53,6 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
     * @param ctx the parse tree
     * @param nodeName the name of the node
     * @param nodeValue the value stored in the node (if token)
-    * @return the visitor result
     */
     private void createJsonObject(Object ctx, String nodeName, String nodeValue) {
         JsonObject data_object = new JsonObject();
@@ -62,6 +67,8 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         // add the newly created JSON object to JSON array
         treeNodes.add(data_object);
     }
+
+    /*============================== VISITORS ==============================*/
 
     /**
     * Visit a parse tree produced by the {@code prog}
@@ -91,7 +98,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         visit(ctx.formal_decl());
         List<FunParser.Var_declContext> var_decl = ctx.var_decl();
         for (FunParser.Var_declContext vd : var_decl)
-        visit(vd);
+            visit(vd);
         visit(ctx.seq_com());
         parentNodes.pop();
         return null;
@@ -112,7 +119,7 @@ public class FunASTVisitor extends AbstractParseTreeVisitor<Void> implements Fun
         visit(ctx.formal_decl());
         List<FunParser.Var_declContext> var_decl = ctx.var_decl();
         for (FunParser.Var_declContext vd : var_decl)
-        visit(vd);
+            visit(vd);
         visit(ctx.seq_com());
         visit(ctx.expr());
         parentNodes.pop();

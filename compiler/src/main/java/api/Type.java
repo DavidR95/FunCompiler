@@ -8,6 +8,8 @@ package api;
 //
 // Sequence types added by Simon Gay, September 2016.
 //
+// Extended September 2017 - March 2018 by David Robertson.
+//
 ////////////////////////////////////////////////////////////////
 
 import java.util.ArrayList;

@@ -1,5 +1,13 @@
 package api;
 
+//////////////////////////////////////////////////////////////
+//
+// Creates an API to compile received Fun programs.
+//
+// Developed September 2017 - March 2018 by David Robertson.
+//
+//////////////////////////////////////////////////////////////
+
 import static spark.Spark.*;
 import java.io.*;
 import com.google.gson.Gson;
@@ -24,6 +32,5 @@ public class Api {
             // Pass the InputStream to the Fun compiler
             return FunRun.execute(programInputStream, type);
         }, gson::toJson);
-
     }
 }

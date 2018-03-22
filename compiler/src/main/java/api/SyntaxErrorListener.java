@@ -6,6 +6,8 @@ package api;
 //
 // Allows us to collect the syntax errors rather than printing them on standard output.
 //
+// Developed September 2017 - March 2018 by David Robertson.
+//
 //////////////////////////////////////////////////////////////
 
 import org.antlr.v4.runtime.*;

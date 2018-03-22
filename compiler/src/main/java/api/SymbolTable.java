@@ -5,7 +5,10 @@ package api;
 // Representation of generic symbol tables.
 //
 // Developed June 2012 by David Watt (University of Glasgow).
+//
 // Modified October 2012 by David Watt.
+//
+// Extended September 2017 - March 2018 by David Robertson.
 //
 ////////////////////////////////////////////////////////////////
 
