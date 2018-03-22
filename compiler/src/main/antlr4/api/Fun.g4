@@ -6,6 +6,8 @@
 //
 // Converted to ANTLRv4 by Simon Gay, August 2015.
 //
+// Extended September 2017 - March 2018 by David Robertson.
+//
 //////////////////////////////////////////////////////////////
 
 grammar Fun;

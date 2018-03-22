@@ -1,5 +1,15 @@
 package api;
 
+//////////////////////////////////////////////////////////////
+//
+// Heavily truncated SVM.
+//
+// Based on original version by David Watt and Simon Gay.
+//
+// Extended September 2017 - March 2018 by David Robertson.
+//
+//////////////////////////////////////////////////////////////
+
 import com.google.gson.JsonArray;
 
 public class SVM {

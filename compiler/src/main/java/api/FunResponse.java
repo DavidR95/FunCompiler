@@ -2,9 +2,11 @@ package api;
 
 //////////////////////////////////////////////////////////////
 //
-// An object to collect all relevant information relating to a program execution.
+// An object to collect all relevant information relating to a program compilation.
 //
 // This object will later be converted to JSON before being sent to the web app.
+//
+// Developed September 2017 - March 2018 by David Robertson.
 //
 //////////////////////////////////////////////////////////////
 
@@ -13,13 +15,19 @@ import java.util.List;
 import com.google.gson.JsonArray;
 
 public class FunResponse {
+    
+    // Number of syntax errors
     private int numSyntaxErrors;
+    // Number of contextual errors
     private int numContextualErrors;
+    // Actual syntax errors
     private List<String> syntaxErrors;
+    // Actual contextual errors
     private List<String> contextualErrors;
-    private JsonArray nodeOrder;
+    // Flat representation of the input program's AST
     private JsonArray treeNodes;
-    private String output;
+    // Defines the augmentations and the order in which the AST nodes should be visited
+    private JsonArray nodeOrder;
 
     public void setNumSyntaxErrors(int numSyntaxErrors) {
         this.numSyntaxErrors = numSyntaxErrors;
@@ -37,15 +45,11 @@ public class FunResponse {
         this.contextualErrors = contextualErrors;
     }
 
-    public void setNodeOrder(JsonArray nodeOrder) {
-        this.nodeOrder = nodeOrder;
-    }
-
     public void setTreeNodes(JsonArray treeNodes) {
         this.treeNodes = treeNodes;
     }
 
-    public void setOutput(String output) {
-        this.output = output;
+    public void setNodeOrder(JsonArray nodeOrder) {
+        this.nodeOrder = nodeOrder;
     }
 }

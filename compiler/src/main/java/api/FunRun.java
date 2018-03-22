@@ -6,6 +6,8 @@ package api;
 //
 // Developed June 2012 by David Watt (University of Glasgow).
 //
+// Extended September 2017 - March 2018 by David Robertson.
+//
 //////////////////////////////////////////////////////////////
 
 
@@ -24,13 +26,13 @@ public class FunRun {
 
 	// Executes the code specified in the program InputStream
 	public static FunResponse execute(InputStream program, String executionType) {
+		response = new FunResponse();
 		try {
-			response = new FunResponse();
 			compile(program, executionType);
-		} catch (FunException e) {
-			response.setOutput("Compilation failed");
-		} catch (Exception e) {
-			// Java-based errors, not sure what to do with these right now
+		} catch (FunException e) {	// Errors found within the input program
+			System.err.println("Compilation failed - syntax or contextual errors found.");
+		} catch (Exception e) {		// Other, Java-related runtime errors
+			System.err.println("Compilation failed.");
 		}
 		return response;
 	}
@@ -47,10 +49,12 @@ public class FunRun {
 		JsonArray treeNodes = astVisitor.getTreeNodes();
 		response.setTreeNodes(treeNodes);
 		contextualAnalyse(parseTree,tokens);
-		if (executionType.equals("cg"))
+		if (executionType.equals("cg")) {
 			codeGenerate(parseTree);
+		}
 	}
 
+	// Create the lexer object
 	private static FunLexer createLexer(ANTLRInputStream inputStream) {
 		FunLexer lexer = new FunLexer(inputStream);
 		lexer.removeErrorListeners();
@@ -71,13 +75,14 @@ public class FunRun {
 	// Return the parse tree (concrete syntax tree) representation of the Fun program.
 	private static ParseTree syntacticAnalyse(FunParser parser)
 		throws Exception {
-	    ParseTree parseTree = parser.program();
+		ParseTree parseTree = parser.program();
 		int numErrors = parser.getNumberOfSyntaxErrors();
 		List<String> errors = SyntaxErrorListener.getSyntaxErrors();
 		response.setNumSyntaxErrors(numErrors);
 		response.setSyntaxErrors(errors);
-		if (numErrors > 0)
+		if (numErrors > 0) {
 			throw new FunException();
+		}
 		return parseTree;
 	}
 
@@ -99,8 +104,9 @@ public class FunRun {
 		List<String> errors = checker.getContextualErrors();
 		response.setNumContextualErrors(numErrors);
 		response.setContextualErrors(errors);
-		if (numErrors > 0)
+		if (numErrors > 0) {
 			throw new FunException();
+		}
 	}
 
 	// Perform code generation of a Fun program,

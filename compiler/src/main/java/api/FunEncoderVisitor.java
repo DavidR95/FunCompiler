@@ -8,6 +8,8 @@ package api;
 //
 // Based on a previous version by David Watt.
 //
+// Extended September 2017 - March 2018 by David Robertson.
+//
 //////////////////////////////////////////////////////////////
 
 import org.antlr.v4.runtime.*;
@@ -25,7 +27,9 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 
 	private SVM obj = new SVM();
 	private SymbolTable<Address> addrTable = new SymbolTable<Address>();
+	// Defines the augmentations and the order in which the AST nodes should be visited
 	private JsonArray nodeOrder = new JsonArray();
+	// A map of nodes to explanatory messages
 	private Map<Integer,JsonArray> nodeExplanations = new HashMap<Integer,JsonArray>();
 	private int globalvaraddr = 0;
 	private int localvaraddr = 0;
@@ -49,6 +53,11 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		return "Unrecognised locale";
 	}
 
+	/**
+   	 * Create a node containing all augmentation information.
+	 * @param ctx the parse tree
+	 * @param explanation the explanatory message
+   	 */
 	private void addNode(Object ctx, String explanation) {
 		int contextHash = ctx.hashCode();
 		JsonObject nodeObject = new JsonObject();
@@ -86,7 +95,7 @@ public class FunEncoderVisitor extends AbstractParseTreeVisitor<Void> implements
 		nodeOrder.add(nodeObject);
 	}
 
-/*============================== VISITORS ==============================*/
+	/*============================== VISITORS ==============================*/
 
 	/**
 	 * Visit a parse tree produced by the {@code prog}
